@@ -6,9 +6,13 @@ import { toPrecision } from "next-common/utils";
 import Link from "next-common/components/link";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 
-export function FellowshipRegisteredFeedContent({ amount, index }) {
+export function FellowshipRegisteredFeedContent({
+  amount,
+  index,
+  blockHeight,
+}) {
   const { section } = useCollectivesContext();
-  const { symbol, decimals } = getSalaryAsset(section);
+  const { symbol, decimals } = getSalaryAsset(section, blockHeight);
 
   return (
     <>
@@ -32,12 +36,17 @@ export default function FellowshipRegisteredFeed({
   amount,
   index,
   showUserInfo = true,
+  blockHeight,
 }) {
   return (
     <>
       {showUserInfo && <AddressUser key={who} add={who} noTooltip />}
       <span>
-        <FellowshipRegisteredFeedContent amount={amount} index={index} />
+        <FellowshipRegisteredFeedContent
+          amount={amount}
+          index={index}
+          blockHeight={blockHeight}
+        />
       </span>
     </>
   );

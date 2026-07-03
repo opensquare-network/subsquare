@@ -1,4 +1,4 @@
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
@@ -9,12 +9,11 @@ export function CoreFellowshipMemberSalaryContent({
   rank,
   isActive,
   params = {},
-  section = "fellowship",
 }) {
   const { activeSalary, passiveSalary } = params;
   const salaryArray = isActive ? activeSalary : passiveSalary;
   const salary = getRankSalary(salaryArray, rank);
-  const { symbol, decimals } = getSalaryAsset(section);
+  const { symbol, decimals } = useSalaryAsset();
 
   return (
     <ValueDisplay
@@ -29,13 +28,12 @@ export default function CoreFellowshipMemberSalary({
   className = "text14Medium",
   member,
   params = {},
-  section = "fellowship",
 }) {
   const { rank } = member;
   const { isActive } = member.status || {};
 
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
-  const { symbol, decimals } = getSalaryAsset(section);
+  const { symbol, decimals } = useSalaryAsset();
 
   if (rank <= 0) {
     return null;

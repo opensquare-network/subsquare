@@ -4,6 +4,7 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 function getTotalSpent(data) {
   if (data && data.length > 0) {
@@ -31,7 +32,7 @@ function SpentCycles({ count }) {
 
 function TotalSpent({ cycles }) {
   const totalSpent = getTotalSpent(cycles);
-  const { symbol } = getSalaryAsset("fellowship");
+  const { symbol } = useSalaryAsset();
   return (
     <SummaryItem title="Total Spent">
       <ValueDisplay value={totalSpent.toString()} symbol={symbol} />

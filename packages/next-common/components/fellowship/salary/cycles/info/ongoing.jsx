@@ -40,7 +40,10 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({
       <SummaryLayout
         className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
       >
-        <SalaryStatsBudgetItem budget={budget} />
+        <SalaryStatsBudgetItem
+          budget={budget}
+          blockHeight={cycle?.indexer?.blockHeight}
+        />
         <SalaryStatsRegistrationItem cycleData={cycle} />
         <SalaryStatsUnregisteredItem cycleData={cycle} />
         <SalaryStatsTotalPeriodItem cycleStart={cycleStart} />
@@ -55,7 +58,10 @@ export default function FellowshipSalaryCycleDetailInfoOngoing({
       </SummaryLayout>
 
       <SummaryLayout className={cn(navCollapsed ? "sm:hidden" : "md:hidden")}>
-        <SalaryStatsBudgetItem budget={budget} />
+        <SalaryStatsBudgetItem
+          budget={budget}
+          blockHeight={cycle?.indexer?.blockHeight}
+        />
         <SalaryStatsRegistrationItem cycleData={cycle} />
         <SalaryStatsUnregisteredItem cycleData={cycle} />
         <SalaryStatsBlockTimeItem

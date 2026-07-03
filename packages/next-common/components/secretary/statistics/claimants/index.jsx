@@ -19,9 +19,11 @@ import {
   getReferendaTotalByAddress,
   getReferendaUsdByAddress,
 } from "next-common/components/secretary/statistics/breakdown";
-import ValueDisplay from "next-common/components/valueDisplay";
+import SalaryAssetValues, {
+  isPositiveAmount,
+} from "next-common/components/collectives/salaryAssetValues";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { formatNum, toPrecision } from "next-common/utils";
+import { formatNum } from "next-common/utils";
 
 function handleClaimantsData(originalMembers, members) {
   const membersRank = members.reduce((acc, member) => {
@@ -78,43 +80,58 @@ function useSecretaryClaimantsReferendaColumn(paymentReferenda) {
 }
 
 function useSecretaryClaimantsPaidColumn(paymentReferenda) {
-  const { decimals, symbol } = getSalaryAsset("secretary");
+  const { decimals } = getSalaryAsset("secretary");
 
   return {
     name: "Total Paid",
     className: "text-right",
+    width: 240,
     cellRender(data, idx) {
-      const salary = BigInt(data.salary || 0);
+      const salary = data.salary || {};
+      const usdt = salary.usdt || "0";
+      const hollar = salary.hollar || "0";
       const address = data.who;
       const referendaTotal = getReferendaTotalByAddress(
         paymentReferenda,
         address,
       );
 
+      const hasHollar = isPositiveAmount(hollar);
+      const hasUsdt = isPositiveAmount(usdt);
+
       if (referendaTotal.isZero()) {
-        return (
-          <ValueDisplay
-            key={idx}
-            value={toPrecision(salary.toString(), decimals)}
-            symbol={symbol}
-          />
-        );
+        return <SalaryAssetValues key={idx} salary={salary} />;
       }
 
       const referendaUsd = getReferendaUsdByAddress(paymentReferenda, address);
-      const cyclesUsd = new BigNumber(salary.toString()).div(
-        Math.pow(10, decimals),
-      );
-      const usdTotal = cyclesUsd.plus(referendaUsd).toFixed(2);
+      const salaryUsd = new BigNumber(usdt).plus(hollar);
+      const usdTotal = salaryUsd.plus(referendaUsd).toFixed(2);
 
-      const rows = [
-        { value: salary.toString(), decimals, symbol },
-        {
+      const rows = [];
+
+      if (hasUsdt) {
+        rows.push({
+          value: new BigNumber(usdt).shiftedBy(decimals).toFixed(0),
+          decimals,
+          symbol: "USDT",
+        });
+      }
+
+      if (hasHollar) {
+        rows.push({
+          value: new BigNumber(hollar).shiftedBy(18).toFixed(0),
+          decimals: 18,
+          symbol: "HOLLAR",
+        });
+      }
+
+      if (referendaTotal.gt(0)) {
+        rows.push({
           value: referendaTotal.toString(),
           decimals: 10,
           symbol: "DOT",
-        },
-      ];
+        });
+      }
 
       return (
         <AssetBreakdown

@@ -51,8 +51,14 @@ export default function FellowshipSalaryStats() {
         className={cn(navCollapsed ? "max-sm:hidden" : "max-md:hidden")}
       >
         <SalaryStatsIndexItem index={cycleIndex} />
-        <SalaryStatsBudgetItem budget={budget} />
-        <SalaryStatsPotItem pot={pot} />
+        <SalaryStatsBudgetItem
+          budget={budget}
+          blockHeight={cycleData?.indexer?.blockHeight}
+        />
+        <SalaryStatsPotItem
+          pot={pot}
+          blockHeight={cycleData?.indexer?.blockHeight}
+        />
         <SalaryStatsTotalPeriodItem cycleStart={cycleStart} />
         <DesktopPlaceHolderItem />
         <SalaryStatsRegistrationItem cycleData={cycleData} />
@@ -62,8 +68,14 @@ export default function FellowshipSalaryStats() {
       <SummaryLayout className={cn(navCollapsed ? "sm:hidden" : "md:hidden")}>
         <SalaryStatsIndexItem index={cycleIndex} />
         <MobilePlaceHolderItem />
-        <SalaryStatsBudgetItem budget={budget} />
-        <SalaryStatsPotItem pot={pot} />
+        <SalaryStatsBudgetItem
+          budget={budget}
+          blockHeight={cycleData?.indexer?.blockHeight}
+        />
+        <SalaryStatsPotItem
+          pot={pot}
+          blockHeight={cycleData?.indexer?.blockHeight}
+        />
         <SalaryStatsRegistrationItem cycleData={cycleData} />
         <SalaryStatsUnregisteredItem cycleData={cycleData} />
         <SalaryStatsTotalPeriodItem cycleStart={cycleStart} />

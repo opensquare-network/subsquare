@@ -5,6 +5,7 @@ import { usePageProps } from "next-common/context/page";
 import useSubCollectiveRank from "next-common/hooks/collectives/useSubCollectiveRank";
 import { isSameAddress, toPrecision } from "next-common/utils";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
+import SalaryAssetValues from "next-common/components/collectives/salaryAssetValues";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
 import {
   BorderedRow,
@@ -22,7 +23,7 @@ import useSubCoreCollectivesMember from "next-common/hooks/collectives/useSubCor
 
 function Wrapper({ children }) {
   return (
-    <div className="flex flex-col w-full pt-[24px] border-t border-neutral300 gap-[12px]">
+    <div className="flex flex-col w-full pt-6 border-t border-neutral300 gap-3">
       {children}
     </div>
   );
@@ -48,7 +49,7 @@ function ActionsWrapper({ children, className = "" }) {
 function NotImportedSalary() {
   return (
     <Wrapper>
-      <div className="flex flex-col items-center gap-[4px]">
+      <div className="flex flex-col items-center gap-1">
         <span className="text14Medium text-textTertiary">Salary</span>
         <span className="text16Bold text-textTertiary">-</span>
       </div>
@@ -81,15 +82,14 @@ function SalaryValue({ salary }) {
 }
 
 function TotalPaid({ totalPaid }) {
-  const { symbol } = useSalaryAsset();
   return (
     <BorderedRow>
       <Header className="text14Medium">
-        <InfoAsset className="w-[20px] h-[20px]" />
+        <InfoAsset className="w-5 h-5" />
         Total Paid
       </Header>
       <Value className="text14Medium">
-        <ValueDisplay value={totalPaid} symbol={symbol} />
+        <SalaryAssetValues salary={totalPaid} />
       </Value>
     </BorderedRow>
   );
@@ -99,7 +99,7 @@ function JoinedCycles({ joinedCycles }) {
   return (
     <BorderedRow>
       <Header className="text14Medium">
-        <InfoDocs className="w-[20px] h-[20px]" />
+        <InfoDocs className="w-5 h-5" />
         Joined Cycles
       </Header>
       <Value className="text14Medium">{joinedCycles}</Value>
@@ -133,13 +133,13 @@ function MemberSalary({ address }) {
 
   return (
     <Wrapper>
-      <div className="flex flex-col items-center gap-[4px]">
+      <div className="flex flex-col items-center gap-1">
         <span className="text14Medium text-textTertiary">Salary</span>
         <SalaryValue salary={salary} />
         <LastPayment />
       </div>
       <Statistics
-        totalPaid={claimantCycleStats?.totalSalary || 0}
+        totalPaid={claimantCycleStats?.totalPaid || {}}
         joinedCycles={claimantCycleStats?.cycles || 0}
       />
       <MyActionsComponentGuard>

@@ -1,15 +1,12 @@
-import ValueDisplay from "next-common/components/valueDisplay";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import SalaryAssetValues from "next-common/components/collectives/salaryAssetValues";
 
 export function useStatisticsClaimantsPaidColumn() {
-  const { symbol } = getSalaryAsset("fellowship");
-
   return {
     name: "Total Paid",
-    width: 160,
+    width: 240,
     className: "text-right",
     cellRender(data, idx) {
-      return <ValueDisplay key={idx} value={data.salary} symbol={symbol} />;
+      return <SalaryAssetValues key={idx} salary={data.salary} />;
     },
   };
 }

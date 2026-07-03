@@ -61,6 +61,7 @@ function EventContent({ feed, showUserInfo = true }) {
         <FellowshipRegisteredFeedContent
           amount={feed?.args?.amount}
           index={feed?.index}
+          blockHeight={feed?.indexer?.blockHeight}
         />
       );
     }

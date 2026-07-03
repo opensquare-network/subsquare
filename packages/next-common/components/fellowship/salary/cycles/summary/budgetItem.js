@@ -5,8 +5,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
-export default function SalaryStatsBudgetItem({ budget }) {
-  const { decimals, symbol } = useSalaryAsset();
+export default function SalaryStatsBudgetItem({ budget, blockHeight }) {
+  const { decimals, symbol } = useSalaryAsset(blockHeight);
 
   return (
     <SummaryItem title="Budget">

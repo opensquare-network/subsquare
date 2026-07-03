@@ -5,8 +5,8 @@ import { isNil } from "lodash-es";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 
-export default function SalaryStatsPotItem({ pot }) {
-  const { decimals, symbol } = useSalaryAsset();
+export default function SalaryStatsPotItem({ pot, blockHeight }) {
+  const { decimals, symbol } = useSalaryAsset(blockHeight);
 
   return (
     <SummaryItem title="Pot">

@@ -10,7 +10,8 @@ export default function SalaryStatsRegistrationItem({ cycleData }) {
   const stats = useFellowshipSalaryStats();
 
   const { totalRegistrations } = stats || {};
-  const { decimals, symbol } = useSalaryAsset();
+  const { indexer } = cycleData || {};
+  const { decimals, symbol } = useSalaryAsset(indexer?.blockHeight);
   const { registeredCount } = cycleData || {};
 
   return (
