@@ -20,10 +20,9 @@ import { useMemo } from "react";
 import MultiAssetBountyCardHeaderLabel from "./cardHeaderLabel";
 import MultiAssetBountyCardChildBounties from "./cardChildBounties";
 
-function CardValueAndCurator({ item }) {
+function Balance({ item }) {
   const { address, assetKind } = item?.onchainData ?? {};
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
-  const curator = useCurator();
 
   const assetInfo = useMemo(() => {
     return getAssetInfoFromAssetKind(assetKind, chainDecimals, chainSymbol);
@@ -32,17 +31,25 @@ function CardValueAndCurator({ item }) {
   const { symbol, decimals } = assetInfo ?? {};
   const { balance, loading } = useAssetBalance(address, assetInfo);
 
-  if (!address) return null;
+  if (!address) return <span className="text12Medium">-</span>;
+
+  return (
+    <LoadableContent isLoading={loading}>
+      <ValueDisplay
+        value={toPrecision(balance ?? 0, decimals)}
+        symbol={symbol}
+      />
+    </LoadableContent>
+  );
+}
+
+function CardValueAndCurator({ item }) {
+  const curator = useCurator();
 
   return (
     <SummaryLayout className="mt-4 mb-3 flex">
       <SummaryItem title="Balance">
-        <LoadableContent isLoading={loading}>
-          <ValueDisplay
-            value={toPrecision(balance ?? 0, decimals)}
-            symbol={symbol}
-          />
-        </LoadableContent>
+        <Balance item={item} />
       </SummaryItem>
       <SummaryItem title="Curator">
         {curator ? <Curator /> : <span className="text12Medium">-</span>}
