@@ -7,9 +7,8 @@ export function normalizeSalaryAssetValue(value = {}) {
   }
 
   return {
-    usdt: value.usdt || value.usdtSalary || value.usdtTotalSalary || "0",
-    hollar:
-      value.hollar || value.hollarSalary || value.hollarTotalSalary || "0",
+    usdt: value.usdt || "0",
+    hollar: value.hollar || "0",
   };
 }
 
