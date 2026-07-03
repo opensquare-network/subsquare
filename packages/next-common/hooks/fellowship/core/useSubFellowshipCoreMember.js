@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSubStorage from "next-common/hooks/common/useSubStorage";
 
 export default function useSubFellowshipCoreMember(
@@ -6,6 +6,12 @@ export default function useSubFellowshipCoreMember(
   pallet = "fellowshipCore",
 ) {
   const [member, setMember] = useState(null);
+  useEffect(() => {
+    if (!address) {
+      setMember(null);
+    }
+  }, [address]);
+
   const { loading } = useSubStorage(
     pallet,
     "member",

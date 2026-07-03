@@ -3,6 +3,40 @@ import BarChart from "./barChart";
 import { startCase } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { getAbbreviateBigNumber } from "next-common/components/fellowship/statistics/common.js";
+import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+
+const amountFormat = {
+  decimalSeparator: ".",
+  groupSeparator: ",",
+  groupSize: 3,
+};
+
+function normalizeCycleAmount(value, cycle) {
+  const { decimals } = getSalaryAsset("fellowship", cycle.indexer?.blockHeight);
+  return new BigNumber(value || 0).shiftedBy(-decimals).toNumber();
+}
+
+function formatAxisAmount(value) {
+  const amount = new BigNumber(value || 0);
+  const abbreviations = [
+    { value: new BigNumber("1000000000000000"), suffix: "Q" },
+    { value: new BigNumber("1000000000000"), suffix: "T" },
+    { value: new BigNumber("1000000000"), suffix: "B" },
+    { value: new BigNumber("1000000"), suffix: "M" },
+    { value: new BigNumber("1000"), suffix: "K" },
+  ];
+  const abbreviation = abbreviations.find((item) =>
+    amount.isGreaterThanOrEqualTo(item.value),
+  );
+
+  if (!abbreviation) {
+    return amount.toFormat(2, amountFormat);
+  }
+
+  return `${amount.dividedBy(abbreviation.value).toFormat(2, amountFormat)}${
+    abbreviation.suffix
+  }`;
+}
 
 function getTooltipTitle(item) {
   const tooltipItem = item[0];
@@ -58,7 +92,9 @@ export default function CyclesChart({ values }) {
       categoryPercentage,
       barPercentage,
       label: "Registered Paid",
-      data: values.map((value) => value.registeredPaid),
+      data: values.map((value) =>
+        normalizeCycleAmount(value.registeredPaid, value),
+      ),
       backgroundColor: "rgba(230, 0, 122, 1)",
       tooltip: true,
     },
@@ -66,7 +102,9 @@ export default function CyclesChart({ values }) {
       categoryPercentage,
       barPercentage,
       label: "Unregistered Paid",
-      data: values.map((value) => value.unRegisteredPaid),
+      data: values.map((value) =>
+        normalizeCycleAmount(value.unRegisteredPaid, value),
+      ),
       backgroundColor: "rgba(230, 0, 122, 0.4)",
       tooltip: true,
     },
@@ -90,6 +128,13 @@ export default function CyclesChart({ values }) {
                 const currentDataset = values[item.dataIndex];
                 return getTooltipLabel(item, currentDataset);
               },
+            },
+          },
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback: formatAxisAmount,
             },
           },
         },

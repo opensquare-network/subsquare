@@ -10,7 +10,7 @@ import { useOnchainData } from "next-common/context/post";
  */
 export default function BountyCountDown() {
   const data = useOnchainData();
-  if (data.state?.state !== "PendingPayout") {
+  if (!data || data.state?.state !== "PendingPayout") {
     return null;
   }
 
