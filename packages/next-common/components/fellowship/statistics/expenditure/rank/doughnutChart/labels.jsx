@@ -1,5 +1,6 @@
 import { cn } from "next-common/utils";
 import { getPercentageValue } from "next-common/components/fellowship/statistics/common";
+import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
 import Tooltip from "next-common/components/tooltip";
 import BigNumber from "bignumber.js";
 
@@ -37,12 +38,13 @@ function formatUsdLabelAmount(value) {
 }
 
 function tooltipContent(salary) {
+  const value = normalizeSalaryAssetValue(salary);
   const parts = [];
-  if (new BigNumber(salary?.usdt || 0).gt(0)) {
-    parts.push(<div key="usdt">{formatUsdAmount(salary.usdt)} USDT</div>);
+  if (new BigNumber(value.usdt || 0).gt(0)) {
+    parts.push(<div key="usdt">{formatUsdAmount(value.usdt)} USDT</div>);
   }
-  if (new BigNumber(salary?.hollar || 0).gt(0)) {
-    parts.push(<div key="hollar">{formatUsdAmount(salary.hollar)} HOLLAR</div>);
+  if (new BigNumber(value.hollar || 0).gt(0)) {
+    parts.push(<div key="hollar">{formatUsdAmount(value.hollar)} HOLLAR</div>);
   }
   return parts.length > 0 ? parts : null;
 }

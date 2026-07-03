@@ -12,12 +12,13 @@ import {
   getUniqueRanks,
   useDoughnutChartOptions,
 } from "next-common/components/fellowship/statistics/common.js";
+import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
 
 function getTotalSalary(ranksData) {
   return ranksData.reduce((acc, item) => {
-    const s = item.salary || {};
+    const s = normalizeSalaryAssetValue(item.salary);
     const usdt = new BigNumber(s.usdt || 0);
     const hollar = new BigNumber(s.hollar || 0);
     return acc.plus(usdt).plus(hollar);
@@ -26,7 +27,7 @@ function getTotalSalary(ranksData) {
 
 function transformRanksDataToObject(ranksData) {
   return ranksData.reduce((acc, item) => {
-    const s = item.salary || {};
+    const s = normalizeSalaryAssetValue(item.salary);
     const usdt = new BigNumber(s.usdt || 0);
     const hollar = new BigNumber(s.hollar || 0);
     acc[item.rank] = usdt.plus(hollar);
