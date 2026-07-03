@@ -8,13 +8,11 @@ import { useState } from "react";
 import { useUpdateEffect } from "react-use";
 import ToggleOption from "next-common/components/toggleOption";
 import TreasurySpendStatusSelectField from "./treasurySpendStatusSelectField";
-import { usePendingSpendsFromContext } from "next-common/components/postList/treasurySpendsPostList/pendingContext";
 
 export default function TreasurySpendFilter() {
   const [committedFilter, setCommittedFilter] = useCommittedFilterState();
   const status = committedFilter?.status || "";
   const validOnly = committedFilter?.valid_only === "true";
-  const { claimable, loading } = usePendingSpendsFromContext();
 
   const [stateOpen, setStateOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -43,9 +41,6 @@ export default function TreasurySpendFilter() {
       status: value.status,
       valid_only: value.validOnly,
     };
-    if (filters.valid_only) {
-      filters.ids = claimable.join("_");
-    }
     setCommittedFilter(filters);
     setOpen(false);
   }
@@ -89,7 +84,6 @@ export default function TreasurySpendFilter() {
                   label="Valid only"
                   tooltip="Only show spends that can be claimed immediately"
                   isOn={value?.validOnly}
-                  isLoading={loading}
                   setIsOn={(isOn) => {
                     setValue?.((val) => ({
                       ...val,
