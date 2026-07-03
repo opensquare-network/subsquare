@@ -2,9 +2,10 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
+import { toPrecision } from "next-common/utils";
 
 export default function StatisticsMembershipSummaryItems({ summaryData }) {
-  const { symbol } = useSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset();
   if (!summaryData) {
     return null;
   }
@@ -21,11 +22,17 @@ export default function StatisticsMembershipSummaryItems({ summaryData }) {
     <SummaryLayout className="grid grid-cols-2 gap-4">
       <SummaryItem title="Promotion">{promotionTimes}</SummaryItem>
       <SummaryItem title="Total Active Salary">
-        <ValueDisplay value={totalActiveSalary} symbol={symbol} />
+        <ValueDisplay
+          value={toPrecision(totalActiveSalary, decimals)}
+          symbol={symbol}
+        />
       </SummaryItem>
       <SummaryItem title="Demotion ">{demotionTimes}</SummaryItem>
       <SummaryItem title="Total Passive Salary">
-        <ValueDisplay value={totalPassiveSalary} symbol={symbol} />
+        <ValueDisplay
+          value={toPrecision(totalPassiveSalary, decimals)}
+          symbol={symbol}
+        />
       </SummaryItem>
       <SummaryItem title="Retention">{retentionTimes}</SummaryItem>
     </SummaryLayout>
