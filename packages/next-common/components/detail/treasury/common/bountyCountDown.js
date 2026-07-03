@@ -10,12 +10,11 @@ import { useOnchainData } from "next-common/context/post";
  */
 export default function BountyCountDown() {
   const data = useOnchainData();
-  if (data.state?.state !== "PendingPayout") {
+  if (!data || data.state?.state !== "PendingPayout") {
     return null;
   }
 
-  const { meta: { status: { pendingPayout: { unlockAt } = {} } = {} } = {} } =
-    data;
+  const unlockAt = data.meta?.status?.pendingPayout?.unlockAt;
 
   const timeline = data.timeline ?? [];
   const awardedItem = [...timeline]
