@@ -1,82 +1,24 @@
 import { withCommonProps } from "next-common/lib";
-import { fetchList } from "next-common/services/list";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
-import ListLayout from "next-common/components/layout/ListLayout";
-import TreasurySpendsPostList from "next-common/components/postList/treasurySpendsPostList";
-import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
 import { TreasuryProvider } from "next-common/context/treasury";
-import { DropdownUrlFilterProvider } from "next-common/components/dropdownFilter/context";
-import { upperFirst } from "lodash-es";
-import businessCategory from "next-common/utils/consts/business/category";
-import TreasurySpendsSummary from "next-common/components/summary/treasurySpendsSummary";
-import TreasurySpendsPendingNotice from "next-common/components/treasury/spends/treasurySpendsPendingNotice";
-import { PapiProvider } from "next-common/context/papi";
-import { SelfContainedScheduledTreasurySpendPrompt } from "next-common/components/pages/components/scheduler/scheduledTreasurySpendPrompt";
-import { CACHE_KEY } from "next-common/utils/constants";
-import Link from "next-common/components/link";
+import PendingSpendsProvider from "next-common/components/treasury/spends/pendingContext";
+import TreasurySpendsPageContent from "next-common/components/treasury/spends/pageContent";
 
-function SummaryFooter() {
-  return (
-    <div className="flex flex-col gap-2">
-      <TreasurySpendsPendingNotice />
-      <PapiProvider>
-        <SelfContainedScheduledTreasurySpendPrompt
-          cacheKey={CACHE_KEY.scheduledTreasurySpendPromptOnSpendList}
-        >
-          <span>
-            , check{" "}
-            <Link className="underline" href="/scheduler">
-              here
-            </Link>
-          </span>
-        </SelfContainedScheduledTreasurySpendPrompt>
-      </PapiProvider>
-    </div>
-  );
-}
-
-export default function ProposalsPage({ spends: pagedSpends, chain }) {
-  const { items, total, page, pageSize } = pagedSpends;
-  const spends = (items || []).map((item) =>
-    normalizeTreasurySpendListItem(chain, item),
-  );
-  const category = businessCategory.treasurySpends;
-  const seoInfo = { title: category, desc: category };
-
+export default function ProposalsPage({ chain }) {
   return (
     <TreasuryProvider>
-      <ListLayout
-        seoInfo={seoInfo}
-        title={category}
-        summary={<TreasurySpendsSummary />}
-        summaryFooter={<SummaryFooter />}
-      >
-        <DropdownUrlFilterProvider
-          defaultFilterValues={{ status: "" }}
-          shallow={false}
-        >
-          <TreasurySpendsPostList
-            titleCount={total}
-            items={spends}
-            pagination={{ page, pageSize, total }}
-          />
-        </DropdownUrlFilterProvider>
-      </ListLayout>
+      <PendingSpendsProvider>
+        <TreasurySpendsPageContent chain={chain} />
+      </PendingSpendsProvider>
     </TreasuryProvider>
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { status } = context.query;
-  const query = status ? { status: upperFirst(status) } : {};
-  const [spends, tracksProps] = await Promise.all([
-    await fetchList("treasury/spends", context, query),
-    await fetchOpenGovTracksProps(),
-  ]);
+export const getServerSideProps = withCommonProps(async () => {
+  const tracksProps = await fetchOpenGovTracksProps();
 
   return {
     props: {
-      spends,
       ...tracksProps,
     },
   };
