@@ -3,6 +3,17 @@ import deepmerge from "deepmerge";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision, formatNum } from "next-common/utils";
 import Loading from "next-common/components/loading";
+import BigNumber from "bignumber.js";
+
+const amountFormat = {
+  decimalSeparator: ".",
+  groupSeparator: ",",
+  groupSize: 3,
+};
+
+function formatUsdAmount(value) {
+  return new BigNumber(value || 0).toFormat(2, amountFormat);
+}
 
 export const expenditureDoughnutChartOptions = {
   plugins: {
@@ -12,8 +23,7 @@ export const expenditureDoughnutChartOptions = {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
           const count = item.dataset.data[item.dataIndex];
-          const symbol = item.dataset.symbol?.[item.dataIndex];
-          return `${name}: ${formatNum(count)} ${symbol} (${percentage})`;
+          return `${name}: ${formatUsdAmount(count)} USD (${percentage})`;
         },
       },
     },

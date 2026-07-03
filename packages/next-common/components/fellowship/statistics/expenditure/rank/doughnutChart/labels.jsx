@@ -1,8 +1,53 @@
 import { cn } from "next-common/utils";
 import { getPercentageValue } from "next-common/components/fellowship/statistics/common";
-import SalaryAssetValues from "next-common/components/collectives/salaryAssetValues";
+import Tooltip from "next-common/components/tooltip";
+import BigNumber from "bignumber.js";
 
-function RowItem({ bgColor, label, percentage, salary }) {
+const amountFormat = {
+  decimalSeparator: ".",
+  groupSeparator: ",",
+  groupSize: 3,
+};
+
+function formatUsdAmount(value) {
+  return new BigNumber(value || 0).toFormat(2, amountFormat);
+}
+
+function formatUsdLabelAmount(value) {
+  const amount = new BigNumber(value || 0);
+  const abbreviations = [
+    { value: new BigNumber("1000000000000000"), suffix: "Q" },
+    { value: new BigNumber("1000000000000"), suffix: "T" },
+    { value: new BigNumber("1000000000"), suffix: "B" },
+    { value: new BigNumber("1000000"), suffix: "M" },
+    { value: new BigNumber("1000"), suffix: "K" },
+  ];
+
+  const abbreviation = abbreviations.find((item) =>
+    amount.isGreaterThanOrEqualTo(item.value),
+  );
+
+  if (!abbreviation) {
+    return amount.toFormat(2, amountFormat);
+  }
+
+  return `${amount.dividedBy(abbreviation.value).toFormat(2, amountFormat)}${
+    abbreviation.suffix
+  }`;
+}
+
+function tooltipContent(salary) {
+  const parts = [];
+  if (new BigNumber(salary?.usdt || 0).gt(0)) {
+    parts.push(<div key="usdt">{formatUsdAmount(salary.usdt)} USDT</div>);
+  }
+  if (new BigNumber(salary?.hollar || 0).gt(0)) {
+    parts.push(<div key="hollar">{formatUsdAmount(salary.hollar)} HOLLAR</div>);
+  }
+  return parts.length > 0 ? parts : null;
+}
+
+function RowItem({ bgColor, label, percentage, count }) {
   return (
     <div className="flex items-center gap-2">
       <span
@@ -10,12 +55,11 @@ function RowItem({ bgColor, label, percentage, salary }) {
         style={{ backgroundColor: bgColor }}
       />
       <span className="w-12 text-textSecondary text12Medium">{label}</span>
-      <div className="flex flex-col items-end ml-auto">
-        <SalaryAssetValues
-          salary={salary}
-          className="text12Medium text-textTertiary"
-        />
-      </div>
+      <Tooltip content={tooltipContent(count.salary)}>
+        <span className="text12Medium text-textTertiary ml-auto">
+          {formatUsdLabelAmount(count.count)} USD
+        </span>
+      </Tooltip>
       <span className="text12Medium text-textTertiary min-w-12 text-right">
         {percentage}
       </span>
@@ -32,7 +76,7 @@ export default function DoughnutChartLabels({ labelDataArr }) {
           label={i.label}
           bgColor={i.bgColor}
           percentage={getPercentageValue(i.percent)}
-          salary={i.salary}
+          count={{ count: i.count, salary: i.salary }}
         />
       ))}
     </div>
