@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import nextApi from "next-common/services/nextApi";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { upperFirst } from "lodash-es";
-import { usePendingSpendsFromContext } from "next-common/components/postList/treasurySpendsPostList/pendingContext";
+import { usePendingSpendsFromContext } from "next-common/components/treasury/spends/pendingContext";
 import { useEffect, useState } from "react";
 
 export default function useTreasurySpendsList() {

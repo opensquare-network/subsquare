@@ -3,7 +3,7 @@ import { colorStyle, PromptTypes } from "../../scrollPrompt";
 import { GreyPanel } from "../../styled/containers/greyPanel";
 import { CACHE_KEY } from "next-common/utils/constants";
 import usePromptVisibility from "next-common/hooks/usePromptVisibility";
-import { usePendingSpendsFromContext } from "next-common/components/postList/treasurySpendsPostList/pendingContext";
+import { usePendingSpendsFromContext } from "next-common/components/treasury/spends/pendingContext";
 
 function PendingNoticeContent({
   expiringSoonCount,
