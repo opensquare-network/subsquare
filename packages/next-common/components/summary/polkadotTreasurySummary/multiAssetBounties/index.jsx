@@ -13,7 +13,7 @@ export default function MultiAssetBounties() {
   const {
     multiAssetBountiesCount,
     multiAssetBountiesTotalByAsset: totalByAsset,
-    isMultiAssetBountiesLoading: isLoading,
+    isMultiAssetBountiesTotalByAssetLoading: isLoading,
   } = usePolkadotTreasury();
 
   const { symbol: chainSymbol } = useChainSettings();

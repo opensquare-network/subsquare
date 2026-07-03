@@ -77,12 +77,18 @@ function PolkadotTreasuryProviderInner({ children }) {
     isLoading: isMultiAssetBountiesLoading,
   } = useQueryMultiAssetsBounties(papi, checkPallet);
 
-  const { totalByAsset: multiAssetBountiesTotalByAsset } =
-    useMultiAssetsBountiesTotalBalance(
-      multiAssetBounties,
-      chainDecimals,
-      chainSymbol,
-    );
+  const {
+    totalByAsset: multiAssetBountiesTotalByAsset,
+    isLoading: isMultiAssetsBountiesTotalBalanceLoading,
+  } = useMultiAssetsBountiesTotalBalance(
+    multiAssetBounties,
+    papi,
+    chainDecimals,
+    chainSymbol,
+  );
+
+  const isMultiAssetBountiesTotalByAssetLoading =
+    isMultiAssetBountiesLoading || isMultiAssetsBountiesTotalBalanceLoading;
 
   return (
     <PolkadotTreasuryContext.Provider
@@ -122,7 +128,7 @@ function PolkadotTreasuryProviderInner({ children }) {
         // multi-asset bounties
         multiAssetBountiesCount,
         multiAssetBountiesTotalByAsset,
-        isMultiAssetBountiesLoading,
+        isMultiAssetBountiesTotalByAssetLoading,
       }}
     >
       {children}
