@@ -2,7 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import { backendApi } from "next-common/services/nextApi";
-import { getAssetInfoFromPapiAssetKind } from "next-common/utils/treasury/multiAssetBounty/papiAssetKind";
+import {
+  getAssetInfoFromPapiAssetKind,
+  extractPapiAssetId,
+} from "next-common/utils/treasury/multiAssetBounty/papiAssetKind";
 import { querySystemAccountBalanceWithPapi } from "next-common/utils/hooks/useAddressBalance";
 
 const MULTI_ASSET_BOUNTY_ACTIVE_STATUS_TYPES = [
@@ -15,37 +18,6 @@ function filterActiveMultiAssetBounties(items) {
   return items.filter((item) =>
     MULTI_ASSET_BOUNTY_ACTIVE_STATUS_TYPES.includes(item?.status?.type),
   );
-}
-
-function papiGetJunctions(interior) {
-  if (!interior) {
-    return null;
-  }
-  if (interior === "Here" || interior?.type === "Here") {
-    return [];
-  }
-  const { type, value } = interior;
-  if (!type || value == null) {
-    return null;
-  }
-  return Array.isArray(value) ? value : [value];
-}
-
-function extractPapiAssetId(papiAssetKind) {
-  if (!papiAssetKind) {
-    return null;
-  }
-  const inner = papiAssetKind?.value ?? papiAssetKind;
-  const { asset_id: assetId } = inner ?? {};
-  if (!assetId) {
-    return null;
-  }
-  const junctions = papiGetJunctions(assetId?.interior);
-  if (!junctions?.length) {
-    return null;
-  }
-  const generalIndex = junctions.find((j) => j?.type === "GeneralIndex")?.value;
-  return generalIndex != null ? Number(generalIndex) : null;
 }
 
 export function useQueryMultiAssetsBounties(papi, checkPallet) {
@@ -110,7 +82,7 @@ async function fetchSingleBountyBalance(
 
     if (address) {
       const assetId = extractPapiAssetId(bounty?.asset_kind);
-      if (assetId != null) {
+      if (!isNil(assetId)) {
         const account = await papi.query.Assets.Account.getValue(
           assetId,
           address,
@@ -119,14 +91,12 @@ async function fetchSingleBountyBalance(
       } else {
         balance = await querySystemAccountBalanceWithPapi(papi, address);
       }
-    } else {
-      balance = !isNil(bounty?.value) ? String(bounty.value) : "0";
     }
-  } catch {
-    balance = !isNil(bounty?.value) ? String(bounty.value) : "0";
+  } catch (e) {
+    console.error(`Error fetching balance for bounty index ${bountyIndex}:`, e);
   }
 
-  return { symbol, decimals, amount: balance };
+  return { symbol, decimals, amount: balance ?? "0" };
 }
 
 export function useMultiAssetsBountiesTotalBalance(
