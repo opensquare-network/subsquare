@@ -54,6 +54,23 @@ function papiGetSymbolFromAssetId(assetId) {
   return null;
 }
 
+export function extractPapiAssetId(papiAssetKind) {
+  if (!papiAssetKind) {
+    return null;
+  }
+  const inner = papiAssetKind?.value ?? papiAssetKind;
+  const { asset_id: assetId } = inner ?? {};
+  if (!assetId) {
+    return null;
+  }
+  const junctions = papiGetJunctions(assetId?.interior);
+  if (!junctions?.length) {
+    return null;
+  }
+  const generalIndex = junctions.find((j) => j?.type === "GeneralIndex")?.value;
+  return !isNil(generalIndex) ? Number(generalIndex) : null;
+}
+
 export function getAssetInfoFromPapiAssetKind(
   papiAssetKind,
   chainDecimals,
