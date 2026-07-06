@@ -10,18 +10,46 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Curator from "next-common/components/treasury/bounty/bountyCardSection/curator";
 import { useCurator } from "next-common/context/treasury/bounties";
+import { useChainSettings } from "next-common/context/chain";
+import { toPrecision } from "next-common/utils";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+import useAssetBalance from "next-common/hooks/treasury/useAssetBalance";
+import LoadableContent from "next-common/components/common/loadableContent";
+import { useMemo } from "react";
 import MultiAssetBountyCardHeaderLabel from "./cardHeaderLabel";
-import MultiAssetBountyCardValue from "./cardValue";
 import MultiAssetBountyCardChildBounties from "./cardChildBounties";
 
+function Balance({ item }) {
+  const { address, assetKind } = item?.onchainData ?? {};
+  const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
+
+  const assetInfo = useMemo(() => {
+    return getAssetInfoFromAssetKind(assetKind, chainDecimals, chainSymbol);
+  }, [assetKind, chainDecimals, chainSymbol]);
+
+  const { symbol, decimals } = assetInfo ?? {};
+  const { balance, loading } = useAssetBalance(address, assetInfo);
+
+  if (!address) return <span className="text12Medium">-</span>;
+
+  return (
+    <LoadableContent isLoading={loading}>
+      <ValueDisplay
+        value={toPrecision(balance ?? 0, decimals)}
+        symbol={symbol}
+      />
+    </LoadableContent>
+  );
+}
+
 function CardValueAndCurator({ item }) {
-  const { value, assetKind } = item?.onchainData ?? {};
   const curator = useCurator();
 
   return (
     <SummaryLayout className="mt-4 mb-3 flex">
-      <SummaryItem title="Value">
-        <MultiAssetBountyCardValue value={value} assetKind={assetKind} />
+      <SummaryItem title="Balance">
+        <Balance item={item} />
       </SummaryItem>
       <SummaryItem title="Curator">
         {curator ? <Curator /> : <span className="text12Medium">-</span>}
