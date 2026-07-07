@@ -4,6 +4,7 @@ import { startCase } from "lodash-es";
 import BigNumber from "bignumber.js";
 import { getAbbreviateBigNumber } from "next-common/components/fellowship/statistics/common.js";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 const amountFormat = {
   decimalSeparator: ".",
@@ -11,8 +12,8 @@ const amountFormat = {
   groupSize: 3,
 };
 
-function normalizeCycleAmount(value, cycle) {
-  const { decimals } = getSalaryAsset("fellowship", cycle.indexer?.blockHeight);
+function normalizeCycleAmount(value, cycle, section = "fellowship") {
+  const { decimals } = getSalaryAsset(section, cycle.indexer?.blockHeight);
   return new BigNumber(value || 0).shiftedBy(-decimals).toNumber();
 }
 
@@ -44,7 +45,7 @@ function getTooltipTitle(item) {
   return `Cycle ${label}`;
 }
 
-function getTooltipLabel(item, currentDataset) {
+function getTooltipLabel(item, currentDataset, section) {
   const { dataset, datasetIndex } = item;
   const {
     registeredPaidCount,
@@ -57,6 +58,7 @@ function getTooltipLabel(item, currentDataset) {
     new BigNumber(registeredPaid).plus(unRegisteredPaid),
     true,
     blockHeight,
+    section,
   );
   if (datasetIndex === 0) {
     return [
@@ -65,6 +67,7 @@ function getTooltipLabel(item, currentDataset) {
         registeredPaid,
         true,
         blockHeight,
+        section,
       )}`,
     ];
   }
@@ -74,6 +77,7 @@ function getTooltipLabel(item, currentDataset) {
         unRegisteredPaid,
         true,
         blockHeight,
+        section,
       )}`,
       `Registered Paid Count: ${registeredPaidCount}`,
       `Unregistered Paid Count: ${unRegisteredPaidCount}`,
@@ -82,6 +86,7 @@ function getTooltipLabel(item, currentDataset) {
 }
 
 export default function CyclesChart({ values }) {
+  const section = useCollectivesSection();
   const height = 180;
   const categoryPercentage = 0.6;
   const barPercentage = 1;
@@ -93,7 +98,7 @@ export default function CyclesChart({ values }) {
       barPercentage,
       label: "Registered Paid",
       data: values.map((value) =>
-        normalizeCycleAmount(value.registeredPaid, value),
+        normalizeCycleAmount(value.registeredPaid, value, section),
       ),
       backgroundColor: "rgba(230, 0, 122, 1)",
       tooltip: true,
@@ -103,7 +108,7 @@ export default function CyclesChart({ values }) {
       barPercentage,
       label: "Unregistered Paid",
       data: values.map((value) =>
-        normalizeCycleAmount(value.unRegisteredPaid, value),
+        normalizeCycleAmount(value.unRegisteredPaid, value, section),
       ),
       backgroundColor: "rgba(230, 0, 122, 0.4)",
       tooltip: true,
@@ -126,7 +131,7 @@ export default function CyclesChart({ values }) {
               title: getTooltipTitle,
               label: (item) => {
                 const currentDataset = values[item.dataIndex];
-                return getTooltipLabel(item, currentDataset);
+                return getTooltipLabel(item, currentDataset, section);
               },
             },
           },

@@ -4,6 +4,7 @@ import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision, formatNum } from "next-common/utils";
 import Loading from "next-common/components/loading";
 import BigNumber from "bignumber.js";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 const amountFormat = {
   decimalSeparator: ".",
@@ -83,8 +84,13 @@ export const doughnutChartColors = [
   "#E684B8",
 ];
 
-export function getAbbreviateBigNumber(count, showSymbol = true, blockHeight) {
-  const { symbol, decimals } = getSalaryAsset("fellowship", blockHeight);
+export function getAbbreviateBigNumber(
+  count,
+  showSymbol = true,
+  blockHeight,
+  section = "fellowship",
+) {
+  const { symbol, decimals } = getSalaryAsset(section, blockHeight);
   const precisionCount = toPrecision(count, decimals);
   return showSymbol
     ? `${formatNum(precisionCount)} ${symbol}`
@@ -93,6 +99,7 @@ export function getAbbreviateBigNumber(count, showSymbol = true, blockHeight) {
 
 export function useBarChartOptions(userOptions) {
   const theme = useTheme();
+  const section = useCollectivesSection();
   /**
    * @type {import("react-chartjs-2").ChartProps}
    */
@@ -147,7 +154,7 @@ export function useBarChartOptions(userOptions) {
         },
         ticks: {
           callback: function (value) {
-            return getAbbreviateBigNumber(value, false);
+            return getAbbreviateBigNumber(value, false, undefined, section);
           },
           font: {
             size: 12,

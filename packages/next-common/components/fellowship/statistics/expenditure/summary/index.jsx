@@ -5,14 +5,12 @@ import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
-function getTotalSpent(data) {
+function getTotalSpent(data, section = "fellowship") {
   if (data && data.length > 0) {
     const totalSpent = data.reduce((total, item) => {
-      const { decimals } = getSalaryAsset(
-        "fellowship",
-        item.indexer?.blockHeight,
-      );
+      const { decimals } = getSalaryAsset(section, item.indexer?.blockHeight);
       const registeredPaid = new BigNumber(item.registeredPaid || 0).div(
         10 ** decimals,
       );
@@ -31,7 +29,8 @@ function SpentCycles({ count }) {
 }
 
 function TotalSpent({ cycles }) {
-  const totalSpent = getTotalSpent(cycles);
+  const section = useCollectivesSection();
+  const totalSpent = getTotalSpent(cycles, section);
   const { symbol } = useSalaryAsset();
   return (
     <SummaryItem title="Total Spent">
