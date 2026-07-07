@@ -1,7 +1,6 @@
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision, formatNum, abbreviateBigNumber } from "next-common/utils";
+import { abbreviateBigNumber } from "next-common/utils";
 import Loading from "next-common/components/loading";
 
 export const expenditureDoughnutChartOptions = {
@@ -74,19 +73,6 @@ export const doughnutChartColors = [
   "#62D2C9",
   "#E684B8",
 ];
-
-export function getAbbreviateBigNumber(
-  count,
-  showSymbol = true,
-  blockHeight,
-  section = "fellowship",
-) {
-  const { symbol, decimals } = getSalaryAsset(section, blockHeight);
-  const precisionCount = toPrecision(count, decimals);
-  return showSymbol
-    ? `${formatNum(precisionCount)} ${symbol}`
-    : formatNum(precisionCount);
-}
 
 export function useBarChartOptions(userOptions) {
   const theme = useTheme();
