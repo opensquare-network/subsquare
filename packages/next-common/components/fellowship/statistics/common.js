@@ -3,7 +3,6 @@ import deepmerge from "deepmerge";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision, formatNum, abbreviateBigNumber } from "next-common/utils";
 import Loading from "next-common/components/loading";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export const expenditureDoughnutChartOptions = {
   plugins: {
@@ -91,7 +90,6 @@ export function getAbbreviateBigNumber(
 
 export function useBarChartOptions(userOptions) {
   const theme = useTheme();
-  const section = useCollectivesSection();
   /**
    * @type {import("react-chartjs-2").ChartProps}
    */
@@ -146,7 +144,7 @@ export function useBarChartOptions(userOptions) {
         },
         ticks: {
           callback: function (value) {
-            return getAbbreviateBigNumber(value, false, undefined, section);
+            return abbreviateBigNumber(value, 2);
           },
           font: {
             size: 12,

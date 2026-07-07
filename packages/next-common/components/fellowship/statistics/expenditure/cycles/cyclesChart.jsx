@@ -109,13 +109,6 @@ export default function CyclesChart({ values }) {
             },
           },
         },
-        scales: {
-          y: {
-            ticks: {
-              callback: (value) => abbreviateBigNumber(value, 2),
-            },
-          },
-        },
       }}
     />
   );
