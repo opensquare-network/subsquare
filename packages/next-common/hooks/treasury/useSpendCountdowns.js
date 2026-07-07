@@ -17,8 +17,7 @@ function getSpendIndex(storageKey) {
 }
 
 function isSpendCompleted(spend) {
-  const state = spend?.state?.toString?.() || spend?.status?.toString?.();
-  return ["Paid", "Processed"].includes(state);
+  return spend.status.isAttempted;
 }
 
 function getSpendCountdown(spend, chainHeight) {
