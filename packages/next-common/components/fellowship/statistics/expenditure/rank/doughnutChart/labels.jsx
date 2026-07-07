@@ -39,11 +39,11 @@ function RowItem({ bgColor, label, percentage, salary }) {
       <span className="w-12 text-textSecondary text12Medium">{label}</span>
       <Tooltip
         content={tooltipContent(salary)}
-        className="text12Medium text-textTertiary ml-auto"
+        className="text12Medium text-textTertiary"
       >
         <ValueDisplay value={salary.total} symbol="USD" showTooltip={false} />
       </Tooltip>
-      <span className="text12Medium text-textTertiary min-w-12 text-right">
+      <span className="ml-auto text12Medium text-textTertiary min-w-12 text-right">
         {percentage}
       </span>
     </div>

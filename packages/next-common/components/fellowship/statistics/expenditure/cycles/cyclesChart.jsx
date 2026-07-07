@@ -2,7 +2,7 @@ import React from "react";
 import BarChart from "./barChart";
 import { startCase } from "lodash-es";
 import BigNumber from "bignumber.js";
-import { getAbbreviateBigNumber } from "next-common/components/fellowship/statistics/common.js";
+import { abbreviateBigNumber } from "next-common/utils";
 import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
 
 const amountFormat = {
@@ -65,7 +65,7 @@ function getTooltipLabel(item, currentDataset) {
 
   const abbreviatedPaid = (value) => {
     if (value >= 1000) {
-      return getAbbreviateBigNumber(new BigNumber(value), false);
+      return abbreviateBigNumber(value, 2);
     }
     return value.toFixed(2);
   };
