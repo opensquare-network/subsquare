@@ -1,20 +1,9 @@
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision, formatNum } from "next-common/utils";
+import { toPrecision, formatNum, abbreviateBigNumber } from "next-common/utils";
 import Loading from "next-common/components/loading";
-import BigNumber from "bignumber.js";
 import { useCollectivesSection } from "next-common/context/collectives/collectives";
-
-const amountFormat = {
-  decimalSeparator: ".",
-  groupSeparator: ",",
-  groupSize: 3,
-};
-
-function formatUsdAmount(value) {
-  return new BigNumber(value || 0).toFormat(2, amountFormat);
-}
 
 export const expenditureDoughnutChartOptions = {
   plugins: {
@@ -24,7 +13,10 @@ export const expenditureDoughnutChartOptions = {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
           const count = item.dataset.data[item.dataIndex];
-          return `${name}: ${formatUsdAmount(count)} USD (${percentage})`;
+          return `${name}: ${abbreviateBigNumber(
+            count,
+            2,
+          )} USD (${percentage})`;
         },
       },
     },
