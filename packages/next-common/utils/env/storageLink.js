@@ -1,6 +1,5 @@
 export default function getStorageLink(cid) {
-  const endpoint =
-    process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT ||
-    "https://subsquare.infura-ipfs.io/ipfs";
+  const endpoint = process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT;
+
   return `${endpoint}/${cid}`;
 }
