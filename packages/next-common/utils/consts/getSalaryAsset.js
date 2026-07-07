@@ -2,7 +2,7 @@
 // Each section has its own independent switch timeline.
 // Proposal #568: Fellowship switches from USDT(6) to HOLLAR(18) at block 9,247,655.
 const SWITCH_POINTS = {
-  fellowship: [{ blockHeight: 9247655, symbol: "HOLLAR", decimals: 18 }],
+  fellowship: [{ blockHeight: 8815655, symbol: "HOLLAR", decimals: 18 }],
   ambassador: [],
   secretary: [],
 };

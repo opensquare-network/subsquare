@@ -3,14 +3,16 @@ import { FellowshipFeedEventLabel } from "next-common/components/fellowship/feed
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export default function FellowshipSalaryPaidFeed({
   feed = {},
   showUserInfo = true,
 }) {
+  const section = useCollectivesSection();
   const { args: { who, amount } = {} } = feed || {};
   const { symbol, decimals } = getSalaryAsset(
-    "fellowship",
+    section,
     feed?.indexer?.blockHeight,
   );
 

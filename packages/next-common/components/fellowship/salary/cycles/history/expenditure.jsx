@@ -4,10 +4,12 @@ import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPercentage, toPrecision } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 import bigAdd from "next-common/utils/math/bigAdd";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 
 export default function FellowshipSalaryExpenditure({ cycle = {} }) {
+  const section = useCollectivesSection();
   const { symbol, decimals } = getSalaryAsset(
-    "fellowship",
+    section,
     cycle?.indexer?.blockHeight,
   );
 
