@@ -13,10 +13,7 @@ import {
   FellowshipPromotionPeriodWithProgress,
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
-import {
-  useCollectivesContext,
-  useCollectivesSection,
-} from "next-common/context/collectives/collectives";
+import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import Period from "next-common/components/fellowship/params/period";
 
 export function AddressCol({ address }) {
@@ -28,7 +25,7 @@ export default function CollectivesMemberTable({
   members = [],
   isAllLoaded = true,
 }) {
-  const { params = {} } = useCollectivesContext();
+  const { params = {}, section } = useCollectivesContext();
   const {
     activeSalary = [],
     passiveSalary = [],
@@ -37,7 +34,6 @@ export default function CollectivesMemberTable({
     offboardTimeout,
   } = params ?? {};
   const { symbol, decimals } = useSalaryAsset();
-  const section = useCollectivesSection();
 
   const isLoading = isNil(members) || !isAllLoaded;
 
