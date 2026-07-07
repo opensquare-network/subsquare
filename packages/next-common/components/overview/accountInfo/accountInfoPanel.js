@@ -27,7 +27,7 @@ import { IconButton } from "next-common/components/styled/iconButton";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Avatar from "next-common/components/avatar";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 import AccountPanelJudgementScrollPrompt from "./components/accountPanelJudgementScrollPrompt";
@@ -64,7 +64,7 @@ const DisplayUserAvatar = () => {
     return <Avatar address={user?.proxyAddress} size={40} />;
   }
   if (user?.avatarCid) {
-    return <AvatarImg src={getIpfsLink(user?.avatarCid)} size={40} />;
+    return <AvatarImg src={getStorageLink(user?.avatarCid)} size={40} />;
   }
   if (user?.address) {
     return <Avatar address={user?.address} size={40} />;

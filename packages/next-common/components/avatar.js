@@ -8,7 +8,7 @@ import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useAddressAvatarMap } from "next-common/context/avatar";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { AvatarImg } from "./user/styled";
 import { SystemAvatarDefault } from "@osn/icons/subsquare";
 import { cssSize } from "next-common/utils/cssUtils";
@@ -46,7 +46,7 @@ export default function Avatar({ address, size = "24px" }) {
   const [avatarCid] = useAvatarInfo(address);
 
   if (avatarCid) {
-    return <AvatarImg src={getIpfsLink(avatarCid)} size={size} />;
+    return <AvatarImg src={getStorageLink(avatarCid)} size={size} />;
   }
 
   const maybeEvmAddress = tryConvertToEvmAddress(address);

@@ -1,9 +1,13 @@
 import ExternalLink from "../externalLink";
-import getIpfsLink from "../../utils/env/ipfsEndpoint";
+import getStorageLink from "../../utils/env/storageLink";
 
 export default function IpfsLink({ cid }) {
   return (
-    <ExternalLink className="text12Medium" title={cid} href={getIpfsLink(cid)}>
+    <ExternalLink
+      className="text12Medium"
+      title={cid}
+      href={getStorageLink(cid)}
+    >
       IPFS
     </ExternalLink>
   );

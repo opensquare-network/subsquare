@@ -4,7 +4,7 @@ import styled from "styled-components";
 import EditorWrapper from "./editorWrapper";
 import dynamic from "next/dynamic";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { useUploadToS3 } from "next-common/hooks/useUploadToS3";
 import { cn } from "next-common/utils";
 import { SystemLoading } from "@osn/icons/subsquare";
 import { createGlobalState, useEvent } from "react-use";
@@ -38,7 +38,7 @@ function Editor(props, ref) {
   );
   const [, setEditorUploading] = useEditorUploading();
   const [dragging, setDragging] = useState(false);
-  const { uploading, upload } = useUploadToIpfs();
+  const { uploading, upload } = useUploadToS3();
   const inputRef = useRef();
   const [isPreview, setIsPreview] = useState(false);
   const textAreaRef = useRef(null);

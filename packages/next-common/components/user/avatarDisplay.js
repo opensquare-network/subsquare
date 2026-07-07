@@ -1,11 +1,11 @@
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import Avatar from "../avatar";
 import Gravatar from "../gravatar";
 import { AvatarImg } from "./styled";
 
 export const AvatarDisplay = ({ address, emailMd5, avatarCid, size }) => {
   return avatarCid ? (
-    <AvatarImg src={getIpfsLink(avatarCid)} size={size} />
+    <AvatarImg src={getStorageLink(avatarCid)} size={size} />
   ) : address ? (
     <Avatar address={address} size={size} />
   ) : (

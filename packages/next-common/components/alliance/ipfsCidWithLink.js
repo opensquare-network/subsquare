@@ -1,10 +1,12 @@
 import React from "react";
 import ExternalLink from "../externalLink";
-import getIpfsLink from "../../utils/env/ipfsEndpoint";
+import getStorageLink from "../../utils/env/storageLink";
 
 export default function IpfsCidWithLink({ cid }) {
-  const text = `${ cid.slice(0, 4) }...${ cid.slice(-4) }`;
-  return <ExternalLink
-    title={ cid }
-    href={ getIpfsLink(cid) }>{ text }</ExternalLink>;
+  const text = `${cid.slice(0, 4)}...${cid.slice(-4)}`;
+  return (
+    <ExternalLink title={cid} href={getStorageLink(cid)}>
+      {text}
+    </ExternalLink>
+  );
 }

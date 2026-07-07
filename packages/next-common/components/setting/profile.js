@@ -8,7 +8,7 @@ import Copyable from "../copyable";
 import { SystemEdit2 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { useUser } from "next-common/context/user";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
@@ -108,7 +108,7 @@ function ProfileAvatar({ address }) {
               /* eslint-disable-next-line */
               <img
                 className="rounded-full w-[80px] h-[80px] border border-neutral400"
-                src={imageDataUrl || getIpfsLink(user.avatarCid)}
+                src={imageDataUrl || getStorageLink(user.avatarCid)}
                 alt=""
               />
             ) : (

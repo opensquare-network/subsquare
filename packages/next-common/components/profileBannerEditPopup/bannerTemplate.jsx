@@ -1,6 +1,6 @@
 import { cn } from "next-common/utils";
 import { SystemSuccess } from "@osn/icons/subsquare";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 
 const templateCids = [
   "QmQG5pui8T7bMTZQe9x2Xp44gtr3SXK6mGbzuCcV9Q2k6y",
@@ -19,7 +19,7 @@ export default function BannerTemplate({ templateCid, onSelect }) {
       </h5>
       <div className="flex gap-1 flex-wrap w-full">
         {templateCids.map((cid) => {
-          const url = getIpfsLink(cid);
+          const url = getStorageLink(cid);
           return (
             <div
               key={cid}

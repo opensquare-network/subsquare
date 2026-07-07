@@ -6,7 +6,7 @@ import { AddressUser } from "next-common/components/user";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { EditAvatar as EditBanner } from "next-common/components/setting/profile";
 import { useEffect, useState } from "react";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import { cn } from "next-common/utils";
 import { useProfileBannerUrl } from "../profile/header";
@@ -78,7 +78,7 @@ export default function ProfileBannerEditPopupContent({ closePopup = noop }) {
       <div className="flex flex-col items-center gap-y-4">
         <h5 className="text14Bold text-textPrimary self-start">Banner</h5>
         {imageDataUrl || bannerCid ? (
-          <BannerContent src={imageDataUrl || getIpfsLink(bannerCid)} />
+          <BannerContent src={imageDataUrl || getStorageLink(bannerCid)} />
         ) : (
           <BannerContent />
         )}
