@@ -2,19 +2,14 @@ import AddressUser from "next-common/components/user/addressUser";
 import { FellowshipFeedEventLabel } from "next-common/components/fellowship/feeds/label";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 export default function FellowshipSalaryPaidFeed({
   feed = {},
   showUserInfo = true,
 }) {
-  const section = useCollectivesSection();
   const { args: { who, amount } = {} } = feed || {};
-  const { symbol, decimals } = getSalaryAsset(
-    section,
-    feed?.indexer?.blockHeight,
-  );
+  const { symbol, decimals } = useSalaryAsset(feed?.indexer?.blockHeight);
 
   return (
     <>

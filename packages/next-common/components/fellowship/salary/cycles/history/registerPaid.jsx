@@ -1,12 +1,10 @@
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { toPrecision } from "next-common/utils";
-import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 function RegisterPaid({ count, paid, type = "", blockHeight }) {
-  const section = useCollectivesSection();
-  const { symbol, decimals } = getSalaryAsset(section, blockHeight);
+  const { symbol, decimals } = useSalaryAsset(blockHeight);
 
   return (
     <div className="max-sm:text-right">

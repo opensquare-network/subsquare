@@ -1,18 +1,18 @@
 import AddressUser from "next-common/components/user/addressUser";
 import { FellowshipFeedEventLabel } from "next-common/components/fellowship/feeds/label";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import Link from "next-common/components/link";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 export function FellowshipRegisteredFeedContent({
   amount,
   index,
   blockHeight,
 }) {
-  const { section } = useCollectivesContext();
-  const { symbol, decimals } = getSalaryAsset(section, blockHeight);
+  const section = useCollectivesSection();
+  const { symbol, decimals } = useSalaryAsset(blockHeight);
 
   return (
     <>
