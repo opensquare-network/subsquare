@@ -5,37 +5,9 @@ import BigNumber from "bignumber.js";
 import { abbreviateBigNumber } from "next-common/utils";
 import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
 
-const amountFormat = {
-  decimalSeparator: ".",
-  groupSeparator: ",",
-  groupSize: 3,
-};
-
 function getCycleTotal(value) {
   const v = normalizeSalaryAssetValue(value);
   return new BigNumber(v.usdt || 0).plus(v.hollar || 0).toNumber();
-}
-
-function formatAxisAmount(value) {
-  const amount = new BigNumber(value || 0);
-  const abbreviations = [
-    { value: new BigNumber("1000000000000000"), suffix: "Q" },
-    { value: new BigNumber("1000000000000"), suffix: "T" },
-    { value: new BigNumber("1000000000"), suffix: "B" },
-    { value: new BigNumber("1000000"), suffix: "M" },
-    { value: new BigNumber("1000"), suffix: "K" },
-  ];
-  const abbreviation = abbreviations.find((item) =>
-    amount.isGreaterThanOrEqualTo(item.value),
-  );
-
-  if (!abbreviation) {
-    return amount.toFormat(2, amountFormat);
-  }
-
-  return `${amount.dividedBy(abbreviation.value).toFormat(2, amountFormat)}${
-    abbreviation.suffix
-  }`;
 }
 
 function getTooltipTitle(item) {
@@ -140,7 +112,7 @@ export default function CyclesChart({ values }) {
         scales: {
           y: {
             ticks: {
-              callback: formatAxisAmount,
+              callback: (value) => abbreviateBigNumber(value, 2),
             },
           },
         },
