@@ -55,23 +55,25 @@ function handleLabelDataArr(members, ranksData) {
   const ranksDataObj = transformRanksDataToObject(ranksData);
   return rankArr
     .map((rank, index) => {
-      const count = ranksDataObj[rank] || new BigNumber(0);
+      const totalAmount = ranksDataObj[rank] || new BigNumber(0);
       const usdtAmount = ranksDataObj[`${rank}_usdt`] || new BigNumber(0);
       const hollarAmount = ranksDataObj[`${rank}_hollar`] || new BigNumber(0);
       const percent =
-        totalSalary.gt(0) && count.gt(0) ? count.div(totalSalary) : "";
+        totalSalary.gt(0) && totalAmount.gt(0)
+          ? totalAmount.div(totalSalary)
+          : "";
       return {
         label: `Rank ${rank}`,
         bgColor: colors[index],
-        count: count.toNumber(),
         salary: {
           usdt: usdtAmount.toString(),
           hollar: hollarAmount.toString(),
+          total: totalAmount.toNumber(),
         },
         percent,
       };
     })
-    .filter((item) => item.count > 0)
+    .filter((item) => item.salary.total > 0)
     .reverse();
 }
 
@@ -130,7 +132,7 @@ export default function RankDoughnutChart({ members = [] }) {
     labels: labelDataArr.map((i) => i.label),
     datasets: [
       {
-        data: labelDataArr.map((item) => item.count),
+        data: labelDataArr.map((item) => item.salary.total),
         backgroundColor: labelDataArr.map((item) => item.bgColor),
         borderColor: labelDataArr.map((item) => item.bgColor),
         borderWidth: 0,

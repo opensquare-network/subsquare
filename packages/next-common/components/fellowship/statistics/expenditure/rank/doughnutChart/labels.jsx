@@ -1,55 +1,37 @@
 import { cn } from "next-common/utils";
 import { getPercentageValue } from "next-common/components/fellowship/statistics/common";
 import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
+import ValueDisplay from "next-common/components/valueDisplay";
 import Tooltip from "next-common/components/tooltip";
 import BigNumber from "bignumber.js";
-
-const amountFormat = {
-  decimalSeparator: ".",
-  groupSeparator: ",",
-  groupSize: 3,
-};
-
-function formatUsdAmount(value) {
-  return new BigNumber(value || 0).toFormat(2, amountFormat);
-}
-
-function formatUsdLabelAmount(value) {
-  const amount = new BigNumber(value || 0);
-  const abbreviations = [
-    { value: new BigNumber("1000000000000000"), suffix: "Q" },
-    { value: new BigNumber("1000000000000"), suffix: "T" },
-    { value: new BigNumber("1000000000"), suffix: "B" },
-    { value: new BigNumber("1000000"), suffix: "M" },
-    { value: new BigNumber("1000"), suffix: "K" },
-  ];
-
-  const abbreviation = abbreviations.find((item) =>
-    amount.isGreaterThanOrEqualTo(item.value),
-  );
-
-  if (!abbreviation) {
-    return amount.toFormat(2, amountFormat);
-  }
-
-  return `${amount.dividedBy(abbreviation.value).toFormat(2, amountFormat)}${
-    abbreviation.suffix
-  }`;
-}
 
 function tooltipContent(salary) {
   const value = normalizeSalaryAssetValue(salary);
   const parts = [];
   if (new BigNumber(value.usdt || 0).gt(0)) {
-    parts.push(<div key="usdt">{formatUsdAmount(value.usdt)} USDT</div>);
+    parts.push(
+      <ValueDisplay
+        key="usdt"
+        value={value.usdt}
+        symbol="USDT"
+        showTooltip={false}
+      />,
+    );
   }
   if (new BigNumber(value.hollar || 0).gt(0)) {
-    parts.push(<div key="hollar">{formatUsdAmount(value.hollar)} HOLLAR</div>);
+    parts.push(
+      <ValueDisplay
+        key="hollar"
+        value={value.hollar}
+        symbol="HOLLAR"
+        showTooltip={false}
+      />,
+    );
   }
   return parts.length > 0 ? parts : null;
 }
 
-function RowItem({ bgColor, label, percentage, count }) {
+function RowItem({ bgColor, label, percentage, salary }) {
   return (
     <div className="flex items-center gap-2">
       <span
@@ -57,10 +39,11 @@ function RowItem({ bgColor, label, percentage, count }) {
         style={{ backgroundColor: bgColor }}
       />
       <span className="w-12 text-textSecondary text12Medium">{label}</span>
-      <Tooltip content={tooltipContent(count.salary)}>
-        <span className="text12Medium text-textTertiary ml-auto">
-          {formatUsdLabelAmount(count.count)} USD
-        </span>
+      <Tooltip
+        content={tooltipContent(salary)}
+        className="text12Medium text-textTertiary ml-auto"
+      >
+        <ValueDisplay value={salary.total} symbol="USD" showTooltip={false} />
       </Tooltip>
       <span className="text12Medium text-textTertiary min-w-12 text-right">
         {percentage}
@@ -78,7 +61,7 @@ export default function DoughnutChartLabels({ labelDataArr }) {
           label={i.label}
           bgColor={i.bgColor}
           percentage={getPercentageValue(i.percent)}
-          count={{ count: i.count, salary: i.salary }}
+          salary={i.salary}
         />
       ))}
     </div>
