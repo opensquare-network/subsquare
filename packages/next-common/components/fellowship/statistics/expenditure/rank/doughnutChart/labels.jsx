@@ -10,22 +10,20 @@ function tooltipContent(salary) {
   const parts = [];
   if (new BigNumber(value.usdt || 0).gt(0)) {
     parts.push(
-      <ValueDisplay
-        key="usdt"
-        value={value.usdt}
-        symbol="USDT"
-        showTooltip={false}
-      />,
+      <div key="usdt">
+        <ValueDisplay value={value.usdt} symbol="USDT" showTooltip={false} />
+      </div>,
     );
   }
   if (new BigNumber(value.hollar || 0).gt(0)) {
     parts.push(
-      <ValueDisplay
-        key="hollar"
-        value={value.hollar}
-        symbol="HOLLAR"
-        showTooltip={false}
-      />,
+      <div key="hollar">
+        <ValueDisplay
+          value={value.hollar}
+          symbol="HOLLAR"
+          showTooltip={false}
+        />
+      </div>,
     );
   }
   return parts.length > 0 ? parts : null;
