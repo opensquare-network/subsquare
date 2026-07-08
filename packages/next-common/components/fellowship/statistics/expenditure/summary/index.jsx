@@ -64,11 +64,7 @@ function TotalSpent({ cycles }) {
   return (
     <SummaryItem title="Total Spent">
       <Tooltip content={tooltipContent({ usdt, hollar })}>
-        <ValueDisplay
-          value={total.toString()}
-          symbol="USD"
-          showTooltip={false}
-        />
+        <ValueDisplay value={total.toString()} prefix="$" showTooltip={false} />
       </Tooltip>
     </SummaryItem>
   );

@@ -47,8 +47,8 @@ function getTooltipLabel(item, currentDataset) {
       .plus(registeredTotal.hollar || 0)
       .toNumber();
     return [
-      `Total: ${abbreviatedPaid(totalPaid)} USD`,
-      `${dataset.label}: ${abbreviatedPaid(registeredTotalNum)} USD`,
+      `Total: $${abbreviatedPaid(totalPaid)}`,
+      `${dataset.label}: $${abbreviatedPaid(registeredTotalNum)}`,
     ];
   }
   if (datasetIndex === 1) {
@@ -56,7 +56,7 @@ function getTooltipLabel(item, currentDataset) {
       .plus(unRegisteredTotal.hollar || 0)
       .toNumber();
     return [
-      `${dataset.label}: ${abbreviatedPaid(unRegisteredTotalNum)} USD`,
+      `${dataset.label}: $${abbreviatedPaid(unRegisteredTotalNum)}`,
       `Registered Paid Count: ${registeredPaidCount}`,
       `Unregistered Paid Count: ${unRegisteredPaidCount}`,
     ];

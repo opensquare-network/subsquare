@@ -11,10 +11,7 @@ export const expenditureDoughnutChartOptions = {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
           const count = item.dataset.data[item.dataIndex];
-          return `${name}: ${abbreviateBigNumber(
-            count,
-            2,
-          )} USD (${percentage})`;
+          return `${name}: $${abbreviateBigNumber(count, 2)} (${percentage})`;
         },
       },
     },
