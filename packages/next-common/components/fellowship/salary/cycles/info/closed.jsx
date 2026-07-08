@@ -29,7 +29,10 @@ export default function FellowshipSalaryCycleDetailInfoClosed({ cycle = {} }) {
       <hr className="my-4" />
 
       <SummaryLayout>
-        <SalaryStatsBudgetItem budget={budget} />
+        <SalaryStatsBudgetItem
+          budget={budget}
+          blockHeight={cycle?.indexer?.blockHeight}
+        />
         <SalaryStatsRegistrationItem cycleData={cycle} />
         <SalaryStatsUnregisteredItem cycleData={cycle} />
         <SalaryStatsTotalDurationSummaryItem cycleData={cycle} />

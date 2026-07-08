@@ -32,7 +32,7 @@ const columns = [
 ];
 
 function SalaryCell({ rank }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = getSalaryAsset("secretary");
   const salary = getSecretaryMemberSalary(rank);
   return <ValueDisplay value={toPrecision(salary, decimals)} symbol={symbol} />;
 }

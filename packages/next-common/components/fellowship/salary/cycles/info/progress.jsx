@@ -1,6 +1,6 @@
 import MultiProgress from "next-common/components/progress/multiProgress";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 import { cn, toPercentage, toPrecision } from "next-common/utils";
 
 const registreredPaidColor = "var(--theme500)";
@@ -8,7 +8,7 @@ const unRegisteredPaidColor = "var(--theme300)";
 const bg = "var(--theme100)";
 
 export default function FellowshipCycleProgress({ cycle }) {
-  const { registeredPaid, unRegisteredPaid } = cycle;
+  const { indexer, registeredPaid, unRegisteredPaid } = cycle;
   const { budget } = cycle.status;
 
   const registeredPaidPercentage = toPercentage(registeredPaid / budget, 2);
@@ -50,19 +50,21 @@ export default function FellowshipCycleProgress({ cycle }) {
           color={registreredPaidColor}
           label="Registered Paid"
           value={registeredPaid}
+          blockHeight={indexer?.blockHeight}
         />
         <PaidLabel
           color={unRegisteredPaidColor}
           label="Unregistered Paid"
           value={unRegisteredPaid}
+          blockHeight={indexer?.blockHeight}
         />
       </div>
     </div>
   );
 }
 
-function PaidLabel({ value, label = "", color = "" }) {
-  const { decimals, symbol } = getSalaryAsset();
+function PaidLabel({ value, label = "", color = "", blockHeight }) {
+  const { decimals, symbol } = useSalaryAsset(blockHeight);
 
   return (
     <div className="flex items-center gap-x-2 text12Medium">

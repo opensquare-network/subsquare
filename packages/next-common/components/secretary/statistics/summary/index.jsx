@@ -13,7 +13,8 @@ import {
 } from "next-common/components/secretary/statistics/breakdown";
 
 function TotalSpent({ cycles, paymentReferenda }) {
-  const { decimals: salaryDecimals } = getSalaryAsset();
+  const { decimals: salaryDecimals, symbol: salarySymbol } =
+    getSalaryAsset("secretary");
   const cyclesTotal = getCyclesTotal(cycles);
   const referendaTotal = getReferendaTotal(paymentReferenda);
   const referendaUsd = getReferendaUsd(paymentReferenda);
@@ -22,7 +23,11 @@ function TotalSpent({ cycles, paymentReferenda }) {
   const usdTotal = formatNum(cyclesUsd.plus(referendaUsd).toFixed(2));
 
   const rows = [
-    { value: cyclesTotal.toString(), decimals: salaryDecimals, symbol: "USDT" },
+    {
+      value: cyclesTotal.toString(),
+      decimals: salaryDecimals,
+      symbol: salarySymbol,
+    },
   ];
 
   if (referendaTotal.gt(0)) {

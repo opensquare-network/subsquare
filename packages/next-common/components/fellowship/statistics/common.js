@@ -1,7 +1,6 @@
 import { useTheme } from "styled-components";
 import deepmerge from "deepmerge";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision, formatNum } from "next-common/utils";
+import { abbreviateBigNumber } from "next-common/utils";
 import Loading from "next-common/components/loading";
 
 export const expenditureDoughnutChartOptions = {
@@ -12,7 +11,7 @@ export const expenditureDoughnutChartOptions = {
           const name = item.dataset.name[item.dataIndex];
           const percentage = item.dataset.percentage[item.dataIndex];
           const count = item.dataset.data[item.dataIndex];
-          return `${name}: ${getAbbreviateBigNumber(count)} (${percentage})`;
+          return `${name}: $${abbreviateBigNumber(count, 2)} (${percentage})`;
         },
       },
     },
@@ -72,14 +71,6 @@ export const doughnutChartColors = [
   "#E684B8",
 ];
 
-export function getAbbreviateBigNumber(count, showSymbol = true) {
-  const { symbol, decimals } = getSalaryAsset();
-  const precisionCount = toPrecision(count, decimals);
-  return showSymbol
-    ? `${formatNum(precisionCount)} ${symbol}`
-    : formatNum(precisionCount);
-}
-
 export function useBarChartOptions(userOptions) {
   const theme = useTheme();
   /**
@@ -136,7 +127,7 @@ export function useBarChartOptions(userOptions) {
         },
         ticks: {
           callback: function (value) {
-            return getAbbreviateBigNumber(value, false);
+            return abbreviateBigNumber(value, 2);
           },
           font: {
             size: 12,

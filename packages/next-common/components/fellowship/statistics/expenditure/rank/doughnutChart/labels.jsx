@@ -1,27 +1,49 @@
 import { cn } from "next-common/utils";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
-import { toPrecision } from "next-common/utils";
 import { getPercentageValue } from "next-common/components/fellowship/statistics/common";
+import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
+import ValueDisplay from "next-common/components/valueDisplay";
+import Tooltip from "next-common/components/tooltip";
+import BigNumber from "bignumber.js";
 
-function getSalaryValue(count, decimals, symbol) {
-  return count ? (
-    <ValueDisplay value={toPrecision(count, decimals)} symbol={symbol} />
-  ) : (
-    `0 ${symbol}`
-  );
+function tooltipContent(salary) {
+  const value = normalizeSalaryAssetValue(salary);
+  const parts = [];
+  if (new BigNumber(value.usdt || 0).gt(0)) {
+    parts.push(
+      <div key="usdt">
+        <ValueDisplay value={value.usdt} symbol="USDT" showTooltip={false} />
+      </div>,
+    );
+  }
+  if (new BigNumber(value.hollar || 0).gt(0)) {
+    parts.push(
+      <div key="hollar">
+        <ValueDisplay
+          value={value.hollar}
+          symbol="HOLLAR"
+          showTooltip={false}
+        />
+      </div>,
+    );
+  }
+  return parts.length > 0 ? parts : null;
 }
 
-function RowItem({ bgColor, label, percentage, count }) {
+function RowItem({ bgColor, label, percentage, salary }) {
   return (
     <div className="flex items-center gap-2">
       <span
-        className={cn("w-[12px] h-[12px] rounded-[2px]")}
+        className={cn("w-3 h-3 rounded-xs shrink-0")}
         style={{ backgroundColor: bgColor }}
       />
-      <span className="w-[48px] text-textSecondary text12Medium ">{label}</span>
-      <span className="text12Medium text-textTertiary">{count}</span>
-      <span className="ml-auto text12Medium text-textTertiary">
+      <span className="w-12 text-textSecondary text12Medium">{label}</span>
+      <Tooltip
+        content={tooltipContent(salary)}
+        className="text12Medium text-textTertiary"
+      >
+        <ValueDisplay prefix="$" value={salary.total} showTooltip={false} />
+      </Tooltip>
+      <span className="ml-auto text12Medium text-textTertiary min-w-12 text-right">
         {percentage}
       </span>
     </div>
@@ -29,18 +51,15 @@ function RowItem({ bgColor, label, percentage, count }) {
 }
 
 export default function DoughnutChartLabels({ labelDataArr }) {
-  const { symbol, decimals } = getSalaryAsset();
   return (
-    <div className="flex flex-col gap-2 flex-grow min-w-[220px]">
+    <div className="flex flex-col gap-2 grow min-w-55">
       {labelDataArr.map((i) => (
         <RowItem
           key={i.label}
           label={i.label}
           bgColor={i.bgColor}
           percentage={getPercentageValue(i.percent)}
-          count={getSalaryValue(i.count, decimals, symbol)}
-          symbol={symbol}
-          decimals={decimals}
+          salary={i.salary}
         />
       ))}
     </div>

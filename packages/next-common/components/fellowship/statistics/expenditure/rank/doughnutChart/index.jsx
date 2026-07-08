@@ -12,39 +12,69 @@ import {
   getUniqueRanks,
   useDoughnutChartOptions,
 } from "next-common/components/fellowship/statistics/common.js";
+import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
 import DoughnutChartLabels from "./labels";
 import { useNavCollapsed } from "next-common/context/nav";
 
 function getTotalSalary(ranksData) {
   return ranksData.reduce((acc, item) => {
-    return acc.plus(new BigNumber(item.salary));
+    const s = normalizeSalaryAssetValue(item.salary);
+    const usdt = new BigNumber(s.usdt || 0);
+    const hollar = new BigNumber(s.hollar || 0);
+    return acc.plus(usdt).plus(hollar);
   }, new BigNumber(0));
 }
 
 function transformRanksDataToObject(ranksData) {
   return ranksData.reduce((acc, item) => {
-    acc[item.rank] = new BigNumber(item.salary);
+    const s = normalizeSalaryAssetValue(item.salary);
+    const usdt = new BigNumber(s.usdt || 0);
+    const hollar = new BigNumber(s.hollar || 0);
+    acc[item.rank] = usdt.plus(hollar);
+    acc[`${item.rank}_usdt`] = usdt;
+    acc[`${item.rank}_hollar`] = hollar;
     return acc;
   }, {});
 }
 
+function getRankArr(members, ranksData) {
+  const memberRanks = getUniqueRanks(members || []);
+  if (memberRanks.length > 0) {
+    return memberRanks;
+  }
+
+  return ranksData
+    .map((item) => item.rank)
+    .filter((rank) => rank !== undefined && rank !== null)
+    .sort((a, b) => a - b);
+}
+
 function handleLabelDataArr(members, ranksData) {
-  const rankArr = getUniqueRanks(members);
+  const rankArr = getRankArr(members, ranksData);
   const totalSalary = getTotalSalary(ranksData);
   const ranksDataObj = transformRanksDataToObject(ranksData);
-  const dataArr = rankArr.map((rank, index) => {
-    const count = ranksDataObj[rank] || 0;
-    const percent = ranksDataObj[rank]
-      ? new BigNumber(ranksDataObj[rank]).div(totalSalary)
-      : "";
-    return {
-      label: `Rank ${rank}`,
-      bgColor: colors[index],
-      count,
-      percent,
-    };
-  });
-  return dataArr.reverse();
+  return rankArr
+    .map((rank, index) => {
+      const totalAmount = ranksDataObj[rank] || new BigNumber(0);
+      const usdtAmount = ranksDataObj[`${rank}_usdt`] || new BigNumber(0);
+      const hollarAmount = ranksDataObj[`${rank}_hollar`] || new BigNumber(0);
+      const percent =
+        totalSalary.gt(0) && totalAmount.gt(0)
+          ? totalAmount.div(totalSalary)
+          : "";
+      return {
+        label: `Rank ${rank}`,
+        bgColor: colors[index],
+        salary: {
+          usdt: usdtAmount.toString(),
+          hollar: hollarAmount.toString(),
+          total: totalAmount.toNumber(),
+        },
+        percent,
+      };
+    })
+    .filter((item) => item.salary.total > 0)
+    .reverse();
 }
 
 function RankChart({ labelDataArr, data }) {
@@ -63,7 +93,7 @@ function RankChart({ labelDataArr, data }) {
         <Doughnut
           data={data}
           options={options}
-          className="w-[200px] h-[200px] relative"
+          className="w-50 h-50 relative"
         />
       </div>
     </div>
@@ -102,13 +132,13 @@ export default function RankDoughnutChart({ members = [] }) {
     labels: labelDataArr.map((i) => i.label),
     datasets: [
       {
-        data: labelDataArr.map((item) => item.count),
+        data: labelDataArr.map((item) => item.salary.total),
         backgroundColor: labelDataArr.map((item) => item.bgColor),
         borderColor: labelDataArr.map((item) => item.bgColor),
         borderWidth: 0,
         name: labelDataArr.map((i) => i.label),
-        percentage: labelDataArr.map(
-          (item) => `${(item.percent * 100).toFixed(2)}%`,
+        percentage: labelDataArr.map((item) =>
+          item.percent ? `${item.percent.times(100).toFixed(2)}%` : "0%",
         ),
       },
     ],

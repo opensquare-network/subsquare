@@ -3,7 +3,7 @@ import Descriptions from "next-common/components/Descriptions";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { cn, toPrecision } from "next-common/utils";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 const subColumns = [
   {
@@ -101,7 +101,7 @@ function BeneficiaryValue({ data }) {
 }
 
 function AmountValue({ data }) {
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals, symbol } = useSalaryAsset(data?.paidIndexer?.blockHeight);
 
   return (
     <ValueDisplay value={toPrecision(data?.amount, decimals)} symbol={symbol} />

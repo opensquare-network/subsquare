@@ -55,9 +55,9 @@ export default function ValueDisplay({
         {symbolContent}
       </span>
     );
-    tooltipContent = `${bigValue.toFixed()}${
-      symbol ? " " + symbol : ""
-    } ${tooltipOtherContent}`;
+    tooltipContent = `${bigValue.toFixed()}${symbol ? " " + symbol : ""} ${
+      tooltipOtherContent || ""
+    }`;
   } else if (
     Number(value) >= 100000 ||
     getEffectiveNumbers(value)?.length >= 11

@@ -5,7 +5,6 @@ import { has, isNil } from "lodash-es";
 import AddressUser from "next-common/components/user/addressUser";
 import FellowshipSalaryMemberIsRegistered from "./isRegistered";
 import Link from "next-common/components/link";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
@@ -18,9 +17,10 @@ import Tooltip from "next-common/components/tooltip";
 import { isSameAddress } from "next-common/utils";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { SystemVoteAbstain } from "@osn/icons/subsquare";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 function SalaryCellTooltip({ isActive, rank, params, children }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset();
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
 
   const activeRankSalary = getRankSalary(activeSalary, rank);
@@ -54,7 +54,7 @@ function SalaryCellTooltip({ isActive, rank, params, children }) {
 }
 
 function ClaimantAmountCell({ claimant }) {
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset();
   const status = claimant?.status?.status || {};
   const registered = has(status, "registered")
     ? status?.registered
@@ -72,7 +72,7 @@ function ClaimantSalaryCell({ claimant, member, params }) {
   const isActive = member?.status?.isActive;
   const rank = claimant?.rank;
 
-  const { symbol, decimals } = getSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset();
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
 
   const activeRankSalary = getRankSalary(activeSalary, rank);

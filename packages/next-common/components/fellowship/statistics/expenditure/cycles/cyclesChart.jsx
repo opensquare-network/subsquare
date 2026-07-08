@@ -2,7 +2,13 @@ import React from "react";
 import BarChart from "./barChart";
 import { startCase } from "lodash-es";
 import BigNumber from "bignumber.js";
-import { getAbbreviateBigNumber } from "next-common/components/fellowship/statistics/common.js";
+import { abbreviateBigNumber } from "next-common/utils";
+import { normalizeSalaryAssetValue } from "next-common/components/collectives/salaryAssetValues";
+
+function getCycleTotal(value) {
+  const v = normalizeSalaryAssetValue(value);
+  return new BigNumber(v.usdt || 0).plus(v.hollar || 0).toNumber();
+}
 
 function getTooltipTitle(item) {
   const tooltipItem = item[0];
@@ -18,18 +24,39 @@ function getTooltipLabel(item, currentDataset) {
     registeredPaid,
     unRegisteredPaid,
   } = currentDataset;
-  const totalPaid = getAbbreviateBigNumber(
-    new BigNumber(registeredPaid).plus(unRegisteredPaid),
+
+  const registeredTotal = normalizeSalaryAssetValue(registeredPaid);
+  const unRegisteredTotal = normalizeSalaryAssetValue(unRegisteredPaid);
+  const totalUsdt = new BigNumber(registeredTotal.usdt || 0).plus(
+    unRegisteredTotal.usdt || 0,
   );
+  const totalHollar = new BigNumber(registeredTotal.hollar || 0).plus(
+    unRegisteredTotal.hollar || 0,
+  );
+  const totalPaid = totalUsdt.plus(totalHollar).toNumber();
+
+  const abbreviatedPaid = (value) => {
+    if (value >= 1000) {
+      return abbreviateBigNumber(value, 2);
+    }
+    return value.toFixed(2);
+  };
+
   if (datasetIndex === 0) {
+    const registeredTotalNum = new BigNumber(registeredTotal.usdt || 0)
+      .plus(registeredTotal.hollar || 0)
+      .toNumber();
     return [
-      `Total: ${totalPaid}`,
-      `${dataset.label}: ${getAbbreviateBigNumber(registeredPaid)}`,
+      `Total: $${abbreviatedPaid(totalPaid)}`,
+      `${dataset.label}: $${abbreviatedPaid(registeredTotalNum)}`,
     ];
   }
   if (datasetIndex === 1) {
+    const unRegisteredTotalNum = new BigNumber(unRegisteredTotal.usdt || 0)
+      .plus(unRegisteredTotal.hollar || 0)
+      .toNumber();
     return [
-      `${dataset.label}: ${getAbbreviateBigNumber(unRegisteredPaid)}`,
+      `${dataset.label}: $${abbreviatedPaid(unRegisteredTotalNum)}`,
       `Registered Paid Count: ${registeredPaidCount}`,
       `Unregistered Paid Count: ${unRegisteredPaidCount}`,
     ];
@@ -47,7 +74,7 @@ export default function CyclesChart({ values }) {
       categoryPercentage,
       barPercentage,
       label: "Registered Paid",
-      data: values.map((value) => value.registeredPaid),
+      data: values.map((value) => getCycleTotal(value.registeredPaid)),
       backgroundColor: "rgba(230, 0, 122, 1)",
       tooltip: true,
     },
@@ -55,7 +82,7 @@ export default function CyclesChart({ values }) {
       categoryPercentage,
       barPercentage,
       label: "Unregistered Paid",
-      data: values.map((value) => value.unRegisteredPaid),
+      data: values.map((value) => getCycleTotal(value.unRegisteredPaid)),
       backgroundColor: "rgba(230, 0, 122, 0.4)",
       tooltip: true,
     },

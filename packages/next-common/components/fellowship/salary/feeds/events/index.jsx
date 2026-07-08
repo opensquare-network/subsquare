@@ -23,6 +23,7 @@ export function getFellowshipSalaryFeedsEventContent(
         amount={feed?.args?.amount}
         index={feed?.index}
         showUserInfo={showUserInfo}
+        blockHeight={feed?.indexer?.blockHeight}
       />
     ),
     CycleStarted: <FellowshipCycleStartedFeed index={feed?.index} />,

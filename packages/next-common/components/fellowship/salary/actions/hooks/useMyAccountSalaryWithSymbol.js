@@ -1,4 +1,4 @@
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import { isSameAddress } from "next-common/utils";
@@ -26,7 +26,7 @@ export function useMySalary() {
 
 export function useMyAccountSalaryWithSymbol() {
   const salaryValue = useMySalary() ?? 0;
-  const { decimals, symbol } = getSalaryAsset();
+  const { decimals, symbol } = useSalaryAsset();
 
   return {
     value: salaryValue,
