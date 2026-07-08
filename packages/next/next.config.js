@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const config = {
-  transpilePackages: ["next-common", "@osn/icons", "@osn/react-cmdk"],
+  transpilePackages: [
+    "next-common",
+    "@osn/icons",
+    "@osn/react-cmdk",
+    "@exodus/bytes",
+  ],
   modularizeImports: {
     "@osn/icons/subsquare": {
       transform: "@osn/icons/subsquare/{{member}}",
