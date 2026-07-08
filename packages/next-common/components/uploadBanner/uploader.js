@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import DeleteIcon from "next-common/assets/imgs/icons/delete.svg";
 import UploadIcon from "next-common/assets/imgs/icons/upload.svg";
 import { getBannerUrl } from "../../utils/banner";
-import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { useUploadToS3 } from "next-common/hooks/useUploadToS3";
 
 const Wrapper = styled.div`
   position: relative;
@@ -96,7 +96,7 @@ function Uploader({ disabled = false, imageCid, onSetImageCid = () => {} }) {
   const inputEl = useRef();
   const [dragging, setDragging] = useState(false);
   const [currentBanner, setCurrentBanner] = useState(imageCid || null);
-  const { uploading, upload } = useUploadToIpfs();
+  const { uploading, upload } = useUploadToS3();
 
   const handleSelectFile = () => {
     inputEl.current?.click();

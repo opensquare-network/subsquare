@@ -2,7 +2,7 @@ import { LinkIpfs } from "@osn/icons/subsquare";
 import Tooltip from "next-common/components/tooltip";
 import { cn, isHash } from "next-common/utils";
 import ExternalLink from "next-common/components/externalLink";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import React from "react";
 
 function EvidenceExternalLinkWithWish({
@@ -25,7 +25,7 @@ function EvidenceExternalLinkWithWish({
             <span className="p-0 pl-4 h-full flex items-center">
               <Tooltip content="IPFS Link" className="w-5 h-5">
                 <ExternalLink
-                  href={getIpfsLink(cid)}
+                  href={getStorageLink(cid)}
                   externalIcon={false}
                   className="text-textTertiary hover:text-textSecondary"
                 >

@@ -1,7 +1,7 @@
 import { LinkIpfs, LinkSubsquare } from "@osn/icons/subsquare";
 import ExternalLink from "next-common/components/externalLink";
 import { NeutralPanel } from "next-common/components/styled/containers/neutralPanel";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import dayjs from "dayjs";
 import NoData from "next-common/components/noData";
 import { useNavCollapsed } from "next-common/context/nav";
@@ -66,7 +66,7 @@ const EvidenceItem = ({ row, popupTitle = "" }) => {
           <SubSquareLinks referenda={row?.referenda || []} />
           {isHash(row.hex) && (
             <ExternalLink
-              href={getIpfsLink(row.cid)}
+              href={getStorageLink(row.cid)}
               externalIcon={false}
               className="text-textTertiary hover:text-textSecondary"
             >

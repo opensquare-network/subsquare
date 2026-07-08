@@ -10,7 +10,7 @@ import { useAvatarPermissionsContext } from "next-common/components/profile/head
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState, useMemo } from "react";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { useProfileUserInfoContext } from "next-common/components/profile/header/context/profileUserInfoContext";
 import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 
@@ -36,7 +36,7 @@ export function useProfileBannerUrl() {
       return defaultBannerUrl;
     }
 
-    return getIpfsLink(user.bannerCid);
+    return getStorageLink(user.bannerCid);
   }, [defaultBannerUrl, user]);
 
   return bannerUrl;

@@ -1,4 +1,4 @@
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { useAsync } from "react-use";
 
 const REQUEST_TIMEOUT = 30000; // 30s
@@ -11,7 +11,7 @@ export function useIpfsContent(cid) {
       }, REQUEST_TIMEOUT);
     });
 
-    const fetchPromise = fetch(getIpfsLink(cid)).then((resp) => {
+    const fetchPromise = fetch(getStorageLink(cid)).then((resp) => {
       if (resp.ok) {
         return resp.text();
       } else {

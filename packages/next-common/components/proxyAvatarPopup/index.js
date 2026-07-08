@@ -3,7 +3,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import Avatar from "next-common/components/avatar";
 import PrimaryButton from "next-common/lib/button/primary";
 import { addressEllipsis, cn } from "next-common/utils";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { useMyProxied } from "next-common/context/proxy";
 import AddressAvatar from "../user/addressAvatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
@@ -85,7 +85,7 @@ function ProfileAvatar({ address }) {
               /* eslint-disable-next-line */
               <img
                 className="rounded-full w-[80px] h-[80px] border border-neutral400"
-                src={imageDataUrl || getIpfsLink(proxyUser.avatarCid)}
+                src={imageDataUrl || getStorageLink(proxyUser.avatarCid)}
                 alt=""
               />
             ) : (

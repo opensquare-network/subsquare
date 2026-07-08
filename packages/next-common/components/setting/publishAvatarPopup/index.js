@@ -1,5 +1,5 @@
 // import CheckSimaSpec from "next-common/components/checkSimaSpec";
-import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { useUploadToS3 } from "next-common/hooks/useUploadToS3";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -22,7 +22,7 @@ import { noop } from "lodash-es";
 
 export function useAvatarSubmission(imageFile, proxyAddress) {
   const dispatch = useDispatch();
-  const { uploading, upload } = useUploadToIpfs();
+  const { uploading, upload } = useUploadToS3();
   const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
   const signerAccount = useSignerAccount();
@@ -33,7 +33,7 @@ export function useAvatarSubmission(imageFile, proxyAddress) {
       const { error: uploadError, result: uploadResult } = await upload(
         imageFile,
         {
-          errorMessage: "Failed to upload image to IPFS",
+          errorMessage: "Failed to upload image",
         },
       );
       if (uploadError) {

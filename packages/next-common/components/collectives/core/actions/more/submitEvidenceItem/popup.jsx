@@ -10,7 +10,7 @@ import PopupLabel from "next-common/components/popup/label";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
-import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { useUploadToS3 } from "next-common/hooks/useUploadToS3";
 import { cn } from "next-common/utils";
 import { useCallback, useEffect, useState } from "react";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
@@ -55,7 +55,7 @@ function Content() {
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
   const [wish, setWish] = useState("retention");
-  const { uploading, upload } = useUploadToIpfs();
+  const { uploading, upload } = useUploadToS3();
   const api = useContextApi();
   const pallet = useCoreFellowshipPallet();
 
@@ -93,7 +93,7 @@ function Content() {
         type: "text/plain",
       }),
       {
-        errorMessage: "Failed to upload evidence to IPFS",
+        errorMessage: "Failed to upload evidence",
       },
     );
     if (error) {
@@ -164,7 +164,7 @@ function Content() {
 
       <TxSubmissionButton
         title="Save & Publish"
-        loadingText={uploading ? "Uploading to IPFS..." : "Submitting..."}
+        loadingText={uploading ? "Uploading..." : "Submitting..."}
         loading={uploading}
         getTxFunc={getTxFunc}
       />

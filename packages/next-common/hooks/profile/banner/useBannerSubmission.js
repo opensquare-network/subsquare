@@ -8,7 +8,7 @@ import nextApi from "next-common/services/nextApi";
 import { useSignMessage } from "next-common/hooks/useSignMessage";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { getRealField } from "next-common/sima/actions/common";
-import { useUploadToIpfs } from "next-common/hooks/useUploadToIpfs";
+import { useUploadToS3 } from "next-common/hooks/useUploadToS3";
 
 export default function useBannerSubmission(
   imageFile,
@@ -19,7 +19,7 @@ export default function useBannerSubmission(
   const [isLoading, setIsLoading] = useState(false);
   const signMessage = useSignMessage();
   const signerAccount = useSignerAccount();
-  const { uploading, upload } = useUploadToIpfs();
+  const { uploading, upload } = useUploadToS3();
 
   const getCid = useCallback(async () => {
     if (templateCid) {
@@ -29,7 +29,7 @@ export default function useBannerSubmission(
     const { error: uploadError, result: uploadResult } = await upload(
       imageFile,
       {
-        errorMessage: "Failed to upload image to IPFS",
+        errorMessage: "Failed to upload image",
       },
     );
     if (uploadError) {

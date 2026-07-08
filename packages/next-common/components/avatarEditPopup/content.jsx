@@ -7,7 +7,7 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 import { EditAvatar } from "next-common/components/setting/profile";
 import { useEffect, useState } from "react";
 import { useAvatarSubmission } from "next-common/components/setting/publishAvatarPopup";
-import getIpfsLink from "next-common/utils/env/ipfsEndpoint";
+import getStorageLink from "next-common/utils/env/storageLink";
 import { AvatarImg } from "next-common/components/user/styled";
 import useAvatarInfo from "next-common/hooks/useAvatarInfo";
 import { useAvatarUnset } from "next-common/components/setting/unsetAvatarPopup";
@@ -70,7 +70,7 @@ export default function AvatarEditPopupContent({ closePopup = noop }) {
         {imageDataUrl || avatarCid ? (
           <AvatarImg
             className="w-24 h-24"
-            src={imageDataUrl || getIpfsLink(avatarCid)}
+            src={imageDataUrl || getStorageLink(avatarCid)}
             size={96}
           />
         ) : (
