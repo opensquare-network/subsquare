@@ -81,8 +81,30 @@ export function useFellowshipSalaryClaimants() {
     }
   }, [claimants, fetch]);
 
+  // Merge: take the freshest data from chain, but enrich with cycleIndexer from server data.
+  // Server data may be stale (missing current cycle claimants), but has cycleIndexer.
+  // Chain data is always current but lacks cycleIndexer.
+  const merged = (() => {
+    const source = claimants || claimantsFromServer;
+    const serverByAddress = {};
+    if (claimantsFromServer) {
+      for (const c of claimantsFromServer) {
+        if (c.address) serverByAddress[c.address] = c;
+      }
+    }
+    return source?.map((claimant) => {
+      const server = claimant.address
+        ? serverByAddress[claimant.address]
+        : null;
+      if (server?.cycleIndexer && !claimant.cycleIndexer) {
+        return { ...claimant, cycleIndexer: server.cycleIndexer };
+      }
+      return claimant;
+    });
+  })();
+
   const sortedClaimants = orderBy(
-    (claimants || claimantsFromServer)?.map?.((claimant) => {
+    merged?.map?.((claimant) => {
       const address = claimant?.address;
       const member = find(members, { address });
       const rank = member?.rank;

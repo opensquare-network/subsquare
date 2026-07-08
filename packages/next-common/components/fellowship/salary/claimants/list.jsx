@@ -19,8 +19,8 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import { SystemVoteAbstain } from "@osn/icons/subsquare";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
-function SalaryCellTooltip({ isActive, rank, params, children }) {
-  const { symbol, decimals } = useSalaryAsset();
+function SalaryCellTooltip({ isActive, rank, params, children, cycleIndexer }) {
+  const { symbol, decimals } = useSalaryAsset(cycleIndexer?.blockHeight);
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
 
   const activeRankSalary = getRankSalary(activeSalary, rank);
@@ -54,7 +54,9 @@ function SalaryCellTooltip({ isActive, rank, params, children }) {
 }
 
 function ClaimantAmountCell({ claimant }) {
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset(
+    claimant?.cycleIndexer?.blockHeight,
+  );
   const status = claimant?.status?.status || {};
   const registered = has(status, "registered")
     ? status?.registered
@@ -72,7 +74,9 @@ function ClaimantSalaryCell({ claimant, member, params }) {
   const isActive = member?.status?.isActive;
   const rank = claimant?.rank;
 
-  const { symbol, decimals } = useSalaryAsset();
+  const { symbol, decimals } = useSalaryAsset(
+    claimant?.cycleIndexer?.blockHeight,
+  );
   const { activeSalary = [], passiveSalary = [] } = params ?? {};
 
   const activeRankSalary = getRankSalary(activeSalary, rank);
@@ -123,6 +127,7 @@ export default function FellowshipSalaryClaimantsList({
         isActive={member?.status?.isActive}
         rank={claimant.rank}
         params={params}
+        cycleIndexer={claimant.cycleIndexer}
       >
         <ClaimantSalaryCell
           claimant={claimant}
