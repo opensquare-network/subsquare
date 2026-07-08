@@ -11,7 +11,7 @@ export function useFellowshipSalaryCycleYearlySalaryColumn() {
     cellRender(data) {
       const { decimals, symbol } = getSalaryAsset(
         section,
-        data?.paidIndexer?.blockHeight,
+        data?.paidIndexer?.blockHeight ?? data?.indexer?.blockHeight,
       );
       return (
         <ValueDisplay
