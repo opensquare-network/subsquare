@@ -1,4 +1,7 @@
-const cloudflareIpfsEndpoint = "https://cloudflare-ipfs.com/ipfs";
+const ipfsEndpoints = [
+  "https://cloudflare-ipfs.com/ipfs",
+  "https://subsquare.infura-ipfs.io/ipfs",
+];
 
 export default function correctionIpfsEndpointPlugin() {
   const endpoint = process.env.NEXT_PUBLIC_PREVIEW_IMG_ENDPOINT;
@@ -12,12 +15,12 @@ export default function correctionIpfsEndpointPlugin() {
     name: pluginName,
     onRenderedHtml: (el) => {
       el?.querySelectorAll("img")?.forEach((img) => {
-        if (
-          img?.src &&
-          img?.src?.startsWith(cloudflareIpfsEndpoint) &&
-          endpoint
-        ) {
-          img.src = img.src.replace(cloudflareIpfsEndpoint, endpoint);
+        const sourceEndpoint = ipfsEndpoints.find((source) =>
+          img?.src?.startsWith(source),
+        );
+
+        if (sourceEndpoint) {
+          img.src = img.src.replace(sourceEndpoint, endpoint);
         }
       });
     },
