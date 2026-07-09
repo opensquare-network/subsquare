@@ -4,13 +4,12 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import Link from "next-common/components/link";
 import { cn } from "next-common/utils";
-import normalizeChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeChildBountyListItem";
 import { childBountyColumnsDef } from "./columns";
 import { useAsync } from "react-use";
-import { backendApi } from "next-common/services/nextApi";
 import ItemsList from "./itemsList";
 import { usePost } from "next-common/context/post";
 import { AddressUser } from "next-common/components/user";
+import { useChildBountiesFetcher } from "./context";
 
 export function PostTitle({ url, index, title, noLink, className }) {
   return (
@@ -30,38 +29,12 @@ export function PostTitle({ url, index, title, noLink, className }) {
 export default function PopupContent({ data, proposalOwner, role }) {
   const post = usePost();
   const parentBountyId = post.bountyIndex;
+  const fetchChildBounties = useChildBountiesFetcher();
 
   const { value: childBounties, loading: childBountiesLoading } =
     useAsync(async () => {
-      if (!data?.childBounties?.length) {
-        return [];
-      }
-      const { result } = await backendApi.fetch(
-        "treasury/child-bounties?simple=true&" +
-          data.childBounties
-            .map(
-              (item) =>
-                "ids=" + `${parentBountyId}_${item.index}_${item.blockHeight}`,
-            )
-            .join("&"),
-      );
-      if (!result) {
-        return [];
-      }
-      return result.map((item) => {
-        const payout =
-          data?.childBounties?.find((payout) => payout.index === item.index) ||
-          {};
-        const normalizedChildBounty = normalizeChildBountyListItem(
-          process.env.NEXT_PUBLIC_CHAIN,
-          item,
-        );
-        return {
-          ...normalizedChildBounty,
-          ...payout,
-        };
-      });
-    }, [data, parentBountyId]);
+      return fetchChildBounties(data, parentBountyId);
+    }, [data, parentBountyId, fetchChildBounties]);
 
   return (
     <>

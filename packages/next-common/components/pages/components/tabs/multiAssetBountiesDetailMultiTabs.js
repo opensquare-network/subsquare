@@ -8,6 +8,9 @@ import useMultiAssetBountyTimelineData from "next-common/components/pages/compon
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import BountyStatistics from "next-common/components/pages/components/bounty/bountyStatistics";
+import ChildBountiesContext, {
+  fetchMultiAssetChildBounties,
+} from "next-common/components/pages/components/bounty/bountyStatistics/proposalsPopup/context";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/multiAssetBounty/metadata"),
@@ -68,7 +71,11 @@ export default function MultiAssetBountiesDetailMultiTabs() {
       statistics && {
         value: "statistics",
         label: "Statistics",
-        content: <BountyStatistics />,
+        content: (
+          <ChildBountiesContext.Provider value={fetchMultiAssetChildBounties}>
+            <BountyStatistics />
+          </ChildBountiesContext.Provider>
+        ),
       },
     ].filter(Boolean);
 
