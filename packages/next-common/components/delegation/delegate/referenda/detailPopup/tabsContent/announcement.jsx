@@ -1,4 +1,5 @@
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 export default function ReferendaDelegateeDetailPopupAnnouncement({
   delegate,
@@ -39,8 +40,12 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
       markedOptions={{
         breaks: true,
       }}
+      plugins={[correctionIpfsEndpointPlugin()]}
     />
   ) : (
-    <HtmlPreviewer content={content} />
+    <HtmlPreviewer
+      content={content}
+      plugins={[correctionIpfsEndpointPlugin()]}
+    />
   );
 }

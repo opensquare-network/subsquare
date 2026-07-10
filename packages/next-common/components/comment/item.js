@@ -20,6 +20,7 @@ import { getRealField } from "next-common/sima/actions/common";
 import useIsCommentProxyAuthor from "next-common/hooks/useIsCommentProxyAuthor";
 import { useRootCommentContext, useRootCommentData } from "./rootComment";
 import { SubsquareCommentSource } from "./commentSource";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 function useIsShouldUseSimaCommentEdit() {
   const comment = useComment();
@@ -114,6 +115,7 @@ function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
                   content={comment.content || ""}
                   plugins={[
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                    correctionIpfsEndpointPlugin(),
                   ]}
                   markedOptions={{
                     breaks: true,
@@ -127,6 +129,7 @@ function CommentItemImpl({ isSecondLevel, scrollToTopLevelCommentBottom }) {
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
                       targetElement: { tag: "span" },
                     }),
+                    correctionIpfsEndpointPlugin(),
                   ]}
                 />
               )}

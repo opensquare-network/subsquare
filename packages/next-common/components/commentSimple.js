@@ -17,6 +17,7 @@ import { hashEllipsis, textEllipsis } from "next-common/utils";
 import { isNil } from "lodash-es";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import { getChildBountyIndex } from "next-common/utils/viewfuncs/treasury/childBounty";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 const Wrapper = styled(HoverSecondaryCard)`
   display: flex;
@@ -270,6 +271,7 @@ export default function CommentSimple({ data }) {
                   content={data.content || ""}
                   plugins={[
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                    correctionIpfsEndpointPlugin(),
                   ]}
                   maxLines={2}
                   markedOptions={{
@@ -284,6 +286,7 @@ export default function CommentSimple({ data }) {
                     renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
                       targetElement: { tag: "span" },
                     }),
+                    correctionIpfsEndpointPlugin(),
                   ]}
                   maxLines={2}
                 />

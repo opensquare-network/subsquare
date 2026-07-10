@@ -8,6 +8,7 @@ import {
 } from "@osn/previewer";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 function AppendItem({ index, data }) {
   return (
@@ -23,7 +24,10 @@ function AppendItem({ index, data }) {
           {data.contentType === "markdown" && (
             <MarkdownPreviewer
               content={data.content || ""}
-              plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
+              plugins={[
+                renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+                correctionIpfsEndpointPlugin(),
+              ]}
               markedOptions={{
                 breaks: true,
               }}
@@ -36,6 +40,7 @@ function AppendItem({ index, data }) {
                 renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
                   targetElement: { tag: "span" },
                 }),
+                correctionIpfsEndpointPlugin(),
               ]}
             />
           )}

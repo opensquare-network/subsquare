@@ -12,6 +12,7 @@ import { SystemActivity } from "@osn/icons/subsquare";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import Tooltip from "next-common/components/tooltip";
 import useIsAppendantAuthor from "../useIsAppendantAuthor";
+import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
 
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
@@ -62,7 +63,10 @@ function Content({ data }) {
         {data.contentType === "markdown" && (
           <MarkdownPreviewer
             content={data.content || ""}
-            plugins={[renderMentionIdentityUserPlugin(<IdentityOrAddr />)]}
+            plugins={[
+              renderMentionIdentityUserPlugin(<IdentityOrAddr />),
+              correctionIpfsEndpointPlugin(),
+            ]}
             markedOptions={{
               breaks: true,
             }}
@@ -75,6 +79,7 @@ function Content({ data }) {
               renderMentionIdentityUserPlugin(<IdentityOrAddr />, {
                 targetElement: { tag: "span" },
               }),
+              correctionIpfsEndpointPlugin(),
             ]}
           />
         )}
