@@ -8,6 +8,9 @@ import useBountyTimelineData from "next-common/components/pages/components/bount
 import { useTimelineTabSwitch } from "next-common/hooks/useTabSwitch";
 import tabsTooltipContentMap from "./tabsTooltipContentMap";
 import BountyStatistics from "next-common/components/pages/components/bounty/bountyStatistics";
+import ChildBountiesContext, {
+  fetchBountyChildBounties,
+} from "next-common/components/pages/components/bounty/bountyStatistics/proposalsPopup/context";
 
 const Metadata = dynamicClientOnly(() =>
   import("next-common/components/treasury/bounty/metadata"),
@@ -63,7 +66,11 @@ export default function TreasuryBountiesDetailMultiTabs() {
       statistics && {
         value: "statistics",
         label: "Statistics",
-        content: <BountyStatistics />,
+        content: (
+          <ChildBountiesContext.Provider value={fetchBountyChildBounties}>
+            <BountyStatistics />
+          </ChildBountiesContext.Provider>
+        ),
       },
     ].filter(Boolean);
     const [defaultTab] = tabs;

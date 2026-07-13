@@ -103,6 +103,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: detail },
     { result: childBounties },
     { result: tracksDetail },
+    { result: statistics },
   ] = await Promise.all([
     backendApi.fetch(`treasury/multi-asset-bounties/${id}`),
     backendApi.fetch(
@@ -112,6 +113,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       },
     ),
     backendApi.fetch(gov2TracksApi),
+    backendApi.fetch(`treasury/multi-asset-bounties/${id}/statistics`),
   ]);
 
   if (!detail) {
@@ -130,6 +132,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       childBounties: childBounties ?? EmptyList,
       comments: comments ?? EmptyList,
       tracksDetail: tracksDetail ?? null,
+      statistics: statistics ?? null,
       ...tracksProps,
     },
   };
