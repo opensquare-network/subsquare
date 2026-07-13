@@ -5,7 +5,8 @@ import { create as createDigest } from "multiformats/hashes/digest";
 const SHA_256_CODE = 0x12;
 
 export function getCidByEvidence(evidence) {
-  return CID.createV0(createDigest(SHA_256_CODE, hexToU8a(evidence)))
-    .toV1()
-    .toString();
+  const evidenceDigest = createDigest(SHA_256_CODE, hexToU8a(evidence));
+  const cidV0 = CID.createV0(evidenceDigest);
+
+  return cidV0.toString();
 }
