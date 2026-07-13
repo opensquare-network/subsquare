@@ -15,23 +15,33 @@ export default function useBlockTimestamp(height, specifiedApi = null) {
   const [isEstimated, setIsEstimated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const isBlockLoaded = chainHeight >= height;
+
   useEffect(() => {
-    if (chainHeight >= height && api) {
-      setIsLoading(true);
-      getBlockTimeByHeight(api, height)
-        .then((v) => setTimestamp(v))
-        .finally(() => setIsLoading(false));
-    } else {
-      const now = new Date().getTime();
-      setTimestamp(
-        BigNumber(oneBlockTime)
-          .multipliedBy(height - chainHeight)
-          .plus(now)
-          .toNumber(),
-      );
-      setIsEstimated(true);
+    if (isBlockLoaded && api) {
+      return;
     }
-  }, [api, height, chainHeight, oneBlockTime]);
+
+    const now = new Date().getTime();
+    setTimestamp(
+      BigNumber(oneBlockTime)
+        .multipliedBy(height - chainHeight)
+        .plus(now)
+        .toNumber(),
+    );
+    setIsEstimated(true);
+  }, [api, height, chainHeight, isBlockLoaded, oneBlockTime]);
+
+  useEffect(() => {
+    if (!isBlockLoaded || !api) {
+      return;
+    }
+
+    setIsLoading(true);
+    getBlockTimeByHeight(api, height)
+      .then((v) => setTimestamp(v))
+      .finally(() => setIsLoading(false));
+  }, [api, height, isBlockLoaded]);
 
   return {
     timestamp,

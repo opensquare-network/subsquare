@@ -7,9 +7,9 @@ import PageHeader from "../common/pageHeader";
 import RecoveryFriendGroupsTable from "./table";
 import RecoveryAttemptsTable from "./table/attempts";
 import RecoveryInheritorsTable from "./table/inheritors";
-import useQueryAllRecoveryData, {
+import useQueryAllFriendGroups, {
   flattenRecoveryData,
-} from "./hooks/useQueryAllRecoveryData";
+} from "./hooks/useQueryAllFriendGroups";
 import useQueryAllRecoveryAttempts from "./hooks/useQueryAllRecoveryAttempts";
 import useQueryAllRecoveryInheritors from "./hooks/useQueryAllRecoveryInheritors";
 import { searchAddress } from "./table";
@@ -21,7 +21,7 @@ export default function RecoveryExplorer() {
   const search = router.query.search || "";
 
   const { data: friendGroupsData, loading: friendGroupsLoading } =
-    useQueryAllRecoveryData();
+    useQueryAllFriendGroups();
   const { data: attemptsData, loading: attemptsLoading } =
     useQueryAllRecoveryAttempts();
   const { data: inheritorsData, loading: inheritorsLoading } =

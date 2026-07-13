@@ -147,6 +147,9 @@ export const CACHE_KEY = {
   nominatorClaimRewardPrompt: "nominator-claim-reward-prompt",
   poolWithdrawUnbondedPrompt: "pool-withdraw-unbonded-prompt",
   poolClaimRewardPrompt: "pool-claim-reward-prompt",
+
+  ongoingRecoveryAttemptsPrompt: "ongoing-recovery-attempts-prompt",
+  recoveryInheritorPrompt: "recovery-inheritor-prompt",
 };
 
 export const ADDRESS_CACHE_KEYS = [
@@ -168,6 +171,9 @@ export const ADDRESS_CACHE_KEYS = [
   CACHE_KEY.nominatorClaimRewardPrompt,
   CACHE_KEY.poolWithdrawUnbondedPrompt,
   CACHE_KEY.poolClaimRewardPrompt,
+
+  CACHE_KEY.ongoingRecoveryAttemptsPrompt,
+  CACHE_KEY.recoveryInheritorPrompt,
 ];
 
 export const CHAIN = process.env.NEXT_PUBLIC_CHAIN;
