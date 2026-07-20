@@ -30,6 +30,10 @@ const CHAIN_COVER_FILENAMES_MAP = {
     large: "heima.jpg",
     small: "heima-small.jpg",
   },
+  [Chains.polkadot]: {
+    large: "polkadot-v2.jpg",
+    small: "polkadot-small.jpg",
+  },
 };
 
 function resolveCoversRepoFilepathUrl(filename) {
