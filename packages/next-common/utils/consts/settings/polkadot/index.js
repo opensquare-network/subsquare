@@ -14,10 +14,10 @@ import { polkadotAssethubPreimageSettings } from "next-common/utils/consts/setti
 import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
 
 const ProjectIconPolkadotDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconPolkadotDark"),
+  import("./icons").then((m) => m.ProjectLogoPolkadotDark),
 );
 const ProjectIconPolkadotLight = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectIconPolkadotLight"),
+  import("./icons").then((m) => m.ProjectLogoPolkadotLight),
 );
 
 const NetworkPolkadot = dynamic(() =>

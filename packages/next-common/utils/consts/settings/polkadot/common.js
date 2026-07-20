@@ -1,11 +1,12 @@
 import dynamic from "next/dynamic";
 import Chains from "next-common/utils/consts/chains";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
+
 const ProjectLogoPolkadotDark = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoPolkadotDark"),
+  import("./icons").then((m) => m.ProjectLogoPolkadotDark),
 );
 const ProjectLogoPolkadotLight = dynamic(() =>
-  import("@osn/icons/subsquare/ProjectLogoPolkadotLight"),
+  import("./icons").then((m) => m.ProjectLogoPolkadotLight),
 );
 
 // used for relay chain and system para chains
