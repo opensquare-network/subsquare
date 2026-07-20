@@ -1,13 +1,6 @@
-import dynamic from "next/dynamic";
 import Chains from "next-common/utils/consts/chains";
 import { polkadotThemeVars } from "next-common/utils/consts/settings/common/polkadot";
-
-const ProjectLogoPolkadotDark = dynamic(() =>
-  import("./icons").then((m) => m.ProjectLogoPolkadotDark),
-);
-const ProjectLogoPolkadotLight = dynamic(() =>
-  import("./icons").then((m) => m.ProjectLogoPolkadotLight),
-);
+import { ProjectLogoPolkadotDark, ProjectLogoPolkadotLight } from "./icons";
 
 // used for relay chain and system para chains
 const polkadotCommonCfg = {

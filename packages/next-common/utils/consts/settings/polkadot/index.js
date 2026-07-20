@@ -12,13 +12,10 @@ import polkadotCommonCfg, {
 } from "next-common/utils/consts/settings/polkadot/common";
 import { polkadotAssethubPreimageSettings } from "next-common/utils/consts/settings/common/preimage/polkadot";
 import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
-
-const ProjectIconPolkadotDark = dynamic(() =>
-  import("./icons").then((m) => m.ProjectLogoPolkadotDark),
-);
-const ProjectIconPolkadotLight = dynamic(() =>
-  import("./icons").then((m) => m.ProjectLogoPolkadotLight),
-);
+import {
+  ProjectLogoPolkadotDark as ProjectIconPolkadotDark,
+  ProjectLogoPolkadotLight as ProjectIconPolkadotLight,
+} from "./icons";
 
 const NetworkPolkadot = dynamic(() =>
   import("@osn/icons/subsquare/NetworkPolkadotLight"),
