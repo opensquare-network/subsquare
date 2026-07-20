@@ -21,8 +21,8 @@ export default function ChainLogo({ className = "" }) {
 
   return (
     <div className={cn("relative", className)}>
-      <Link href="/" className="z-[1]">
-        {logo}
+      <Link href="/" className="inline-flex z-[1]">
+        <div className="inline-flex items-center w-[40px] h-[40px]">{logo}</div>
       </Link>
       <ChainLogoEventBackground />
     </div>
