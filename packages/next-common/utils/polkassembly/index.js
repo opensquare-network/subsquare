@@ -52,9 +52,6 @@ export function getPolkassemblyLink(type, post) {
     case detailPageCategory.GOV2_REFERENDUM: {
       return `https://${chain}.polkassembly.io/referenda/${post.referendumIndex}`;
     }
-    case detailPageCategory.FELLOWSHIP_REFERENDUM: {
-      return `https://${chain}.polkassembly.io/member-referenda/${post.referendumIndex}`;
-    }
     case detailPageCategory.ADVISORY_MOTION: {
       return `https://${chain}.polkassembly.io/advisory-committee/motions/${post.height}_${post.hash}`;
     }
