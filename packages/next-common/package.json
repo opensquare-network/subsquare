@@ -64,7 +64,7 @@
     "marked": "^11.1.1",
     "md5": "^2.3.0",
     "multiformats": "^13.4.2",
-    "next": "16.2.6",
+    "next": "16.2.11",
     "polkadot-api": "^2.1.1",
     "qrcode": "^1.5.4",
     "query-string": "^9.0.0",
