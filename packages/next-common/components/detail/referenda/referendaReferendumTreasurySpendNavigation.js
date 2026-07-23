@@ -22,17 +22,18 @@ export default function ReferendaReferendumTreasurySpendNavigation() {
 
   return (
     <NavigationWrapper>
-      <div>Referendum #{referendumIndex}</div>
-      <div>
-        <TriangleRight />
-        Treasury Spend&nbsp;
+      <span>
+        Referendum #{referendumIndex}
+        &nbsp;&nbsp;
+        <TriangleRight className="inline align-middle" />
+        Treasury Spend{" "}
         {treasurySpendIndexes.map((index, i) => (
-          <React.Fragment key={index}>
-            {i > 0 && <span>,&nbsp;</span>}
+          <span key={index}>
             <Link href={`/treasury/spends/${index}`}>{`#${index}`}</Link>
-          </React.Fragment>
+            {i < treasurySpendIndexes.length - 1 && <span>, </span>}
+          </span>
         ))}
-      </div>
+      </span>
     </NavigationWrapper>
   );
 }

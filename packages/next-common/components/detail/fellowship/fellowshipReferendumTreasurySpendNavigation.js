@@ -16,19 +16,20 @@ export default function FellowshipReferendumTreasurySpendNavigation() {
 
   return (
     <NavigationWrapper>
-      <div>Fellowship #{referendumIndex}</div>
-      <div>
-        <TriangleRight />
-        Treasury Spend&nbsp;
+      <span>
+        Fellowship #{referendumIndex}
+        &nbsp;&nbsp;
+        <TriangleRight className="inline align-middle" />
+        Treasury Spend{" "}
         {treasurySpendIndexes.map((index, i) => (
-          <React.Fragment key={index}>
-            {i > 0 && <span>,&nbsp;</span>}
+          <span key={index}>
             <Link
               href={`/fellowship/treasury/spends/${index}`}
             >{`#${index}`}</Link>
-          </React.Fragment>
+            {i < treasurySpendIndexes.length - 1 && <span>, </span>}
+          </span>
         ))}
-      </div>
+      </span>
     </NavigationWrapper>
   );
 }
