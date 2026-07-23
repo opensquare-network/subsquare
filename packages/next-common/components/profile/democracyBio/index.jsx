@@ -1,5 +1,4 @@
-import { isPolkadotAddress } from "next-common/utils/viewfuncs";
-import { isEthereumAddress } from "@polkadot/util-crypto";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { usePageProps } from "next-common/context/page";
 import UserPapiAccountProvider from "next-common/context/user/papiAccount";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
@@ -21,8 +20,7 @@ const DelegationGuide = dynamic(
 export default function DemocracyBio() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
-  const address =
-    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
+  const address = useProfileAddress();
 
   return (
     <>

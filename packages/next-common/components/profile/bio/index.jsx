@@ -22,6 +22,7 @@ import { useIsMobile } from "next-common/components/overview/accountInfo/compone
 import AccountInfoPanel from "next-common/components/profile/bio/accountInfoPanel";
 import BioContainer from "./bioContainer";
 import UserPapiAccountProvider from "next-common/context/user/papiAccount";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 const Username = styled.span`
   font-weight: 700;
@@ -134,9 +135,7 @@ function NormalBio() {
   const { user, id } = usePageProps();
   const chain = useChain();
   const isKintsugi = [Chains.kintsugi, Chains.interlay].includes(chain);
-
-  const address =
-    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
+  const address = useProfileAddress();
 
   return (
     <div
