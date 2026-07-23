@@ -9,20 +9,24 @@ export function getChainAddressType() {
   return settings.chainType || ChainTypes.SUBSTRATE;
 }
 
-export function isAddressTypeSupportedForChain(address) {
+export function isUnsupportedAddress(address) {
   if (!address) {
-    return false;
+    return true;
   }
 
   const chainType = getChainAddressType();
   const isEvm = isEthereumAddress(address);
   const isSubstrate = isPolkadotAddress(address);
 
+  if (!isEvm && !isSubstrate) {
+    return false;
+  }
+
   if (chainType === ChainTypes.ETHEREUM) {
-    return isEvm;
+    return !isEvm;
   }
   if (chainType === ChainTypes.MIXED) {
-    return isEvm || isSubstrate;
+    return !isEvm && !isSubstrate;
   }
-  return isSubstrate;
+  return !isSubstrate;
 }
