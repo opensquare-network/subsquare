@@ -4,6 +4,7 @@ import Profile from "next-common/components/profile";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
+import { isAddressTypeSupportedForChain } from "next-common/utils/addressType";
 import {
   ambassadorCoreFeedsApiUri,
   ambassadorMembersApiUri,
@@ -19,6 +20,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
     params: [id, activityType, category],
     page = 1,
   } = context.query;
+
+  if (!isAddressTypeSupportedForChain(id)) {
+    return { notFound: true };
+  }
 
   // redirect core to membership
   if (category === "core") {

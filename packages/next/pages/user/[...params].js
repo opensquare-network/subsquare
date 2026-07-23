@@ -4,6 +4,7 @@ import Profile from "next-common/components/profile";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchProfileTreasuryProps } from "next-common/services/serverSide/prefile/treasury";
 import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
+import { isAddressTypeSupportedForChain } from "next-common/utils/addressType";
 
 export default Profile;
 
@@ -11,6 +12,10 @@ export const getServerSideProps = withCommonProps(async (context) => {
   const {
     params: [id],
   } = context.query;
+
+  if (!isAddressTypeSupportedForChain(id)) {
+    return { notFound: true };
+  }
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
 
