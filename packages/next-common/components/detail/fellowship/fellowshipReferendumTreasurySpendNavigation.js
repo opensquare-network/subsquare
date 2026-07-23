@@ -15,7 +15,7 @@ export default function FellowshipReferendumTreasurySpendNavigation() {
   }
 
   return (
-    <NavigationWrapper>
+    <NavigationWrapper className="text-center">
       <span>
         Fellowship #{referendumIndex}
         &nbsp;&nbsp;

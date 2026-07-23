@@ -21,7 +21,7 @@ export default function ReferendaReferendumTreasurySpendNavigation() {
   }
 
   return (
-    <NavigationWrapper>
+    <NavigationWrapper className="text-center">
       <span>
         Referendum #{referendumIndex}
         &nbsp;&nbsp;
