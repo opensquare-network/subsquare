@@ -1,6 +1,5 @@
-import { isPolkadotAddress } from "next-common/utils/viewfuncs";
-import { isEthereumAddress } from "@polkadot/util-crypto";
 import { usePageProps } from "next-common/context/page";
+import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import AssetInfo from "next-common/components/profile/bio/assetInfo";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
 import { cn } from "next-common/utils";
@@ -22,8 +21,7 @@ const DelegationGuide = dynamic(
 export default function OpenGovBio() {
   const isMobile = useIsMobile();
   const { user, id } = usePageProps();
-  const address =
-    isPolkadotAddress(id) || isEthereumAddress(id) ? id : user?.address;
+  const address = useProfileAddress();
 
   return (
     <>
