@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useForwardPopupContext } from "next-common/context/forwardPopup";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
+import Chains from "next-common/utils/consts/chains";
 
 const NewRemarkReferendumInnerPopup = dynamic(() =>
   import("../newProposalQuickStart/createSystemRemarkProposalPopup").then(
@@ -14,6 +15,11 @@ const NewAssetSpendProposalInnerPopup = dynamic(() =>
   import("../newProposalQuickStart/newAssetSpendProposalInnerPopup").then(
     (mod) => mod.NewAssetSpendProposalInnerPopup,
   ),
+);
+const NewFellowshipUSDxSpendProposalInnerPopup = dynamic(() =>
+  import(
+    "../newProposalQuickStart/newFellowshipUSDxSpendProposalInnerPopup"
+  ).then((mod) => mod.NewFellowshipUSDxSpendProposalInnerPopup),
 );
 const NewFellowshipCoreMemberPromoteReferendumInnerPopup = dynamic(() =>
   import(
@@ -67,9 +73,22 @@ function Spend() {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
-      name="Fellowship treasury spend"
+      name="Treasury DOT spend"
       description="Create a treasury spend of DOT from AssetHub fellowship treasury account"
       onClick={() => setForwardPopup(<NewAssetSpendProposalInnerPopup />)}
+    />
+  );
+}
+
+function SpendUSDx() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <ChoiceButton
+      name="Treasury HOLLAR spend"
+      description="Create a treasury spend of USDx from AssetHub fellowship treasury account"
+      onClick={() =>
+        setForwardPopup(<NewFellowshipUSDxSpendProposalInnerPopup />)
+      }
     />
   );
 }
@@ -85,6 +104,7 @@ export default function CollectivesProposalQuickStart() {
       <Retain />
       <NewRemark />
       <Spend />
+      {Chains.collectives === chain && <SpendUSDx />}
     </QuickStart>
   );
 }

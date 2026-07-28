@@ -5,14 +5,28 @@ import { useEffect, useState } from "react";
 
 export const StatemintAssets = [
   {
+    type: "asset",
     id: 1984,
     symbol: "USDT",
     decimals: 6,
   },
   {
+    type: "asset",
     id: 1337,
     symbol: "USDC",
     decimals: 6,
+  },
+  {
+    type: "foreignAsset",
+    id: 222,
+    symbol: "HOLLAR",
+    decimals: 18,
+    multiLocation: {
+      parents: 1,
+      interior: {
+        X2: [{ Parachain: 2034 }, { GeneralIndex: 222 }],
+      },
+    },
   },
 ];
 
@@ -65,9 +79,24 @@ export function useAssetHubAssetBalance(account, symbol) {
 
     setDecimals(asset.decimals);
 
+    if (asset.type === "foreignAsset") {
+      api.query.foreignAssets
+        .account(asset.multiLocation, account)
+        .then((data) => {
+          const assetInfo = data?.toJSON();
+          setBalance(assetInfo?.balance || 0);
+          setLoading(false);
+        })
+        .catch(() => {
+          setBalance(0);
+          setLoading(false);
+        });
+      return;
+    }
+
     api.query.assets.account(asset.id, account).then((data) => {
       const assetInfo = data?.toJSON();
-      setBalance(assetInfo?.balance);
+      setBalance(assetInfo?.balance || 0);
       setLoading(false);
     });
   }, [api, account, symbol]);

@@ -35,6 +35,7 @@ import kusamaAssetHub from "./kusamaAssetHub";
 import shibuya from "./shibuya";
 import astar from "./astar";
 import { isNil } from "lodash-es";
+import { CHAIN } from "next-common/utils/constants";
 import zkverify from "./zkverify";
 import zkverifyTestnet from "./zkverifyTestnet";
 import paseo from "./paseo";
@@ -130,7 +131,7 @@ export default function getChainSettings(chain, blockHeight = null) {
     }
   }
 
-  if (process.env.NEXT_PUBLIC_LOCAL_CHOPSTICKS === "true") {
+  if (process.env.NEXT_PUBLIC_LOCAL_CHOPSTICKS === "true" && chain === CHAIN) {
     settings = {
       ...settings,
       endpoints: [

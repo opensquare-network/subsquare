@@ -5,11 +5,13 @@ import NewUSDxTreasuryProposalPopup from "./templates/newUSDxTreasuryProposalPop
 import NewRemarkProposalPopup from "./templates/newRemarkProposalPopup";
 import CancelReferendumPopup from "./templates/cancelReferendumPopup";
 import NewFellowshipTreasuryProposalPopup from "./templates/newFellowshipTreasuryProposalPopup";
+import NewFellowshipUSDxTreasuryProposalPopup from "./templates/newFellowshipUSDxTreasuryProposalPopup";
 import SpendDotOnAssetHubPopup from "./templates/spendDotOnAssetHubPopup";
 import KillReferendumPopup from "./templates/killReferendumPopup";
 import {
   SpendLocalTreasuryButton,
   FellowshipTreasurySpendButton,
+  FellowshipUSDxTreasurySpendButton,
   SpendUSDxTreasuryButton,
   SpendDotOnAssetHubButton,
   NewRemarkButton,
@@ -53,6 +55,17 @@ function FellowshipTreasurySpend() {
   return (
     <FellowshipTreasurySpendButton
       onClick={() => setForwardPopup(<NewFellowshipTreasuryProposalPopup />)}
+    />
+  );
+}
+
+function FellowshipUSDxTreasurySpend() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <FellowshipUSDxTreasurySpendButton
+      onClick={() =>
+        setForwardPopup(<NewFellowshipUSDxTreasuryProposalPopup />)
+      }
     />
   );
 }
@@ -166,6 +179,7 @@ function ProposalTemplateQuickStart() {
   return (
     <QuickStart>
       {isCollectivesChain(chain) && <FellowshipTreasurySpend />}
+      {isCollectivesChain(chain) && <FellowshipUSDxTreasurySpend />}
       {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
         <SpendLocalTreasury />
       )}
