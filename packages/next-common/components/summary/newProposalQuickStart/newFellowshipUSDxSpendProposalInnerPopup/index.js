@@ -22,6 +22,7 @@ import { find } from "lodash-es";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
 import ErrorMessage from "next-common/components/styled/errorMessage";
+import { useFellowshipUSDxNativeAmount } from "next-common/hooks/fellowship/treasury/useFellowshipUSDxNativeAmount";
 
 function CreateProposalSubmitButtonWithRankCheck({
   trackId,
@@ -70,12 +71,14 @@ export function NewFellowshipUSDxSpendProposalInnerPopup() {
   } = useUSDxBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
+  const { nativeAmount, isLoading: isNativeAmountLoading } =
+    useFellowshipUSDxNativeAmount(inputBalance, symbol);
 
   const {
     value: trackId,
     component: trackField,
     error,
-  } = useAutoSelectTreasuryTrackField(inputBalance, defaultTrackId);
+  } = useAutoSelectTreasuryTrackField(nativeAmount, defaultTrackId);
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
   const { value: validFrom, component: validFromField } = useValidFromField();
@@ -92,6 +95,8 @@ export function NewFellowshipUSDxSpendProposalInnerPopup() {
   const overMax =
     isCollectivesChain(chain) &&
     error === AutoSelectTreasuryTrackErrors.OverMax;
+  const isTrackAmountUnavailable =
+    Boolean(inputBalance) && (isNativeAmountLoading || nativeAmount == null);
 
   return (
     <Popup title="Create USDx Treasury Proposal" onClose={onClose}>
@@ -116,7 +121,7 @@ export function NewFellowshipUSDxSpendProposalInnerPopup() {
           encodedHash={encodedHash}
           encodedLength={encodedLength}
           notePreimageTx={notePreimageTx}
-          disabled={overMax}
+          disabled={overMax || isTrackAmountUnavailable}
         />
       </div>
     </Popup>

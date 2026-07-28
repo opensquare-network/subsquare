@@ -16,7 +16,7 @@ import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 
-const getAssetKindParam = (asset) => {
+export const getFellowshipUSDxAssetKindParam = (asset) => {
   if (asset.type === "foreignAsset") {
     return {
       V5: {
@@ -109,7 +109,7 @@ export function useFellowshipUSDxTreasuryNotePreimageTx(
 
     try {
       const proposal = api.tx.fellowshipTreasury.spend(
-        getAssetKindParam(asset),
+        getFellowshipUSDxAssetKindParam(asset),
         bnValue.toFixed(),
         getBeneficiaryParam(beneficiary),
         validFrom ? parseInt(validFrom) : null,
