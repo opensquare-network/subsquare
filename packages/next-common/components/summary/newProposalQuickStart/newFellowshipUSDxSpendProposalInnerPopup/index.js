@@ -99,7 +99,7 @@ export function NewFellowshipUSDxSpendProposalInnerPopup() {
     Boolean(inputBalance) && (isNativeAmountLoading || nativeAmount == null);
 
   return (
-    <Popup title="Create USDx Treasury Proposal" onClose={onClose}>
+    <Popup title="Create HOLLAR Treasury Proposal" onClose={onClose}>
       <SignerWithBalance supportedMultisig={false} />
       {usdxBalanceField}
       <div className="flex flex-col gap-[8px]">{beneficiaryField}</div>

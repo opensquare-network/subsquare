@@ -167,7 +167,7 @@ function PopupContent() {
 export default function NewFellowshipUSDxTreasuryProposalPopup() {
   const { onClose } = usePopupParams();
   return (
-    <Popup title="Create USDx Treasury Proposal" onClose={onClose}>
+    <Popup title="Create HOLLAR Treasury Proposal" onClose={onClose}>
       <PopupContent />
     </Popup>
   );

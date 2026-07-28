@@ -73,7 +73,7 @@ function Spend() {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
-      name="Fellowship treasury spend"
+      name="Treasury DOT spend"
       description="Create a treasury spend of DOT from AssetHub fellowship treasury account"
       onClick={() => setForwardPopup(<NewAssetSpendProposalInnerPopup />)}
     />
@@ -84,7 +84,7 @@ function SpendUSDx() {
   const { setForwardPopup } = useForwardPopupContext();
   return (
     <ChoiceButton
-      name="Fellowship USDx treasury spend"
+      name="Treasury HOLLAR spend"
       description="Create a treasury spend of USDx from AssetHub fellowship treasury account"
       onClick={() =>
         setForwardPopup(<NewFellowshipUSDxSpendProposalInnerPopup />)

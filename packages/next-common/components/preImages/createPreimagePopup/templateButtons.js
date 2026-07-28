@@ -4,7 +4,7 @@ import { InfoPopoular } from "@osn/icons/subsquare";
 export function FellowshipTreasurySpendButton({ onClick }) {
   return (
     <ChoiceButton
-      name="Fellowship treasury spend"
+      name="Treasury DOT spend"
       description="Create a treasury spend of DOT from AssetHub fellowship treasury account"
       onClick={onClick}
     />
@@ -14,7 +14,7 @@ export function FellowshipTreasurySpendButton({ onClick }) {
 export function FellowshipUSDxTreasurySpendButton({ onClick }) {
   return (
     <ChoiceButton
-      name="Fellowship USDx treasury spend"
+      name="Treasury HOLLAR spend"
       description="Create a treasury spend of USDx from AssetHub fellowship treasury account"
       onClick={onClick}
     />
