@@ -15,6 +15,11 @@ const NewAssetSpendProposalInnerPopup = dynamic(() =>
     (mod) => mod.NewAssetSpendProposalInnerPopup,
   ),
 );
+const NewFellowshipUSDxSpendProposalInnerPopup = dynamic(() =>
+  import(
+    "../newProposalQuickStart/newFellowshipUSDxSpendProposalInnerPopup"
+  ).then((mod) => mod.NewFellowshipUSDxSpendProposalInnerPopup),
+);
 const NewFellowshipCoreMemberPromoteReferendumInnerPopup = dynamic(() =>
   import(
     "../newProposalQuickStart/createFellowshipCoreMemberProposalPopup/createFellowshipCoreMemberPromotePopup"
@@ -74,6 +79,19 @@ function Spend() {
   );
 }
 
+function SpendUSDx() {
+  const { setForwardPopup } = useForwardPopupContext();
+  return (
+    <ChoiceButton
+      name="Fellowship USDx treasury spend"
+      description="Create a treasury spend of USDx from AssetHub fellowship treasury account"
+      onClick={() =>
+        setForwardPopup(<NewFellowshipUSDxSpendProposalInnerPopup />)
+      }
+    />
+  );
+}
+
 export default function CollectivesProposalQuickStart() {
   const chain = useChain();
   if (!isCollectivesChain(chain)) {
@@ -85,6 +103,7 @@ export default function CollectivesProposalQuickStart() {
       <Retain />
       <NewRemark />
       <Spend />
+      <SpendUSDx />
     </QuickStart>
   );
 }

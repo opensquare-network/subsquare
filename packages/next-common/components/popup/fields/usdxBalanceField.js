@@ -8,6 +8,7 @@ export default function USDxBalanceField({
   setInputBalance,
   symbol,
   setSymbol,
+  symbolOptions = ["USDT", "USDC"],
   title = "Balance",
   status,
 }) {
@@ -15,7 +16,7 @@ export default function USDxBalanceField({
     <div>
       <PopupLabel text={title} status={status} />
       <SymbolSelectInput
-        symbolOptions={["USDT", "USDC"]}
+        symbolOptions={symbolOptions}
         disabled={isLoading}
         value={inputBalance}
         onValueChange={setInputBalance}

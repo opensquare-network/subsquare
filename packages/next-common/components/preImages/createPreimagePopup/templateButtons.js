@@ -11,6 +11,16 @@ export function FellowshipTreasurySpendButton({ onClick }) {
   );
 }
 
+export function FellowshipUSDxTreasurySpendButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Fellowship USDx treasury spend"
+      description="Create a treasury spend of USDx from AssetHub fellowship treasury account"
+      onClick={onClick}
+    />
+  );
+}
+
 export function SpendLocalTreasuryButton({ onClick }) {
   return (
     <ChoiceButton

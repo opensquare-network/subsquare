@@ -47,6 +47,7 @@ export function getState(api, proposal) {
     encodedLength,
     encodedProposal,
     notePreimageTx,
+    proposal,
   };
 }
 

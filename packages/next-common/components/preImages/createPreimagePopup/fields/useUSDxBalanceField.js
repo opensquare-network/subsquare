@@ -1,10 +1,13 @@
 import { useState } from "react";
 import USDxBalanceField from "next-common/components/popup/fields/usdxBalanceField";
 import { useTreasuryAssetBalance } from "next-common/hooks/treasury/useAssetBalance";
+import useAssetHubTreasuryBalanceFromCollectives from "next-common/hooks/treasury/useAssetHubTreasuryBalanceFromCollectives";
 import Loading from "next-common/components/loading";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import { TreasuryProvider } from "next-common/context/treasury";
+import { useChain } from "next-common/context/chain";
+import Chains from "next-common/utils/consts/chains";
 
 export function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
   return (
@@ -19,7 +22,7 @@ export function TreasuryBalance({ symbol, isLoading, treasuryBalance }) {
   );
 }
 
-export function USDxBalance({
+function DefaultUSDxBalance({
   inputBalance,
   setInputBalance,
   symbol,
@@ -48,6 +51,69 @@ export function USDxBalance({
           )}
         />
       }
+    />
+  );
+}
+
+function CollectivesUSDxBalance({
+  inputBalance,
+  setInputBalance,
+  symbol,
+  setSymbol,
+}) {
+  const {
+    balance: treasuryBalance,
+    decimals: treasuryBalanceDecimals,
+    loading: isTreasuryBalanceLoading,
+  } = useAssetHubTreasuryBalanceFromCollectives(symbol);
+
+  return (
+    <USDxBalanceField
+      symbolOptions={["USDT", "USDC", "HOLLAR"]}
+      title="Request"
+      inputBalance={inputBalance}
+      setInputBalance={setInputBalance}
+      symbol={symbol}
+      setSymbol={setSymbol}
+      status={
+        <TreasuryBalance
+          isLoading={isTreasuryBalanceLoading}
+          symbol={symbol}
+          treasuryBalance={toPrecision(
+            treasuryBalance,
+            treasuryBalanceDecimals,
+          )}
+        />
+      }
+    />
+  );
+}
+
+export function USDxBalance({
+  inputBalance,
+  setInputBalance,
+  symbol,
+  setSymbol,
+}) {
+  const chain = useChain();
+
+  if (chain === Chains.collectives) {
+    return (
+      <CollectivesUSDxBalance
+        inputBalance={inputBalance}
+        setInputBalance={setInputBalance}
+        symbol={symbol}
+        setSymbol={setSymbol}
+      />
+    );
+  }
+
+  return (
+    <DefaultUSDxBalance
+      inputBalance={inputBalance}
+      setInputBalance={setInputBalance}
+      symbol={symbol}
+      setSymbol={setSymbol}
     />
   );
 }
