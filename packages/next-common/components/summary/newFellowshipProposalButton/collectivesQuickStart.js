@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useForwardPopupContext } from "next-common/context/forwardPopup";
 import { useChain } from "next-common/context/chain";
 import { isCollectivesChain } from "next-common/utils/chain";
+import Chains from "next-common/utils/consts/chains";
 
 const NewRemarkReferendumInnerPopup = dynamic(() =>
   import("../newProposalQuickStart/createSystemRemarkProposalPopup").then(
@@ -103,7 +104,7 @@ export default function CollectivesProposalQuickStart() {
       <Retain />
       <NewRemark />
       <Spend />
-      <SpendUSDx />
+      {Chains.collectives === chain && <SpendUSDx />}
     </QuickStart>
   );
 }

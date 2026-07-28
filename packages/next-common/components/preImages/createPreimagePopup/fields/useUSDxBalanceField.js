@@ -69,7 +69,7 @@ function CollectivesUSDxBalance({
 
   return (
     <USDxBalanceField
-      symbolOptions={["USDT", "USDC", "HOLLAR"]}
+      symbolOptions={["HOLLAR"]}
       title="Request"
       inputBalance={inputBalance}
       setInputBalance={setInputBalance}
@@ -119,8 +119,11 @@ export function USDxBalance({
 }
 
 export default function useUSDxBalanceField() {
+  const chain = useChain();
   const [inputBalance, setInputBalance] = useState("");
-  const [symbol, setSymbol] = useState("USDT");
+
+  const defaultSymbol = chain === Chains.collectives ? "HOLLAR" : "USDT";
+  const [symbol, setSymbol] = useState(defaultSymbol);
 
   return {
     value: [inputBalance, symbol],
