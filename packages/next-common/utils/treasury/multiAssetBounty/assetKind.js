@@ -24,7 +24,7 @@ function getLocationJunctions(location) {
     return null;
   }
 
-  if (interior === "here") {
+  if (interior.toLowerCase?.() === "here") {
     return [];
   }
 

@@ -10,7 +10,7 @@ function getLocationJunctions(location) {
     return [];
   }
 
-  if (interior === "here" || interior.here !== undefined) {
+  if (interior.toLowerCase?.() === "here" || interior.here !== undefined) {
     return [];
   }
 
