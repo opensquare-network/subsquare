@@ -99,21 +99,30 @@ export const getServerSideProps = async (ctx) => {
   }
 
   const { id } = ctx.query;
+  const saleId = Number(id);
+  if (!Number.isInteger(saleId)) {
+    return {
+      notFound: true,
+    };
+  }
 
   return withCommonProps(async () => {
     const commonProps = await getCoretimeCommonProps();
-    const coretimeSale = await queryCoretimeDetailSale(id);
-    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(id, {
-      limit: coretimeSale?.renewalCount,
-    });
+    const coretimeSale = await queryCoretimeDetailSale(saleId);
+    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(
+      saleId,
+      {
+        limit: coretimeSale?.renewalCount,
+      },
+    );
     const coretimeSalePurchasesChart = await queryCoretimeSalePurchasesChart(
-      id,
+      saleId,
       {
         limit: coretimeSale?.purchaseCount,
       },
     );
     const coretimeSaleTimeline = coretimeSale
-      ? await queryCoretimeSaleTimeline(id)
+      ? await queryCoretimeSaleTimeline(saleId)
       : [];
 
     return {
