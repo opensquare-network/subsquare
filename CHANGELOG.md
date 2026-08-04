@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.6.0
+
+Date:
+2026-06-30. [Code diff](https://github.com/opensquare-network/subsquare/compare/d94f36318f39daa298211c2239093d931fab6b55...efd8ccd4d).
+
+- [Medium] Pay gas with other assets: allow users to select different assets for paying transaction fees.
+- [Medium] Fellowship secretary:
+  - Show secretary salary cycle on top of the collectives overview page.
+  - Show total fellowship payment amount to secretaries.
+  - Add HOLLAR balance to collectives fellowship finance.
+  - Fix fellowship finance display.
+  - Fix fellowship referenda menu highlight for referenda detail page.
+- [Medium] PAPI integration:
+  - Migrate unfinalized checkers to PAPI.
+  - Migrate Gov2 referenda my vote to PAPI.
+- Add recovery tab on the data page.
+- Treasury: add support for creating batch treasury spend proposals on Kusama.
+- Error handling & performance:
+  - Integrate ErrorBoundary component into AppShell for improved error handling.
+  - Fix fetch cancelling in useOnChainActiveReferenda.
+  - Fix useAvatarInfo to prevent unnecessary re-renders.
+  - Clear timeouts in various components to prevent memory leaks.
+  - Fix null pointer warnings.
+  - Fix reset of account and loading state in useSubSystemAccount hook.
+- Implement hide post functionality for admins.
+- Add link icon beside the evidence numbers on referenda detail page.
+- Bug fixes:
+  - Fix safe HTML rendering.
+  - Fix auto close switch popup after account switching.
+  - Fix layout for long balance text.
+- Remove IBP nodes from endpoint list.
+- Update chain endpoints.
+- Upgrade dependencies.
+
 # 6.5.0
 
 Date:
