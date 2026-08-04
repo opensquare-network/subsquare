@@ -1,4 +1,3 @@
-import { secretaryStatisticsMembersApi } from "next-common/services/url";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import SecretaryStatisticsSummary from "next-common/components/secretary/statistics/summary";
 import StatisticsCycles from "next-common/components/fellowship/statistics/expenditure/cycles";
@@ -7,8 +6,8 @@ import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/cor
 import { usePageProps } from "next-common/context/page";
 
 export default function SecretaryCollectivesStatistics() {
-  const { members } = useFellowshipCollectiveMembers();
-  const { statistics } = usePageProps();
+  const { members, loading } = useFellowshipCollectiveMembers();
+  const { statistics, secretaryStatisticsMembers } = usePageProps();
 
   const cycles = statistics?.cycles || [];
   const paymentReferenda = statistics?.paymentReferenda || [];
@@ -23,8 +22,9 @@ export default function SecretaryCollectivesStatistics() {
       <StatisticsCycles cycles={cycles} />
       <SecretaryStatisticsClaimants
         members={members}
-        membersApi={secretaryStatisticsMembersApi}
+        membersLoading={loading}
         paymentReferenda={paymentReferenda}
+        membersData={secretaryStatisticsMembers || []}
       />
     </div>
   );

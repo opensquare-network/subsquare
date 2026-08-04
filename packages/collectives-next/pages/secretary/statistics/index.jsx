@@ -6,6 +6,7 @@ import { backendApi } from "next-common/services/nextApi";
 import {
   secretaryMembersApiUri,
   secretaryStatisticsCyclesApi,
+  secretaryStatisticsMembersApi,
 } from "next-common/services/url";
 
 export default function SecretaryStatisticsPage() {
@@ -22,16 +23,21 @@ export default function SecretaryStatisticsPage() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const [{ result: secretaryMembers }, { result: statistics }] =
-    await Promise.all([
-      backendApi.fetch(secretaryMembersApiUri),
-      backendApi.fetch(secretaryStatisticsCyclesApi),
-    ]);
+  const [
+    { result: secretaryMembers },
+    { result: statistics },
+    { result: secretaryStatisticsMembers },
+  ] = await Promise.all([
+    backendApi.fetch(secretaryMembersApiUri),
+    backendApi.fetch(secretaryStatisticsCyclesApi),
+    backendApi.fetch(secretaryStatisticsMembersApi),
+  ]);
 
   return {
     props: {
       secretaryMembers: secretaryMembers ?? null,
       statistics: statistics ?? null,
+      secretaryStatisticsMembers: secretaryStatisticsMembers ?? null,
     },
   };
 });
