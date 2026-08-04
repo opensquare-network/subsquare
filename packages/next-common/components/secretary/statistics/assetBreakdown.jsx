@@ -1,4 +1,3 @@
-import BigNumber from "bignumber.js";
 import { cn } from "next-common/utils";
 import TokenSymbolAsset from "next-common/components/summary/polkadotTreasurySummary/common/tokenSymbolAsset";
 
@@ -20,13 +19,7 @@ export default function AssetBreakdown({
         })}
       >
         {rows.map((row, i) => (
-          <TokenSymbolAsset
-            key={i}
-            amount={new BigNumber(row.value || 0)
-              .div(Math.pow(10, row.decimals))
-              .toFixed(row.decimals > 6 ? 4 : 2)}
-            symbol={row.symbol}
-          />
+          <TokenSymbolAsset key={i} amount={row.value} symbol={row.symbol} />
         ))}
       </div>
     </div>

@@ -22,7 +22,6 @@ import {
 import SalaryAssetValues, {
   isPositiveAmount,
 } from "next-common/components/collectives/salaryAssetValues";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { formatNum } from "next-common/utils";
 
 function handleClaimantsData(originalMembers, members) {
@@ -80,8 +79,6 @@ function useSecretaryClaimantsReferendaColumn(paymentReferenda) {
 }
 
 function useSecretaryClaimantsPaidColumn(paymentReferenda) {
-  const { decimals } = getSalaryAsset("secretary");
-
   return {
     name: "Total Paid",
     className: "text-right",
@@ -111,24 +108,21 @@ function useSecretaryClaimantsPaidColumn(paymentReferenda) {
 
       if (hasUsdt) {
         rows.push({
-          value: new BigNumber(usdt).shiftedBy(decimals).toFixed(0),
-          decimals,
+          value: new BigNumber(usdt).toFixed(2),
           symbol: "USDT",
         });
       }
 
       if (hasHollar) {
         rows.push({
-          value: new BigNumber(hollar).shiftedBy(18).toFixed(0),
-          decimals: 18,
+          value: new BigNumber(hollar).toFixed(2),
           symbol: "HOLLAR",
         });
       }
 
       if (referendaTotal.gt(0)) {
         rows.push({
-          value: referendaTotal.toString(),
-          decimals: 10,
+          value: referendaTotal.shiftedBy(-10).toFixed(4),
           symbol: "DOT",
         });
       }

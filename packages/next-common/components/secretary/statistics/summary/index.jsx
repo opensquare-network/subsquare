@@ -2,7 +2,6 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import { formatNum } from "next-common/utils";
-import { getSalaryAsset } from "next-common/utils/consts/getSalaryAsset";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 import PaymentReferendaTooltip from "next-common/components/secretary/statistics/paymentReferendaTooltip";
 import AssetBreakdown from "next-common/components/secretary/statistics/assetBreakdown";
@@ -13,7 +12,6 @@ import {
 } from "next-common/components/secretary/statistics/breakdown";
 
 function TotalSpent({ cycles, paymentReferenda }) {
-  const { decimals: salaryDecimals } = getSalaryAsset("secretary");
   const cyclesTotal = getCyclesTotal(cycles);
   const referendaTotal = getReferendaTotal(paymentReferenda);
   const referendaUsd = getReferendaUsd(paymentReferenda);
@@ -23,24 +21,21 @@ function TotalSpent({ cycles, paymentReferenda }) {
 
   const rows = [
     {
-      value: cyclesTotal.usdt.shiftedBy(salaryDecimals).toFixed(0),
-      decimals: salaryDecimals,
+      value: cyclesTotal.usdt.toFixed(2),
       symbol: "USDT",
     },
   ];
 
   if (cyclesTotal.hollar.gt(0)) {
     rows.push({
-      value: cyclesTotal.hollar.shiftedBy(18).toFixed(0),
-      decimals: 18,
+      value: cyclesTotal.hollar.toFixed(2),
       symbol: "HOLLAR",
     });
   }
 
   if (referendaTotal.gt(0)) {
     rows.push({
-      value: referendaTotal.toString(),
-      decimals: 10,
+      value: referendaTotal.shiftedBy(-10).toFixed(4),
       symbol: "DOT",
     });
   }
