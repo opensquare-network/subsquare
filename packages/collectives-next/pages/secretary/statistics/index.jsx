@@ -3,7 +3,10 @@ import SecretaryCollectivesStatistics from "next-common/components/secretary/sta
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
-import { secretaryMembersApiUri } from "next-common/services/url";
+import {
+  secretaryMembersApiUri,
+  secretaryStatisticsCyclesApi,
+} from "next-common/services/url";
 
 export default function SecretaryStatisticsPage() {
   const category = "Secretary Statistics";
@@ -19,13 +22,16 @@ export default function SecretaryStatisticsPage() {
 }
 
 export const getServerSideProps = withCommonProps(async () => {
-  const { result: secretaryMembers } = await backendApi.fetch(
-    secretaryMembersApiUri,
-  );
+  const [{ result: secretaryMembers }, { result: statistics }] =
+    await Promise.all([
+      backendApi.fetch(secretaryMembersApiUri),
+      backendApi.fetch(secretaryStatisticsCyclesApi),
+    ]);
 
   return {
     props: {
       secretaryMembers: secretaryMembers ?? null,
+      statistics: statistics ?? null,
     },
   };
 });
