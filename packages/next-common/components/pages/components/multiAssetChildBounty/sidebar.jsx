@@ -38,10 +38,12 @@ function MultiAssetChildBountySidebarBalance() {
         title="Balance"
         isLoading={loading}
         value={
-          <ValueDisplay
-            value={toPrecision(balance ?? 0, decimals)}
-            symbol={symbol}
-          />
+          <span className="text-textPrimary">
+            <ValueDisplay
+              value={toPrecision(balance ?? 0, decimals)}
+              symbol={symbol}
+            />
+          </span>
         }
       />
       <CardDetailRow
