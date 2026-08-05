@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.7.0
+
+Date:
+2026-07-31. [Code diff](https://github.com/opensquare-network/subsquare/compare/efd8ccd4d...fb9305186).
+
+- [Big] Recovery support: full account recovery flow, code [here](https://github.com/opensquare-network/subsquare/commit/fc2a52bb9).
+- [Medium] Take place of infura IPFS storage with cloudflare S3.
+  - Add scripts to migrate already uploaded files from infura to cloudflare.
+  - Fix fronted render.
+  - Change backend code from infura IPFS to cloudflare S3 upload.
+- [Medium] Multi-asset bounties:
+  - Add statistics tab for multi-asset bounties on the bounty detail page.
+  - Fix multi-asset bounty card balance value display.
+  - Fix multi-asset bounty treasury summary value.
+- [Medium] Fellowship secretary:
+  - Support new fellowship salary asset type hollar.
+  - Fix fellowship salary claimants list rendering.
+  - Remove fellowship referenda's polkassembly link.
+- Treasury:
+  - Add stable treasury spend template for Collectives.
+  - Add valid-only filter for treasury spends.
+  - Show multiple spends links in referenda navigation bar.
+  - Fix isSpendCompleted logic.
+- UI:
+  - Update to new polkadot icons and opengraph background image.
+- Bug fixes:
+  - Fix bounty detail page crash.
+  - Fix incorrect user address result causing user page crash.
+  - Fix bio display for unsupported address.
+  - Fix asset location check on the multi-asset detial page.
+  - Return 404 for invalid coretime sale id.
+- Upgrade dependencies.
+
 # 6.6.0
 
 Date:
