@@ -15852,7 +15852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.11, postcss@npm:^8.5.15, postcss@npm:^8.5.6":
+"postcss@npm:^8.3.11, postcss@npm:^8.5.15, postcss@npm:^8.5.18, postcss@npm:^8.5.6":
   version: 8.5.25
   resolution: "postcss@npm:8.5.25"
   dependencies:
@@ -18390,6 +18390,7 @@ __metadata:
     globals: "npm:^16.4.0"
     husky: "npm:^8.0.3"
     lint-staged: "npm:^13.2.3"
+    postcss: "npm:^8.5.18"
     postcss-import: "npm:^15.1.0"
     postinstall-postinstall: "npm:^2.1.0"
     prettier: "npm:^3.0.0"
