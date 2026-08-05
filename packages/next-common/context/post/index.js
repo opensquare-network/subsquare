@@ -59,6 +59,7 @@ export function usePostTitle() {
     [
       detailPageCategory.GOV2_REFERENDUM,
       detailPageCategory.FELLOWSHIP_REFERENDUM,
+      detailPageCategory.AMBASSADOR_REFERENDUM,
     ].includes(type)
   ) {
     title = getGov2ReferendumTitle(post);
