@@ -32,6 +32,8 @@ import { calendarMenu } from "./calendar";
 import { votingMenu } from "./voting";
 import { navigationMenu } from "./navigation";
 import { votingSpace } from "next-common/utils/opensquareVoting";
+import { isPolkadotChain } from "next-common/utils/chain";
+import { polkadotFellowshipMenu } from "./polkadotFellowship";
 
 export function getHomeMenu({
   summary = {},
@@ -71,6 +73,7 @@ export function getHomeMenu({
         modules?.whitelist && whitelist,
         (modules?.proxy || hasMultisig) && getDataMenu(),
         calendarMenu,
+        isPolkadotChain(CHAIN) && polkadotFellowshipMenu,
         votingSpace && votingMenu,
         navigationMenu,
       ].filter(Boolean),
