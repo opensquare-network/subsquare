@@ -1,6 +1,7 @@
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useIsInSalaryRegistrationPeriod } from "next-common/hooks/fellowship/salary/useIsInSalaryRegistrationPeriod";
+import useClaimantsFellowshipUpdateFunc from "next-common/hooks/fellowship/salary/useClaimantsUpdateFunc";
 import ActionButton from "../../fellowshipTodoList/todoList/actionButton";
 import {
   TodoContent,
@@ -20,6 +21,7 @@ export default function SecretarySalaryRegistrationTodo({
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
   const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(salaryStats);
   const isSalaryRegistered = claimant?.lastActive >= salaryStats.cycleIndex;
+  const onInBlock = useClaimantsFellowshipUpdateFunc();
 
   if (
     !isInRegistrationPeriod ||
@@ -44,6 +46,8 @@ export default function SecretarySalaryRegistrationTodo({
       {showRegisterPopup && (
         <SecretarySalaryRegisterPopup
           onClose={() => setShowRegisterPopup(false)}
+          onInBlock={onInBlock}
+          onFinalized={onInBlock}
         />
       )}
     </>
