@@ -11,6 +11,7 @@ import MemberDataProvider from "./context/memberDataContext";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { isNil } from "lodash-es";
 import FellowshipTodoList from "./components/fellowshipTodoList";
+import SecretaryTodoList from "./components/secretaryTodoList";
 
 export default function CollectivesAccountInfoPanel() {
   const fellowshipMemberData = useMemberData("fellowship");
@@ -35,6 +36,7 @@ export default function CollectivesAccountInfoPanel() {
         </UserPapiAccountProvider>
         <Divider />
         <FellowshipTodoList />
+        <SecretaryTodoList />
 
         <ExtensionUpdatePrompt />
         <AccountPanelScrollPrompt />

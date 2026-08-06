@@ -18,7 +18,6 @@ import { CandidatePromotionTodo } from "./candidatePromotionTodo";
 import { MemberPromotionTodo } from "./memberPromotionTodo";
 import MemberRetentionTodo from "./memberRetentionTodo";
 import ApplicationsTodo from "./applicationsTodo";
-import SecretarySalaryTodos from "./secretarySalaryTodos";
 
 function MakeSureLoaded({ children }) {
   const isLoading = useTodoListLoading();
@@ -93,7 +92,6 @@ function TodoListWithDataLoaded() {
           <CandidateEvidencesTodo />
         </OnlyHighRankMembers>
       </OnlyCollectivesMember>
-      <SecretarySalaryTodos />
       <OnlyCoreMember>
         <RetentionEvidenceSubmissionTodo />
         <MemberReferendaTodo />
