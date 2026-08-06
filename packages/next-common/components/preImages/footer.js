@@ -10,10 +10,10 @@ const AddButton = styled(Button)`
   display: flex;
   padding: 7px;
   background-color: var(--theme500);
-  color: var(--textPrimaryContrast);
+  color: var(--themeContrast);
   border: none;
   > svg path {
-    stroke: var(--textPrimaryContrast);
+    stroke: var(--themeContrast);
   }
 `;
 

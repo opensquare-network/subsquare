@@ -32,7 +32,7 @@ export default function DiscussionsLayout(props) {
           <PrimaryButton
             size="small"
             iconLeft={
-              <SystemPlus className="w-4 h-4 [&_path]:fill-textPrimaryContrast" />
+              <SystemPlus className="w-4 h-4 [&_path]:fill-current" />
             }
             onClick={() => router.push("/posts/create")}
           >

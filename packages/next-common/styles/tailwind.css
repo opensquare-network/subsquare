@@ -52,12 +52,14 @@
   --color-theme100: var(--theme100);
   --color-theme300: var(--theme300);
   --color-theme500: var(--theme500);
+  --color-themeContrast: var(--themeContrast);
   --color-navigationBg: var(--navigationBg);
   --color-navigationActive: var(--navigationActive);
   --color-navigationBorder: var(--navigationBorder);
   --color-navigationText: var(--navigationText);
   --color-navigationTextTertiary: var(--navigationTextTertiary);
   --color-navigationIcon: var(--navigationIcon);
+  --color-navigationLogoText: var(--navigationLogoText);
   --color-shadow100: var(--shadow100);
   --color-shadow200: var(--shadow200);
   --color-pageBg: var(--pageBg);

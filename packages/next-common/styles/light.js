@@ -52,12 +52,14 @@ const light = {
   theme100: "var(--purple100)",
   theme300: "var(--purple300)",
   theme500: "var(--purple500)",
+  themeContrast: "var(--textPrimaryContrast)",
   navigationBg: "var(--neutral100)",
   navigationActive: "var(--neutral200)",
   navigationBorder: "var(--neutral300)",
   navigationText: "var(--textPrimary)",
   navigationTextTertiary: "var(--textTertiary)",
   navigationIcon: "var(--textSecondary)",
+  navigationLogoText: "var(--navigationText)",
   shadow100:
     "0px 6px 7px rgba(30, 33, 52, 0.02),0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786)",
   shadow200:
