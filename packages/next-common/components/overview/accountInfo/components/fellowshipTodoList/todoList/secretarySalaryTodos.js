@@ -21,13 +21,9 @@ const SecretarySalaryPayoutPopup = dynamicPopup(() =>
   import("next-common/components/fellowship/salary/actions/payout/popup"),
 );
 
-function SecretarySalaryRegistrationTodo({
-  claimant,
-  isInRegistrationPeriod,
-  mySalary,
-  salaryStats,
-}) {
+function SecretarySalaryRegistrationTodo({ claimant, mySalary, salaryStats }) {
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
+  const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(salaryStats);
   const isSalaryRegistered = claimant?.lastActive >= salaryStats.cycleIndex;
 
   if (
@@ -59,12 +55,9 @@ function SecretarySalaryRegistrationTodo({
   );
 }
 
-function SecretarySalaryPayoutTodo({
-  claimant,
-  isInPayoutPeriod,
-  salaryStats,
-}) {
+function SecretarySalaryPayoutTodo({ claimant, salaryStats }) {
   const [showPayoutPopup, setShowPayoutPopup] = useState(false);
+  const isInPayoutPeriod = useIsSalaryPayoutPeriod(salaryStats);
   const isPaid =
     claimant?.status?.attempted &&
     claimant.lastActive >= salaryStats.cycleIndex;
@@ -97,8 +90,6 @@ function SecretarySalaryTodosImpl() {
     useFellowshipCollectiveMembers();
   const salaryStats = useFellowshipSalaryStats();
   const { claimant, isLoading: isLoadingClaimant } = useMySalaryClaimant();
-  const isInRegistrationPeriod = useIsInSalaryRegistrationPeriod(salaryStats);
-  const isInPayoutPeriod = useIsSalaryPayoutPeriod(salaryStats);
   const member = (members || []).find((item) =>
     isSameAddress(item.address, address),
   );
@@ -112,13 +103,11 @@ function SecretarySalaryTodosImpl() {
     <>
       <SecretarySalaryRegistrationTodo
         claimant={claimant}
-        isInRegistrationPeriod={isInRegistrationPeriod}
         mySalary={mySalary}
         salaryStats={salaryStats}
       />
       <SecretarySalaryPayoutTodo
         claimant={claimant}
-        isInPayoutPeriod={isInPayoutPeriod}
         salaryStats={salaryStats}
       />
     </>
