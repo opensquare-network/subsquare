@@ -16,37 +16,37 @@ function NavigateButton({ icon, href, children }) {
   );
 }
 
-function AllMembersButton() {
+function AllMembersButton({ section }) {
   return (
     <NavigateButton
       icon={
         <MenuFellowship className="w-[16px] h-[16px] [&_path]:fill-textTertiary" />
       }
-      href="https://collectives.subsquare.io/fellowship/members"
+      href={`https://collectives.subsquare.io/${section}/members`}
     >
       All Members
     </NavigateButton>
   );
 }
 
-function SalaryCyclesButton() {
+function SalaryCyclesButton({ section }) {
   return (
     <NavigateButton
       icon={
         <MenuAsset className="w-[16px] h-[16px] [&_path]:fill-textTertiary" />
       }
-      href="https://collectives.subsquare.io/fellowship/salary"
+      href={`https://collectives.subsquare.io/${section}/salary`}
     >
       Salary Cycles
     </NavigateButton>
   );
 }
 
-export default function NavigationButtons() {
+export default function NavigationButtons({ section = "fellowship" }) {
   return (
     <div className="flex gap-[8px] mt-[8px]">
-      <AllMembersButton />
-      <SalaryCyclesButton />
+      <AllMembersButton section={section} />
+      <SalaryCyclesButton section={section} />
     </div>
   );
 }
