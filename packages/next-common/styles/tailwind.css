@@ -42,6 +42,7 @@
   --color-neutral100: var(--neutral100);
   --color-neutral100-80: var(--neutral100-80);
   --color-neutral200: var(--neutral200);
+  --color-neutral200-80: var(--neutral200-80);
   --color-neutral200alpha: var(--neutral200alpha);
   --color-neutral300: var(--neutral300);
   --color-neutral300-80: var(--neutral300-80);
@@ -52,7 +53,6 @@
   --color-theme100: var(--theme100);
   --color-theme300: var(--theme300);
   --color-theme500: var(--theme500);
-  --color-themeContrast: var(--themeContrast);
   --color-navigationBg: var(--navigationBg);
   --color-navigationActive: var(--navigationActive);
   --color-navigationBorder: var(--navigationBorder);

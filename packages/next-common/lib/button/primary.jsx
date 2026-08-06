@@ -15,7 +15,7 @@ function _PrimaryButton(props, ref) {
       ref={ref}
       {...props}
       className={cn(
-        "text-themeContrast",
+        "text-textPrimaryContrast",
         "bg-theme500 disabled:bg-theme300",
         props.className,
       )}

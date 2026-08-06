@@ -44,7 +44,7 @@ const CurveChartTooltip = memo(function CurveChartTooltip({
     <div
       className={cn(
         "z-[1000000] rounded p-2 select-none",
-        "text12Normal text-textPrimaryContrast",
+        "text12Normal text-white",
         "bg-tooltipBg",
         "pointer-events-none transition-all",
       )}

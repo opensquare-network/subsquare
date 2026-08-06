@@ -21,7 +21,7 @@ export function MineTag() {
     <div
       className={cn(
         "flex items-center justify-center",
-        "bg-theme500 text-white",
+        "bg-theme500 text-textPrimaryContrast",
         "h-[40px] w-[16px]",
         "rounded-tr-[4px] rounded-br-[4px]",
       )}

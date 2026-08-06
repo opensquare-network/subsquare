@@ -1,8 +1,8 @@
 export const polkadotCssVarsLight = {
+  textPrimaryContrast: "rgba(255,255,255,1)",
   theme100: "rgba(245,245,244,1)",
   theme300: "rgba(214,211,209,1)",
   theme500: "rgba(28,25,23,1)",
-  themeContrast: "rgba(255,255,255,1)",
   navigationBg: "rgba(255,255,255,1)",
   navigationActive: "rgba(245,245,244,1)",
   navigationBorder: "rgba(231,229,228,1)",
@@ -14,13 +14,14 @@ export const polkadotCssVarsLight = {
 };
 
 export const polkadotCssVarsDark = {
+  textPrimaryContrast: "rgba(28,25,23,1)",
   theme100: "rgba(214,211,209,0.10)",
   theme300: "rgba(214,211,209,0.40)",
   theme500: "rgba(245,245,244,1)",
-  themeContrast: "rgba(28,25,23,1)",
   neutral100: "rgba(28,25,23,1)",
   "neutral100-80": "rgba(28,25,23,0.8)",
   neutral200: "rgba(41,37,36,1)",
+  "neutral200-80": "rgba(41,37,36,0.8)",
   neutral300: "rgba(41,37,36,1)",
   "neutral300-80": "rgba(41,37,36,0.8)",
   "neutral300-20": "rgba(41,37,36,0.2)",
