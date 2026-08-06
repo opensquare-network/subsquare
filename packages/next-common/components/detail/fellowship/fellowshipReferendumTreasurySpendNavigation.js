@@ -29,7 +29,7 @@ export default function FellowshipReferendumTreasurySpendNavigation() {
             <Link
               href={`/fellowship/treasury/spends/${index}`}
             >{`#${index}`}</Link>
-            {i < sortedTreasurySpendIndexes.length - 1 && <span>, </span>}
+            {i < sortedTreasurySpendIndexes.length - 1 ? <span>, </span> : null}
           </span>
         ))}
       </span>

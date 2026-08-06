@@ -33,7 +33,7 @@ export default function ReferendaReferendumTreasurySpendNavigation() {
         {sortedTreasurySpendIndexes.map((index, i) => (
           <span key={index}>
             <Link href={`/treasury/spends/${index}`}>{`#${index}`}</Link>
-            {i < sortedTreasurySpendIndexes.length - 1 && <span>, </span>}
+            {i < sortedTreasurySpendIndexes.length - 1 ? <span>, </span> : null}
           </span>
         ))}
       </span>
