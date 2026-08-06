@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next-common/components/link";
 import { NavigationWrapper } from "next-common/components/detail/navigation/navigators";
 import TriangleRight from "next-common/assets/imgs/icons/arrow-triangle-right.svg";
+import { sortBy } from "lodash-es";
 
 export function TreasurySpendLink({ index }) {
   return (
@@ -20,6 +21,8 @@ export default function ReferendaReferendumTreasurySpendNavigation() {
     return null;
   }
 
+  const sortedTreasurySpendIndexes = sortBy(treasurySpendIndexes);
+
   return (
     <NavigationWrapper className="text-center">
       <span>
@@ -27,10 +30,10 @@ export default function ReferendaReferendumTreasurySpendNavigation() {
         &nbsp;&nbsp;
         <TriangleRight className="inline align-middle" />
         Treasury Spend{" "}
-        {treasurySpendIndexes.map((index, i) => (
+        {sortedTreasurySpendIndexes.map((index, i) => (
           <span key={index}>
             <Link href={`/treasury/spends/${index}`}>{`#${index}`}</Link>
-            {i < treasurySpendIndexes.length - 1 && <span>, </span>}
+            {i < sortedTreasurySpendIndexes.length - 1 && <span>, </span>}
           </span>
         ))}
       </span>
