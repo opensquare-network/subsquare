@@ -9,7 +9,6 @@ import { usePageProps } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { Skeleton } from "next-common/components/skeleton";
 import { cn, isHash } from "next-common/utils";
-import { useTheme } from "styled-components";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
 import {
   CoreFellowshipMemberRelatedReferendaActionsContent,
@@ -110,7 +109,6 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address, evidence }) {
 }
 
 function OnchainEvidenceContent({ evidence }) {
-  const { isDark } = useTheme();
   const address = useContextAddress();
 
   const cid = getCidByEvidence(evidence);
@@ -123,11 +121,7 @@ function OnchainEvidenceContent({ evidence }) {
 
       <GreyPanel
         className={cn(
-          "flex relative h-12 overflow-hidden after:h-28  after:hidden after:bg-gradient-to-b after:from-[rgba(246,247,250,0)] after:via-[rgba(246,247,250,0.8)] after:to-[#F6F7FA] after:absolute after:w-full after:bottom-0",
-          {
-            "after:bg-gradient-to-b after:from-[rgba(30,33,48,0.00)] after:via-[rgba(30,33,48,0.80)] after:to-[#1E2130]":
-              isDark && !!ifpsContent,
-          },
+          "flex relative h-12 overflow-hidden after:h-28 after:hidden after:bg-gradient-to-b after:from-transparent after:via-neutral200-80 after:to-neutral200 after:absolute after:w-full after:bottom-0",
           {
             "h-60 after:block": !!ifpsContent,
           },

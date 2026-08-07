@@ -44,7 +44,7 @@ export default function Tooltip({
         side={side}
         className={cn(
           "z-[1000000] rounded py-1.5 px-3",
-          "text12Normal text-textPrimaryContrast break-words",
+          "text12Normal text-white break-words",
           "bg-tooltipBg",
           "[&_.value-display-symbol]:text-inherit",
           contentClassName,

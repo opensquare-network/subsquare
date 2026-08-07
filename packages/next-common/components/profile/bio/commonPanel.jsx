@@ -1,5 +1,4 @@
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
-import { useTheme } from "styled-components";
 import { cn } from "next-common/utils";
 import { noop } from "lodash-es";
 
@@ -9,12 +8,6 @@ export default function CommonPanel({
   extra = null,
   onExtraBtnClick = noop,
 }) {
-  const { isDark } = useTheme();
-
-  const backgroundImage = isDark
-    ? "linear-gradient(180deg, rgba(30, 33, 48, 0.80) 0%, rgba(30, 33, 48, 0.00) 100%)"
-    : "linear-gradient(180deg, rgba(246, 247, 250, 0.80) 0%, rgba(246, 247, 250, 0.00) 100%)";
-
   return (
     <GreyPanel
       className={cn(
@@ -23,7 +16,8 @@ export default function CommonPanel({
       )}
       style={{
         background: "none",
-        backgroundImage,
+        backgroundImage:
+          "linear-gradient(180deg, var(--neutral200) 0%, transparent 100%)",
       }}
     >
       {extra && (

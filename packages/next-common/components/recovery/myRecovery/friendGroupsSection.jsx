@@ -169,7 +169,7 @@ export default function FriendGroupsSection() {
         <Tooltip content="Add a new friend group">
           <button
             type="button"
-            className="px-4 py-1.5 rounded-lg bg-theme500 text14Bold text-white cursor-pointer"
+            className="px-4 py-1.5 rounded-lg bg-theme500 text14Bold text-textPrimaryContrast cursor-pointer"
             onClick={() => setShowAddDialog(true)}
           >
             Add

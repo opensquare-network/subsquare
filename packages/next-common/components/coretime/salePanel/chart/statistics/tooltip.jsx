@@ -26,7 +26,7 @@ export default function CoretimeSalePanelChartStatisticsTooltip({
         top: offsetTop,
       }}
     >
-      <div className="rounded py-1.5 px-3 text12Normal text-textPrimaryContrast bg-tooltipBg">
+      <div className="rounded py-1.5 px-3 text12Normal text-white bg-tooltipBg">
         {data.source && <div>Type: {data.source}</div>}
         {data.blockHeight && (
           <div>Block: {Number(data.blockHeight).toLocaleString()}</div>
@@ -41,7 +41,7 @@ export default function CoretimeSalePanelChartStatisticsTooltip({
             <span className="mr-1">Who:</span>
             <AddressUser
               add={data.who}
-              className="text12Medium text-textPrimaryContrast"
+              className="text12Medium text-white"
               noEvent
               noTooltip
             />

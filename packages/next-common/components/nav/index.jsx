@@ -41,7 +41,7 @@ function ChainName() {
   const chainSettings = useChainSettings();
 
   return (
-    <h2 className="text20BoldLogo max-sm:text-[20px] max-sm:font-[28px]">
+    <h2 className="text20BoldLogo text-navigationLogoText max-sm:text-[20px] max-sm:font-[28px]">
       {chainSettings.name}
     </h2>
   );

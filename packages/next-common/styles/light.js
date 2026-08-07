@@ -42,6 +42,7 @@ const light = {
   neutral100: "rgba(255,255,255,1)",
   "neutral100-80": "rgba(255,255,255,0.8)",
   neutral200: "rgba(246,247,250,1)",
+  "neutral200-80": "rgba(246,247,250,0.8)",
   neutral200alpha: "rgba(246,247,250,0.5)",
   neutral300: "rgba(235,238,244,1)",
   "neutral300-80": "rgba(235,238,244,0.8)",
@@ -58,6 +59,7 @@ const light = {
   navigationText: "var(--textPrimary)",
   navigationTextTertiary: "var(--textTertiary)",
   navigationIcon: "var(--textSecondary)",
+  navigationLogoText: "var(--navigationText)",
   shadow100:
     "0px 6px 7px rgba(30, 33, 52, 0.02),0px 1.34018px 1.56354px rgba(30, 33, 52, 0.0119221),0px 0.399006px 0.465507px rgba(30, 33, 52, 0.00807786)",
   shadow200:

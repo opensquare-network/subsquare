@@ -105,7 +105,7 @@ export function AddressesTooltip({
           <AddressUser
             add={address}
             maxWidth={addressMaxWidth}
-            className="text12Medium text-textPrimaryContrast"
+            className="text12Medium text-white"
             noTooltip
           />
         </li>

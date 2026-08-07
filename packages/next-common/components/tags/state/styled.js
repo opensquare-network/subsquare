@@ -4,7 +4,7 @@ import tw from "tailwind-styled-components";
 const Common = tw.span`
   inline-flex items-center
   py-0.5 px-2
-  text12Medium text-textPrimaryContrast
+  text12Medium text-white
   rounded
   capitalize
   cursor-default

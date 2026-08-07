@@ -3,7 +3,6 @@ import BaseLayout from "../baseLayout";
 import usePageTitle from "next-common/hooks/usePageTitle";
 import Divider from "../../styled/layout/divider";
 import TabsList from "../../tabs/list";
-import { useTheme } from "styled-components";
 
 /**
  * @typedef {{
@@ -46,7 +45,6 @@ export default function ProfileLayout({
   header,
   pageHeader,
 }) {
-  const { isDark } = useTheme();
   const seoTitle = usePageTitle(
     seoInfoProp.title ?? title ?? "governance platform",
   );
@@ -86,9 +84,8 @@ export default function ProfileLayout({
     <BaseLayout
       seoInfo={seoInfo}
       contentStyle={{
-        backgroundImage: isDark
-          ? "linear-gradient(180deg, #212433 0%, #1E2130 100%)"
-          : "linear-gradient(180deg, #FDFDFD 0%, #F6F7FA 100%)",
+        backgroundImage:
+          "linear-gradient(180deg, var(--neutral100) 0%, var(--pageBg) 100%)",
       }}
     >
       {pageHeader && (
