@@ -1,5 +1,30 @@
-import { useState } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 import { formatPrice, toTokenUnits } from "../../utils";
+import Tooltip from "next-common/components/tooltip";
+
+// Shared price direction state, controlled from the column header.
+// `inverted` toggles every row between:
+//   "1 token1 = X token2"  (Price (A/B))
+//   "1 token2 = X token1"  (Price (B/A))
+const PriceDirectionContext = createContext({
+  inverted: false,
+  toggle: () => {},
+});
+
+export function PriceDirectionProvider({ children }) {
+  const [inverted, setInverted] = useState(false);
+  const toggle = useCallback(() => setInverted((v) => !v), []);
+
+  return (
+    <PriceDirectionContext.Provider value={{ inverted, toggle }}>
+      {children}
+    </PriceDirectionContext.Provider>
+  );
+}
+
+export function usePriceDirection() {
+  return useContext(PriceDirectionContext);
+}
 
 // Compute the token pair price from a pool's raw reserves:
 // 1 token1 = X token2, plus the inverted direction (1 token2 = Y token1).
@@ -17,8 +42,33 @@ function computePoolPrice(pool, inverted) {
   return inverted ? invertedPrice : price;
 }
 
+// Clickable column header: "Price (A/B)" ⇄ "Price (B/A)".
+// A/B is the base/quote notation, i.e. how many B per 1 A, which matches the
+// per-row display "1 <token1> ≈ X <token2>".
+function PriceColumnHeader() {
+  const { inverted, toggle } = usePriceDirection();
+
+  return (
+    <Tooltip
+      content={
+        inverted
+          ? "Price (B/A): how many A per 1 B"
+          : "Price (A/B): how many B per 1 A"
+      }
+    >
+      <button
+        type="button"
+        onClick={toggle}
+        className="inline-flex items-center gap-1 transition-colors text-theme500"
+      >
+        <span>Price ({inverted ? "B/A" : "A/B"})</span>
+      </button>
+    </Tooltip>
+  );
+}
+
 function PriceCell({ item }) {
-  const [inverted, setInverted] = useState(false);
+  const { inverted } = usePriceDirection();
 
   const value = formatPrice(computePoolPrice(item, inverted));
   if (!value) {
@@ -34,20 +84,12 @@ function PriceCell({ item }) {
         1 <span className="text-textTertiary">{baseSymbol}</span> ≈ {value}{" "}
         <span className="text-textTertiary">{quoteSymbol}</span>
       </span>
-      <button
-        type="button"
-        aria-label="Toggle price direction"
-        className="text-textTertiary transition-colors hover:text-theme500"
-        onClick={() => setInverted((v) => !v)}
-      >
-        <span className="text-[16px] leading-none select-none">⇄</span>
-      </button>
     </div>
   );
 }
 
 export const colPrice = {
-  name: "Price",
+  name: <PriceColumnHeader />,
   style: { textAlign: "right", width: "260px", minWidth: "260px" },
   render: (item) => <PriceCell item={item} />,
 };
