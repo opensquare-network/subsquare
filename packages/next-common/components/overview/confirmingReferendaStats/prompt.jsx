@@ -17,7 +17,8 @@ export default function Prompt({
         <span className="mr-2">OpenGov:</span>
         There&nbsp;<span>{confirmingCount > 1 ? "are" : "is"}</span>
         <span className="text14Bold">&nbsp;{confirmingCount}&nbsp;</span>
-        referenda confirming{requesting}. &nbsp;
+        {confirmingCount === 1 ? "referendum" : "referenda"} confirming
+        {requesting}. &nbsp;
         <span>
           Check {confirmingCount > 1 ? "them" : "it"}
           &nbsp;
