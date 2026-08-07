@@ -5,7 +5,7 @@ export const colTvl = {
   style: { textAlign: "right", width: "180px", minWidth: "180px" },
   render: (item) =>
     item.tvl ? (
-      <ValueDisplay value={item.tvl} symbol="USDT" />
+      <ValueDisplay value={item.tvl} symbol={item.tvlSymbol} />
     ) : (
       <span className="text14Medium text-textTertiary">-</span>
     ),

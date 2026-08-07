@@ -11,7 +11,9 @@ export default function LiquidPools() {
     <div className="flex flex-col gap-4">
       <TitleContainer className="justify-start gap-x-1">
         Liquid Pools
-        <span className="text16Medium text-textTertiary">{count}</span>
+        {loading ? null : (
+          <span className="text16Medium text-textTertiary">{count}</span>
+        )}
       </TitleContainer>
       <SecondaryCard>
         <LiquidPoolsTable

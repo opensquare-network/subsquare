@@ -23,8 +23,6 @@ function useTokenIcon(token) {
 function TokenLogo({ token }) {
   const Icon = useTokenIcon(token);
   return (
-    // Opaque neutral100 circle + thin neutral300 ring, so overlapping icons
-    // read as separate badges instead of sticking together / showing through.
     <div className="p-[2px] rounded-full bg-neutral100 border border-neutral300">
       {/* eslint-disable-next-line react-hooks/static-components */}
       <Icon width={24} height={24} />

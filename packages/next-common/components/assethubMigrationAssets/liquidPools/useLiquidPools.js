@@ -1,35 +1,32 @@
 import { useEffect, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
-import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
+import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
+import { getAssetHubPapiClient } from "next-common/utils/assetHub";
 import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import { useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import {
-  computeNativeUsdtPrice,
+  computeNativeQuotePrice,
   computePoolTvl,
+  decodeSymbol,
   formatAmount,
-  formatPrice,
-  getLocationPair,
+  getLocationHash,
   getPoolAssetId,
   parseTokenLocation,
+  stringifyLocation,
   toTokenUnits,
 } from "./utils";
 
-// USDT asset id used as the TVL anchor on each Asset Hub.
-// All main Asset Hubs mint USDT as local asset 1984.
-const USDT_ASSET_IDS = {
-  [Chains.polkadotAssetHub]: 1984,
-  [Chains.kusamaAssetHub]: 1984,
-  [Chains.westendAssetHub]: 1984,
-  [Chains.paseoAssetHub]: 1984,
-};
+// USDC asset id used as the TVL anchor on Polkadot (relay or asset hub) only.
+const USDC_ASSET_ID = 1337;
 
 function normalizeToken(
   parsed,
-  locationCodec,
+  location,
   assetsMetadata,
   foreignAssetsMetadata,
+  foreignLocationHashes,
   nativeSymbol,
   nativeDecimals,
 ) {
@@ -55,15 +52,14 @@ function normalizeToken(
     };
   }
 
-  const locationKey = JSON.stringify(parsed.location);
+  const locationKey = stringifyLocation(location);
   const meta = foreignAssetsMetadata.get(locationKey) || {};
   return {
     type: "foreign",
     key: `foreign:${locationKey}`,
     // Location hash, same id used by the Foreign Assets tab for its icons.
-    assetId: locationCodec?.hash?.toString?.(),
-    location: parsed.location,
-    locationCodec,
+    assetId: foreignLocationHashes.get(locationKey),
+    location,
     symbol: meta.symbol || "Foreign",
     decimals: meta.decimals ?? 0,
     hasName: !!meta.symbol,
@@ -82,95 +78,138 @@ function readReserveBalance(result, tokenType) {
     return available.isNegative() ? new BigNumber(0) : available;
   }
 
-  if (result.isNone) {
-    return new BigNumber(0);
-  }
-
-  const account = result.unwrap();
-  const isLiquid =
-    account.status?.isLiquid || account.status?.toString?.() === "Liquid";
+  const isLiquid = result.status?.type === "Liquid";
   if (!isLiquid) {
     return new BigNumber(0);
   }
 
-  return new BigNumber(account.balance.toString());
+  return new BigNumber(result.balance.toString());
 }
 
-async function fetchLiquidPools(
-  api,
-  { usdtAssetId, nativeSymbol, nativeDecimals },
-) {
+// Fetch all chain entries the liquid pools list needs, in parallel.
+async function fetchPoolEntries(papi) {
   const [
     poolsEntries,
     poolAssetsEntries,
     assetsMetadataEntries,
     foreignAssetsMetadataEntries,
   ] = await Promise.all([
-    api.query.assetConversion.pools.entries(),
-    api.query.poolAssets.asset.entries(),
-    api.query.assets.metadata.entries(),
-    api.query.foreignAssets.metadata.entries(),
+    papi.query.AssetConversion.Pools.getEntries(),
+    papi.query.PoolAssets.Asset.getEntries(),
+    papi.query.Assets.Metadata.getEntries(),
+    papi.query.ForeignAssets.Metadata.getEntries(),
   ]);
 
-  const assetsMetadata = new Map();
-  assetsMetadataEntries.forEach(([key, value]) => {
-    assetsMetadata.set(Number(key.args[0]), {
-      symbol: value.symbol?.toHuman?.() ?? value.symbol?.toString?.() ?? "",
-      decimals: value.decimals?.toNumber?.() ?? value.decimals ?? 0,
+  return {
+    poolsEntries,
+    poolAssetsEntries,
+    assetsMetadataEntries,
+    foreignAssetsMetadataEntries,
+  };
+}
+
+function buildAssetsMetadata(entries) {
+  const map = new Map();
+  entries.forEach(({ keyArgs, value }) => {
+    map.set(Number(keyArgs[0]), {
+      symbol: decodeSymbol(value.symbol),
+      decimals: value.decimals ?? 0,
     });
   });
+  return map;
+}
 
-  const foreignAssetsMetadata = new Map();
-  foreignAssetsMetadataEntries.forEach(([key, value]) => {
-    foreignAssetsMetadata.set(JSON.stringify(key.args[0].toJSON()), {
-      symbol: value.symbol?.toHuman?.() ?? value.symbol?.toString?.() ?? "",
-      decimals: value.decimals?.toNumber?.() ?? value.decimals ?? 0,
+function buildForeignAssetsMetadata(entries) {
+  const map = new Map();
+  entries.forEach(({ keyArgs, value }) => {
+    map.set(stringifyLocation(keyArgs[0]), {
+      symbol: decodeSymbol(value.symbol),
+      decimals: value.decimals ?? 0,
     });
   });
+  return map;
+}
 
-  const poolAssetMap = new Map();
-  poolAssetsEntries.forEach(([key, value]) => {
-    // Read via toJSON(): on current runtimes the decoded struct does not expose
-    // its fields as direct codec properties (value.owner is undefined).
-    const json = value.toJSON?.() ?? value;
-    poolAssetMap.set(Number(key.args[0]), {
-      owner: json.owner?.toString?.(),
-      supply: json.supply?.toString?.() ?? "0",
+function buildPoolAssetMap(entries) {
+  const map = new Map();
+  entries.forEach(({ keyArgs, value }) => {
+    map.set(Number(keyArgs[0]), {
+      owner: value.owner,
+      supply: value.supply?.toString?.() ?? "0",
     });
   });
+  return map;
+}
 
+// Location hash of every registered foreign asset, used as the icon assetId
+// for foreign tokens (matches the Foreign Assets tab).
+async function buildForeignLocationHashes(foreignAssetsMetadataEntries) {
+  const map = new Map();
+  try {
+    const client = await getAssetHubPapiClient();
+    await Promise.all(
+      foreignAssetsMetadataEntries.map(async ({ keyArgs }) => {
+        const location = keyArgs[0];
+        const hash = await getLocationHash(client, location);
+        if (hash) {
+          map.set(stringifyLocation(location), hash);
+        }
+      }),
+    );
+  } catch (e) {
+    // Location hashes are only used for foreign token icons; fall back to
+    // placeholder icons rather than failing the whole pools list.
+    console.error("Failed to compute foreign token location hashes", e);
+  }
+  return map;
+}
+
+// Build the raw pool list, skipping pools with incomplete info (no owner or
+// tokens without a registered on-chain symbol).
+function buildPools(
+  poolsEntries,
+  {
+    poolAssetMap,
+    assetsMetadata,
+    foreignAssetsMetadata,
+    foreignLocationHashes,
+    nativeSymbol,
+    nativeDecimals,
+  },
+) {
   const pools = [];
-  for (const [key, value] of poolsEntries) {
+  for (const { keyArgs, value } of poolsEntries) {
     const poolAssetId = getPoolAssetId(value);
     const poolAsset = poolAssetMap.get(poolAssetId);
     if (isNil(poolAssetId) || !poolAsset?.owner) {
       continue;
     }
 
-    const tuple = key.args;
-    const [loc1, loc2] = getLocationPair(tuple) ?? [];
+    // PAPI keyArgs = [ [loc1, loc2] ]: the two MultiLocations in a single tuple.
+    const [loc1, loc2] = keyArgs[0] ?? [];
     if (!loc1 || !loc2) {
       continue;
     }
 
     const token1 = normalizeToken(
-      parseTokenLocation(loc1.toJSON()),
+      parseTokenLocation(loc1),
       loc1,
       assetsMetadata,
       foreignAssetsMetadata,
+      foreignLocationHashes,
       nativeSymbol,
       nativeDecimals,
     );
     const token2 = normalizeToken(
-      parseTokenLocation(loc2.toJSON()),
+      parseTokenLocation(loc2),
       loc2,
       assetsMetadata,
       foreignAssetsMetadata,
+      foreignLocationHashes,
       nativeSymbol,
       nativeDecimals,
     );
 
-    // Skip pools whose tokens have no registered symbol on chain (incomplete info).
     if (!token1.hasName || !token2.hasName) {
       continue;
     }
@@ -184,110 +223,161 @@ async function fetchLiquidPools(
     });
   }
 
-  // fetch reserves (owner balances), batched in a single queryMulti
-  const balanceRequests = [];
-  pools.forEach((pool) => {
-    [pool.token1, pool.token2].forEach((token) => {
-      if (token.type === "native") {
-        balanceRequests.push([api.query.system.account, pool.owner]);
-      } else if (token.type === "asset") {
-        balanceRequests.push([
-          api.query.assets.account,
-          [token.assetId, pool.owner],
-        ]);
-      } else {
-        balanceRequests.push([
-          api.query.foreignAssets.account,
-          [token.locationCodec, pool.owner],
-        ]);
-      }
-    });
+  return pools;
+}
+
+// Build the on-chain balance query for a single pool token, held in the pool
+// vault's owner account.
+function buildBalanceQuery(papi, token, owner) {
+  if (token.type === "native") {
+    return papi.query.System.Account.getValue(owner);
+  }
+  if (token.type === "asset") {
+    return papi.query.Assets.Account.getValue(token.assetId, owner);
+  }
+  return papi.query.ForeignAssets.Account.getValue(token.location, owner);
+}
+
+// Fetch a single pool's reserve balances ([reserve1, reserve2]) as BigNumbers.
+async function fetchPoolReserves(papi, pool) {
+  const tokens = [pool.token1, pool.token2];
+  const balanceResults = await Promise.all(
+    tokens.map((token) => buildBalanceQuery(papi, token, pool.owner)),
+  );
+
+  return tokens.map((token, index) =>
+    readReserveBalance(balanceResults[index], token.type),
+  );
+}
+
+// Compare two pools by TVL (anchor-token plancks) descending; pools without a
+// computable TVL sort last.
+function compareTvlDesc(a, b, anchor) {
+  const tvlA = computePoolTvl(a, anchor.tokenKey, anchor.nativeAnchorPrice);
+  const tvlB = computePoolTvl(b, anchor.tokenKey, anchor.nativeAnchorPrice);
+
+  if (!tvlA) {
+    return 1;
+  }
+  if (!tvlB) {
+    return -1;
+  }
+  if (tvlB.gt(tvlA)) {
+    return 1;
+  }
+  if (tvlB.lt(tvlA)) {
+    return -1;
+  }
+  return 0;
+}
+
+// Format a single pool into its display row: reserves and TVL (in the anchor
+// token) in token units. The token pair price is computed at render time by the
+// caller.
+function formatPoolRow(pool, anchor) {
+  const [reserve1, reserve2] = pool.reserves;
+
+  const tvlPlancks = computePoolTvl(
+    pool,
+    anchor.tokenKey,
+    anchor.nativeAnchorPrice,
+  );
+
+  const reserve1Units = toTokenUnits(reserve1, pool.token1.decimals);
+  const reserve2Units = toTokenUnits(reserve2, pool.token2.decimals);
+
+  return {
+    ...pool,
+    reserve1: formatAmount(reserve1Units),
+    reserve2: formatAmount(reserve2Units),
+    tvl: tvlPlancks
+      ? formatAmount(toTokenUnits(tvlPlancks, anchor.decimals))
+      : null,
+    tvlSymbol: anchor.symbol,
+  };
+}
+
+async function fetchLiquidPools(
+  papi,
+  { isUsdcAnchor, nativeSymbol, nativeDecimals },
+) {
+  const {
+    poolsEntries,
+    poolAssetsEntries,
+    assetsMetadataEntries,
+    foreignAssetsMetadataEntries,
+  } = await fetchPoolEntries(papi);
+
+  const assetsMetadata = buildAssetsMetadata(assetsMetadataEntries);
+  const foreignAssetsMetadata = buildForeignAssetsMetadata(
+    foreignAssetsMetadataEntries,
+  );
+  const poolAssetMap = buildPoolAssetMap(poolAssetsEntries);
+  const foreignLocationHashes = await buildForeignLocationHashes(
+    foreignAssetsMetadataEntries,
+  );
+
+  const pools = buildPools(poolsEntries, {
+    poolAssetMap,
+    assetsMetadata,
+    foreignAssetsMetadata,
+    foreignLocationHashes,
+    nativeSymbol,
+    nativeDecimals,
   });
 
-  const balanceResults = balanceRequests.length
-    ? await api.queryMulti(balanceRequests)
-    : [];
-  let balanceIdx = 0;
-  pools.forEach((pool) => {
-    pool.reserves = [pool.token1, pool.token2].map((token) =>
-      readReserveBalance(balanceResults[balanceIdx++], token.type),
-    );
-  });
-
-  // TVL (in USDT), valued from each pool's own reserves
-  const usdtTokenKey = `asset:${usdtAssetId}`;
-  const nativeUsdtPrice = computeNativeUsdtPrice(pools, usdtTokenKey);
-
-  // Sort by TVL (USDT plancks) descending; pools without a computable TVL last.
-  const sortedPools = [...pools].sort((a, b) => {
-    const tvlA = computePoolTvl(a, usdtTokenKey, nativeUsdtPrice);
-    const tvlB = computePoolTvl(b, usdtTokenKey, nativeUsdtPrice);
-    if (!tvlA) {
-      return 1;
-    }
-    if (!tvlB) {
-      return -1;
-    }
-    if (tvlB.gt(tvlA)) {
-      return 1;
-    }
-    if (tvlB.lt(tvlA)) {
-      return -1;
-    }
-    return 0;
-  });
-
-  return sortedPools.map((pool) => {
-    const [reserve1, reserve2] = pool.reserves;
-
-    const tvlPlancks = computePoolTvl(pool, usdtTokenKey, nativeUsdtPrice);
-
-    const reserve1Units = toTokenUnits(reserve1, pool.token1.decimals);
-    const reserve2Units = toTokenUnits(reserve2, pool.token2.decimals);
-
-    // 1 token1 = X token2 (and the inverted direction)
-    const price = reserve1Units.gt(0) ? reserve2Units.div(reserve1Units) : null;
-    const invertedPrice = reserve2Units.gt(0)
-      ? reserve1Units.div(reserve2Units)
-      : null;
-
-    return {
+  // Fetch each pool's reserves and assemble the pool with them.
+  const poolsWithReserves = await Promise.all(
+    pools.map(async (pool) => ({
       ...pool,
-      reserve1: formatAmount(reserve1Units),
-      reserve2: formatAmount(reserve2Units),
-      tvl: tvlPlancks ? formatAmount(toTokenUnits(tvlPlancks, 6)) : null,
-      price: formatPrice(price),
-      invertedPrice: formatPrice(invertedPrice),
-    };
-  });
+      reserves: await fetchPoolReserves(papi, pool),
+    })),
+  );
+
+  // TVL anchor: USDC on Polkadot (relay or asset hub), native elsewhere.
+  const anchor = isUsdcAnchor
+    ? {
+        tokenKey: `asset:${USDC_ASSET_ID}`,
+        nativeAnchorPrice: computeNativeQuotePrice(
+          poolsWithReserves,
+          `asset:${USDC_ASSET_ID}`,
+        ),
+        symbol: "USDC",
+        decimals: assetsMetadata.get(USDC_ASSET_ID)?.decimals ?? 6,
+      }
+    : {
+        tokenKey: "native",
+        nativeAnchorPrice: new BigNumber(1),
+        symbol: nativeSymbol,
+        decimals: nativeDecimals,
+      };
+
+  // Sort by TVL descending; pools without a computable TVL last.
+  return [...poolsWithReserves]
+    .sort((a, b) => compareTvlDesc(a, b, anchor))
+    .map((pool) => formatPoolRow(pool, anchor));
 }
 
 export default function useLiquidPools() {
-  const api = useAssetHubApi();
-  // useChain() returns the relay chain (e.g. "polkadot"), while USDT_ASSET_IDS is
-  // keyed by asset hub chain ids (e.g. "polkadot-assethub") - map first.
+  const papi = useAssetHubPapi();
   const assetHubChain = useAssetHubChain();
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
-  const usdtAssetId = USDT_ASSET_IDS[assetHubChain];
+
+  // TVL anchor: USDC on Polkadot (relay or asset hub), native elsewhere.
+  const isUsdcAnchor = assetHubChain === Chains.polkadotAssetHub;
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    if (isNil(usdtAssetId)) {
-      setData([]);
-      setLoading(false);
+    if (!papi) {
       return;
     }
 
     let cancelled = false;
     setLoading(true);
 
-    fetchLiquidPools(api, { usdtAssetId, nativeSymbol, nativeDecimals })
+    fetchLiquidPools(papi, { isUsdcAnchor, nativeSymbol, nativeDecimals })
       .then((pools) => {
         if (!cancelled) {
           setData(pools);
@@ -308,7 +398,7 @@ export default function useLiquidPools() {
     return () => {
       cancelled = true;
     };
-  }, [api, usdtAssetId, nativeSymbol, nativeDecimals]);
+  }, [papi, isUsdcAnchor, nativeSymbol, nativeDecimals]);
 
   return useMemo(
     () => ({ data, loading, count: data?.length ?? 0 }),

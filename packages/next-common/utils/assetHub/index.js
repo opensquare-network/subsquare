@@ -6,6 +6,7 @@ import { getPapi } from "next-common/services/chain/papi";
 
 let api = null;
 let papiApi = null;
+let papiClient = null;
 
 function getAssetHubEndpoints() {
   const chain = getAssetHubChain(CHAIN);
@@ -36,9 +37,20 @@ export async function getAssetHubPapi() {
 
   const assetHubEndpoints = getAssetHubEndpoints();
 
-  const { api } = await getPapi(assetHubEndpoints);
+  const { api, client } = await getPapi(assetHubEndpoints);
 
   papiApi = api;
+  papiClient = client;
 
   return api;
+}
+
+export async function getAssetHubPapiClient() {
+  if (papiClient) {
+    return papiClient;
+  }
+
+  await getAssetHubPapi();
+
+  return papiClient;
 }
