@@ -64,10 +64,10 @@ export function getHomeMenu({
     modules?.staking && stakingMenu,
     modules?.people && getPeopleMenu({ isAdmin, hasActiveJudgementRequest }),
     modules?.coretime && coretimeMenu,
+    ...integrationsMenu,
     getAdvancedMenu(
       [
         modules?.preimages && preImages,
-        ...integrationsMenu,
         modules?.vesting && vesting,
         modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
