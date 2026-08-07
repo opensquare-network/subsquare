@@ -48,6 +48,6 @@ function PriceCell({ item }) {
 
 export const colPrice = {
   name: "Price",
-  style: { textAlign: "right", minWidth: "210px" },
+  style: { textAlign: "right", width: "260px", minWidth: "260px" },
   render: (item) => <PriceCell item={item} />,
 };

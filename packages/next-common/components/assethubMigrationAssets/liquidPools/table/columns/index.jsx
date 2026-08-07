@@ -10,6 +10,6 @@ export const liquidPoolsColumnsDef = [
   colTokenPair,
   colAccount,
   colReserve,
-  colTvl,
   colPrice,
+  colTvl,
 ];

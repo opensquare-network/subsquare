@@ -2,7 +2,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 
 export const colReserve = {
   name: "Reserve",
-  style: { textAlign: "right", width: "180px", minWidth: "180px" },
+  style: { textAlign: "right", width: "160px", minWidth: "160px" },
   render: (item) => (
     <div className="flex flex-col items-end gap-0.5">
       <ValueDisplay
