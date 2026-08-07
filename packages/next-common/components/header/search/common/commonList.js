@@ -82,11 +82,10 @@ export function getCategoryOrSearchItemPath(item) {
   if (item.type === ItemType.CATEGORY) {
     return getCategoryPath(item.proposalType);
   }
-  if (
-    [SearchType.IDENTITIES, SearchType.FELLOWSHIP_MEMBERS].includes(
-      item.proposalType,
-    )
-  ) {
+  if (item.proposalType === SearchType.IDENTITIES) {
+    return getSearchItemPath(item.proposalType, item.account);
+  }
+  if (item.proposalType === SearchType.FELLOWSHIP_MEMBERS) {
     return getSearchItemPath(item.proposalType, item.address);
   }
 
