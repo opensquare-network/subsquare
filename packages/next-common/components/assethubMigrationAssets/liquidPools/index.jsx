@@ -10,7 +10,7 @@ export default function LiquidPools() {
   return (
     <div className="flex flex-col gap-4">
       <TitleContainer className="justify-start gap-x-1">
-        Liquid Pools
+        Liquidity Pools
         {loading ? null : (
           <span className="text16Medium text-textTertiary">{count}</span>
         )}
