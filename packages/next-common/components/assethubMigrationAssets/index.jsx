@@ -38,7 +38,7 @@ const DESCRIPTION_MAPS = Object.freeze({
   account: "Connected user can check and manage various assets",
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
-  liquidity_pools: "All liquid pools info",
+  liquidity_pools: "All liquidity pools info",
 });
 
 function HeaderTabs() {
