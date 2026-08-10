@@ -3,6 +3,7 @@ import { AssetHubTabsProvider } from "next-common/components/assethubMigrationAs
 import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
+import LiquidPools from "./liquidPools";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
 import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
 import Tabs from "next-common/components/tabs";
@@ -20,18 +21,24 @@ const TABS = Object.freeze([
     value: "foreign_assets",
     label: "Foreign Assets",
   },
+  {
+    value: "liquid_pools",
+    label: "Liquid Pools",
+  },
 ]);
 
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",
   assets: "Assets",
   ["foreign_assets"]: "Foreign Assets",
+  liquid_pools: "Liquid Pools",
 });
 
 const DESCRIPTION_MAPS = Object.freeze({
   account: "Connected user can check and manage various assets",
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
+  liquid_pools: "All liquid pools info",
 });
 
 function HeaderTabs() {
@@ -60,6 +67,8 @@ function AssetsContent() {
     return <AllAssetsList />;
   } else if (activeValue === "foreign_assets") {
     return <ForeignAssetsList />;
+  } else if (activeValue === "liquid_pools") {
+    return <LiquidPools />;
   } else {
     return null;
   }
