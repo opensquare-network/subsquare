@@ -245,7 +245,7 @@ const transferEnabledChains = [
   Chains.rococo,
   Chains.paseo,
   Chains.hyperBridge,
-  // Chains.hydradx,
+  Chains.hydradx,
 ];
 
 const paraChainTeleportEnabledChains = [Chains.collectives];

@@ -58,7 +58,7 @@ const links = [
 const ethereumNetwork = {
   chainId: "0x3640e",
   chainName: "HydraDX",
-  rpcUrls: ["https://rpc.hydradx.cloud"],
+  rpcUrls: ["https://hydration-rpc.n.dwellir.com"],
   blockExplorerUrls: ["https://explorer.evm.hydration.cloud"],
   nativeCurrency: {
     symbol: "WETH",
