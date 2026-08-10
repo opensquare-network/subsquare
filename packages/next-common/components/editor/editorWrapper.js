@@ -1,4 +1,6 @@
-import styled from "styled-components";
+import { isPolkadotChain } from "next-common/utils/chain";
+import { CHAIN } from "next-common/utils/constants";
+import styled, { css } from "styled-components";
 
 const EditorWrapper = styled.div`
   /* plus padding */
@@ -10,6 +12,20 @@ const EditorWrapper = styled.div`
     background: var(--neutral100);
     color: var(--textPrimary);
   }
+
+  ${isPolkadotChain(CHAIN) &&
+    css`
+      .toggle-bar-wrapper {
+        div.on > div,
+        div.off > div {
+          background: var(--neutral100);
+        }
+
+        div.off {
+          background: var(--neutral500);
+        }
+      }
+    `}
 
   div ul.mention-list {
     z-index: 10;
