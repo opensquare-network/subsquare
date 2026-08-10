@@ -86,7 +86,7 @@ function readReserveBalance(result, tokenType) {
   return new BigNumber(result.balance.toString());
 }
 
-// Fetch all chain entries the liquid pools list needs, in parallel.
+// Fetch all chain entries the liquidity pools list needs, in parallel.
 async function fetchPoolEntries(papi) {
   const [
     poolsEntries,
@@ -384,7 +384,7 @@ export default function useLiquidPools() {
         }
       })
       .catch((err) => {
-        console.error("Failed to fetch liquid pools", err);
+        console.error("Failed to fetch liquidity pools", err);
         if (!cancelled) {
           setData([]);
         }

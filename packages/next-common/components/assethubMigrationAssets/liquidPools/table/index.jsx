@@ -11,7 +11,7 @@ export default function LiquidPoolsTable({ pools, loading, columnsDef }) {
           data={pools}
           getRowKey={(pool) => pool.poolAssetId}
           loading={loading}
-          noDataText="No liquid pools"
+          noDataText="No liquidity pools"
         />
       </ScrollerX>
     </PriceDirectionProvider>

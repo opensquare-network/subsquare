@@ -42,26 +42,17 @@ function computePoolPrice(pool, inverted) {
   return inverted ? invertedPrice : price;
 }
 
-// Clickable column header: "Price (A/B)" ⇄ "Price (B/A)".
-// A/B is the base/quote notation, i.e. how many B per 1 A, which matches the
-// per-row display "1 <token1> ≈ X <token2>".
 function PriceColumnHeader() {
-  const { inverted, toggle } = usePriceDirection();
+  const { toggle } = usePriceDirection();
 
   return (
-    <Tooltip
-      content={
-        inverted
-          ? "Price (B/A): how many A per 1 B"
-          : "Price (A/B): how many B per 1 A"
-      }
-    >
+    <Tooltip content="Click to toggle between 1 token1 = X token2 and 1 token2 = Y token1">
       <button
         type="button"
         onClick={toggle}
         className="inline-flex items-center gap-1 transition-colors text-theme500"
       >
-        <span>Price ({inverted ? "B/A" : "A/B"})</span>
+        <span>Price</span>
       </button>
     </Tooltip>
   );

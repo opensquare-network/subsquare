@@ -22,8 +22,8 @@ const TABS = Object.freeze([
     label: "Foreign Assets",
   },
   {
-    value: "liquid_pools",
-    label: "Liquid Pools",
+    value: "liquidity_pools",
+    label: "Liquidity Pools",
   },
 ]);
 
@@ -31,14 +31,14 @@ const TITLE_MAPS = Object.freeze({
   account: "Account assets",
   assets: "Assets",
   ["foreign_assets"]: "Foreign Assets",
-  liquid_pools: "Liquid Pools",
+  liquidity_pools: "Liquidity Pools",
 });
 
 const DESCRIPTION_MAPS = Object.freeze({
   account: "Connected user can check and manage various assets",
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
-  liquid_pools: "All liquid pools info",
+  liquidity_pools: "All liquidity pools info",
 });
 
 function HeaderTabs() {
@@ -67,7 +67,7 @@ function AssetsContent() {
     return <AllAssetsList />;
   } else if (activeValue === "foreign_assets") {
     return <ForeignAssetsList />;
-  } else if (activeValue === "liquid_pools") {
+  } else if (activeValue === "liquidity_pools") {
     return <LiquidPools />;
   } else {
     return null;
