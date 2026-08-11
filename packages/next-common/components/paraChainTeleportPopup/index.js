@@ -11,19 +11,27 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useChainApi, useGetTeleportTxFunc } from "./crossChainApi";
 import useCrossChainDirection from "./useCrossChainDirection";
-import useNativeTransferAmount from "./useNativeTransferAmount";
+import useTeleportTransferAmount, {
+  DOT_SYMBOL,
+  DOT_DECIMALS,
+  HYDRATION_DOT_ASSET_ID,
+} from "./useTeleportTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
+import { InfoMessage } from "next-common/components/setting/styled";
+import { getChainName } from "./useCrossChainDirection";
+import { isHydrationChain } from "next-common/utils/chain";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
   const {
     sourceChain,
     destinationChain,
+    isEvmSigner,
     component: crossChainDirection,
   } = useCrossChainDirection();
   const sourceApi = useChainApi(sourceChain);
@@ -38,10 +46,30 @@ function PopupContent() {
   const user = useUser();
   const address = user?.address;
   const dispatch = useDispatch();
+
+  // DOT is a foreign asset on HydraDX; its existential deposit is exposed per
+  // asset by the assetRegistry pallet (not by a balances/tokens constant).
+  const [hydrationDotED, setHydrationDotED] = useState(null);
+  useEffect(() => {
+    if (isHydrationChain(destinationChain) && destinationApi) {
+      destinationApi.query.assetRegistry
+        ?.assets(HYDRATION_DOT_ASSET_ID)
+        .then((res) => {
+          const ed = res?.existentialDeposit;
+          setHydrationDotED(ed?.toJSON?.() ?? ed?.toString?.() ?? null);
+        })
+        .catch(() => setHydrationDotED(null));
+    } else {
+      setHydrationDotED(null);
+    }
+  }, [destinationChain, destinationApi]);
+
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
-  } = useNativeTransferAmount({
+  } = useTeleportTransferAmount({
+    sourceChain,
+    destinationChain,
     api: sourceApi,
     transferFromAddress: address,
   });
@@ -85,12 +113,30 @@ function PopupContent() {
 
   return (
     <>
+      {isEvmSigner && (
+        <InfoMessage>
+          The direction is locked to {getChainName(sourceChain)} →{" "}
+          {getChainName(destinationChain)} for MetaMask.
+        </InfoMessage>
+      )}
       <ConnectedUserOrigin />
       {crossChainDirection}
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
-        <ExistentialDeposit destApi={destinationApi} />
+        {/* DOT is a foreign asset on HydraDX, so its destination deposit is the
+        assetRegistry's per-asset value (and its own decimals), not the native
+        HDX one. */}
+        <ExistentialDeposit
+          destApi={destinationApi}
+          value={
+            isHydrationChain(destinationChain) ? hydrationDotED : undefined
+          }
+          symbol={isHydrationChain(destinationChain) ? DOT_SYMBOL : undefined}
+          decimals={
+            isHydrationChain(destinationChain) ? DOT_DECIMALS : undefined
+          }
+        />
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>

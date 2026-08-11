@@ -248,7 +248,7 @@ const transferEnabledChains = [
   Chains.hydradx,
 ];
 
-const paraChainTeleportEnabledChains = [Chains.collectives];
+const paraChainTeleportEnabledChains = [Chains.collectives, Chains.hydradx];
 
 const paraChainTeleportOnRelayChainEnabledChains = [
   Chains.polkadot,
@@ -262,6 +262,9 @@ const paraChainTeleportOnRelayChainEnabledChains = [
 ];
 
 export function AccountHead({ width }) {
+  const user = useUser();
+  const isEvmSigner = isEthereumAddress(tryConvertToEvmAddress(user?.address));
+
   return (
     <div className="flex flex-col gap-2">
       <div
@@ -284,9 +287,11 @@ export function AccountHead({ width }) {
             </RelayChainApiProvider>
           </OnlyChains>
           <OnlyChains chains={paraChainTeleportEnabledChains}>
-            <RelayChainApiProvider>
-              <ParaChainTeleportButton />
-            </RelayChainApiProvider>
+            {!isEvmSigner && (
+              <RelayChainApiProvider>
+                <ParaChainTeleportButton />
+              </RelayChainApiProvider>
+            )}
           </OnlyChains>
           <OnlyChains
             chains={[

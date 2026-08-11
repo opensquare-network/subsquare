@@ -160,6 +160,8 @@ export function getRelayChain(chain) {
     return Chains.polkadot;
   } else if (isHyperBridgeChain(chain)) {
     return Chains.polkadot;
+  } else if (chain === Chains.hydradx) {
+    return Chains.polkadot;
   } else if (isKusamaAssetHubChain(chain)) {
     return Chains.kusama;
   } else if (isKusamaPeopleChain(chain)) {
