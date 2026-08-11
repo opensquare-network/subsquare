@@ -33,6 +33,7 @@ function PopupContent() {
     isEvmSigner,
     component: crossChainDirection,
   } = useHydrationCrossChainDirection();
+  const isHydrationDest = isHydrationChain(destinationChain);
   const sourceApi = useChainApi(sourceChain);
   const destinationApi = useChainApi(destinationChain);
   const getTeleportTx = useGetHydrationCrossChainTx({
@@ -50,7 +51,7 @@ function PopupContent() {
   // asset by the assetRegistry pallet (not by a balances/tokens constant).
   const [hydrationDotED, setHydrationDotED] = useState(null);
   useEffect(() => {
-    if (isHydrationChain(destinationChain) && destinationApi) {
+    if (isHydrationDest && destinationApi) {
       destinationApi.query.assetRegistry
         ?.assets(HYDRATION_DOT_ASSET_ID)
         .then((res) => {
@@ -61,7 +62,7 @@ function PopupContent() {
     } else {
       setHydrationDotED(null);
     }
-  }, [destinationChain, destinationApi]);
+  }, [isHydrationDest, destinationApi]);
 
   const {
     getCheckedValue: getCheckedTransferAmount,
@@ -125,16 +126,16 @@ function PopupContent() {
         {/* DOT is a foreign asset on Hydration, so its destination deposit is the
         assetRegistry's per-asset value (and its own decimals), not the native
         HDX one. */}
-        <ExistentialDeposit
-          destApi={destinationApi}
-          value={
-            isHydrationChain(destinationChain) ? hydrationDotED : undefined
-          }
-          symbol={isHydrationChain(destinationChain) ? DOT_SYMBOL : undefined}
-          decimals={
-            isHydrationChain(destinationChain) ? DOT_DECIMALS : undefined
-          }
-        />
+        {isHydrationDest ? (
+          <ExistentialDeposit
+            destApi={destinationApi}
+            value={hydrationDotED}
+            symbol={DOT_SYMBOL}
+            decimals={DOT_DECIMALS}
+          />
+        ) : (
+          <ExistentialDeposit destApi={destinationApi} />
+        )}
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
