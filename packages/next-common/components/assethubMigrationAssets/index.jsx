@@ -4,6 +4,7 @@ import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import LiquidPools from "./liquidPools";
+import Swap from "./swap";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
 import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
 import Tabs from "next-common/components/tabs";
@@ -14,6 +15,14 @@ const TABS = Object.freeze([
     label: "Account",
   },
   {
+    value: "swap",
+    label: "Swap",
+  },
+  {
+    value: "liquidity_pools",
+    label: "Liquidity Pools",
+  },
+  {
     value: "assets",
     label: "Assets",
   },
@@ -21,14 +30,11 @@ const TABS = Object.freeze([
     value: "foreign_assets",
     label: "Foreign Assets",
   },
-  {
-    value: "liquidity_pools",
-    label: "Liquidity Pools",
-  },
 ]);
 
 const TITLE_MAPS = Object.freeze({
   account: "Account assets",
+  swap: "Swap",
   assets: "Assets",
   ["foreign_assets"]: "Foreign Assets",
   liquidity_pools: "Liquidity Pools",
@@ -36,6 +42,7 @@ const TITLE_MAPS = Object.freeze({
 
 const DESCRIPTION_MAPS = Object.freeze({
   account: "Connected user can check and manage various assets",
+  swap: "Swap assets through Asset Hub liquidity pools",
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
   liquidity_pools: "All liquidity pools info",
@@ -63,6 +70,8 @@ function AssetsContent() {
 
   if (activeValue === "account") {
     return <AssetsAccount />;
+  } else if (activeValue === "swap") {
+    return <Swap />;
   } else if (activeValue === "assets") {
     return <AllAssetsList />;
   } else if (activeValue === "foreign_assets") {
