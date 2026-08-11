@@ -1,7 +1,9 @@
 import CurrencyInput from "next-common/components/currencyInput";
+import { AccountBalanceFiatValue } from "next-common/components/overview/accountInfo/components/accountBalances";
 import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { Skeleton } from "next-common/components/skeleton";
 import { toPrecision } from "next-common/utils";
+import { parseTokenAmount } from "../utils";
 import TokenPicker from "./tokenPicker";
 
 function BalanceLabel({ balance, label, loading, token }) {
@@ -12,6 +14,24 @@ function BalanceLabel({ balance, label, loading, token }) {
       isLoading={loading}
       balance={toPrecision(balance ?? 0, token?.decimals ?? 0)}
       symbol={token?.symbol}
+    />
+  );
+}
+
+function ApproximateFiatValue({ amount, token }) {
+  if (token?.type !== "native") {
+    return null;
+  }
+
+  const nativeTokenAmount = parseTokenAmount(amount, token.decimals);
+  if (nativeTokenAmount <= 0n) {
+    return null;
+  }
+
+  return (
+    <AccountBalanceFiatValue
+      className="inline-flex min-w-0 text12Medium text-textTertiary"
+      value={nativeTokenAmount}
     />
   );
 }
@@ -48,6 +68,7 @@ export default function SwapField({
             <CurrencyInput
               placeholder="0.00"
               readOnly={readOnly}
+              suffix={<ApproximateFiatValue amount={amount} token={token} />}
               value={amount}
               onValueChange={onAmountChange}
             />
