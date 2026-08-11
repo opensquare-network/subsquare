@@ -2,6 +2,7 @@ import { NeutralPanel } from "next-common/components/styled/containers/neutralPa
 import Tabs from "next-common/components/tabs";
 import { useState } from "react";
 import { ProfileFellowshipCoreFeedsServerFirst } from "./feeds";
+import ProfileFellowshipCoreRank from "./rank";
 
 export default function ProfileFellowshipCore() {
   const tabs = [
@@ -9,6 +10,11 @@ export default function ProfileFellowshipCore() {
       label: "Feeds",
       value: "feeds",
       content: <ProfileFellowshipCoreFeedsServerFirst />,
+    },
+    {
+      label: "Rank",
+      value: "rank",
+      content: <ProfileFellowshipCoreRank />,
     },
   ];
 

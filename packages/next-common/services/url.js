@@ -99,6 +99,8 @@ export const fellowshipStatisticsMembershipApi =
   "fellowship/statistics/membership/times";
 export const fellowshipStatisticsUsersApi = (address) =>
   `fellowship/statistics/users/${address}`;
+export const fellowshipStatisticsMemberRankHistoryApi = (address) =>
+  `fellowship/statistics/members/${address}/ranks`;
 
 // secretary
 export const secretaryMembersApiUri = "secretary/members";
@@ -165,6 +167,8 @@ export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
 // fellowship statistics
 export const ambassadorStatisticsUsersApi = (address) =>
   `ambassador/statistics/users/${address}`;
+export const ambassadorStatisticsMemberRankHistoryApi = (address) =>
+  `ambassador/statistics/members/${address}/ranks`;
 
 // treasury bounties
 export const treasuryBountiesAppendantApi = (index) =>
