@@ -197,13 +197,15 @@ function ExistentialDepositField() {
 }
 
 function SubmitButton() {
-  const { api } = useSwap();
+  const { api, balances } = useSwap();
   const { getTxFunc, quote, submitDisabledReason } = useSwapQuote();
-  const { refresh } = quote;
+  const { refresh: refreshBalances } = balances;
+  const { refresh: refreshQuote } = quote;
 
   const handleInBlock = useCallback(() => {
-    refresh();
-  }, [refresh]);
+    refreshBalances();
+    refreshQuote();
+  }, [refreshBalances, refreshQuote]);
 
   return (
     <div className="flex justify-end">
@@ -214,7 +216,6 @@ function SubmitButton() {
           disabled={!!submitDisabledReason}
           getTxFunc={getTxFunc}
           onInBlock={handleInBlock}
-          onFinalized={handleInBlock}
           autoClose={false}
         />
       </Tooltip>
