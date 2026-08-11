@@ -23,6 +23,8 @@ import Chains from "next-common/utils/consts/chains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { useWindowWidthContext } from "next-common/context/windowSize";
+import { useChain } from "next-common/context/chain";
+import { isHydrationChain } from "next-common/utils/chain";
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import { IconButton } from "next-common/components/styled/iconButton";
@@ -37,6 +39,12 @@ import { useChainSettings } from "next-common/context/chain";
 
 const ParaChainTeleportPopup = dynamic(() =>
   import("next-common/components/paraChainTeleportPopup").then(
+    (mod) => mod.default,
+  ),
+);
+
+const HydrationCrossChainPopup = dynamic(() =>
+  import("next-common/components/hydrationCrossChainPopup").then(
     (mod) => mod.default,
   ),
 );
@@ -214,12 +222,17 @@ function CrosschainButton({ onClick }) {
 
 function ParaChainTeleportButton() {
   const [showPopup, setShowPopup] = useState(false);
+  const currChain = useChain();
+  const isHydration = isHydrationChain(currChain);
   return (
     <>
       <CrosschainButton onClick={() => setShowPopup(true)} />
-      {showPopup && (
-        <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
-      )}
+      {showPopup &&
+        (isHydration ? (
+          <HydrationCrossChainPopup onClose={() => setShowPopup(false)} />
+        ) : (
+          <ParaChainTeleportPopup onClose={() => setShowPopup(false)} />
+        ))}
     </>
   );
 }

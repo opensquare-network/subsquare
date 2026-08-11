@@ -8,10 +8,10 @@ import { isHydrationChain } from "next-common/utils/chain";
 export const DOT_SYMBOL = "DOT";
 export const DOT_DECIMALS = 10;
 
-// DOT is a foreign asset in HydraDX's `tokens` pallet under this asset id.
+// DOT is a foreign asset in Hydration's `tokens` pallet under this asset id.
 export const HYDRATION_DOT_ASSET_ID = 5;
 
-export default function useTeleportTransferAmount({
+export default function useHydrationTransferAmount({
   sourceChain,
   api,
   transferFromAddress,
@@ -52,14 +52,14 @@ export default function useTeleportTransferAmount({
     };
 
     if (isHydrationChain(sourceChain)) {
-      // DOT is a foreign asset (tokens pallet) on HydraDX.
+      // DOT is a foreign asset (tokens pallet) on Hydration.
       api.query.tokens
         ?.accounts(transferFromAddress, HYDRATION_DOT_ASSET_ID, (account) =>
           handleAccount(account, true),
         )
         ?.then((result) => (unsub = result));
     } else {
-      // DOT is native on Asset Hub / Collectives.
+      // DOT is native on Asset Hub.
       api.query.system
         ?.account(transferFromAddress, (account) =>
           handleAccount(account, false),

@@ -68,7 +68,6 @@ export function useGetTeleportTxFunc({
         const paraChainId = getParaChainId(destinationChain);
         return teleportFromRelayChainToParaChain({
           sourceApi,
-          destinationChain,
           transferToAddress,
           amount,
           paraChainId,
@@ -83,8 +82,6 @@ export function useGetTeleportTxFunc({
         const paraChainId = getParaChainId(destinationChain);
         return teleportFromParaChainToParaChain({
           sourceApi,
-          sourceChain,
-          destinationChain,
           transferToAddress,
           amount,
           paraChainId,
