@@ -99,7 +99,10 @@ async function fetchPoolEntries(papi) {
     papi.query.AssetConversion.Pools.getEntries(),
     papi.query.PoolAssets.Asset.getEntries(),
     papi.query.Assets.Metadata.getEntries(),
-    papi.query.ForeignAssets.Metadata.getEntries(),
+    papi.query.ForeignAssets.Metadata.getEntries().catch((error) => {
+      console.warn("Failed to get ForeignAssets.Metadata entries:", error);
+      return [];
+    }),
   ]);
 
   return {

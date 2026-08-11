@@ -12,13 +12,14 @@ import Tooltip from "next-common/components/tooltip";
 import { useChainSettings } from "next-common/context/chain";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { cn, toPercentage, toPrecision } from "next-common/utils";
+import { useSwapQuote } from "../context/quote";
 import { useSwap } from "../context/swap";
 import {
   BPS_DENOMINATOR,
   PRICE_IMPACT_HIGH_THRESHOLD,
   SLIPPAGE_OPTIONS,
 } from "../constants";
-import SwapField from "./swapField";
+import SwapField, { SwapBalanceLabel, SwapFieldBody } from "./swapField";
 
 function FieldFooter({ actions }) {
   if (!actions) {
@@ -81,32 +82,51 @@ function PayField() {
   );
 }
 
-function ReceiveField() {
-  const { balances, pools, quote } = useSwap();
-  const { tokenOut } = pools;
+function ReceiveAmountField({ onTokenChange, poolsLoading, token, tokens }) {
+  const { quote } = useSwapQuote();
 
   let amount = "";
-  if (!isNil(quote.quote) && tokenOut) {
-    amount = toPrecision(quote.quote, tokenOut.decimals);
+  if (!isNil(quote.quote) && token) {
+    amount = toPrecision(quote.quote, token.decimals);
   }
 
   return (
-    <SwapField
+    <SwapFieldBody
       amount={amount}
-      balance={balances.tokenOut}
-      balanceLoading={balances.tokenOutLoading}
-      label="Receive"
-      onTokenChange={pools.setTokenOut}
-      poolsLoading={pools.loading}
+      onTokenChange={onTokenChange}
+      poolsLoading={poolsLoading}
       readOnly
-      token={tokenOut}
-      tokens={pools.tokenOptions}
+      token={token}
+      tokens={tokens}
     />
   );
 }
 
+function ReceiveField() {
+  const { balances, pools } = useSwap();
+  const { tokenOut } = pools;
+
+  return (
+    <div>
+      <SwapBalanceLabel
+        balance={balances.tokenOut}
+        label="Receive"
+        loading={pools.loading || balances.tokenOutLoading}
+        token={tokenOut}
+      />
+      <ReceiveAmountField
+        onTokenChange={pools.setTokenOut}
+        poolsLoading={pools.loading}
+        token={tokenOut}
+        tokens={pools.tokenOptions}
+      />
+    </div>
+  );
+}
+
 function ReversePairButton() {
-  const { pools, quote, setAmount } = useSwap();
+  const { pools, setAmount } = useSwap();
+  const { quote } = useSwapQuote();
 
   const handleClick = useCallback(() => {
     if (!isNil(quote.quote) && pools.tokenOut) {
@@ -177,11 +197,13 @@ function ExistentialDepositField() {
 }
 
 function SubmitButton() {
-  const { api, getTxFunc, quote, submitDisabledReason } = useSwap();
+  const { api } = useSwap();
+  const { getTxFunc, quote, submitDisabledReason } = useSwapQuote();
+  const { refresh } = quote;
 
   const handleInBlock = useCallback(() => {
-    quote.refresh();
-  }, [quote]);
+    refresh();
+  }, [refresh]);
 
   return (
     <div className="flex justify-end">
@@ -200,15 +222,11 @@ function SubmitButton() {
   );
 }
 
-export default function SwapCard() {
-  const { getTxFunc, priceImpact } = useSwap();
+function SwapTransactionSettings() {
+  const { getTxFunc, priceImpact } = useSwapQuote();
 
   return (
-    <SecondaryCard className="space-y-4">
-      <PayField />
-      <ReversePairButton />
-      <ReceiveField />
-
+    <>
       {!isNil(priceImpact) && priceImpact <= PRICE_IMPACT_HIGH_THRESHOLD && (
         <WarningInfoPanel>
           High price impact. Review the minimum received before continuing.
@@ -223,6 +241,17 @@ export default function SwapCard() {
       </AdvanceSettings>
 
       <SubmitButton />
+    </>
+  );
+}
+
+export default function SwapCard() {
+  return (
+    <SecondaryCard className="space-y-4">
+      <PayField />
+      <ReversePairButton />
+      <ReceiveField />
+      <SwapTransactionSettings />
     </SecondaryCard>
   );
 }

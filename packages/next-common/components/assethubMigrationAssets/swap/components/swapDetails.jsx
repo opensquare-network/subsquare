@@ -6,6 +6,7 @@ import { SecondaryCardDetail } from "next-common/components/styled/containers/se
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { cn, toPrecision } from "next-common/utils";
+import { useSwapQuote } from "../context/quote";
 import { useSwap } from "../context/swap";
 import { getLpFeeUnit } from "../amm";
 import {
@@ -56,7 +57,8 @@ function ReserveRow({ token, reserve, isLoading }) {
 }
 
 function PoolReserves() {
-  const { pools, quote } = useSwap();
+  const { pools } = useSwap();
+  const { quote } = useSwapQuote();
   const { tokenIn, tokenOut } = pools;
   const reserves = quote.reserves;
   const isLoading = pools.loading || quote.loading;
@@ -178,7 +180,8 @@ function LpFeeValue({ isLoading, lpFee, lpFeeAmount, tokenIn }) {
 }
 
 function SwapSummary() {
-  const { minimumReceived, pools, priceImpact, quote } = useSwap();
+  const { pools } = useSwap();
+  const { minimumReceived, priceImpact, quote } = useSwapQuote();
   const { tokenIn, tokenOut } = pools;
   const { loading, lpFee, lpFeeAmount, unitRate } = quote;
   const isQuoteLoading = pools.loading || loading;

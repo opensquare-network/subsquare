@@ -1,6 +1,7 @@
 import NoDataStatusBox from "next-common/components/popup/noDataStatusBox";
 import SwapCard from "./components/swapCard";
 import SwapDetails from "./components/swapDetails";
+import { SwapQuoteProvider } from "./context/quote";
 import SwapSignerProvider from "./context/signer";
 import { SwapProvider, useSwap } from "./context/swap";
 
@@ -27,7 +28,9 @@ export default function Swap() {
   return (
     <SwapSignerProvider>
       <SwapProvider>
-        <SwapLayout />
+        <SwapQuoteProvider>
+          <SwapLayout />
+        </SwapQuoteProvider>
       </SwapProvider>
     </SwapSignerProvider>
   );

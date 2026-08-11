@@ -6,7 +6,7 @@ import { toPrecision } from "next-common/utils";
 import { parseTokenAmount } from "../utils";
 import TokenPicker from "./tokenPicker";
 
-function BalanceLabel({ balance, label, loading, token }) {
+export function SwapBalanceLabel({ balance, label, loading, token }) {
   return (
     <PopupLabelWithBalance
       text={label}
@@ -36,12 +36,8 @@ function ApproximateFiatValue({ amount, token }) {
   );
 }
 
-export default function SwapField({
+export function SwapFieldBody({
   amount,
-  balance,
-  balanceLoading,
-  children,
-  label,
   onAmountChange,
   onTokenChange,
   poolsLoading = false,
@@ -50,13 +46,7 @@ export default function SwapField({
   tokens,
 }) {
   return (
-    <div>
-      <BalanceLabel
-        balance={balance}
-        label={label}
-        loading={poolsLoading || balanceLoading}
-        token={token}
-      />
+    <>
       {poolsLoading ? (
         <div className="flex items-stretch gap-2">
           <Skeleton className="flex-1 h-10" />
@@ -76,6 +66,40 @@ export default function SwapField({
           <TokenPicker onChange={onTokenChange} token={token} tokens={tokens} />
         </div>
       )}
+    </>
+  );
+}
+
+export default function SwapField({
+  amount,
+  balance,
+  balanceLoading,
+  children,
+  label,
+  onAmountChange,
+  onTokenChange,
+  poolsLoading = false,
+  readOnly = false,
+  token,
+  tokens,
+}) {
+  return (
+    <div>
+      <SwapBalanceLabel
+        balance={balance}
+        label={label}
+        loading={poolsLoading || balanceLoading}
+        token={token}
+      />
+      <SwapFieldBody
+        amount={amount}
+        onAmountChange={onAmountChange}
+        onTokenChange={onTokenChange}
+        poolsLoading={poolsLoading}
+        readOnly={readOnly}
+        token={token}
+        tokens={tokens}
+      />
       {children}
     </div>
   );
