@@ -11,7 +11,7 @@ export const DOT_DECIMALS = 10;
 // DOT is a foreign asset in Hydration's `tokens` pallet under this asset id.
 export const HYDRATION_DOT_ASSET_ID = 5;
 
-export default function useHydrationTransferAmount({
+export default function useTransferAmount({
   sourceChain,
   api,
   transferFromAddress,

@@ -1,4 +1,4 @@
-import ExistentialDeposit from "next-common/components/popup/fields/existentialDepositField";
+import ExistentialDepositValue from "next-common/components/popup/fields/existentialDepositValue";
 import ConnectedUserOrigin from "next-common/components/popup/fields/connectedUserOriginField";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -19,11 +19,11 @@ import { useChainApi, useGetHydrationCrossChainTx } from "./crossChainApi";
 import useHydrationCrossChainDirection, {
   getChainName,
 } from "./useHydrationCrossChainDirection";
-import useHydrationTransferAmount, {
+import useTransferAmount, {
   DOT_SYMBOL,
   DOT_DECIMALS,
   HYDRATION_DOT_ASSET_ID,
-} from "./useHydrationTransferAmount";
+} from "./useTransferAmount";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -49,31 +49,44 @@ function PopupContent() {
 
   // DOT is a foreign asset on Hydration; its existential deposit is exposed per
   // asset by the assetRegistry pallet (not by a balances/tokens constant).
-  const [hydrationDotED, setHydrationDotED] = useState(null);
-  const [isHydrationDotEDLoading, setIsHydrationDotEDLoading] = useState(false);
+  // The destination ED of the transferred asset (DOT) depends on the
+  // destination chain:
+  // - Hydration: DOT is a foreign asset; its per-asset ED comes from the
+  //   assetRegistry pallet (async query).
+  // - Asset Hub: DOT is the native token; its ED is the balances pallet's.
+  const [dotED, setDotED] = useState(null);
+  const [isDotEDLoading, setIsDotEDLoading] = useState(true);
   useEffect(() => {
-    if (isHydrationDest && destinationApi) {
-      setIsHydrationDotEDLoading(true);
+    if (!destinationApi) {
+      setDotED(null);
+      setIsDotEDLoading(true);
+      return;
+    }
+
+    if (isHydrationDest) {
+      setIsDotEDLoading(true);
       destinationApi.query.assetRegistry
         ?.assets(HYDRATION_DOT_ASSET_ID)
         .then((res) => {
           // assets() returns an Option; the field is only reachable after
           // unwrapping it.
           const ed = res?.isSome ? res.unwrap().existentialDeposit : null;
-          setHydrationDotED(ed?.toJSON?.() ?? ed?.toString?.() ?? null);
+          setDotED(ed?.toJSON?.() ?? ed?.toString?.() ?? null);
         })
-        .catch(() => setHydrationDotED(null))
-        .finally(() => setIsHydrationDotEDLoading(false));
+        .catch(() => setDotED(null))
+        .finally(() => setIsDotEDLoading(false));
     } else {
-      setHydrationDotED(null);
-      setIsHydrationDotEDLoading(false);
+      setDotED(
+        destinationApi.consts.balances?.existentialDeposit?.toJSON?.() ?? null,
+      );
+      setIsDotEDLoading(false);
     }
   }, [isHydrationDest, destinationApi]);
 
   const {
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
-  } = useHydrationTransferAmount({
+  } = useTransferAmount({
     sourceChain,
     api: sourceApi,
     transferFromAddress: address,
@@ -129,20 +142,14 @@ function PopupContent() {
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
-        {/* DOT is a foreign asset on Hydration, so its destination deposit is the
-        assetRegistry's per-asset value (and its own decimals), not the native
-        HDX one. */}
-        {isHydrationDest ? (
-          <ExistentialDeposit
-            destApi={destinationApi}
-            value={hydrationDotED}
-            symbol={DOT_SYMBOL}
-            decimals={DOT_DECIMALS}
-            loading={isHydrationDotEDLoading}
-          />
-        ) : (
-          <ExistentialDeposit destApi={destinationApi} />
-        )}
+        {/* The transferred asset is always DOT; its destination ED is computed
+        per destination chain in the dotED effect above. */}
+        <ExistentialDepositValue
+          value={dotED}
+          symbol={DOT_SYMBOL}
+          decimals={DOT_DECIMALS}
+          loading={isDotEDLoading}
+        />
       </AdvanceSettings>
       <div className="flex justify-end">
         <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
