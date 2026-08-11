@@ -10,9 +10,10 @@ export default function ExistentialDeposit({
   value: valueOverride,
   symbol: symbolOverride,
   decimals: decimalsOverride,
+  loading: loadingOverride,
 }) {
   const { symbol, decimals, isLoading } = useApiProperties(destApi);
-  const loading = isLoading || !destApi;
+  const loading = loadingOverride ?? (isLoading || !destApi);
 
   // Allow callers to override the deposit value/symbol/decimals when the
   // destination asset is not the chain's native token (e.g. DOT on HydraDX,

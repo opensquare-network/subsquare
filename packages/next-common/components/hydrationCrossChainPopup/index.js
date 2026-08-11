@@ -50,17 +50,23 @@ function PopupContent() {
   // DOT is a foreign asset on Hydration; its existential deposit is exposed per
   // asset by the assetRegistry pallet (not by a balances/tokens constant).
   const [hydrationDotED, setHydrationDotED] = useState(null);
+  const [isHydrationDotEDLoading, setIsHydrationDotEDLoading] = useState(false);
   useEffect(() => {
     if (isHydrationDest && destinationApi) {
+      setIsHydrationDotEDLoading(true);
       destinationApi.query.assetRegistry
         ?.assets(HYDRATION_DOT_ASSET_ID)
         .then((res) => {
-          const ed = res?.existentialDeposit;
+          // assets() returns an Option; the field is only reachable after
+          // unwrapping it.
+          const ed = res?.isSome ? res.unwrap().existentialDeposit : null;
           setHydrationDotED(ed?.toJSON?.() ?? ed?.toString?.() ?? null);
         })
-        .catch(() => setHydrationDotED(null));
+        .catch(() => setHydrationDotED(null))
+        .finally(() => setIsHydrationDotEDLoading(false));
     } else {
       setHydrationDotED(null);
+      setIsHydrationDotEDLoading(false);
     }
   }, [isHydrationDest, destinationApi]);
 
@@ -132,6 +138,7 @@ function PopupContent() {
             value={hydrationDotED}
             symbol={DOT_SYMBOL}
             decimals={DOT_DECIMALS}
+            loading={isHydrationDotEDLoading}
           />
         ) : (
           <ExistentialDeposit destApi={destinationApi} />
