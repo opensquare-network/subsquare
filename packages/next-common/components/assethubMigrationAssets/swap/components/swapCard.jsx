@@ -216,6 +216,7 @@ function SubmitButton() {
           disabled={!!submitDisabledReason}
           getTxFunc={getTxFunc}
           onInBlock={handleInBlock}
+          onFinalized={handleInBlock}
           autoClose={false}
         />
       </Tooltip>

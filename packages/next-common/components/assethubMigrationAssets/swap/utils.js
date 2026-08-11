@@ -14,7 +14,7 @@ export function parseTokenAmount(value, decimals) {
   }
 }
 
-export function formatTokenAmount(value, decimals, maxDecimals = 6) {
+export function formatTokenAmount(value, decimals, maxDecimals = 4) {
   if (isNil(value)) {
     return "-";
   }
