@@ -13,12 +13,21 @@ import { CHAIN } from "next-common/utils/constants";
 import getChainSettings from "next-common/utils/consts/settings";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import normalizeTipListItem from "next-common/utils/viewfuncs/treasury/normalizeTipListItem";
+import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeBountyListItem";
+import normalizeMultiAssetBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeMultiAssetBountyListItem";
+import ProjectBountiesList from "../projectDetailPopup/bountiesList";
+import ProjectMultiAssetBountiesList from "../projectDetailPopup/multiAssetBountiesList";
+import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+
+const STABLECOIN_SYMBOLS = new Set(["USDC", "USDT", "HOLLAR"]);
 
 export const TAB_VALUES = {
   proposals: "proposals",
   spends: "spends",
   childBounties: "childBounties",
   tips: "tips",
+  bounties: "bounties",
+  multiAssetBounties: "multiAssetBounties",
 };
 
 export default function usePopupDetailTabs({
@@ -26,6 +35,8 @@ export default function usePopupDetailTabs({
   spendList,
   childBountyList,
   tipList,
+  bountyList,
+  multiAssetBountyList,
 }) {
   const normalizedProposalList = useMemo(
     () => proposalList ?? [],
@@ -37,14 +48,27 @@ export default function usePopupDetailTabs({
     [childBountyList],
   );
   const normalizedTipList = useMemo(() => tipList ?? [], [tipList]);
+  const normalizedBountyList = useMemo(() => bountyList ?? [], [bountyList]);
+  const normalizedMultiAssetBountyList = useMemo(
+    () => multiAssetBountyList ?? [],
+    [multiAssetBountyList],
+  );
 
-  const { proposalIndexes, spendIndexes, childBountyIndexes, tipIndexes } =
-    useFormatIndexes({
-      proposalList: normalizedProposalList,
-      spendList: normalizedSpendList,
-      childBountyList: normalizedChildBountyList,
-      tipList: normalizedTipList,
-    });
+  const {
+    proposalIndexes,
+    spendIndexes,
+    childBountyIndexes,
+    tipIndexes,
+    bountyIndexes,
+    multiAssetBountyIndexes,
+  } = useFormatIndexes({
+    proposalList: normalizedProposalList,
+    spendList: normalizedSpendList,
+    childBountyList: normalizedChildBountyList,
+    tipList: normalizedTipList,
+    bountyList: normalizedBountyList,
+    multiAssetBountyList: normalizedMultiAssetBountyList,
+  });
 
   const { items: proposals, loading: proposalsLoading } = useTreasuryItems({
     indexes: proposalIndexes,
@@ -71,6 +95,21 @@ export default function usePopupDetailTabs({
     normalizeItem: normalizeTipListItem,
   });
 
+  const { items: bounties, loading: bountiesLoading } = useTreasuryItems({
+    indexes: bountyIndexes,
+    apiPath: "/treasury/bounties",
+    normalizeItem: normalizeBountyListItem,
+  });
+
+  const {
+    items: multiAssetBounties,
+    loading: multiAssetBountiesLoading,
+  } = useTreasuryItems({
+    indexes: multiAssetBountyIndexes,
+    apiPath: "/treasury/multi-asset-bounties",
+    normalizeItem: normalizeMultiAssetBountyListItem,
+  });
+
   const normalizedProposals = useMemo(
     () => normalizeProposals(proposals, normalizedProposalList),
     [proposals, normalizedProposalList],
@@ -89,6 +128,25 @@ export default function usePopupDetailTabs({
   const normalizedTips = useMemo(
     () => normalizeTips(tips, normalizedTipList),
     [tips, normalizedTipList],
+  );
+
+  const normalizedBounties = useMemo(
+    () =>
+      normalizeItemsWithPrice(
+        bounties,
+        normalizedBountyList,
+        (bounty) => bounty.bountyIndex,
+      ),
+    [bounties, normalizedBountyList],
+  );
+
+  const normalizedMultiAssetBounties = useMemo(
+    () =>
+      normalizeMultiAssetBounties(
+        multiAssetBounties,
+        normalizedMultiAssetBountyList,
+      ),
+    [multiAssetBounties, normalizedMultiAssetBountyList],
   );
 
   const tabs = useMemo(
@@ -135,6 +193,28 @@ export default function usePopupDetailTabs({
             <ProjectTipsList tips={normalizedTips} loading={tipsLoading} />
           ),
         },
+        normalizedBountyList?.length > 0 && {
+          value: TAB_VALUES.bounties,
+          label: "Bounties",
+          activeCount: normalizedBountyList.length,
+          content: (
+            <ProjectBountiesList
+              bounties={normalizedBounties}
+              loading={bountiesLoading}
+            />
+          ),
+        },
+        normalizedMultiAssetBountyList?.length > 0 && {
+          value: TAB_VALUES.multiAssetBounties,
+          label: "Multi-Asset Bounties",
+          activeCount: normalizedMultiAssetBountyList.length,
+          content: (
+            <ProjectMultiAssetBountiesList
+              bounties={normalizedMultiAssetBounties}
+              loading={multiAssetBountiesLoading}
+            />
+          ),
+        },
       ].filter(Boolean),
     [
       normalizedProposals,
@@ -149,6 +229,12 @@ export default function usePopupDetailTabs({
       childBountiesLoading,
       normalizedTipList,
       tipsLoading,
+      normalizedBountyList,
+      normalizedBounties,
+      bountiesLoading,
+      normalizedMultiAssetBountyList,
+      normalizedMultiAssetBounties,
+      multiAssetBountiesLoading,
     ],
   );
 
@@ -159,16 +245,22 @@ export default function usePopupDetailTabs({
     spends: normalizedSpends,
     childBounties: normalizedChildBounties,
     tips: normalizedTips,
+    bounties: normalizedBounties,
+    multiAssetBounties: normalizedMultiAssetBounties,
     // indexes
     proposalIndexes,
     spendIndexes,
     childBountyIndexes,
     tipIndexes,
+    bountyIndexes,
+    multiAssetBountyIndexes,
     // loading
     proposalsLoading,
     spendsLoading,
     childBountiesLoading,
     tipsLoading,
+    bountiesLoading,
+    multiAssetBountiesLoading,
   };
 }
 
@@ -197,6 +289,50 @@ function normalizeItemsWithPrice(items, itemList, getItemId) {
       fiatAtFinal,
     };
   });
+}
+
+function normalizeMultiAssetBounties(items, itemList) {
+  if (!items) {
+    return items;
+  }
+
+  const proportionMap = new Map(
+    itemList?.map((item) => [item.id, item.proportion]),
+  );
+
+  return items.map((item) => {
+    const proportion = proportionMap.get(item.bountyIndex) ?? 1;
+    const fiatAtFinal = getMultiAssetBountyFiatValue(item);
+
+    return {
+      ...item,
+      proportion,
+      fiatAtFinal,
+    };
+  });
+}
+
+function getMultiAssetBountyFiatValue(item) {
+  const { assetKind, price } = item.onchainData ?? {};
+  const chainSettings = getChainSettings(CHAIN);
+  const { symbol, decimals, assetType } = getAssetInfoFromAssetKind(
+    assetKind,
+    chainSettings.decimals,
+    chainSettings.symbol,
+  );
+  const amount = BigNumber(toPrecision(item.onchainData?.value ?? 0, decimals));
+
+  if (STABLECOIN_SYMBOLS.has(symbol)) {
+    return amount.toFixed(2);
+  }
+
+  if (assetType === "native" || assetType === "crosschainNative") {
+    return amount
+      .times(price?.final ?? price?.current ?? 0)
+      .toFixed(2);
+  }
+
+  return "0";
 }
 
 function normalizeChildBounties(childBounties, childBountyList) {
@@ -240,6 +376,8 @@ function useFormatIndexes({
   spendList,
   childBountyList,
   tipList,
+  bountyList,
+  multiAssetBountyList,
 }) {
   return useMemo(() => {
     return {
@@ -247,8 +385,19 @@ function useFormatIndexes({
       spendIndexes: spendList?.map((spend) => spend.id),
       childBountyIndexes: childBountyList?.map((childBounty) => childBounty.id),
       tipIndexes: tipList?.map((tip) => tip.hash),
+      bountyIndexes: bountyList?.map((bounty) => bounty.id ?? bounty.bountyIndex),
+      multiAssetBountyIndexes: multiAssetBountyList?.map(
+        (bounty) => bounty.id ?? bounty.bountyIndex,
+      ),
     };
-  }, [proposalList, spendList, childBountyList, tipList]);
+  }, [
+    proposalList,
+    spendList,
+    childBountyList,
+    tipList,
+    bountyList,
+    multiAssetBountyList,
+  ]);
 }
 
 function getSpendAmount(spend) {
