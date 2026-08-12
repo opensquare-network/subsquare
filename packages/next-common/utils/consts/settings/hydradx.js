@@ -18,10 +18,10 @@ const ProjectLogoHydrationDark = dynamic(() =>
 );
 
 const endpoints = [
-  {
-    name: "Galactic Council",
-    url: "wss://rpc.hydradx.cloud",
-  },
+  // {
+  //   name: "Galactic Council",
+  //   url: "wss://rpc.hydradx.cloud",
+  // },
   {
     name: "Dwellir",
     url: "wss://hydration-rpc.n.dwellir.com",
