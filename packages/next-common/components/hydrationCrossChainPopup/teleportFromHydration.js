@@ -1,13 +1,10 @@
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import { isAssetHubChain, isHydrationChain } from "next-common/utils/chain";
 import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
+import { DOT_SYMBOL, getTransferAssetLocation } from "./transferAssets";
 
 export const AssetHubParaId = 1000;
 export const HydrationParaId = 2034;
-
-// The transferred asset is always the relay native (DOT). Its XCM location is
-// the same on both chains: { parents: 1, interior: Here }.
-const DOT_ASSET_LOCATION = { parents: 1, interior: "Here" };
 
 export function getParaChainId(chain) {
   if (isAssetHubChain(chain)) {
@@ -46,12 +43,12 @@ function getBeneficiaryJunction({ api, destinationChain, transferToAddress }) {
   };
 }
 
-// Builds the `transferAssetsUsingTypeAndThen` params used to move the relay
-// native (DOT) between Asset Hub and Hydration.
+// Builds the `transferAssetsUsingTypeAndThen` params used to move an asset
+// between Asset Hub and Hydration.
 //
 // This mirrors Hydration's official implementation (galacticcouncil/xc-cfg):
-// the reserve of DOT is Asset Hub, so the transfer type depends on which side
-// of the route Asset Hub is on:
+// the reserve of every supported asset (DOT, USDC, USDt) is Asset Hub, so the
+// transfer type depends on which side of the route Asset Hub is on:
 // - Asset Hub -> Hydration: reserve == source -> `localReserve`
 // - Hydration -> Asset Hub: reserve == dest  -> `destinationReserve`
 //
@@ -66,6 +63,7 @@ function getTransferAssetsUsingTypeAndThenParams({
   amount,
   paraChainId,
   transferType,
+  assetLocation,
 }) {
   return [
     // dest
@@ -85,7 +83,7 @@ function getTransferAssetsUsingTypeAndThenParams({
     {
       V4: [
         {
-          id: DOT_ASSET_LOCATION,
+          id: assetLocation,
           fun: {
             Fungible: amount,
           },
@@ -94,8 +92,9 @@ function getTransferAssetsUsingTypeAndThenParams({
     },
     // assets_transfer_type
     { [transferType]: null },
-    // remote_fees_id (DOT pays for the destination execution fee)
-    { V4: DOT_ASSET_LOCATION },
+    // remote_fees_id (the transferred asset pays for the destination
+    // execution fee)
+    { V4: assetLocation },
     // fees_transfer_type
     { [transferType]: null },
     // custom_xcm_on_dest: deposit everything remaining after the destination
@@ -136,18 +135,20 @@ export default function buildHydrationCrossChainTx({
   destinationChain,
   transferToAddress,
   amount,
+  symbol = DOT_SYMBOL,
 }) {
-  // The relay native cannot be teleported between Asset Hub and Hydration:
-  // Asset Hub's teleport filter rejects relay-native teleports to non-system
-  // parachains (polkadotXcm.Filtered), and Hydration's own
+  // The transferred asset cannot move between Asset Hub and Hydration via
+  // teleport: Asset Hub's teleport filter rejects relay-native teleports to
+  // non-system parachains (polkadotXcm.Filtered), and Hydration's own
   // `limitedTeleportAssets` reports a max weight and is rejected by its pool
-  // (error 1010). DOT therefore moves via `transferAssetsUsingTypeAndThen`
+  // (error 1010). The asset therefore moves via `transferAssetsUsingTypeAndThen`
   // with Asset Hub as the explicit reserve (see
   // getTransferAssetsUsingTypeAndThenParams).
   const transferType = isHydrationChain(sourceChain)
     ? "destinationReserve"
     : "localReserve";
   const paraChainId = getParaChainId(destinationChain);
+  const assetLocation = getTransferAssetLocation({ sourceChain, symbol });
 
   return sourceApi.tx.polkadotXcm.transferAssetsUsingTypeAndThen(
     ...getTransferAssetsUsingTypeAndThenParams({
@@ -157,6 +158,7 @@ export default function buildHydrationCrossChainTx({
       amount,
       paraChainId,
       transferType,
+      assetLocation,
     }),
   );
 }

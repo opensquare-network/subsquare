@@ -28,7 +28,7 @@ export function useGetHydrationCrossChainTx({
   destinationChain,
 }) {
   return useCallback(
-    (transferToAddress, amount) => {
+    (transferToAddress, amount, symbol) => {
       if (!sourceApi) {
         throw new Error("Chain network is not connected yet");
       }
@@ -39,6 +39,7 @@ export function useGetHydrationCrossChainTx({
         destinationChain,
         transferToAddress,
         amount,
+        symbol,
       });
     },
     [sourceApi, sourceChain, destinationChain],

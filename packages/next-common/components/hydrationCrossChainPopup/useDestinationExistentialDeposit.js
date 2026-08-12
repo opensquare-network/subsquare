@@ -1,0 +1,40 @@
+import { useEffect, useState } from "react";
+import { getDestinationExistentialDeposit } from "./transferAssets";
+
+// The destination ED of the transferred asset depends on both the selected
+// symbol and the destination chain:
+// - Hydration: every supported asset is foreign; its per-asset ED comes from
+//   the assetRegistry pallet (async query).
+// - Asset Hub: DOT is the native token (balances pallet ED); USDC/USDt are
+//   assets pallet assets whose min balance plays the ED role.
+export default function useDestinationExistentialDeposit({
+  destinationApi,
+  destinationChain,
+  symbol,
+}) {
+  const [value, setValue] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!destinationApi) {
+      setValue(null);
+      setIsLoading(true);
+      return;
+    }
+
+    setIsLoading(true);
+    getDestinationExistentialDeposit({
+      destinationApi,
+      destinationChain,
+      symbol,
+    })
+      .then(setValue)
+      .catch(() => setValue(null))
+      .finally(() => setIsLoading(false));
+  }, [destinationApi, destinationChain, symbol]);
+
+  return {
+    value,
+    isLoading,
+  };
+}

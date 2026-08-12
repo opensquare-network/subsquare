@@ -11,19 +11,16 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { InfoMessage } from "next-common/components/setting/styled";
-import { isHydrationChain } from "next-common/utils/chain";
 import { useChainApi, useGetHydrationCrossChainTx } from "./crossChainApi";
+import useDestinationExistentialDeposit from "./useDestinationExistentialDeposit";
 import useHydrationCrossChainDirection, {
   getChainName,
 } from "./useHydrationCrossChainDirection";
-import useTransferAmount, {
-  DOT_SYMBOL,
-  DOT_DECIMALS,
-  HYDRATION_DOT_ASSET_ID,
-} from "./useTransferAmount";
+import useTransferAmount from "./useTransferAmount";
+import { getTransferAsset } from "./transferAssets";
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -33,7 +30,6 @@ function PopupContent() {
     isEvmSigner,
     component: crossChainDirection,
   } = useHydrationCrossChainDirection();
-  const isHydrationDest = isHydrationChain(destinationChain);
   const sourceApi = useChainApi(sourceChain);
   const destinationApi = useChainApi(destinationChain);
   const getTeleportTx = useGetHydrationCrossChainTx({
@@ -47,43 +43,8 @@ function PopupContent() {
   const address = user?.address;
   const dispatch = useDispatch();
 
-  // DOT is a foreign asset on Hydration; its existential deposit is exposed per
-  // asset by the assetRegistry pallet (not by a balances/tokens constant).
-  // The destination ED of the transferred asset (DOT) depends on the
-  // destination chain:
-  // - Hydration: DOT is a foreign asset; its per-asset ED comes from the
-  //   assetRegistry pallet (async query).
-  // - Asset Hub: DOT is the native token; its ED is the balances pallet's.
-  const [dotED, setDotED] = useState(null);
-  const [isDotEDLoading, setIsDotEDLoading] = useState(true);
-  useEffect(() => {
-    if (!destinationApi) {
-      setDotED(null);
-      setIsDotEDLoading(true);
-      return;
-    }
-
-    if (isHydrationDest) {
-      setIsDotEDLoading(true);
-      destinationApi.query.assetRegistry
-        ?.assets(HYDRATION_DOT_ASSET_ID)
-        .then((res) => {
-          // assets() returns an Option; the field is only reachable after
-          // unwrapping it.
-          const ed = res?.isSome ? res.unwrap().existentialDeposit : null;
-          setDotED(ed?.toJSON?.() ?? ed?.toString?.() ?? null);
-        })
-        .catch(() => setDotED(null))
-        .finally(() => setIsDotEDLoading(false));
-    } else {
-      setDotED(
-        destinationApi.consts.balances?.existentialDeposit?.toJSON?.() ?? null,
-      );
-      setIsDotEDLoading(false);
-    }
-  }, [isHydrationDest, destinationApi]);
-
   const {
+    symbol,
     getCheckedValue: getCheckedTransferAmount,
     component: transferAmountField,
   } = useTransferAmount({
@@ -94,6 +55,13 @@ function PopupContent() {
   const { value: transferToAddress, component: addressComboField } =
     useAddressComboField({ title: "To Address", defaultAddress: address });
 
+  const { value: destED, isLoading: isDestEDLoading } =
+    useDestinationExistentialDeposit({
+      destinationApi,
+      destinationChain,
+      symbol,
+    });
+
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
       throw new Error("Destination address is required");
@@ -101,8 +69,8 @@ function PopupContent() {
 
     const amount = getCheckedTransferAmount();
 
-    return getTeleportTx(transferToAddress, amount);
-  }, [getTeleportTx, transferToAddress, getCheckedTransferAmount]);
+    return getTeleportTx(transferToAddress, amount, symbol);
+  }, [getTeleportTx, transferToAddress, getCheckedTransferAmount, symbol]);
 
   const doSubmit = useCallback(async () => {
     if (!sourceApi) {
@@ -121,7 +89,7 @@ function PopupContent() {
         tx,
         onSubmitted: onClose,
         onInBlock: () => {
-          dispatch(newSuccessToast("Teleport successfully"));
+          dispatch(newSuccessToast("Cross-chain transfer successfully"));
         },
       });
     } catch (e) {
@@ -142,13 +110,13 @@ function PopupContent() {
       {addressComboField}
       {transferAmountField}
       <AdvanceSettings>
-        {/* The transferred asset is always DOT; its destination ED is computed
-        per destination chain in the dotED effect above. */}
+        {/* The destination ED is computed per selected symbol and destination
+        chain in the destED effect above. */}
         <ExistentialDepositValue
-          value={dotED}
-          symbol={DOT_SYMBOL}
-          decimals={DOT_DECIMALS}
-          loading={isDotEDLoading}
+          value={destED}
+          symbol={symbol}
+          decimals={getTransferAsset(symbol).decimals}
+          loading={isDestEDLoading}
         />
       </AdvanceSettings>
       <div className="flex justify-end">
