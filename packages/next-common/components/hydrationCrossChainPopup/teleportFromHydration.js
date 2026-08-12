@@ -19,7 +19,11 @@ export function getParaChainId(chain) {
 // be addressed via the AccountKey20 XCM junction. The transferToAddress may be
 // a raw H160 (e.g. MetaMask input) or a "ETH\0"-prefixed substrate address
 // (which wraps an H160); both are normalized to an H160 before encoding.
-function getBeneficiaryJunction({ api, destinationChain, transferToAddress }) {
+export function getBeneficiaryJunction({
+  api,
+  destinationChain,
+  transferToAddress,
+}) {
   const supportsEvmAccounts =
     isAssetHubChain(destinationChain) || isHydrationChain(destinationChain);
 

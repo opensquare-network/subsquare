@@ -36,6 +36,19 @@ export const TRANSFER_ASSETS = {
 
 export const getTransferAsset = (symbol) => TRANSFER_ASSETS[symbol];
 
+// Destination chain fee for the Asset Hub -> Hydration direction. These are
+// the fixed values declared in the Galactic Council xc-cfg route configs
+// (packages/xc-cfg/src/configs/polkadot/assethub/index.ts), denominated in
+// the transferred asset and deducted on Hydration to execute the incoming XCM.
+// The reverse direction (Hydration -> Asset Hub) has no fixed value; it is
+// queried dynamically via XcmPaymentApi on Asset Hub (see
+// useHydrationCrossChainFees.js).
+export const HUB_TO_HYDRATION_DESTINATION_FEES = {
+  [DOT_SYMBOL]: { amount: 10000000n, decimals: 10 }, // 0.001 DOT
+  [USDC_SYMBOL]: { amount: 20000n, decimals: 6 }, // 0.02 USDC
+  [USDT_SYMBOL]: { amount: 20000n, decimals: 6 }, // 0.02 USDT
+};
+
 // XCM location of the transferred asset, as seen from the source chain.
 //
 // - DOT is the relay native: `{ parents: 1, interior: Here }` on both chains.

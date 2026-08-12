@@ -15,10 +15,12 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { InfoMessage } from "next-common/components/setting/styled";
 import { useChainApi, useGetHydrationCrossChainTx } from "./crossChainApi";
+import CrossChainFeeSummary from "./crossChainFeeSummary";
 import useDestinationExistentialDeposit from "./useDestinationExistentialDeposit";
 import useHydrationCrossChainDirection, {
   getChainName,
 } from "./useHydrationCrossChainDirection";
+import useHydrationCrossChainFees from "./useHydrationCrossChainFees";
 import useTransferAmount from "./useTransferAmount";
 import { getTransferAsset } from "./transferAssets";
 
@@ -61,6 +63,20 @@ function PopupContent() {
       destinationChain,
       symbol,
     });
+
+  const {
+    sourceFee,
+    destinationFee,
+    isLoading: isFeesLoading,
+  } = useHydrationCrossChainFees({
+    sourceApi,
+    destinationApi,
+    sourceChain,
+    destinationChain,
+    symbol,
+    address,
+    transferToAddress,
+  });
 
   const getTxFunc = useCallback(() => {
     if (!transferToAddress) {
@@ -109,6 +125,14 @@ function PopupContent() {
       {crossChainDirection}
       {addressComboField}
       {transferAmountField}
+      {/* Source chain fee (execution + delivery on the origin chain) and
+      destination chain fee (execution on the target chain), estimated per the
+      semantics of hydration-ui (see useHydrationCrossChainFees). */}
+      <CrossChainFeeSummary
+        sourceFee={sourceFee}
+        destinationFee={destinationFee}
+        isLoading={isFeesLoading}
+      />
       <AdvanceSettings>
         {/* The destination ED is computed per selected symbol and destination
         chain in the destED effect above. */}

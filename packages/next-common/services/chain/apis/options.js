@@ -21,6 +21,18 @@ const xcmPaymentApiMethods = {
     params: [{ name: "message", type: "XcmVersionedXcm" }],
     type: "Result<WeightV2, XcmPaymentApiError>",
   },
+  // Signature matches Asset Hub (destination, message, fee_asset). Chains whose
+  // metadata already declares query_delivery_fees (e.g. Hydration's 2-arg
+  // variant) keep their own via the metadata-first merge below.
+  query_delivery_fees: {
+    description: "The API to query the delivery fees of an XCM message",
+    params: [
+      { name: "destination", type: "XcmVersionedLocation" },
+      { name: "message", type: "XcmVersionedXcm" },
+      { name: "feeAsset", type: "XcmVersionedAssetId" },
+    ],
+    type: "Result<Vec<XcmAsset>, XcmPaymentApiError>",
+  },
 };
 
 const xcmPaymentApiRuntimeVersions = [
