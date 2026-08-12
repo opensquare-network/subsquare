@@ -103,7 +103,7 @@ export function useAccountAssetsMap(balances, isLoading) {
     }
 
     for (const { balance, asset } of balances) {
-      if (!BigNumber(balance.total).isZero() && asset?.id) {
+      if (!BigNumber(balance?.total ?? 0).isZero() && asset?.id) {
         newAccountAssetsMap.set(asset.id, {
           balance,
           asset,
