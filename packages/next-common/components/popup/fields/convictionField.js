@@ -37,7 +37,7 @@ export default function ConvictionField({
       <StatusWrapper className="flex-col gap-y-1">
         <div className="flex justify-between w-full">
           <div className="text-textSecondary">
-            <span>Total Votes</span>
+            <span>Total Votes:</span>
           </div>
           <div className="result">
             <NumberWithComma
@@ -48,7 +48,7 @@ export default function ConvictionField({
         </div>
         <div className="flex justify-between w-full">
           <div className="text-textSecondary">
-            <span>Lock Duration</span>
+            <span>Lock Duration:</span>
           </div>
           <div className="result">
             {time ? (

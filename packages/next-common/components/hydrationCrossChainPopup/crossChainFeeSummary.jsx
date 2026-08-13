@@ -24,7 +24,7 @@ function toFeePrecision(value, decimals) {
 function FeeRow({ title, fee, loading }) {
   return (
     <div className="flex w-full justify-between items-center gap-x-2">
-      <span className="text14Bold text-textPrimary">{title}</span>
+      <span className="text-textSecondary">{title}:</span>
       <LoadableContent isLoading={loading} size={20}>
         {isNil(fee) ? (
           <span>-</span>
