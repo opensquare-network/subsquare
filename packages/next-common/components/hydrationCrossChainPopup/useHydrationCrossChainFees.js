@@ -14,8 +14,8 @@ import {
   HUB_TO_HYDRATION_DESTINATION_FEES,
 } from "./transferAssets";
 
-// Upper bound of a fungible in XCM (u128::MAX), used in fee-quoting XCMs.
-const AMOUNT_MAX = 340282366920938463463374607431768211455n;
+// 2^128 - 1 (u128::MAX) — the "withdraw everything" amount in fee-quoting XCMs.
+const MAX_U128 = 2n ** 128n - 1n;
 
 // hydration-ui's SDK quotes the source fee with `amount = destinationFee + 1
 // wei` so the compact-encoded tx length (and thus the length fee) matches. The
@@ -132,14 +132,14 @@ async function estimateDeliveryFeeByDryRun({
 
 function withdrawAllAssets(assetLocation) {
   return {
-    WithdrawAsset: [{ id: assetLocation, fun: { Fungible: AMOUNT_MAX } }],
+    WithdrawAsset: [{ id: assetLocation, fun: { Fungible: MAX_U128 } }],
   };
 }
 
 function buyExecution(assetLocation) {
   return {
     BuyExecution: {
-      fees: { id: assetLocation, fun: { Fungible: AMOUNT_MAX } },
+      fees: { id: assetLocation, fun: { Fungible: MAX_U128 } },
       weight_limit: { Unlimited: null },
     },
   };
