@@ -45,8 +45,6 @@ function FeeRow({ title, fee, loading }) {
   );
 }
 
-// Compact fee summary for the Asset Hub <-> Hydration cross-chain popup, laid
-// out like EstimatedGas (name + value, justify-between).
 export default function CrossChainFeeSummary({
   sourceFee,
   destinationFee,
