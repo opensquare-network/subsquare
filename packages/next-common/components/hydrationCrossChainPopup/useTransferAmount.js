@@ -27,6 +27,7 @@ export default function useTransferAmount({
 
   useEffect(() => {
     let unsub;
+    let cancelled = false;
 
     if (!api || !transferFromAddress) {
       setTransferrable("0");
@@ -37,12 +38,12 @@ export default function useTransferAmount({
     setIsLoading(true);
 
     const asset = getTransferAsset(symbol);
-    // Split the balance logic by the source chain up front: the storage the
-    // balance lives in and the way the native ED is applied differ per chain,
-    // so each branch below handles its own query and normalization.
     const isHydrationSource = isHydrationChain(sourceChain);
 
     const updateTransferrable = (accountData, nativeExistentialDeposit) => {
+      if (cancelled) {
+        return;
+      }
       setTransferrable(
         calcTransferable(
           { free: 0, reserved: 0, frozen: 0, ...accountData },
@@ -52,45 +53,62 @@ export default function useTransferAmount({
       setIsLoading(false);
     };
 
+    const subscribe = (queryPromise) => {
+      queryPromise?.then((result) => {
+        if (cancelled) {
+          result();
+        } else {
+          unsub = result;
+        }
+      });
+    };
+
     if (isHydrationSource) {
       // Hydration: every supported asset is a foreign asset of the tokens
       // pallet, whose ED is not enforced on the source.
-      api.query.tokens
-        ?.accounts(transferFromAddress, asset.hydrationAssetId, (account) =>
-          updateTransferrable(account?.toJSON?.() || {}, 0),
-        )
-        ?.then((result) => (unsub = result));
+      subscribe(
+        api.query.tokens?.accounts(
+          transferFromAddress,
+          asset.hydrationAssetId,
+          (account) => updateTransferrable(account?.toJSON?.() || {}, 0),
+        ),
+      );
     } else if (asset.assetHubAssetId != null) {
       // Asset Hub: USDC/USDt are assets pallet assets. The account is a flat
       // record whose balance lives in `balance` (not `free`); the whole
       // balance is frozen when `isFrozen` is set.
-      api.query.assets
-        ?.account(asset.assetHubAssetId, transferFromAddress, (account) => {
-          const json = account?.toJSON?.() || {};
-          updateTransferrable(
-            {
-              free: json.balance,
-              reserved: 0,
-              frozen: json.isFrozen ? json.balance : 0,
-            },
-            0,
-          );
-        })
-        ?.then((result) => (unsub = result));
+      subscribe(
+        api.query.assets?.account(
+          asset.assetHubAssetId,
+          transferFromAddress,
+          (account) => {
+            const json = account?.toJSON?.() || {};
+            updateTransferrable(
+              {
+                free: json.balance,
+                reserved: 0,
+                frozen: json.isFrozen ? json.balance : 0,
+              },
+              0,
+            );
+          },
+        ),
+      );
     } else {
       // Asset Hub: DOT is native (system pallet) and keeps the balances pallet
       // ED; system.account nests the balances under `data`.
       const nativeExistentialDeposit =
         api.consts.balances?.existentialDeposit?.toJSON?.() || 0;
-      api.query.system
-        ?.account(transferFromAddress, (account) => {
+      subscribe(
+        api.query.system?.account(transferFromAddress, (account) => {
           const json = account?.toJSON?.() || {};
           updateTransferrable(json.data || json, nativeExistentialDeposit);
-        })
-        ?.then((result) => (unsub = result));
+        }),
+      );
     }
 
     return () => {
+      cancelled = true;
       if (unsub) {
         unsub();
       }
