@@ -13,13 +13,10 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { InfoMessage } from "next-common/components/setting/styled";
 import { useChainApi, useGetHydrationCrossChainTx } from "./crossChainApi";
 import CrossChainFeeSummary from "./crossChainFeeSummary";
 import useDestinationExistentialDeposit from "./useDestinationExistentialDeposit";
-import useHydrationCrossChainDirection, {
-  getChainName,
-} from "./useHydrationCrossChainDirection";
+import useHydrationCrossChainDirection from "./useHydrationCrossChainDirection";
 import useHydrationCrossChainFees from "./useHydrationCrossChainFees";
 import useTransferAmount from "./useTransferAmount";
 import { getTransferAsset } from "./transferAssets";
@@ -29,7 +26,6 @@ function PopupContent() {
   const {
     sourceChain,
     destinationChain,
-    isEvmSigner,
     component: crossChainDirection,
   } = useHydrationCrossChainDirection();
   const sourceApi = useChainApi(sourceChain);
@@ -115,12 +111,6 @@ function PopupContent() {
 
   return (
     <>
-      {isEvmSigner && (
-        <InfoMessage>
-          The direction is locked to {getChainName(sourceChain)} →{" "}
-          {getChainName(destinationChain)} for MetaMask.
-        </InfoMessage>
-      )}
       <ConnectedUserOrigin />
       {crossChainDirection}
       {addressComboField}
