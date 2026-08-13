@@ -50,8 +50,7 @@ export function getBeneficiaryJunction({
 // Builds the `transferAssetsUsingTypeAndThen` params used to move an asset
 // between Asset Hub and Hydration.
 //
-// This mirrors Hydration's official implementation (galacticcouncil/xc-cfg):
-// the reserve of every supported asset (DOT, USDC, USDt) is Asset Hub, so the
+// The reserve of every supported asset (DOT, USDC, USDt) is Asset Hub, so the
 // transfer type depends on which side of the route Asset Hub is on:
 // - Asset Hub -> Hydration: reserve == source -> `localReserve`
 // - Hydration -> Asset Hub: reserve == dest  -> `destinationReserve`

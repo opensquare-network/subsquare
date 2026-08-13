@@ -126,8 +126,7 @@ function PopupContent() {
       {addressComboField}
       {transferAmountField}
       {/* Source chain fee (execution + delivery on the origin chain) and
-      destination chain fee (execution on the target chain), estimated per the
-      semantics of hydration-ui (see useHydrationCrossChainFees). */}
+      destination chain fee (execution on the target chain). */}
       <CrossChainFeeSummary
         sourceFee={sourceFee}
         destinationFee={destinationFee}

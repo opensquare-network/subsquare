@@ -17,9 +17,9 @@ import {
 // 2^128 - 1 (u128::MAX) — the "withdraw everything" amount in fee-quoting XCMs.
 const MAX_U128 = 2n ** 128n - 1n;
 
-// hydration-ui's SDK quotes the source fee with `amount = destinationFee + 1
-// wei` so the compact-encoded tx length (and thus the length fee) matches. The
-// amount falls back to this minimum when the destination fee is unknown.
+// The source fee is quoted with `amount = destinationFee + 1 wei` so the
+// compact-encoded tx length (and thus the length fee) matches. The amount
+// falls back to this minimum when the destination fee is unknown.
 const FEE_QUOTE_MIN_AMOUNT = 10n;
 const FEE_QUOTE_AMOUNT_PADDING = 1n;
 
@@ -31,8 +31,7 @@ function getFeeEstimateAmount(destinationFeeAmount) {
     : FEE_QUOTE_MIN_AMOUNT;
 }
 
-// The xc-cfg XcmPaymentApi destination fee is padded by 20% before being
-// surfaced (galacticcouncil/sdk `padFeeByPercentage`).
+// The destination fee is padded by 20% before being surfaced.
 const DESTINATION_FEE_MARGIN_PERCENT = 20n;
 
 // Hydration's MultiTransactionPayment currency ids for the supported symbols
@@ -64,7 +63,6 @@ function getSiblingSovereignAccount(api, paraId) {
   return api.createType("AccountId32", key).toString();
 }
 
-// dry-run call flags used by hydration-ui's SDK.
 const DRY_RUN_CALL_FLAGS = 4;
 
 function isFeesPaidEvent(event) {
@@ -95,10 +93,10 @@ function getFeesPaidTotal(events) {
   return total;
 }
 
-// Estimates the XCM delivery fee the same way hydration-ui's SDK does: dry-run
-// the actual transfer signed by the destination parachain's sovereign account
-// and sum the `polkadotXcm.FeesPaid` events. Returns null when the dry-run API
-// is unavailable or the simulation fails, letting the caller fall back to
+// Estimates the XCM delivery fee by dry-running the actual transfer signed by
+// the destination parachain's sovereign account and summing the
+// `polkadotXcm.FeesPaid` events. Returns null when the dry-run API is
+// unavailable or the simulation fails, letting the caller fall back to
 // queryDeliveryFees.
 async function estimateDeliveryFeeByDryRun({
   sourceApi,
@@ -173,9 +171,8 @@ const EMPTY_TOPIC =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
 
 // Builds the XCM the destination chain executes for the transfer, as seen from
-// the destination. Byte-identical to the Galactic Council SDK's
-// `buildReserveTransfer` (WithdrawAsset, ClearOrigin, BuyExecution,
-// DepositAsset, SetTopic) so the weight -> asset fee matches hydration-ui.
+// the destination (WithdrawAsset, ClearOrigin, BuyExecution, DepositAsset,
+// SetTopic), used to quote the weight -> asset fee.
 function buildDestinationFeeXcm({
   destinationApi,
   destinationChain,
@@ -201,21 +198,6 @@ function buildDestinationFeeXcm({
     ],
   };
 }
-
-// Source chain fee, estimated on the source chain with its own runtime. The
-// fee-quote tx embeds `destinationFeeAmount + 1 wei` of the transferred asset
-// (see getFeeEstimateAmount), mirroring hydration-ui's Transfer build so the
-// length fee matches byte-for-byte.
-//
-// - Asset Hub: charged in DOT (native). The XCM delivery fee is charged on top
-//   of the extrinsic weight fee (usesDeliveryFee), so both are summed. The
-//   delivery fee is quoted with a representative reserve-transfer XCM; it is
-//   the dominant part of the fee (~0.03 DOT vs ~0.001 DOT weight fee).
-// - Hydration: charged in the signer's MultiTransactionPayment currency
-//   (native HDX by default). Hydration quotes no delivery fee (verified:
-//   queryDeliveryFees returns an empty list), so only the weight fee applies;
-//   it is converted from the native HDX fee to the fee currency when one is
-//   configured.
 
 // Asset Hub's XCM delivery fee, quoted via the reserve-transfer XCM the
 // destination executes. Falls back to queryDeliveryFees when the dry-run API is
@@ -344,8 +326,7 @@ async function estimateHydrationSourceFee({
 
 // Source chain fee, estimated on the source chain with its own runtime. The
 // fee-quote tx embeds `destinationFeeAmount + 1 wei` of the transferred asset
-// (see getFeeEstimateAmount), mirroring hydration-ui's Transfer build so the
-// length fee matches byte-for-byte.
+// (see getFeeEstimateAmount) so the compact-encoded tx length matches.
 //
 // - Asset Hub: charged in DOT (native). The XCM delivery fee is charged on top
 //   of the extrinsic weight fee (usesDeliveryFee), so both are summed.
@@ -404,14 +385,6 @@ export async function estimateSourceFee({
   });
 }
 
-// Destination chain fee.
-//
-// - Asset Hub -> Hydration: fixed values from the xc-cfg route configs,
-//   denominated in the transferred asset.
-// - Hydration -> Asset Hub: queried dynamically on Asset Hub via XcmPaymentApi
-//   (queryXcmWeight -> queryWeightToAssetFee), padded by the same 20% margin
-//   the SDK applies.
-
 // The destination fee on Asset Hub, quoted via XcmPaymentApi
 // (queryXcmWeight -> queryWeightToAssetFee), in the transferred asset.
 async function getAssetHubDestinationFee({
@@ -457,11 +430,9 @@ function padFeeByPercentage(fee, percent) {
 
 // Destination chain fee.
 //
-// - Asset Hub -> Hydration: fixed values from the xc-cfg route configs,
-//   denominated in the transferred asset.
+// - Asset Hub -> Hydration: fixed values denominated in the transferred asset.
 // - Hydration -> Asset Hub: queried dynamically on Asset Hub via XcmPaymentApi
-//   (queryXcmWeight -> queryWeightToAssetFee), padded by the same 20% margin
-//   the SDK applies.
+//   (queryXcmWeight -> queryWeightToAssetFee), padded by the same 20% margin.
 export async function estimateDestinationFee({
   destinationApi,
   destinationChain,
@@ -550,7 +521,7 @@ async function convertNativeFeeToAsset({ api, partialFee, weight, location }) {
 }
 
 // Estimates the source chain fee and the destination chain fee for the Asset
-// Hub <-> Hydration transfer, mirroring the fee semantics of hydration-ui.
+// Hub <-> Hydration transfer.
 export default function useHydrationCrossChainFees({
   sourceApi,
   destinationApi,
@@ -585,10 +556,9 @@ export default function useHydrationCrossChainFees({
     };
 
     // The destination fee is needed before the source fee can be estimated:
-    // hydration-ui builds the source-fee quote tx with an amount of
-    // `destinationFee + 1 wei` (see getFeeEstimateAmount), so the destination
-    // fee is resolved first. A failure in one estimate must not blank the
-    // other.
+    // the source-fee quote tx embeds `destinationFee + 1 wei` (see
+    // getFeeEstimateAmount), so the destination fee is resolved first. A
+    // failure in one estimate must not blank the other.
     (async () => {
       const destResult = await estimateDestinationFee({
         ...args,

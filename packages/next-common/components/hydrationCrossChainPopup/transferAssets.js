@@ -11,9 +11,7 @@ export const TRANSFER_SYMBOLS = [DOT_SYMBOL, USDC_SYMBOL, USDT_SYMBOL];
 // they are all foreign assets of the `tokens` pallet, addressed by the
 // per-asset ids below.
 //
-// Asset ids / decimals / XCM locations are verified against the real chains
-// and the Galactic Council xc-cfg route data (Asset Hub assetsData and
-// Hydration assetsData).
+// Asset ids / decimals / XCM locations are verified against the real chains.
 export const TRANSFER_ASSETS = {
   [DOT_SYMBOL]: {
     decimals: 10,
@@ -36,12 +34,10 @@ export const TRANSFER_ASSETS = {
 
 export const getTransferAsset = (symbol) => TRANSFER_ASSETS[symbol];
 
-// Destination chain fee for the Asset Hub -> Hydration direction. These are
-// the fixed values declared in the Galactic Council xc-cfg route configs
-// (packages/xc-cfg/src/configs/polkadot/assethub/index.ts), denominated in
-// the transferred asset and deducted on Hydration to execute the incoming XCM.
-// The reverse direction (Hydration -> Asset Hub) has no fixed value; it is
-// queried dynamically via XcmPaymentApi on Asset Hub (see
+// Destination chain fee for the Asset Hub -> Hydration direction: fixed values
+// denominated in the transferred asset, deducted on Hydration to execute the
+// incoming XCM. The reverse direction (Hydration -> Asset Hub) has no fixed
+// value; it is queried dynamically via XcmPaymentApi on Asset Hub (see
 // useHydrationCrossChainFees.js).
 export const HUB_TO_HYDRATION_DESTINATION_FEES = {
   [DOT_SYMBOL]: { amount: 10000000n, decimals: 10 }, // 0.001 DOT
