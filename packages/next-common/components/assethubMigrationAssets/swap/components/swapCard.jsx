@@ -197,15 +197,13 @@ function ExistentialDepositField() {
 }
 
 function SubmitButton() {
-  const { api, balances } = useSwap();
+  const { api } = useSwap();
   const { getTxFunc, quote, submitDisabledReason } = useSwapQuote();
-  const { refresh: refreshBalances } = balances;
   const { refresh: refreshQuote } = quote;
 
   const handleInBlock = useCallback(() => {
-    refreshBalances();
     refreshQuote();
-  }, [refreshBalances, refreshQuote]);
+  }, [refreshQuote]);
 
   return (
     <div className="flex justify-end">

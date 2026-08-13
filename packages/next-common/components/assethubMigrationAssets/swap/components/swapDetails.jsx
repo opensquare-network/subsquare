@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
+import { Location } from "next-common/components/assethubMigrationAssets/foreignAssets/table/columns/id";
 import LoadableContent from "next-common/components/common/loadableContent";
 import { DetailRow } from "next-common/components/overview/centrifugeStats/detailRow";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
@@ -32,7 +33,7 @@ function ReserveValue({ token, reserve }) {
   return <ValueDisplay value={toPrecision(reserve, token.decimals)} />;
 }
 
-function ReserveRow({ token, reserve, isLoading }) {
+function ReserveRow({ token, reserve, location, isLoading }) {
   return (
     <DetailRow
       title={
@@ -41,6 +42,7 @@ function ReserveRow({ token, reserve, isLoading }) {
             <span className="inline-flex items-center gap-x-2">
               <TokenIcon className="h-5 w-5" token={token} />
               <span>{token.symbol}</span>
+              <Location location={location} />
             </span>
           ) : (
             "-"
@@ -57,7 +59,7 @@ function ReserveRow({ token, reserve, isLoading }) {
 }
 
 function PoolReserves() {
-  const { pools } = useSwap();
+  const { pools, swapPath } = useSwap();
   const { quote } = useSwapQuote();
   const { tokenIn, tokenOut } = pools;
   const reserves = quote.reserves;
@@ -69,11 +71,13 @@ function PoolReserves() {
         <ReserveRow
           token={tokenIn}
           reserve={reserves?.reserveIn}
+          location={swapPath?.[0]}
           isLoading={isLoading}
         />
         <ReserveRow
           token={tokenOut}
           reserve={reserves?.reserveOut}
+          location={swapPath?.[1]}
           isLoading={isLoading}
         />
       </div>

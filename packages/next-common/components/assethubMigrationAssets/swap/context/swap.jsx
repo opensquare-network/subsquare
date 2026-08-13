@@ -10,9 +10,9 @@ import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { toPrecision } from "next-common/utils";
 import useApiPoolLocations from "../hooks/useApiPoolLocations";
-import useSwapBalances from "../hooks/useSwapBalances";
 import useSwapPools from "../hooks/useSwapPools";
 import useSwapPreflight from "../hooks/useSwapPreflight";
+import useWatchTokenBalance from "../hooks/useWatchTokenBalance";
 import { DEFAULT_SLIPPAGE_BPS } from "../constants";
 import { getSwapLocationKey } from "../location";
 import {
@@ -65,7 +65,22 @@ export function SwapProvider({ children }) {
   const { tokenIn, tokenOut } = pools;
 
   const amountIn = parseTokenAmount(amount, tokenIn?.decimals ?? 0);
-  const balances = useSwapBalances({ address, tokenIn, tokenOut });
+  const watchedTokenIn = useWatchTokenBalance({ address, token: tokenIn });
+  const watchedTokenOut = useWatchTokenBalance({ address, token: tokenOut });
+  const balances = useMemo(
+    () => ({
+      tokenIn: watchedTokenIn.balance,
+      tokenInLoading: watchedTokenIn.loading,
+      tokenOut: watchedTokenOut.balance,
+      tokenOutLoading: watchedTokenOut.loading,
+    }),
+    [
+      watchedTokenIn.balance,
+      watchedTokenIn.loading,
+      watchedTokenOut.balance,
+      watchedTokenOut.loading,
+    ],
+  );
   const existentialDeposit = useSwapPreflight();
   const apiPoolLocations = useApiPoolLocations();
   const tokenInIsNative = tokenIn?.type === "native";

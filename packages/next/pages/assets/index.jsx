@@ -4,6 +4,7 @@ import useExistentialDeposit from "next-common/utils/hooks/chain/useExistentialD
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import AssethubMigrationAssets from "next-common/components/assethubMigrationAssets";
+import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 
 export default function AssetsPage() {
   const realAddress = useRealAddress();
@@ -23,9 +24,13 @@ export const getServerSideProps = async (ctx) => {
     };
   }
 
+  const tracksProps = await fetchOpenGovTracksProps();
+
   return withCommonProps(async () => {
     return {
-      props: {},
+      props: {
+        ...tracksProps,
+      },
     };
   })(ctx);
 };
