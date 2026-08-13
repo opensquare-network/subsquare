@@ -16,6 +16,8 @@ export default function useDestinationExistentialDeposit({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+
     if (!destinationApi) {
       setValue(null);
       setIsLoading(true);
@@ -28,9 +30,19 @@ export default function useDestinationExistentialDeposit({
       destinationChain,
       symbol,
     })
-      .then(setValue)
-      .catch(() => setValue(null))
-      .finally(() => setIsLoading(false));
+      .then((ed) => {
+        if (!cancelled) setValue(ed);
+      })
+      .catch(() => {
+        if (!cancelled) setValue(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [destinationApi, destinationChain, symbol]);
 
   return {
