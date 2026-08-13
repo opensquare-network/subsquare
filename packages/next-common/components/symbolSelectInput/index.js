@@ -1,4 +1,4 @@
-import { ArrowUp } from "@osn/icons/subsquare";
+import { ArrowDown } from "@osn/icons/subsquare";
 import { useEffect, useRef, useState } from "react";
 import { OptionsWrapper } from "../select/styled";
 import Option from "../select/option";
@@ -49,7 +49,9 @@ export default function SymbolSelectInput({
           >
             <span>{symbol}</span>
             <div className="inline-flex mr-[-6px]">
-              <ArrowUp className={cn("w-4 h-4", showOptions && "rotate-180")} />
+              <ArrowDown
+                className={cn("w-4 h-4", showOptions && "rotate-180")}
+              />
             </div>
           </div>
         }

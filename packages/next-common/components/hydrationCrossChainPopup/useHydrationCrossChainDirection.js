@@ -56,17 +56,13 @@ export default function useHydrationCrossChainDirection() {
 
   const isEvmSigner = isEthereumAddress(tryConvertToEvmAddress(user?.address));
 
-  const [sourceChain, setSourceChain] = useState(
-    isEvmSigner ? currChain : assetHubChain,
-  );
-  const [destinationChain, setDestinationChain] = useState(
-    isEvmSigner ? assetHubChain : currChain,
-  );
+  const [sourceChain, setSourceChain] = useState(currChain);
+  const [destinationChain, setDestinationChain] = useState(assetHubChain);
 
   useEffect(() => {
-    setSourceChain(isEvmSigner ? currChain : assetHubChain);
-    setDestinationChain(isEvmSigner ? assetHubChain : currChain);
-  }, [isEvmSigner, currChain, assetHubChain]);
+    setSourceChain(currChain);
+    setDestinationChain(assetHubChain);
+  }, [currChain, assetHubChain]);
 
   const component = (
     <div className="flex items-end gap-[12px]">
