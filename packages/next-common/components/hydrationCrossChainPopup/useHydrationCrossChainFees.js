@@ -34,6 +34,8 @@ function getFeeEstimateAmount(destinationFeeAmount) {
 // The destination fee is padded by 20% before being surfaced.
 const DESTINATION_FEE_MARGIN_PERCENT = 20n;
 
+const FEE_ESTIMATE_DEBOUNCE_MS = 300;
+
 // Hydration's MultiTransactionPayment currency ids for the supported symbols
 // (verified on-chain against assetRegistry: DOT=5, USDT=10, USDC=22).
 const HYDRATION_FEE_CURRENCY_IDS = {
@@ -559,7 +561,7 @@ export default function useHydrationCrossChainFees({
     // the source-fee quote tx embeds `destinationFee + 1 wei` (see
     // getFeeEstimateAmount), so the destination fee is resolved first. A
     // failure in one estimate must not blank the other.
-    (async () => {
+    const timeoutId = setTimeout(async () => {
       const destResult = await estimateDestinationFee({
         ...args,
         destinationApi,
@@ -584,10 +586,11 @@ export default function useHydrationCrossChainFees({
       setDestinationFee(destResult);
       setSourceFee(sourceResult);
       setIsLoading(false);
-    })();
+    }, FEE_ESTIMATE_DEBOUNCE_MS);
 
     return () => {
       cancelled = true;
+      clearTimeout(timeoutId);
     };
   }, [
     sourceApi,
