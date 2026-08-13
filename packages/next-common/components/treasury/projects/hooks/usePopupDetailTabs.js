@@ -385,10 +385,8 @@ function useFormatIndexes({
       spendIndexes: spendList?.map((spend) => spend.id),
       childBountyIndexes: childBountyList?.map((childBounty) => childBounty.id),
       tipIndexes: tipList?.map((tip) => tip.hash),
-      bountyIndexes: bountyList?.map((bounty) => bounty.id ?? bounty.bountyIndex),
-      multiAssetBountyIndexes: multiAssetBountyList?.map(
-        (bounty) => bounty.id ?? bounty.bountyIndex,
-      ),
+      bountyIndexes: bountyList?.map((bounty) => bounty.id),
+      multiAssetBountyIndexes: multiAssetBountyList?.map((bounty) => bounty.id),
     };
   }, [
     proposalList,
