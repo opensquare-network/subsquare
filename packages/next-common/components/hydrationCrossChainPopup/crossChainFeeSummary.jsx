@@ -32,7 +32,7 @@ function FeeRow({ title, fee, loading }) {
           <Tooltip
             content={`${toPrecision(fee.amount, fee.decimals)} ${fee.symbol}`}
           >
-            <span className="inline-flex items-center gap-x-1">
+            <span className="inline-flex items-center gap-x-1 text-textPrimary">
               {toFeePrecision(fee.amount, fee.decimals)}
               <span className="value-display-symbol text-textTertiary">
                 {fee.symbol}
