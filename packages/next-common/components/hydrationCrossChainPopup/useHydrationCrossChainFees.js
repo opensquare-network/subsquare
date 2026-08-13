@@ -272,10 +272,16 @@ async function getDeliveryFeeByQuery({
 }
 
 // Extracts the first fungible amount from an xcm::VersionedAssets result — a
-// V3/V4/V5 enum of asset lists.
+// V3/V4/V5 enum of asset lists. The versioned enum toJSONs as `{ v3: [...] }` /
+// `{ v4: [...] }` / `{ v5: [...] }`; the inner MultiAssets is a plain array (V3
+// wraps `Vec<MultiAsset>` directly, and polkadot-js decodes the V4/V5
+// single-field struct as a bare Vec too — verified on-chain: Asset Hub returns
+// V4 as an array). The `{ assets: [...] }` struct form is also handled
+// defensively in case a runtime or type registration decodes it that way.
 function getFirstFungibleAmount(result) {
-  const assets = result?.asOk?.toJSON?.();
-  const feeList = Array.isArray(assets) ? assets : assets?.v4;
+  const json = result?.asOk?.toJSON?.();
+  const inner = json && !Array.isArray(json) ? Object.values(json)[0] : json;
+  const feeList = Array.isArray(inner) ? inner : inner?.assets;
   const fee = feeList?.find?.((entry) => entry?.fun?.fungible != null)?.fun
     ?.fungible;
   return fee != null ? BigInt(fee) : 0n;
