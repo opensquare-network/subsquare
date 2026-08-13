@@ -31,19 +31,17 @@ function getTokenType(token) {
 }
 
 function getTokenMeta(token, chainName, relay) {
-  return `${getTokenType(token)} · ${getTokenDescription(token, chainName, relay)}`;
+  return `${getTokenType(token)} · ${getTokenDescription(
+    token,
+    chainName,
+    relay,
+  )}`;
 }
 
-function TokenOption({
-  address,
-  token,
-  chainName,
-  relay,
-  selected,
-  onSelect,
-}) {
-  const meta = getTokenMeta(token, chainName, relay);
+function TokenOption({ address, token, meta, selected, onSelect }) {
+  const { symbol, decimals } = token;
   const { balance, error, loading } = useTokenBalance({ address, token });
+  const balanceUnavailable = error || balance == null;
 
   return (
     <button
@@ -56,15 +54,8 @@ function TokenOption({
     >
       <TokenIcon className="h-8 w-8 shrink-0" token={token} />
       <span className="min-w-0 flex-1">
-        <span className="flex min-w-0 items-center gap-2">
-          <span className="truncate text14Medium text-textPrimary">
-            {token.symbol}
-          </span>
-          {token.name && (
-            <span className="truncate text12Normal text-textTertiary">
-              {token.name}
-            </span>
-          )}
+        <span className="block truncate text14Medium text-textPrimary">
+          {symbol}
         </span>
         <span className="mt-1 block truncate text12Normal text-textTertiary">
           {meta}
@@ -75,13 +66,13 @@ function TokenOption({
         title={error ? "Balance unavailable" : undefined}
       >
         <LoadableContent isLoading={loading} size={16}>
-          {error || balance == null ? (
+          {balanceUnavailable ? (
             "-"
           ) : (
             <ValueDisplay
               showTooltip={false}
-              symbol={token.symbol}
-              value={toPrecision(balance, token.decimals)}
+              symbol={symbol}
+              value={toPrecision(balance, decimals)}
             />
           )}
         </LoadableContent>
@@ -102,53 +93,50 @@ function TokenPickerPopup({
   const { address } = useSwap();
   const filteredTokens = useMemo(() => {
     const searchValue = search.trim().toLowerCase();
-    const result = !searchValue
-      ? tokens
-      : tokens.filter((token) => {
-          const description = getTokenMeta(token, chainName, relay);
-          return [
-            token.symbol,
-            token.name,
-            token.key,
-            token.assetId,
-            description,
-          ]
-            .filter(Boolean)
-            .some((value) =>
-              String(value).toLowerCase().includes(searchValue),
-            );
-        });
+    if (!searchValue) {
+      return tokens;
+    }
 
-    return result;
+    return tokens.filter((token) =>
+      [
+        token.symbol,
+        token.key,
+        token.assetId,
+        getTokenMeta(token, chainName, relay),
+      ].some((value) =>
+        String(value ?? "")
+          .toLowerCase()
+          .includes(searchValue),
+      ),
+    );
   }, [chainName, relay, search, tokens]);
 
   return (
     <Popup
-      computerClassName="h-[680px]"
-      mobileClassName="h-[80vh] w-[calc(100vw-32px)]"
+      className="max-h-[640px] max-sm:w-[calc(100vw-32px)]"
       onClose={onClose}
       size={PopupSize.MIDDLE}
       title="Select token"
     >
-      <div className="flex h-[calc(680px-72px)] max-h-[calc(80vh-120px)] min-h-0 flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <SearchInput
           onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search symbol, name, ID or chain"
+          placeholder="Search symbol, ID or chain"
           value={search}
         />
-        <div className="scrollbar-pretty min-h-0 flex-1 overflow-y-auto">
+        <div className="scrollbar-pretty max-h-[450px] overflow-y-auto">
           <div className="mb-2 text12Normal text-textTertiary">
-            {filteredTokens.length} token{filteredTokens.length === 1 ? "" : "s"}
+            {filteredTokens.length} token
+            {filteredTokens.length === 1 ? "" : "s"}
           </div>
           {filteredTokens.length > 0 ? (
             <div className="divide-y divide-neutral300 border-y border-neutral300">
               {filteredTokens.map((item) => (
                 <TokenOption
                   address={address}
-                  chainName={chainName}
                   key={item.key}
+                  meta={getTokenMeta(item, chainName, relay)}
                   onSelect={onSelect}
-                  relay={relay}
                   selected={item.key === selectedToken?.key}
                   token={item}
                 />
