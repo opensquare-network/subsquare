@@ -13,7 +13,6 @@ import {
 } from "next-common/services/url";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
-import Link from "next-common/components/link";
 
 const CHART_HEIGHT = 360;
 
@@ -29,11 +28,12 @@ const EVENT_NAMES = {
 /**
  * Build rank step points from the rank change points returned by the backend.
  * Every point keeps its exact timestamp so it lands at the accurate position
- * on the time x-axis, together with the referendum that executed the change.
- * The chart starts from the first time the member holds a rank greater than 0
- * and extends to the current time at the last known rank.
- * @param {Array<{time: number, rank: number, event: string, referendumIndex: number, referendumTitle: string}>} points
- * @returns {{ points: Array<{x: number, y: number, event: string, referendumIndex: number, referendumTitle: string}> }}
+ * on the time x-axis, together with the rank before the change (fromRank) so
+ * the tooltip can show the rank transition. The chart starts from the first
+ * time the member holds a rank greater than 0 and extends to the current time
+ * at the last known rank.
+ * @param {Array<{time: number, rank: number, event: string}>} points
+ * @returns {{ points: Array<{x: number, y: number, event: string, fromRank: number}> }}
  */
 export function buildRankChartData(points = []) {
   const events = (points || [])
@@ -42,8 +42,6 @@ export function buildRankChartData(points = []) {
       time: Number(p.time),
       rank: p.rank,
       event: p.event,
-      referendumIndex: p.referendumIndex ?? null,
-      referendumTitle: p.referendumTitle || "",
     }))
     .sort((a, b) => a.time - b.time);
 
@@ -52,13 +50,17 @@ export function buildRankChartData(points = []) {
     return { points: [] };
   }
 
-  const stepPoints = events.slice(firstPositiveIndex).map((p) => ({
-    x: p.time,
-    y: p.rank,
-    event: p.event,
-    referendumIndex: p.referendumIndex,
-    referendumTitle: p.referendumTitle,
-  }));
+  const stepPoints = [];
+  let prevRank = 0;
+  for (const point of events.slice(firstPositiveIndex)) {
+    stepPoints.push({
+      x: point.time,
+      y: point.rank,
+      event: point.event,
+      fromRank: prevRank,
+    });
+    prevRank = point.rank;
+  }
 
   // Extend the line to the current time at the last known rank
   stepPoints.push({ x: Date.now(), y: stepPoints[stepPoints.length - 1].y });
@@ -66,12 +68,16 @@ export function buildRankChartData(points = []) {
   return { points: stepPoints };
 }
 
-function RankChartTooltip({ x, y, visible, data, section }) {
+function RankChartTooltip({ x, y, visible, data }) {
   if (!visible || !data) {
     return null;
   }
 
-  const { time, rank, event, referendumIndex, referendumTitle } = data;
+  const { event } = data;
+  const time = data.x;
+  const rank = data.y;
+  const fromRank = data.fromRank;
+  const isRankChange = event === "Promoted" || event === "Demoted";
 
   return (
     <div
@@ -80,21 +86,8 @@ function RankChartTooltip({ x, y, visible, data, section }) {
     >
       <div className="rounded py-1.5 px-3 text12Normal text-white bg-tooltipBg">
         <div>{dayjs(time).format("YYYY-MM-DD")}</div>
-        <div>Rank: {rank}</div>
+        <div>rank: {isRankChange ? `${fromRank} → ${rank}` : rank}</div>
         {EVENT_NAMES[event] && <div>Event: {EVENT_NAMES[event]}</div>}
-        {referendumIndex != null && (
-          <div className="pointer-events-auto">
-            <Link
-              href={`/${section}/referenda/${referendumIndex}`}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              Referendum #{referendumIndex}
-              {referendumTitle ? ` · ${referendumTitle}` : ""}
-            </Link>
-          </div>
-        )}
         <div
           className="absolute left-1/2 -translate-x-1/2 w-0 h-0"
           style={{
@@ -263,7 +256,6 @@ export default function ProfileFellowshipCoreRank() {
         y={tooltip?.y}
         visible={!!tooltip}
         data={tooltip?.data}
-        section={section}
       />
     </div>
   );
