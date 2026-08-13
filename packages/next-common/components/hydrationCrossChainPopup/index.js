@@ -11,6 +11,7 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
+import BigNumber from "bignumber.js";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useChainApi, useGetHydrationCrossChainTx } from "./crossChainApi";
@@ -81,8 +82,23 @@ function PopupContent() {
 
     const amount = getCheckedTransferAmount();
 
+    if (
+      destinationFee?.amount != null &&
+      new BigNumber(amount).lte(destinationFee.amount.toString())
+    ) {
+      throw new Error(
+        "Amount must be greater than the destination chain fee, otherwise nothing would arrive",
+      );
+    }
+
     return getTeleportTx(transferToAddress, amount, symbol);
-  }, [getTeleportTx, transferToAddress, getCheckedTransferAmount, symbol]);
+  }, [
+    getTeleportTx,
+    transferToAddress,
+    getCheckedTransferAmount,
+    symbol,
+    destinationFee,
+  ]);
 
   const doSubmit = useCallback(async () => {
     if (!sourceApi) {
