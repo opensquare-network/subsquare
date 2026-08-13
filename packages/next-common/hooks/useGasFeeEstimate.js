@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
 import { useContextApi } from "next-common/context/api";
 import {
   NATIVE_ASSET_TYPE,
@@ -46,7 +47,7 @@ export default function useGasFeeEstimate(getTxFunc, feeAssetType) {
 
   // Clear stale gasFee synchronously before paint on feeAssetType switch
   const prevFeeAssetType = useRef(feeAssetType);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (prevFeeAssetType.current !== feeAssetType) {
       setGasFee(null);
       prevFeeAssetType.current = feeAssetType;
