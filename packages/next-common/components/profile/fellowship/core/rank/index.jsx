@@ -134,23 +134,117 @@ export default function ProfileFellowshipCoreRank() {
 
   const externalTooltip = useCallback(({ tooltip: tooltipModel }) => {
     if (!tooltipModel || tooltipModel.opacity === 0) {
-      setTooltip(null);
+      setTooltip((prev) => (prev ? null : prev));
       return;
     }
 
     const dataPoint = tooltipModel.dataPoints?.[0];
     const point = dataPoint?.raw;
     if (!point) {
-      setTooltip(null);
+      setTooltip((prev) => (prev ? null : prev));
       return;
     }
 
-    setTooltip({
-      x: tooltipModel.caretX,
-      y: tooltipModel.caretY,
-      data: point,
+    setTooltip((prev) => {
+      const next = {
+        x: tooltipModel.caretX,
+        y: tooltipModel.caretY,
+        data: point,
+      };
+      if (
+        prev &&
+        prev.x === next.x &&
+        prev.y === next.y &&
+        prev.data === next.data
+      ) {
+        return prev;
+      }
+      return next;
     });
   }, []);
+
+  const chartData = useMemo(
+    () => ({
+      datasets: [
+        {
+          label: "Rank",
+          data: points,
+          borderColor: theme.theme500,
+          backgroundColor: theme.theme100,
+          borderWidth: 2,
+          pointRadius: (ctx) => (ctx.dataIndex === points.length - 1 ? 0 : 3),
+          pointBackgroundColor: theme.theme500,
+          pointBorderColor: theme.theme500,
+          pointBorderWidth: 0,
+          pointHoverRadius: 5,
+          pointHitRadius: 10,
+          fill: true,
+          stepped: true,
+        },
+      ],
+    }),
+    [points, theme.theme500, theme.theme100],
+  );
+
+  const options = useMemo(
+    () => ({
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: 0,
+      },
+      interaction: {
+        intersect: false,
+        mode: "index",
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+          external: externalTooltip,
+        },
+      },
+      scales: {
+        x: {
+          type: "time",
+          time: {
+            unit: "month",
+            displayFormats: {
+              month: "YYYY-MM",
+            },
+          },
+          grid: {
+            display: false,
+          },
+          ticks: {
+            color: theme.textTertiary,
+            maxRotation: 0,
+            maxTicksLimit: 8,
+          },
+        },
+        y: {
+          beginAtZero: true,
+          min: 0,
+          max: MAX_RANK,
+          border: {
+            display: false,
+          },
+          grid: {
+            color: theme.neutral300,
+            drawTicks: false,
+          },
+          ticks: {
+            precision: 0,
+            stepSize: 1,
+            color: theme.textTertiary,
+          },
+        },
+      },
+    }),
+    [externalTooltip, theme.textTertiary, theme.neutral300],
+  );
 
   if (loading) {
     return (
@@ -170,83 +264,6 @@ export default function ProfileFellowshipCoreRank() {
       </div>
     );
   }
-
-  const chartData = {
-    datasets: [
-      {
-        label: "Rank",
-        data: points,
-        borderColor: theme.theme500,
-        backgroundColor: theme.theme100,
-        borderWidth: 2,
-        pointRadius: (ctx) => (ctx.dataIndex === points.length - 1 ? 0 : 3),
-        pointBackgroundColor: theme.theme500,
-        pointBorderColor: theme.theme500,
-        pointBorderWidth: 0,
-        pointHoverRadius: 5,
-        pointHitRadius: 10,
-        fill: true,
-        stepped: true,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: 0,
-    },
-    interaction: {
-      intersect: false,
-      mode: "index",
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: false,
-        external: externalTooltip,
-      },
-    },
-    scales: {
-      x: {
-        type: "time",
-        time: {
-          unit: "month",
-          displayFormats: {
-            month: "YYYY-MM",
-          },
-        },
-        grid: {
-          display: false,
-        },
-        ticks: {
-          color: theme.textTertiary,
-          maxRotation: 0,
-          maxTicksLimit: 8,
-        },
-      },
-      y: {
-        beginAtZero: true,
-        min: 0,
-        max: MAX_RANK,
-        border: {
-          display: false,
-        },
-        grid: {
-          color: theme.neutral300,
-          drawTicks: false,
-        },
-        ticks: {
-          precision: 0,
-          stepSize: 1,
-          color: theme.textTertiary,
-        },
-      },
-    },
-  };
 
   return (
     <div className="w-full relative" style={{ height: CHART_HEIGHT }}>
