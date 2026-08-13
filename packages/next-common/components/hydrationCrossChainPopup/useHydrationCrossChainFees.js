@@ -65,7 +65,10 @@ function getSiblingSovereignAccount(api, paraId) {
   return api.createType("AccountId32", key).toString();
 }
 
-const DRY_RUN_CALL_FLAGS = 4;
+// dry_run_call(origin, call, result_xcms_version): per polkadot-sdk PR #7438
+// the third argument is the XCM version the dry-run result should use
+// (4 = V4), not a bitmask of flags.
+const DRY_RUN_RESULT_XCM_VERSION = 4;
 
 function isFeesPaidEvent(event) {
   return (
@@ -118,7 +121,7 @@ async function estimateDeliveryFeeByDryRun({
     const result = await sourceApi.call.dryRunApi.dryRunCall(
       { system: { Signed: sovereign } },
       tx.method ?? tx,
-      DRY_RUN_CALL_FLAGS,
+      DRY_RUN_RESULT_XCM_VERSION,
     );
     if (!result.isOk || result.asOk.executionResult?.toJSON?.()?.err) {
       return null;
