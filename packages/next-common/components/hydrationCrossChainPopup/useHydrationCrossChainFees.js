@@ -14,14 +14,22 @@ import {
   HUB_TO_HYDRATION_DESTINATION_FEES,
 } from "./transferAssets";
 
-function getFeeEstimateAmount(destinationFeeAmount) {
-  return destinationFeeAmount != null && destinationFeeAmount > 10n
-    ? destinationFeeAmount + 1n
-    : 10n;
-}
-
 // Upper bound of a fungible in XCM (u128::MAX), used in fee-quoting XCMs.
 const AMOUNT_MAX = 340282366920938463463374607431768211455n;
+
+// hydration-ui's SDK quotes the source fee with `amount = destinationFee + 1
+// wei` so the compact-encoded tx length (and thus the length fee) matches. The
+// amount falls back to this minimum when the destination fee is unknown.
+const FEE_QUOTE_MIN_AMOUNT = 10n;
+const FEE_QUOTE_AMOUNT_PADDING = 1n;
+
+function getFeeEstimateAmount(destinationFeeAmount) {
+  const hasDestinationFee =
+    destinationFeeAmount != null && destinationFeeAmount > FEE_QUOTE_MIN_AMOUNT;
+  return hasDestinationFee
+    ? destinationFeeAmount + FEE_QUOTE_AMOUNT_PADDING
+    : FEE_QUOTE_MIN_AMOUNT;
+}
 
 // The xc-cfg XcmPaymentApi destination fee is padded by 20% before being
 // surfaced (galacticcouncil/sdk `padFeeByPercentage`).
@@ -39,13 +47,59 @@ function getFeeAssetLocation({ chain, symbol }) {
   return { V4: getTransferAssetLocation({ sourceChain: chain, symbol }) };
 }
 
+// Asset Hub derives a sibling parachain's sovereign account as the ASCII bytes
+// "sibl" followed by the u32 little-endian paraId (the `Sibling`
+// AccountIdConversion used by Asset Hub).
+const SIBLING_ACCOUNT_PREFIX = "sibl";
+const SIBLING_ACCOUNT_PREFIX_LENGTH = 4;
+
 function getSiblingSovereignAccount(api, paraId) {
   const key = new Uint8Array(32);
-  key.set([0x73, 0x69, 0x62, 0x6c]); // "sibl"
-  new DataView(key.buffer).setUint32(4, paraId, true); // u32 little-endian
+  key.set(new TextEncoder().encode(SIBLING_ACCOUNT_PREFIX));
+  new DataView(key.buffer).setUint32(
+    SIBLING_ACCOUNT_PREFIX_LENGTH,
+    paraId,
+    true,
+  );
   return api.createType("AccountId32", key).toString();
 }
 
+// dry-run call flags used by hydration-ui's SDK.
+const DRY_RUN_CALL_FLAGS = 4;
+
+function isFeesPaidEvent(event) {
+  return (
+    event.section?.toString?.() === "polkadotXcm" &&
+    event.method?.toString?.() === "FeesPaid"
+  );
+}
+
+function getFungibleAmount(fee) {
+  const json = fee?.toJSON?.() ?? fee;
+  return json?.fun?.Fungible ?? json?.fun?.fungible;
+}
+
+// Sums the `polkadotXcm.FeesPaid` amounts from the raw event codecs. The raw
+// Codec objects are parsed directly because `emittedEvents.toJSON()` drops the
+// section/method fields; FeesPaid data is a Tuple [paying, fees].
+function getFeesPaidTotal(events) {
+  let total = 0n;
+  for (const event of events) {
+    if (!isFeesPaidEvent(event)) continue;
+    const fees = event.data?.fees ?? event.data?.toJSON?.()?.[1] ?? [];
+    for (const fee of fees) {
+      const amount = getFungibleAmount(fee);
+      if (amount != null) total += BigInt(amount);
+    }
+  }
+  return total;
+}
+
+// Estimates the XCM delivery fee the same way hydration-ui's SDK does: dry-run
+// the actual transfer signed by the destination parachain's sovereign account
+// and sum the `polkadotXcm.FeesPaid` events. Returns null when the dry-run API
+// is unavailable or the simulation fails, letting the caller fall back to
+// queryDeliveryFees.
 async function estimateDeliveryFeeByDryRun({
   sourceApi,
   destinationChain,
@@ -54,49 +108,72 @@ async function estimateDeliveryFeeByDryRun({
   if (typeof sourceApi.call?.dryRunApi?.dryRunCall !== "function") {
     return null;
   }
+
   const sovereign = getSiblingSovereignAccount(
     sourceApi,
     getParaChainId(destinationChain),
   );
+
   try {
     const result = await sourceApi.call.dryRunApi.dryRunCall(
       { system: { Signed: sovereign } },
       tx.method ?? tx,
-      4,
+      DRY_RUN_CALL_FLAGS,
     );
     if (!result.isOk || result.asOk.executionResult?.toJSON?.()?.err) {
       return null;
     }
-    // Iterate the raw event codecs: `emittedEvents.toJSON()` drops the
-    // section/method fields, so parse the Codec objects directly.
-    const events = result.asOk.emittedEvents || [];
-    let deliveryFee = 0n;
-    for (const event of events) {
-      if (
-        event.section?.toString?.() === "polkadotXcm" &&
-        event.method?.toString?.() === "FeesPaid"
-      ) {
-        // The FeesPaid data is a Tuple [paying, fees]; named fields are also
-        // exposed on the codec (`data.fees`), else fall back to the array.
-        const fees = event.data?.fees ?? event.data?.toJSON?.()?.[1];
-        for (const fee of fees || []) {
-          const json = fee?.toJSON?.() ?? fee;
-          const amount = json?.fun?.Fungible ?? json?.fun?.fungible;
-          if (amount != null) {
-            deliveryFee += BigInt(amount);
-          }
-        }
-      }
-    }
-    return deliveryFee;
+    return getFeesPaidTotal(result.asOk.emittedEvents || []);
   } catch (e) {
     console.error("Asset Hub delivery fee dry-run failed:", e);
     return null;
   }
 }
 
-// Builds the XCM that the destination chain executes for the transfer, as seen
-// from the destination. Byte-identical to the Galactic Council SDK's
+function withdrawAllAssets(assetLocation) {
+  return {
+    WithdrawAsset: [{ id: assetLocation, fun: { Fungible: AMOUNT_MAX } }],
+  };
+}
+
+function buyExecution(assetLocation) {
+  return {
+    BuyExecution: {
+      fees: { id: assetLocation, fun: { Fungible: AMOUNT_MAX } },
+      weight_limit: { Unlimited: null },
+    },
+  };
+}
+
+function depositToBeneficiary({
+  destinationApi,
+  destinationChain,
+  transferToAddress,
+}) {
+  return {
+    DepositAsset: {
+      assets: { Wild: { AllCounted: 1 } },
+      beneficiary: {
+        parents: 0,
+        interior: {
+          X1: [
+            getBeneficiaryJunction({
+              api: destinationApi,
+              destinationChain,
+              transferToAddress,
+            }),
+          ],
+        },
+      },
+    },
+  };
+}
+
+const EMPTY_TOPIC =
+  "0x0000000000000000000000000000000000000000000000000000000000000000";
+
+// Builds the XCM the destination chain executes for the transfer, as seen from
+// the destination. Byte-identical to the Galactic Council SDK's
 // `buildReserveTransfer` (WithdrawAsset, ClearOrigin, BuyExecution,
 // DepositAsset, SetTopic) so the weight -> asset fee matches hydration-ui.
 function buildDestinationFeeXcm({
@@ -112,37 +189,15 @@ function buildDestinationFeeXcm({
 
   return {
     V4: [
-      {
-        WithdrawAsset: [{ id: assetLocation, fun: { Fungible: AMOUNT_MAX } }],
-      },
+      withdrawAllAssets(assetLocation),
       { ClearOrigin: null },
-      {
-        BuyExecution: {
-          fees: { id: assetLocation, fun: { Fungible: AMOUNT_MAX } },
-          weight_limit: { Unlimited: null },
-        },
-      },
-      {
-        DepositAsset: {
-          assets: { Wild: { AllCounted: 1 } },
-          beneficiary: {
-            parents: 0,
-            interior: {
-              X1: [
-                getBeneficiaryJunction({
-                  api: destinationApi,
-                  destinationChain,
-                  transferToAddress,
-                }),
-              ],
-            },
-          },
-        },
-      },
-      {
-        SetTopic:
-          "0x0000000000000000000000000000000000000000000000000000000000000000",
-      },
+      buyExecution(assetLocation),
+      depositToBeneficiary({
+        destinationApi,
+        destinationChain,
+        transferToAddress,
+      }),
+      { SetTopic: EMPTY_TOPIC },
     ],
   };
 }
@@ -161,90 +216,98 @@ function buildDestinationFeeXcm({
 //   queryDeliveryFees returns an empty list), so only the weight fee applies;
 //   it is converted from the native HDX fee to the fee currency when one is
 //   configured.
-export async function estimateSourceFee({
+
+// Asset Hub's XCM delivery fee, quoted via the reserve-transfer XCM the
+// destination executes. Falls back to queryDeliveryFees when the dry-run API is
+// unavailable or the simulation fails.
+async function getAssetHubDeliveryFee({
   sourceApi,
   sourceChain,
   destinationChain,
   symbol,
-  address,
   transferToAddress,
-  nativeSymbol,
-  nativeDecimals,
-  destinationFeeAmount,
+  tx,
 }) {
-  const tx = buildHydrationCrossChainTx({
+  const dryRunFee = await estimateDeliveryFeeByDryRun({
+    sourceApi,
+    destinationChain,
+    tx,
+  });
+  if (dryRunFee != null) {
+    return dryRunFee;
+  }
+  return getDeliveryFeeByQuery({
     sourceApi,
     sourceChain,
     destinationChain,
-    transferToAddress,
-    amount: getFeeEstimateAmount(destinationFeeAmount),
     symbol,
+    transferToAddress,
   });
+}
 
-  const info = await tx.paymentInfo(address);
-  const partialFee = BigInt(info.partialFee.toString());
-
-  if (isAssetHubChain(sourceChain)) {
-    let deliveryFee = await estimateDeliveryFeeByDryRun({
-      sourceApi,
-      destinationChain,
-      tx,
-    });
-
-    if (deliveryFee == null) {
-      deliveryFee = 0n;
-
-      // queryDeliveryFees is exposed by Asset Hub's metadata, but some API
-      // instances (e.g. ones built from a stale cached metadata) may not
-      // decorate it — degrade gracefully to the weight fee alone instead of
-      // crashing the popup.
-      if (
-        typeof sourceApi.call?.xcmPaymentApi?.queryDeliveryFees === "function"
-      ) {
-        try {
-          const result = await sourceApi.call.xcmPaymentApi.queryDeliveryFees(
-            {
-              V4: {
-                parents: 1,
-                interior: {
-                  X1: [{ Parachain: getParaChainId(destinationChain) }],
-                },
-              },
-            },
-            buildDestinationFeeXcm({
-              destinationApi: sourceApi,
-              destinationChain,
-              symbol,
-              transferToAddress,
-            }),
-            getFeeAssetLocation({ chain: sourceChain, symbol: DOT_SYMBOL }),
-          );
-
-          // Result: xcm::VersionedAssets — a V3/V4/V5 enum of asset lists.
-          // Take the first fungible amount.
-          const assets = result?.asOk?.toJSON?.();
-          const feeList = Array.isArray(assets) ? assets : assets?.v4;
-          const fee = feeList?.find?.((entry) => entry?.fun?.fungible != null)
-            ?.fun?.fungible;
-          deliveryFee = fee != null ? BigInt(fee) : 0n;
-        } catch (e) {
-          console.error("Asset Hub delivery fee query failed:", e);
-        }
-      } else {
-        console.warn(
-          "xcmPaymentApi.queryDeliveryFees is not available, showing the weight fee only",
-        );
-      }
-    }
-
-    return {
-      amount: partialFee + deliveryFee,
-      symbol: DOT_SYMBOL,
-      decimals: getTransferAsset(DOT_SYMBOL).decimals,
-    };
+async function getDeliveryFeeByQuery({
+  sourceApi,
+  sourceChain,
+  destinationChain,
+  symbol,
+  transferToAddress,
+}) {
+  // queryDeliveryFees is exposed by Asset Hub's metadata, but some API
+  // instances (e.g. ones built from a stale cached metadata) may not decorate
+  // it — degrade gracefully to the weight fee alone instead of crashing.
+  if (typeof sourceApi.call?.xcmPaymentApi?.queryDeliveryFees !== "function") {
+    console.warn(
+      "xcmPaymentApi.queryDeliveryFees is not available, showing the weight fee only",
+    );
+    return 0n;
   }
 
-  // Hydration source: resolve the fee currency, then convert the native fee.
+  try {
+    const result = await sourceApi.call.xcmPaymentApi.queryDeliveryFees(
+      {
+        V4: {
+          parents: 1,
+          interior: {
+            X1: [{ Parachain: getParaChainId(destinationChain) }],
+          },
+        },
+      },
+      buildDestinationFeeXcm({
+        destinationApi: sourceApi,
+        destinationChain,
+        symbol,
+        transferToAddress,
+      }),
+      getFeeAssetLocation({ chain: sourceChain, symbol: DOT_SYMBOL }),
+    );
+    return getFirstFungibleAmount(result);
+  } catch (e) {
+    console.error("Asset Hub delivery fee query failed:", e);
+    return 0n;
+  }
+}
+
+// Extracts the first fungible amount from an xcm::VersionedAssets result — a
+// V3/V4/V5 enum of asset lists.
+function getFirstFungibleAmount(result) {
+  const assets = result?.asOk?.toJSON?.();
+  const feeList = Array.isArray(assets) ? assets : assets?.v4;
+  const fee = feeList?.find?.((entry) => entry?.fun?.fungible != null)?.fun
+    ?.fungible;
+  return fee != null ? BigInt(fee) : 0n;
+}
+
+// Hydration source fee: resolve the signer's fee currency, then convert the
+// native fee into it when a supported currency is configured.
+async function estimateHydrationSourceFee({
+  sourceApi,
+  sourceChain,
+  address,
+  info,
+  partialFee,
+  nativeSymbol,
+  nativeDecimals,
+}) {
   const {
     symbol: feeSymbol,
     decimals: feeDecimals,
@@ -279,6 +342,68 @@ export async function estimateSourceFee({
   }
 }
 
+// Source chain fee, estimated on the source chain with its own runtime. The
+// fee-quote tx embeds `destinationFeeAmount + 1 wei` of the transferred asset
+// (see getFeeEstimateAmount), mirroring hydration-ui's Transfer build so the
+// length fee matches byte-for-byte.
+//
+// - Asset Hub: charged in DOT (native). The XCM delivery fee is charged on top
+//   of the extrinsic weight fee (usesDeliveryFee), so both are summed.
+// - Hydration: charged in the signer's MultiTransactionPayment currency
+//   (native HDX by default). Hydration quotes no delivery fee (verified:
+//   queryDeliveryFees returns an empty list), so only the weight fee applies;
+//   it is converted from the native HDX fee to the fee currency when one is
+//   configured.
+export async function estimateSourceFee({
+  sourceApi,
+  sourceChain,
+  destinationChain,
+  symbol,
+  address,
+  transferToAddress,
+  nativeSymbol,
+  nativeDecimals,
+  destinationFeeAmount,
+}) {
+  const tx = buildHydrationCrossChainTx({
+    sourceApi,
+    sourceChain,
+    destinationChain,
+    transferToAddress,
+    amount: getFeeEstimateAmount(destinationFeeAmount),
+    symbol,
+  });
+
+  const info = await tx.paymentInfo(address);
+  const partialFee = BigInt(info.partialFee.toString());
+
+  if (isAssetHubChain(sourceChain)) {
+    const deliveryFee = await getAssetHubDeliveryFee({
+      sourceApi,
+      sourceChain,
+      destinationChain,
+      symbol,
+      transferToAddress,
+      tx,
+    });
+    return {
+      amount: partialFee + deliveryFee,
+      symbol: DOT_SYMBOL,
+      decimals: getTransferAsset(DOT_SYMBOL).decimals,
+    };
+  }
+
+  return estimateHydrationSourceFee({
+    sourceApi,
+    sourceChain,
+    address,
+    info,
+    partialFee,
+    nativeSymbol,
+    nativeDecimals,
+  });
+}
+
 // Destination chain fee.
 //
 // - Asset Hub -> Hydration: fixed values from the xc-cfg route configs,
@@ -286,18 +411,15 @@ export async function estimateSourceFee({
 // - Hydration -> Asset Hub: queried dynamically on Asset Hub via XcmPaymentApi
 //   (queryXcmWeight -> queryWeightToAssetFee), padded by the same 20% margin
 //   the SDK applies.
-export async function estimateDestinationFee({
+
+// The destination fee on Asset Hub, quoted via XcmPaymentApi
+// (queryXcmWeight -> queryWeightToAssetFee), in the transferred asset.
+async function getAssetHubDestinationFee({
   destinationApi,
   destinationChain,
   symbol,
   transferToAddress,
 }) {
-  if (!isAssetHubChain(destinationChain)) {
-    // Asset Hub -> Hydration: fixed config value.
-    const config = HUB_TO_HYDRATION_DESTINATION_FEES[symbol];
-    return { amount: config.amount, symbol, decimals: config.decimals };
-  }
-
   const xcmPaymentApi = destinationApi.call?.xcmPaymentApi;
   if (
     typeof xcmPaymentApi?.queryXcmWeight !== "function" ||
@@ -326,10 +448,39 @@ export async function estimateDestinationFee({
     throw new Error("XcmPaymentApi queryWeightToAssetFee failed on Asset Hub");
   }
 
-  const rawFee = BigInt(feeResult.asOk.toString());
-  const margin = (rawFee * DESTINATION_FEE_MARGIN_PERCENT) / 100n;
+  return BigInt(feeResult.asOk.toString());
+}
+
+function padFeeByPercentage(fee, percent) {
+  return fee + (fee * percent) / 100n;
+}
+
+// Destination chain fee.
+//
+// - Asset Hub -> Hydration: fixed values from the xc-cfg route configs,
+//   denominated in the transferred asset.
+// - Hydration -> Asset Hub: queried dynamically on Asset Hub via XcmPaymentApi
+//   (queryXcmWeight -> queryWeightToAssetFee), padded by the same 20% margin
+//   the SDK applies.
+export async function estimateDestinationFee({
+  destinationApi,
+  destinationChain,
+  symbol,
+  transferToAddress,
+}) {
+  if (!isAssetHubChain(destinationChain)) {
+    const config = HUB_TO_HYDRATION_DESTINATION_FEES[symbol];
+    return { amount: config.amount, symbol, decimals: config.decimals };
+  }
+
+  const rawFee = await getAssetHubDestinationFee({
+    destinationApi,
+    destinationChain,
+    symbol,
+    transferToAddress,
+  });
   return {
-    amount: rawFee + margin,
+    amount: padFeeByPercentage(rawFee, DESTINATION_FEE_MARGIN_PERCENT),
     symbol,
     decimals: getTransferAsset(symbol).decimals,
   };
