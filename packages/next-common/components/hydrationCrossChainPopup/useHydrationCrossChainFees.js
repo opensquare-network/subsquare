@@ -14,15 +14,6 @@ import {
   HUB_TO_HYDRATION_DESTINATION_FEES,
 } from "./transferAssets";
 
-// The tx hydration-ui builds the source fee from embeds a representative
-// amount rather than the actual transfer amount: the SDK's Transfer quotes the
-// fee with `amount = destinationFee + 1 wei` (see xc-sdk TransferBuilder
-// getTransferData). The destination fee is denominated in the transferred
-// asset, so the source-fee tx is built with that amount. Although the weight
-// fee is amount-independent, the amount changes the compact-encoded tx length
-// (and thus the length fee), so matching hydration-ui byte-for-byte requires
-// the same amount. Falls back to the SDK's `10 wei` constant when the
-// destination fee is unknown.
 function getFeeEstimateAmount(destinationFeeAmount) {
   return destinationFeeAmount != null && destinationFeeAmount > 10n
     ? destinationFeeAmount + 1n
@@ -48,12 +39,6 @@ function getFeeAssetLocation({ chain, symbol }) {
   return { V4: getTransferAssetLocation({ sourceChain: chain, symbol }) };
 }
 
-// The reserve (sovereign) account of the destination parachain on the source
-// chain, mirroring the Galactic Council SDK's `getSovereignAccounts`: the
-// ASCII bytes `"sibl"` followed by the parachain id as a u32 little-endian
-// (the `Sibling` AccountIdConversion used by Asset Hub). hydration-ui's SDK
-// dry-runs the transfer signed by this account to obtain the actual XCM
-// delivery fee.
 function getSiblingSovereignAccount(api, paraId) {
   const key = new Uint8Array(32);
   key.set([0x73, 0x69, 0x62, 0x6c]); // "sibl"
@@ -61,11 +46,6 @@ function getSiblingSovereignAccount(api, paraId) {
   return api.createType("AccountId32", key).toString();
 }
 
-// Estimates the XCM delivery fee the same way hydration-ui's SDK does: dry-run
-// the actual transfer signed by the destination parachain's sovereign account
-// and sum the `polkadotXcm.FeesPaid` events. Returns null when the dry-run API
-// is unavailable or the simulation fails, letting the caller fall back to
-// queryDeliveryFees.
 async function estimateDeliveryFeeByDryRun({
   sourceApi,
   destinationChain,
@@ -205,11 +185,6 @@ export async function estimateSourceFee({
   const partialFee = BigInt(info.partialFee.toString());
 
   if (isAssetHubChain(sourceChain)) {
-    // hydration-ui's SDK estimates the delivery fee by dry-running the actual
-    // transfer signed by the destination's sovereign account and reading the
-    // `polkadotXcm.FeesPaid` events. Fall back to the XcmPaymentApi
-    // queryDeliveryFees estimate when the dry-run API is unavailable or the
-    // simulation fails.
     let deliveryFee = await estimateDeliveryFeeByDryRun({
       sourceApi,
       destinationChain,
