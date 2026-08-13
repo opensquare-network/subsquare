@@ -125,21 +125,13 @@ function ReceiveField() {
 }
 
 function ReversePairButton() {
-  const { pools, setAmount } = useSwap();
-  const { quote } = useSwapQuote();
-
-  const handleClick = useCallback(() => {
-    if (!isNil(quote.quote) && pools.tokenOut) {
-      setAmount(toPrecision(quote.quote, pools.tokenOut.decimals));
-    }
-    pools.reversePair();
-  }, [pools, quote.quote, setAmount]);
+  const { pools } = useSwap();
 
   return (
     <div className="flex justify-center">
       <button
         type="button"
-        onClick={handleClick}
+        onClick={pools.reversePair}
         className={cn(
           "cursor-pointer p-2 rounded-lg",
           "border border-neutral400 bg-neutral100",
