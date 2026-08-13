@@ -12,12 +12,9 @@ import {
   fellowshipStatisticsMemberRankHistoryApi,
 } from "next-common/services/url";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
-import { FELLOWSHIP_RANK_LEVEL_NAMES } from "next-common/utils/constants";
 
 const CHART_HEIGHT = 360;
-
-// The maximum rank value on chain (fellowship / ambassador both range 0~9)
-const MAX_RANK = FELLOWSHIP_RANK_LEVEL_NAMES.length - 1;
+const MAX_RANK = 7;
 
 const EVENT_NAMES = {
   Promoted: "Promotion",
@@ -25,16 +22,6 @@ const EVENT_NAMES = {
   Proven: "Retention",
 };
 
-/**
- * Build rank step points from the rank change points returned by the backend.
- * Every point keeps its exact timestamp so it lands at the accurate position
- * on the time x-axis, together with the rank before the change (fromRank) so
- * the tooltip can show the rank transition. The chart starts from the first
- * time the member holds a rank greater than 0 and extends to the current time
- * at the last known rank.
- * @param {Array<{time: number, rank: number, event: string}>} points
- * @returns {{ points: Array<{x: number, y: number, event: string, fromRank: number}> }}
- */
 export function buildRankChartData(points = []) {
   const events = (points || [])
     .filter((p) => p?.time && !Number.isNaN(Number(p.time)))
@@ -125,10 +112,7 @@ export default function ProfileFellowshipCoreRank() {
 
   const theme = useThemeSetting();
 
-  const { points } = useMemo(
-    () => buildRankChartData(value?.points || []),
-    [value],
-  );
+  const { points } = useMemo(() => buildRankChartData(value || []), [value]);
 
   const [tooltip, setTooltip] = useState(null);
 
