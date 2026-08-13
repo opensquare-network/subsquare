@@ -33,6 +33,11 @@ export default function SymbolSelectInput({
     setShowOptions(!showOptions);
   };
 
+  const handleSymbolChange = (item) => {
+    onSymbolChange(item);
+    onValueChange?.("");
+  };
+
   return (
     <div className="relative">
       <CurrencyInput
@@ -59,7 +64,7 @@ export default function SymbolSelectInput({
       {showOptions && (
         <OptionsWrapper className="left-auto max-w-[160px] text14Medium">
           {symbolOptions.map((item) => (
-            <Option key={item} onClick={() => onSymbolChange(item)}>
+            <Option key={item} onClick={() => handleSymbolChange(item)}>
               {item}
             </Option>
           ))}
