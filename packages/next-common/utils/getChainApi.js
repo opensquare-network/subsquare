@@ -1,6 +1,11 @@
 import getMetadata from "next-common/services/chain/apis/metadata";
 
-export async function getChainApi(endpoints) {
+/**
+ * @param {string[]} endpoints
+ * @param {object} [runtime] optional runtime API definitions to merge in, so
+ * runtime calls stay decorated even if the cached metadata is stale
+ */
+export async function getChainApi(endpoints, runtime) {
   const { WsProvider, ApiPromise } = await import("@polkadot/api");
 
   const provider = new WsProvider(endpoints, 1000);
@@ -8,6 +13,7 @@ export async function getChainApi(endpoints) {
   return await ApiPromise.create({
     provider,
     metadata: { [id]: metadata },
+    ...(runtime ? { runtime } : {}),
   });
 }
 

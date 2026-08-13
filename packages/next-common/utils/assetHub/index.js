@@ -3,6 +3,7 @@ import getChainSettings from "../consts/settings";
 import { CHAIN } from "next-common/utils/constants";
 import { getAssetHubChain } from "next-common/utils/chain";
 import { getPapi } from "next-common/services/chain/papi";
+import { getXcmPaymentApiRuntime } from "next-common/services/chain/apis/options";
 
 let api = null;
 let papiApi = null;
@@ -27,7 +28,10 @@ export async function getAssetHubApi() {
 
   const assetHubEndpoints = getAssetHubEndpoints();
 
-  return getChainApi(assetHubEndpoints);
+  // Merge the XcmPaymentApi runtime definitions so runtime calls like
+  // query_delivery_fees stay decorated even if the cached metadata is stale.
+  api = getChainApi(assetHubEndpoints, getXcmPaymentApiRuntime());
+  return api;
 }
 
 export async function getAssetHubPapi() {

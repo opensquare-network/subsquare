@@ -147,10 +147,12 @@ export async function estimateSourceFee({
           getFeeAssetLocation({ chain: sourceChain, symbol: DOT_SYMBOL }),
         );
 
-        // Result: Vec<XcmAsset> — take the first fungible amount.
-        const fee = result?.asOk
-          ?.toJSON?.()
-          ?.v4?.find((entry) => entry?.fun?.fungible != null)?.fun?.fungible;
+        // Result: xcm::VersionedAssets — a V3/V4/V5 enum of asset lists.
+        // Take the first fungible amount.
+        const assets = result?.asOk?.toJSON?.();
+        const feeList = Array.isArray(assets) ? assets : assets?.v4;
+        const fee = feeList?.find?.((entry) => entry?.fun?.fungible != null)
+          ?.fun?.fungible;
         deliveryFee = fee != null ? BigInt(fee) : 0n;
       } catch (e) {
         console.error("Asset Hub delivery fee query failed:", e);

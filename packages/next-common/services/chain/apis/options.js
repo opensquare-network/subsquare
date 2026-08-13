@@ -31,7 +31,11 @@ const xcmPaymentApiMethods = {
       { name: "message", type: "XcmVersionedXcm" },
       { name: "feeAsset", type: "XcmVersionedAssetId" },
     ],
-    type: "Result<Vec<XcmAsset>, XcmPaymentApiError>",
+    // The chain returns xcm::VersionedAssets (V3/V4/V5 assets), NOT a bare
+    // Vec<XcmAsset> — the latter is only declared inside the runtime API and
+    // resolves to DoNotConstruct when the api is built from a metadata keyed
+    // by genesis-specVersion. XcmVersionedAssets is a registered core type.
+    type: "Result<XcmVersionedAssets, XcmPaymentApiError>",
   },
 };
 
@@ -39,6 +43,13 @@ const xcmPaymentApiRuntimeVersions = [
   { methods: xcmPaymentApiMethods, version: 1 },
   { methods: xcmPaymentApiMethods, version: 2 },
 ];
+
+// Runtime API definitions for XcmPaymentApi. Exported for API instances that
+// are built from metadata only (see getChainApi) so methods like
+// query_delivery_fees stay decorated even when the cached metadata is stale.
+export function getXcmPaymentApiRuntime() {
+  return { XcmPaymentApi: xcmPaymentApiRuntimeVersions };
+}
 
 function mergeRuntimeDefinitions(runtime = {}) {
   const existingXcmPaymentApiVersions = runtime.XcmPaymentApi || [];
