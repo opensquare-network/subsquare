@@ -48,6 +48,73 @@ function getFeeAssetLocation({ chain, symbol }) {
   return { V4: getTransferAssetLocation({ sourceChain: chain, symbol }) };
 }
 
+// The reserve (sovereign) account of the destination parachain on the source
+// chain, mirroring the Galactic Council SDK's `getSovereignAccounts`: the
+// ASCII bytes `"sibl"` followed by the parachain id as a u32 little-endian
+// (the `Sibling` AccountIdConversion used by Asset Hub). hydration-ui's SDK
+// dry-runs the transfer signed by this account to obtain the actual XCM
+// delivery fee.
+function getSiblingSovereignAccount(api, paraId) {
+  const key = new Uint8Array(32);
+  key.set([0x73, 0x69, 0x62, 0x6c]); // "sibl"
+  new DataView(key.buffer).setUint32(4, paraId, true); // u32 little-endian
+  return api.createType("AccountId32", key).toString();
+}
+
+// Estimates the XCM delivery fee the same way hydration-ui's SDK does: dry-run
+// the actual transfer signed by the destination parachain's sovereign account
+// and sum the `polkadotXcm.FeesPaid` events. Returns null when the dry-run API
+// is unavailable or the simulation fails, letting the caller fall back to
+// queryDeliveryFees.
+async function estimateDeliveryFeeByDryRun({
+  sourceApi,
+  destinationChain,
+  tx,
+}) {
+  if (typeof sourceApi.call?.dryRunApi?.dryRunCall !== "function") {
+    return null;
+  }
+  const sovereign = getSiblingSovereignAccount(
+    sourceApi,
+    getParaChainId(destinationChain),
+  );
+  try {
+    const result = await sourceApi.call.dryRunApi.dryRunCall(
+      { system: { Signed: sovereign } },
+      tx.method ?? tx,
+      4,
+    );
+    if (!result.isOk || result.asOk.executionResult?.toJSON?.()?.err) {
+      return null;
+    }
+    // Iterate the raw event codecs: `emittedEvents.toJSON()` drops the
+    // section/method fields, so parse the Codec objects directly.
+    const events = result.asOk.emittedEvents || [];
+    let deliveryFee = 0n;
+    for (const event of events) {
+      if (
+        event.section?.toString?.() === "polkadotXcm" &&
+        event.method?.toString?.() === "FeesPaid"
+      ) {
+        // The FeesPaid data is a Tuple [paying, fees]; named fields are also
+        // exposed on the codec (`data.fees`), else fall back to the array.
+        const fees = event.data?.fees ?? event.data?.toJSON?.()?.[1];
+        for (const fee of fees || []) {
+          const json = fee?.toJSON?.() ?? fee;
+          const amount = json?.fun?.Fungible ?? json?.fun?.fungible;
+          if (amount != null) {
+            deliveryFee += BigInt(amount);
+          }
+        }
+      }
+    }
+    return deliveryFee;
+  } catch (e) {
+    console.error("Asset Hub delivery fee dry-run failed:", e);
+    return null;
+  }
+}
+
 // Builds the XCM that the destination chain executes for the transfer, as seen
 // from the destination. Byte-identical to the Galactic Council SDK's
 // `buildReserveTransfer` (WithdrawAsset, ClearOrigin, BuyExecution,
@@ -138,48 +205,61 @@ export async function estimateSourceFee({
   const partialFee = BigInt(info.partialFee.toString());
 
   if (isAssetHubChain(sourceChain)) {
-    let deliveryFee = 0n;
+    // hydration-ui's SDK estimates the delivery fee by dry-running the actual
+    // transfer signed by the destination's sovereign account and reading the
+    // `polkadotXcm.FeesPaid` events. Fall back to the XcmPaymentApi
+    // queryDeliveryFees estimate when the dry-run API is unavailable or the
+    // simulation fails.
+    let deliveryFee = await estimateDeliveryFeeByDryRun({
+      sourceApi,
+      destinationChain,
+      tx,
+    });
 
-    // queryDeliveryFees is exposed by Asset Hub's metadata, but some API
-    // instances (e.g. ones built from a stale cached metadata) may not
-    // decorate it — degrade gracefully to the weight fee alone instead of
-    // crashing the popup.
-    if (
-      typeof sourceApi.call?.xcmPaymentApi?.queryDeliveryFees === "function"
-    ) {
-      try {
-        const result = await sourceApi.call.xcmPaymentApi.queryDeliveryFees(
-          {
-            V4: {
-              parents: 1,
-              interior: {
-                X1: [{ Parachain: getParaChainId(destinationChain) }],
+    if (deliveryFee == null) {
+      deliveryFee = 0n;
+
+      // queryDeliveryFees is exposed by Asset Hub's metadata, but some API
+      // instances (e.g. ones built from a stale cached metadata) may not
+      // decorate it — degrade gracefully to the weight fee alone instead of
+      // crashing the popup.
+      if (
+        typeof sourceApi.call?.xcmPaymentApi?.queryDeliveryFees === "function"
+      ) {
+        try {
+          const result = await sourceApi.call.xcmPaymentApi.queryDeliveryFees(
+            {
+              V4: {
+                parents: 1,
+                interior: {
+                  X1: [{ Parachain: getParaChainId(destinationChain) }],
+                },
               },
             },
-          },
-          buildDestinationFeeXcm({
-            destinationApi: sourceApi,
-            destinationChain,
-            symbol,
-            transferToAddress,
-          }),
-          getFeeAssetLocation({ chain: sourceChain, symbol: DOT_SYMBOL }),
-        );
+            buildDestinationFeeXcm({
+              destinationApi: sourceApi,
+              destinationChain,
+              symbol,
+              transferToAddress,
+            }),
+            getFeeAssetLocation({ chain: sourceChain, symbol: DOT_SYMBOL }),
+          );
 
-        // Result: xcm::VersionedAssets — a V3/V4/V5 enum of asset lists.
-        // Take the first fungible amount.
-        const assets = result?.asOk?.toJSON?.();
-        const feeList = Array.isArray(assets) ? assets : assets?.v4;
-        const fee = feeList?.find?.((entry) => entry?.fun?.fungible != null)
-          ?.fun?.fungible;
-        deliveryFee = fee != null ? BigInt(fee) : 0n;
-      } catch (e) {
-        console.error("Asset Hub delivery fee query failed:", e);
+          // Result: xcm::VersionedAssets — a V3/V4/V5 enum of asset lists.
+          // Take the first fungible amount.
+          const assets = result?.asOk?.toJSON?.();
+          const feeList = Array.isArray(assets) ? assets : assets?.v4;
+          const fee = feeList?.find?.((entry) => entry?.fun?.fungible != null)
+            ?.fun?.fungible;
+          deliveryFee = fee != null ? BigInt(fee) : 0n;
+        } catch (e) {
+          console.error("Asset Hub delivery fee query failed:", e);
+        }
+      } else {
+        console.warn(
+          "xcmPaymentApi.queryDeliveryFees is not available, showing the weight fee only",
+        );
       }
-    } else {
-      console.warn(
-        "xcmPaymentApi.queryDeliveryFees is not available, showing the weight fee only",
-      );
     }
 
     return {
