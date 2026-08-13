@@ -14,10 +14,20 @@ import {
   HUB_TO_HYDRATION_DESTINATION_FEES,
 } from "./transferAssets";
 
-// Fee placeholder used when building the tx for fee estimation. Both the
-// weight fee and the XCM fees are amount-independent (weight/proof based), so
-// a fixed placeholder keeps the estimate decoupled from the amount input.
-const ESTIMATE_AMOUNT = "1";
+// The tx hydration-ui builds the source fee from embeds a representative
+// amount rather than the actual transfer amount: the SDK's Transfer quotes the
+// fee with `amount = destinationFee + 1 wei` (see xc-sdk TransferBuilder
+// getTransferData). The destination fee is denominated in the transferred
+// asset, so the source-fee tx is built with that amount. Although the weight
+// fee is amount-independent, the amount changes the compact-encoded tx length
+// (and thus the length fee), so matching hydration-ui byte-for-byte requires
+// the same amount. Falls back to the SDK's `10 wei` constant when the
+// destination fee is unknown.
+function getFeeEstimateAmount(destinationFeeAmount) {
+  return destinationFeeAmount != null && destinationFeeAmount > 10n
+    ? destinationFeeAmount + 1n
+    : 10n;
+}
 
 // Upper bound of a fungible in XCM (u128::MAX), used in fee-quoting XCMs.
 const AMOUNT_MAX = 340282366920938463463374607431768211455n;
@@ -39,8 +49,9 @@ function getFeeAssetLocation({ chain, symbol }) {
 }
 
 // Builds the XCM that the destination chain executes for the transfer, as seen
-// from the destination. Same shape the Galactic Council SDK builds for fee
-// queries: WithdrawAsset, ClearOrigin, BuyExecution, DepositAsset.
+// from the destination. Byte-identical to the Galactic Council SDK's
+// `buildReserveTransfer` (WithdrawAsset, ClearOrigin, BuyExecution,
+// DepositAsset, SetTopic) so the weight -> asset fee matches hydration-ui.
 function buildDestinationFeeXcm({
   destinationApi,
   destinationChain,
@@ -81,11 +92,18 @@ function buildDestinationFeeXcm({
           },
         },
       },
+      {
+        SetTopic:
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+      },
     ],
   };
 }
 
-// Source chain fee, estimated on the source chain with its own runtime.
+// Source chain fee, estimated on the source chain with its own runtime. The
+// fee-quote tx embeds `destinationFeeAmount + 1 wei` of the transferred asset
+// (see getFeeEstimateAmount), mirroring hydration-ui's Transfer build so the
+// length fee matches byte-for-byte.
 //
 // - Asset Hub: charged in DOT (native). The XCM delivery fee is charged on top
 //   of the extrinsic weight fee (usesDeliveryFee), so both are summed. The
@@ -105,13 +123,14 @@ export async function estimateSourceFee({
   transferToAddress,
   nativeSymbol,
   nativeDecimals,
+  destinationFeeAmount,
 }) {
   const tx = buildHydrationCrossChainTx({
     sourceApi,
     sourceChain,
     destinationChain,
     transferToAddress,
-    amount: ESTIMATE_AMOUNT,
+    amount: getFeeEstimateAmount(destinationFeeAmount),
     symbol,
   });
 
@@ -359,36 +378,37 @@ export default function useHydrationCrossChainFees({
       nativeDecimals,
     };
 
-    // allSettled: the two fees are independent — a failure in one (e.g. a
-    // runtime call not decorated) must not blank the other.
-    Promise.allSettled([
-      estimateSourceFee({ ...args, sourceApi, sourceChain, destinationChain }),
-      estimateDestinationFee({
+    // The destination fee is needed before the source fee can be estimated:
+    // hydration-ui builds the source-fee quote tx with an amount of
+    // `destinationFee + 1 wei` (see getFeeEstimateAmount), so the destination
+    // fee is resolved first. A failure in one estimate must not blank the
+    // other.
+    (async () => {
+      const destResult = await estimateDestinationFee({
         ...args,
         destinationApi,
         destinationChain,
-      }),
-    ]).then(([sourceResult, destinationResult]) => {
+      }).catch((e) => {
+        console.error("Destination chain fee estimate failed:", e);
+        return null;
+      });
+
+      const sourceResult = await estimateSourceFee({
+        ...args,
+        sourceApi,
+        sourceChain,
+        destinationChain,
+        destinationFeeAmount: destResult?.amount,
+      }).catch((e) => {
+        console.error("Source chain fee estimate failed:", e);
+        return null;
+      });
+
       if (cancelled) return;
-      setSourceFee(
-        sourceResult.status === "fulfilled" ? sourceResult.value : null,
-      );
-      setDestinationFee(
-        destinationResult.status === "fulfilled"
-          ? destinationResult.value
-          : null,
-      );
-      if (sourceResult.status === "rejected") {
-        console.error("Source chain fee estimate failed:", sourceResult.reason);
-      }
-      if (destinationResult.status === "rejected") {
-        console.error(
-          "Destination chain fee estimate failed:",
-          destinationResult.reason,
-        );
-      }
+      setDestinationFee(destResult);
+      setSourceFee(sourceResult);
       setIsLoading(false);
-    });
+    })();
 
     return () => {
       cancelled = true;
