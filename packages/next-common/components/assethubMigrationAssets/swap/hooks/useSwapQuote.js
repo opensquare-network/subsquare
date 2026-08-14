@@ -1,18 +1,12 @@
 import { isNil } from "lodash-es";
-import { useCallback, useMemo, useState } from "react";
-import { useAsync } from "react-use";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAsync, useIsomorphicLayoutEffect } from "react-use";
 import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
-import { getAmmOutput, getFeeAdjustedSpotOutput, getSpotOutput } from "../amm";
+import { buildQuoteState } from "./quoteState";
 
-const EMPTY_STATE = {
-  feeAdjustedSpotOut: null,
-  lpFee: null,
-  lpFeeAmount: null,
-  loading: false,
-  quote: null,
-  reserves: null,
-  unitRate: null,
-};
+function getPairKey(tokenIn, tokenOut) {
+  return tokenIn && tokenOut ? `${tokenIn.key}:${tokenOut.key}` : null;
+}
 
 async function fetchPoolData(papi, tokenIn, tokenOut) {
   const [rawReserves, lpFee] = await Promise.all([
@@ -26,81 +20,20 @@ async function fetchPoolData(papi, tokenIn, tokenOut) {
   if (!isNil(rawReserves)) {
     reserves = { reserveIn: rawReserves[0], reserveOut: rawReserves[1] };
   }
-  return { reserves, lpFee };
-}
-
-export function buildQuoteState({
-  amountIn,
-  error,
-  loading,
-  poolData,
-  tokenIn,
-  tokenOut,
-}) {
-  if (!tokenIn || !tokenOut) {
-    return EMPTY_STATE;
-  }
-
-  if (loading) {
-    return { ...EMPTY_STATE, loading: true };
-  }
-
-  if (error || !poolData) {
-    return EMPTY_STATE;
-  }
-
-  const { reserves, lpFee } = poolData;
-  if (isNil(reserves) || isNil(lpFee)) {
-    return { ...EMPTY_STATE, lpFee: lpFee ?? null };
-  }
-
-  const unitIn = 10n ** BigInt(tokenIn.decimals);
-  const unitRate = getSpotOutput(
-    unitIn,
-    reserves.reserveIn,
-    reserves.reserveOut,
-  );
-
-  if (amountIn <= 0n) {
-    return {
-      ...EMPTY_STATE,
-      lpFee,
-      reserves,
-      unitRate,
-    };
-  }
-
-  const amm = getAmmOutput(
-    amountIn,
-    reserves.reserveIn,
-    reserves.reserveOut,
-    lpFee,
-  );
-  const feeAdjustedSpotOut = getFeeAdjustedSpotOutput(
-    amountIn,
-    reserves.reserveIn,
-    reserves.reserveOut,
-    lpFee,
-  );
-
-  return {
-    ...EMPTY_STATE,
-    feeAdjustedSpotOut,
-    lpFee,
-    lpFeeAmount: amm?.protocolCommission ?? null,
-    quote: amm?.amountOut ?? null,
-    reserves,
-    unitRate,
-  };
+  return { pairKey: getPairKey(tokenIn, tokenOut), reserves, lpFee };
 }
 
 export default function useSwapQuote({ amountIn, tokenIn, tokenOut }) {
   const papi = useAssetHubPapi();
   const [reloadTick, setReloadTick] = useState(0);
+  const [lastKnownPoolData, setLastKnownPoolData] = useState(null);
+  const [refreshVersion, setRefreshVersion] = useState(0);
+  const pairKey = getPairKey(tokenIn, tokenOut);
+  const lastPairKeyRef = useRef(pairKey);
   const {
     error,
     loading,
-    value: poolData,
+    value: fetchedPoolData,
   } = useAsync(async () => {
     if (!papi || !tokenIn || !tokenOut) {
       return null;
@@ -114,20 +47,39 @@ export default function useSwapQuote({ amountIn, tokenIn, tokenOut }) {
     }
   }, [papi, reloadTick, tokenIn, tokenOut]);
 
+  useIsomorphicLayoutEffect(() => {
+    if (lastPairKeyRef.current === pairKey) {
+      return;
+    }
+    lastPairKeyRef.current = pairKey;
+    setLastKnownPoolData(null);
+  }, [pairKey]);
+
+  useEffect(() => {
+    if (!loading && !error && fetchedPoolData?.pairKey === pairKey) {
+      setLastKnownPoolData(fetchedPoolData);
+      setRefreshVersion((version) => version + 1);
+    }
+  }, [error, fetchedPoolData, loading, pairKey]);
+
+  const isSamePair = fetchedPoolData?.pairKey === pairKey;
+  const canUseFetched = !loading && !error && isSamePair;
+  const quotePoolData = canUseFetched ? fetchedPoolData : lastKnownPoolData;
+
   const state = useMemo(
     () =>
       buildQuoteState({
         amountIn,
         error,
         loading,
-        poolData,
+        poolData: quotePoolData,
         tokenIn,
         tokenOut,
       }),
-    [amountIn, error, loading, poolData, tokenIn, tokenOut],
+    [amountIn, error, loading, quotePoolData, tokenIn, tokenOut],
   );
 
   const refresh = useCallback(() => setReloadTick((n) => n + 1), []);
 
-  return { ...state, refresh };
+  return { ...state, refresh, refreshVersion };
 }

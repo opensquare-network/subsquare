@@ -50,6 +50,9 @@ function getSubmitDisabledReason({
   if (quote.loading) {
     return "Fetching a swap quote";
   }
+  if (quote.error) {
+    return "Unable to refresh the swap quote. Please try again";
+  }
   if (isNil(quote.quote) || isNil(minimumReceived)) {
     return "No quote is available for this amount";
   }

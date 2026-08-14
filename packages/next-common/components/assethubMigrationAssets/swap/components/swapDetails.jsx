@@ -15,6 +15,7 @@ import {
   PRICE_IMPACT_WARNING_THRESHOLD,
 } from "../constants";
 import { formatPercent, formatTokenAmount } from "../utils";
+import RateRefreshCountdown from "./rateRefreshCountdown";
 import TokenIcon from "./tokenIcon";
 
 function SectionCard({ title, children }) {
@@ -63,7 +64,7 @@ function PoolReserves() {
   const { quote } = useSwapQuote();
   const { tokenIn, tokenOut } = pools;
   const reserves = quote.reserves;
-  const isLoading = pools.loading || quote.loading;
+  const isLoading = pools.loading || quote.isInitialLoading;
 
   return (
     <SectionCard title="Pool reserves">
@@ -187,17 +188,31 @@ function SwapSummary() {
   const { pools } = useSwap();
   const { minimumReceived, priceImpact, quote } = useSwapQuote();
   const { tokenIn, tokenOut } = pools;
-  const { loading, lpFee, lpFeeAmount, unitRate } = quote;
-  const isQuoteLoading = pools.loading || loading;
+  const { lpFee, lpFeeAmount, unitRate } = quote;
+  const isQuoteLoading = pools.loading || quote.isInitialLoading;
+  const isRateLoading =
+    pools.loading ||
+    quote.isInitialLoading ||
+    (quote.isRefreshing && isNil(unitRate));
 
   return (
     <SectionCard title="Swap details">
       <div className="space-y-2">
         <DetailRow
-          title="Rate"
+          title={
+            <span className="inline-flex items-center gap-2">
+              <span>Rate</span>
+              <RateRefreshCountdown
+                hasRate={!isNil(unitRate)}
+                isRefreshing={quote.isRefreshing}
+                refreshError={quote.error}
+                refreshVersion={quote.refreshVersion}
+              />
+            </span>
+          }
           value={
             <ReferenceRateValue
-              isLoading={isQuoteLoading}
+              isLoading={isRateLoading}
               tokenIn={tokenIn}
               tokenOut={tokenOut}
               unitRate={unitRate}
