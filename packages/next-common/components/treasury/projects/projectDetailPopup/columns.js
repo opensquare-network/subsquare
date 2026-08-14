@@ -46,6 +46,18 @@ const ChildBountyTitleColumnsDef = createTitleColumnDef({
   getTitle: (childBounty) => childBounty.title,
 });
 
+const BountyTitleColumnsDef = createTitleColumnDef({
+  getDetailLink: (bounty) => bounty.detailLink,
+  getIndex: (bounty) => bounty.index,
+  getTitle: (bounty) => bounty.title,
+});
+
+const MultiAssetBountyTitleColumnsDef = createTitleColumnDef({
+  getDetailLink: (bounty) => bounty.detailLink,
+  getIndex: (bounty) => bounty.index,
+  getTitle: (bounty) => bounty.title,
+});
+
 const TipTitleColumnsDef = {
   name: "Title",
   style: { textAlign: "left" },
@@ -60,6 +72,22 @@ const RequestColumnsDef = {
   render: (proposal) => <RequestCol proposal={proposal} />,
 };
 
+const MultiAssetBountyRequestColumnsDef = {
+  name: "Request",
+  style: { textAlign: "right", width: "120px" },
+  render: (bounty) => (
+    <ValueDisplay
+      value={toPrecision(
+        BigNumber(bounty.fiatAtFinal ?? 0)
+          .times(bounty.proportion ?? 1)
+          .toFixed(2),
+      )}
+      symbol=""
+      prefix="$"
+    />
+  ),
+};
+
 export const proposalColumnsDef = [ProposalTitleColumnsDef, RequestColumnsDef];
 
 export const spendColumnsDef = [SpendTitleColumnsDef, RequestColumnsDef];
@@ -67,6 +95,13 @@ export const spendColumnsDef = [SpendTitleColumnsDef, RequestColumnsDef];
 export const childBountyColumnsDef = [
   ChildBountyTitleColumnsDef,
   RequestColumnsDef,
+];
+
+export const bountyColumnsDef = [BountyTitleColumnsDef, RequestColumnsDef];
+
+export const multiAssetBountyColumnsDef = [
+  MultiAssetBountyTitleColumnsDef,
+  MultiAssetBountyRequestColumnsDef,
 ];
 
 export const tipColumnsDef = [TipTitleColumnsDef, RequestColumnsDef];
