@@ -1,7 +1,7 @@
 import { Line } from "react-chartjs-2";
 import "next-common/components/charts/globalConfig";
 import dayjs from "dayjs";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useAsync } from "react-use";
 import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
@@ -56,6 +56,35 @@ export function buildRankChartData(points = []) {
 }
 
 function RankChartTooltip({ x, y, visible, data }) {
+  const tooltipRef = useRef(null);
+  const [geometry, setGeometry] = useState({ width: 0, offset: 0 });
+
+  // The tooltip is centered on the caret, so near the chart edges it would
+  // overflow the chart and get clipped, squeezing its content. Measure it and
+  // shift it horizontally so it always stays fully inside the chart.
+  useLayoutEffect(() => {
+    const tooltip = tooltipRef.current;
+    if (!visible || !tooltip) {
+      setGeometry({ width: 0, offset: 0 });
+      return;
+    }
+
+    const tooltipWidth = tooltip.offsetWidth;
+    const containerWidth = tooltip.parentElement?.offsetWidth || 0;
+    if (!tooltipWidth || !containerWidth) {
+      setGeometry({ width: 0, offset: 0 });
+      return;
+    }
+
+    const halfWidth = tooltipWidth / 2;
+    // Clamp the tooltip center so neither edge sticks out of the chart.
+    const clampedLeft = Math.min(
+      Math.max(halfWidth, x),
+      Math.max(halfWidth, containerWidth - halfWidth),
+    );
+    setGeometry({ width: tooltipWidth, offset: clampedLeft - x });
+  }, [visible, x, data]);
+
   if (!visible || !data) {
     return null;
   }
@@ -73,16 +102,20 @@ function RankChartTooltip({ x, y, visible, data }) {
 
   return (
     <div
+      ref={tooltipRef}
       className="absolute z-50 pointer-events-none -translate-x-1/2 -translate-y-full"
-      style={{ left: x, top: y - 12 }}
+      style={{ left: x + geometry.offset, top: y - 12 }}
     >
-      <div className="rounded py-1.5 px-3 text12Normal text-white bg-tooltipBg">
+      <div className="rounded py-1.5 px-3 text12Normal text-white bg-tooltipBg whitespace-nowrap">
         <div>{dayjs(time).format("YYYY-MM-DD")}</div>
         <div>rank: {isRankChange ? `${fromRank} → ${rank}` : rank}</div>
         {EVENT_NAMES[event] && <div>Event: {EVENT_NAMES[event]}</div>}
         <div
-          className="absolute left-1/2 -translate-x-1/2 w-0 h-0"
+          className="absolute w-0 h-0 -translate-x-1/2"
           style={{
+            // Keep the arrow pointing at the caret even when the tooltip is
+            // shifted to stay inside the chart.
+            left: geometry.width / 2 - geometry.offset,
             borderLeft: "6px solid transparent",
             borderRight: "6px solid transparent",
             borderTop: "6px solid var(--tooltipBg)",
