@@ -17,14 +17,13 @@ export default function useDestinationExistentialDeposit({
 
   useEffect(() => {
     let cancelled = false;
+    setIsLoading(true);
 
     if (!destinationApi) {
       setValue(null);
-      setIsLoading(true);
       return;
     }
 
-    setIsLoading(true);
     getDestinationExistentialDeposit({
       destinationApi,
       destinationChain,

@@ -81,9 +81,25 @@ export function getTransferAssetLocation({ sourceChain, symbol }) {
   };
 }
 
+// The transferred asset as an XcmVersionedAssetId (used to quote fees).
+export function getFeeAssetLocation({ chain, symbol }) {
+  return { V4: getTransferAssetLocation({ sourceChain: chain, symbol }) };
+}
+
+// Runs an Option-returning storage query and reads a single field off the
+// unwrapped value as a string, or null when the query or the field is missing.
+async function readOptionField(query, field, ...args) {
+  if (!query) {
+    return null;
+  }
+  const res = await query(...args);
+  const value = res?.isSome ? res.unwrap()[field] : null;
+  return value?.toJSON?.() ?? value?.toString?.() ?? null;
+}
+
 // Resolves the existential deposit (or the equivalent minimum balance) of the
 // transferred asset on the destination chain.
-export function getDestinationExistentialDeposit({
+export async function getDestinationExistentialDeposit({
   destinationApi,
   destinationChain,
   symbol,
@@ -92,33 +108,23 @@ export function getDestinationExistentialDeposit({
 
   if (isHydrationChain(destinationChain)) {
     // On Hydration the per-asset ED is exposed by the assetRegistry pallet.
-    const query = destinationApi.query.assetRegistry?.assets;
-    return query
-      ? query(asset.hydrationAssetId).then((res) => {
-          // assets() returns an Option; the field is only reachable after
-          // unwrapping it.
-          const ed = res?.isSome ? res.unwrap().existentialDeposit : null;
-          return ed?.toJSON?.() ?? ed?.toString?.() ?? null;
-        })
-      : Promise.resolve(null);
+    return readOptionField(
+      destinationApi.query.assetRegistry?.assets,
+      "existentialDeposit",
+      asset.hydrationAssetId,
+    );
   }
 
   if (asset.assetHubAssetId != null) {
     // USDC/USDT live in Asset Hub's assets pallet; the per-asset min balance
     // plays the role of the existential deposit on the destination.
-    const query = destinationApi.query.assets?.asset;
-    return query
-      ? query(asset.assetHubAssetId).then((res) => {
-          // asset() returns an Option; the field is only reachable after
-          // unwrapping it.
-          const minBalance = res?.isSome ? res.unwrap().minBalance : null;
-          return minBalance?.toJSON?.() ?? minBalance?.toString?.() ?? null;
-        })
-      : Promise.resolve(null);
+    return readOptionField(
+      destinationApi.query.assets?.asset,
+      "minBalance",
+      asset.assetHubAssetId,
+    );
   }
 
   // DOT is native on Asset Hub; its ED is the balances pallet's constant.
-  return Promise.resolve(
-    destinationApi.consts.balances?.existentialDeposit?.toJSON?.() ?? null,
-  );
+  return destinationApi.consts.balances?.existentialDeposit?.toJSON?.() ?? null;
 }

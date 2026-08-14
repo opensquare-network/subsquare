@@ -11,11 +11,11 @@ import {
   newErrorToast,
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
-import BigNumber from "bignumber.js";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { useChainApi, useGetHydrationCrossChainTx } from "./crossChainApi";
+import { useChainApi } from "./crossChainApi";
 import CrossChainFeeSummary from "./crossChainFeeSummary";
+import buildHydrationCrossChainTx from "./teleportFromHydration";
 import useDestinationExistentialDeposit from "./useDestinationExistentialDeposit";
 import useHydrationCrossChainDirection from "./useHydrationCrossChainDirection";
 import useHydrationCrossChainFees from "./useHydrationCrossChainFees";
@@ -31,11 +31,6 @@ function PopupContent() {
   } = useHydrationCrossChainDirection();
   const sourceApi = useChainApi(sourceChain);
   const destinationApi = useChainApi(destinationChain);
-  const getTeleportTx = useGetHydrationCrossChainTx({
-    sourceApi,
-    sourceChain,
-    destinationChain,
-  });
   const { sendTxFunc, isSubmitting } = useSendTransaction();
 
   const user = useUser();
@@ -84,16 +79,25 @@ function PopupContent() {
 
     if (
       destinationFee?.amount != null &&
-      new BigNumber(amount).lte(destinationFee.amount.toString())
+      BigInt(amount) <= destinationFee.amount
     ) {
       throw new Error(
         "Amount must be greater than the destination chain fee, otherwise nothing would arrive",
       );
     }
 
-    return getTeleportTx(transferToAddress, amount, symbol);
+    return buildHydrationCrossChainTx({
+      sourceApi,
+      sourceChain,
+      destinationChain,
+      transferToAddress,
+      amount,
+      symbol,
+    });
   }, [
-    getTeleportTx,
+    sourceApi,
+    sourceChain,
+    destinationChain,
     transferToAddress,
     getCheckedTransferAmount,
     symbol,

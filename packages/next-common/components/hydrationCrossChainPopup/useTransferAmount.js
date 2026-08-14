@@ -11,8 +11,6 @@ import {
   TRANSFER_SYMBOLS,
 } from "./transferAssets";
 
-export { DOT_SYMBOL };
-
 export default function useTransferAmount({
   sourceChain,
   api,
@@ -53,6 +51,28 @@ export default function useTransferAmount({
       setIsLoading(false);
     };
 
+    // Each branch reads the raw account codec and normalizes it to the flat
+    // AccountData shape calcTransferable expects. The ED applied on the source
+    // is passed by the caller: 0 for every foreign/local balance, and only DOT
+    // native on Asset Hub keeps its balances pallet ED.
+    const readHydrationBalance = (account) => account?.toJSON?.() || {};
+    const readAssetHubAssetBalance = (account) => {
+      const json = account?.toJSON?.() || {};
+      return {
+        free: json.balance,
+        reserved: 0,
+        frozen: json.isFrozen ? json.balance : 0,
+      };
+    };
+    const readAssetHubNativeBalance = (account) => {
+      const json = account?.toJSON?.() || {};
+      return json.data || json;
+    };
+
+    const updateFromAccount = (reader, account, nativeExistentialDeposit) => {
+      updateTransferrable(reader(account), nativeExistentialDeposit);
+    };
+
     const subscribe = (queryPromise) => {
       queryPromise?.then((result) => {
         if (cancelled) {
@@ -70,7 +90,7 @@ export default function useTransferAmount({
         api.query.tokens?.accounts(
           transferFromAddress,
           asset.hydrationAssetId,
-          (account) => updateTransferrable(account?.toJSON?.() || {}, 0),
+          (account) => updateFromAccount(readHydrationBalance, account, 0),
         ),
       );
     } else if (asset.assetHubAssetId != null) {
@@ -81,17 +101,7 @@ export default function useTransferAmount({
         api.query.assets?.account(
           asset.assetHubAssetId,
           transferFromAddress,
-          (account) => {
-            const json = account?.toJSON?.() || {};
-            updateTransferrable(
-              {
-                free: json.balance,
-                reserved: 0,
-                frozen: json.isFrozen ? json.balance : 0,
-              },
-              0,
-            );
-          },
+          (account) => updateFromAccount(readAssetHubAssetBalance, account, 0),
         ),
       );
     } else {
@@ -100,10 +110,13 @@ export default function useTransferAmount({
       const nativeExistentialDeposit =
         api.consts.balances?.existentialDeposit?.toJSON?.() || 0;
       subscribe(
-        api.query.system?.account(transferFromAddress, (account) => {
-          const json = account?.toJSON?.() || {};
-          updateTransferrable(json.data || json, nativeExistentialDeposit);
-        }),
+        api.query.system?.account(transferFromAddress, (account) =>
+          updateFromAccount(
+            readAssetHubNativeBalance,
+            account,
+            nativeExistentialDeposit,
+          ),
+        ),
       );
     }
 
@@ -146,7 +159,6 @@ export default function useTransferAmount({
   );
 
   return {
-    value: transferAmount,
     symbol,
     getCheckedValue,
     component,

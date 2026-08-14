@@ -15,28 +15,20 @@ export function getParaChainId(chain) {
   throw new Error("Unsupported para chain");
 }
 
-// Asset Hub and Hydration support Ethereum-style (H160) accounts, which must
-// be addressed via the AccountKey20 XCM junction. The transferToAddress may be
-// a raw H160 (e.g. MetaMask input) or a "ETH\0"-prefixed substrate address
-// (which wraps an H160); both are normalized to an H160 before encoding.
-export function getBeneficiaryJunction({
-  api,
-  destinationChain,
-  transferToAddress,
-}) {
-  const supportsEvmAccounts =
-    isAssetHubChain(destinationChain) || isHydrationChain(destinationChain);
-
-  if (supportsEvmAccounts) {
-    const maybeEvmAddress = tryConvertToEvmAddress(transferToAddress);
-    if (isEthereumAddress(maybeEvmAddress)) {
-      return {
-        AccountKey20: {
-          network: null,
-          key: maybeEvmAddress,
-        },
-      };
-    }
+// Asset Hub and Hydration both support Ethereum-style (H160) accounts, which
+// must be addressed via the AccountKey20 XCM junction. The transferToAddress
+// may be a raw H160 (e.g. MetaMask input) or a "ETH\0"-prefixed substrate
+// address (which wraps an H160); both are normalized to an H160 before
+// encoding.
+export function getBeneficiaryJunction({ api, transferToAddress }) {
+  const maybeEvmAddress = tryConvertToEvmAddress(transferToAddress);
+  if (isEthereumAddress(maybeEvmAddress)) {
+    return {
+      AccountKey20: {
+        network: null,
+        key: maybeEvmAddress,
+      },
+    };
   }
 
   return {
@@ -61,7 +53,6 @@ export function getBeneficiaryJunction({
 // source nor the destination, so it must be spelled out explicitly.
 function getTransferAssetsUsingTypeAndThenParams({
   api,
-  destinationChain,
   transferToAddress,
   amount,
   paraChainId,
@@ -117,7 +108,6 @@ function getTransferAssetsUsingTypeAndThenParams({
                 X1: [
                   getBeneficiaryJunction({
                     api,
-                    destinationChain,
                     transferToAddress,
                   }),
                 ],
@@ -156,7 +146,6 @@ export default function buildHydrationCrossChainTx({
   return sourceApi.tx.polkadotXcm.transferAssetsUsingTypeAndThen(
     ...getTransferAssetsUsingTypeAndThenParams({
       api: sourceApi,
-      destinationChain,
       transferToAddress,
       amount,
       paraChainId,
