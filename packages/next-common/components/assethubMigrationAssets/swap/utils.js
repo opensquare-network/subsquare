@@ -1,6 +1,9 @@
 import { isNil } from "lodash-es";
 import { fromPrecision, toPrecision } from "next-common/utils";
 import { bnToLocaleString } from "next-common/utils/bn";
+import { isKusamaChain } from "next-common/utils/chain";
+import { CHAIN } from "next-common/utils/constants";
+import { getForeignAssetOrigin } from "next-common/utils/xcm/foreignAsset";
 
 export function parseTokenAmount(value, decimals) {
   try {
@@ -56,10 +59,42 @@ export function getDirectTokens(pools = [], oppositeTokenKey) {
   return [...tokens.values()];
 }
 
+function isPolkadotConsensusLocation(location) {
+  const v4Location = location?.V4;
+  return (
+    v4Location?.parents === 2 &&
+    v4Location?.interior?.X1?.[0]?.GlobalConsensus?.Polkadot === null
+  );
+}
+
+export function isFeeAssetToken(token, feeAssetInfo) {
+  if (!token || !feeAssetInfo) {
+    return false;
+  }
+  if (token.type === "native") {
+    return feeAssetInfo.type === "native";
+  }
+  if (token.type === "asset") {
+    return (
+      feeAssetInfo.type === "asset" &&
+      token.assetId === feeAssetInfo.assetId
+    );
+  }
+  if (token.type === "foreign" && isKusamaChain(CHAIN)) {
+    return (
+      feeAssetInfo.type === "foreignAsset" &&
+      isPolkadotConsensusLocation(feeAssetInfo.location) &&
+      getForeignAssetOrigin(token.location) === "Polkadot"
+    );
+  }
+  return false;
+}
+
 export function calculateMaxAmount({
   balance,
   estimatedFee = 0n,
   existentialDeposit = 0n,
+  feeMultiplier = 1n,
   isNative,
 }) {
   if (isNil(balance)) {
@@ -70,21 +105,68 @@ export function calculateMaxAmount({
     return balance;
   }
 
-  const reserved = estimatedFee + existentialDeposit;
+  const reserved = estimatedFee * feeMultiplier + existentialDeposit;
   if (balance <= reserved) {
     return 0n;
   }
   return balance - reserved;
 }
 
-export function isInsufficientBalance({
+export function getFeeEstimateTx(getTxFunc, getFakeTxFunc) {
+  return getTxFunc() ?? getFakeTxFunc();
+}
+
+const MAX_FEE_MULTIPLIER = 2n;
+
+export function getPayBalance({
   amountIn,
   balance,
+  estimatedFee,
+  existentialDeposit,
+  feePaidFromInput,
   isNative,
-  maxAmount,
 }) {
-  if (isNative) {
-    return !isNil(maxAmount) && amountIn > maxAmount;
+  if (isNil(balance) || (isNative && isNil(existentialDeposit))) {
+    return {
+      insufficient: false,
+      insufficientFee: false,
+      maxAmount: null,
+    };
   }
-  return !isNil(balance) && amountIn > balance;
+
+  const spendableAmount = calculateMaxAmount({
+    balance,
+    existentialDeposit: existentialDeposit ?? 0n,
+    isNative,
+  });
+  const insufficient = amountIn > spendableAmount;
+
+  if (feePaidFromInput && isNil(estimatedFee)) {
+    return {
+      insufficient,
+      insufficientFee: false,
+      maxAmount: null,
+    };
+  }
+
+  if (!feePaidFromInput) {
+    return {
+      insufficient,
+      insufficientFee: false,
+      maxAmount: spendableAmount,
+    };
+  }
+
+  const totalRequiredAmount = amountIn + estimatedFee;
+  const insufficientFee =
+    amountIn > 0n && totalRequiredAmount > spendableAmount;
+  const maxFeeReserve = estimatedFee * MAX_FEE_MULTIPLIER;
+  const maxAmount =
+    spendableAmount > maxFeeReserve ? spendableAmount - maxFeeReserve : 0n;
+
+  return {
+    insufficient,
+    insufficientFee,
+    maxAmount,
+  };
 }

@@ -48,14 +48,9 @@ function PercentageActions({ onPercentage, onMax }) {
 }
 
 function PayField() {
-  const {
-    amount,
-    balances,
-    pools,
-    setAmount,
-    setAmountByPercentage,
-    setAmountToMax,
-  } = useSwap();
+  const { amount, balances, pools, setAmount, setAmountByPercentage } =
+    useSwap();
+  const { setAmountToMax } = useSwapQuote();
   const { tokenIn } = pools;
 
   return (
@@ -215,7 +210,7 @@ function SubmitButton() {
 }
 
 function SwapTransactionSettings() {
-  const { getTxFunc, priceImpact } = useSwapQuote();
+  const { gasFee, isGasFeeLoading, priceImpact } = useSwapQuote();
 
   return (
     <>
@@ -229,7 +224,7 @@ function SwapTransactionSettings() {
 
       <AdvanceSettings>
         <ExistentialDepositField />
-        <EstimatedGas getTxFunc={getTxFunc} />
+        <EstimatedGas gasFeeState={{ gasFee, isGasFeeLoading }} />
       </AdvanceSettings>
 
       <SubmitButton />

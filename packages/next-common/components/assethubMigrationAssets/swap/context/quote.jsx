@@ -1,7 +1,19 @@
 import { isNil } from "lodash-es";
-import { createContext, useCallback, useContext, useMemo } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useFeeAssetConfig } from "next-common/components/popupWithSigner/context/feeAsset";
+import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
+import { toPrecision } from "next-common/utils";
 import { calculateMinimumReceived, getPriceImpact } from "../amm";
 import useSwapQuoteState from "../hooks/useSwapQuote";
+import { getFeeEstimateTx, getPayBalance, isFeeAssetToken } from "../utils";
 import { useSwap } from "./swap";
 
 const SwapQuoteContext = createContext(null);
@@ -30,6 +42,8 @@ function getSubmitDisabledReason({
   payBalance,
   pools,
   quote,
+  gasFee,
+  isGasFeeLoading,
   swapPath,
 }) {
   if (!api) {
@@ -62,53 +76,81 @@ function getSubmitDisabledReason({
   if (balances.tokenInLoading) {
     return "Loading your balance";
   }
+  if (payBalance.insufficient) {
+    return "Insufficient balance";
+  }
+  if (isGasFeeLoading) {
+    return "Estimating transaction fee";
+  }
+  if (isNil(gasFee)) {
+    return "Unable to estimate transaction fee";
+  }
   if (isNil(payBalance.maxAmount)) {
     return "Balance information is unavailable";
   }
-  if (payBalance.insufficient) {
-    return "Insufficient balance";
+  if (payBalance.insufficientFee) {
+    return "Insufficient balance to pay the transaction fee";
   }
   return null;
 }
 
-export function SwapQuoteProvider({ children }) {
-  const {
-    address,
-    amountIn,
-    api,
-    balances,
-    payBalance,
-    pools,
-    slippageBps,
-    swapPath,
-  } = useSwap();
-  const { tokenIn, tokenOut } = pools;
-  const quote = useSwapQuoteState({ amountIn, tokenIn, tokenOut });
-  const minimumReceived = calculateMinimumReceived(quote.quote, slippageBps);
-  const priceImpact = getQuotePriceImpact(quote);
-
-  const canBuildTx = Boolean(
-    api &&
-      address &&
-      tokenIn &&
-      swapPath &&
-      amountIn > 0n &&
-      !isNil(minimumReceived),
-  );
-  const submitDisabledReason = getSubmitDisabledReason({
-    address,
-    amountIn,
-    api,
-    balances,
-    minimumReceived,
-    payBalance,
-    pools,
-    quote,
-    swapPath,
+function useMaxFeeEstimate({ feeAssetType, gasFee, isGasFeeLoading }) {
+  const previousFeeAssetType = useRef(feeAssetType);
+  const [lastSuccessfulEstimate, setLastSuccessfulEstimate] = useState({
+    feeAssetType,
+    value: null,
   });
 
+  useEffect(() => {
+    if (previousFeeAssetType.current !== feeAssetType) {
+      previousFeeAssetType.current = feeAssetType;
+      setLastSuccessfulEstimate({ feeAssetType, value: null });
+      return;
+    }
+
+    if (!isNil(gasFee)) {
+      setLastSuccessfulEstimate({
+        feeAssetType,
+        value: BigInt(gasFee.toString()),
+      });
+      return;
+    }
+
+    if (!isGasFeeLoading) {
+      setLastSuccessfulEstimate({ feeAssetType, value: null });
+    }
+  }, [feeAssetType, gasFee, isGasFeeLoading]);
+
+  if (lastSuccessfulEstimate.feeAssetType !== feeAssetType) {
+    return null;
+  }
+
+  if (!isNil(gasFee)) {
+    return BigInt(gasFee.toString());
+  }
+
+  return isGasFeeLoading ? lastSuccessfulEstimate.value : null;
+}
+
+function useSwapTransaction({
+  address,
+  amountIn,
+  api,
+  existentialDeposit,
+  feeAssetType,
+  minimumReceived,
+  swapPath,
+  tokenIn,
+}) {
   const getTxFunc = useCallback(() => {
-    if (!canBuildTx) {
+    if (
+      !api ||
+      !address ||
+      !tokenIn ||
+      !swapPath ||
+      amountIn <= 0n ||
+      isNil(minimumReceived)
+    ) {
       return null;
     }
 
@@ -119,17 +161,158 @@ export function SwapQuoteProvider({ children }) {
       address,
       tokenIn.type === "native",
     );
-  }, [address, amountIn, api, canBuildTx, minimumReceived, swapPath, tokenIn]);
+  }, [address, amountIn, api, minimumReceived, swapPath, tokenIn]);
+
+  const getFakeTxFunc = useCallback(() => {
+    if (
+      !api ||
+      !address ||
+      !tokenIn ||
+      !swapPath ||
+      (tokenIn.type === "native" && isNil(existentialDeposit))
+    ) {
+      return null;
+    }
+
+    const fakeAmountIn =
+      tokenIn.type === "native" ? existentialDeposit || 1n : 1n;
+    return api.tx.assetConversion.swapExactTokensForTokens(
+      swapPath,
+      fakeAmountIn.toString(),
+      "0",
+      address,
+      tokenIn.type === "native",
+    );
+  }, [address, api, existentialDeposit, swapPath, tokenIn]);
+
+  const getFeeTxFunc = useCallback(
+    () => getFeeEstimateTx(getTxFunc, getFakeTxFunc),
+    [getFakeTxFunc, getTxFunc],
+  );
+  const { gasFee, isGasFeeLoading } = useGasFeeEstimate(
+    getFeeTxFunc,
+    feeAssetType,
+  );
+  const estimatedFee = useMaxFeeEstimate({
+    feeAssetType,
+    gasFee,
+    isGasFeeLoading,
+  });
+
+  return {
+    estimatedFee,
+    gasFee,
+    getTxFunc,
+    isGasFeeLoading,
+  };
+}
+
+function useSwapPayBalance({
+  amountIn,
+  balance,
+  estimatedFee,
+  existentialDeposit,
+  feeAssetInfo,
+  setAmount,
+  tokenIn,
+}) {
+  const feePaidFromInput = isFeeAssetToken(tokenIn, feeAssetInfo);
+
+  const payBalance = getPayBalance({
+    amountIn,
+    balance,
+    estimatedFee,
+    existentialDeposit,
+    feePaidFromInput,
+    isNative: tokenIn?.type === "native",
+  });
+
+  const setAmountToMax = useCallback(() => {
+    if (isNil(payBalance.maxAmount) || !tokenIn) {
+      return;
+    }
+    setAmount(toPrecision(payBalance.maxAmount, tokenIn.decimals));
+  }, [payBalance.maxAmount, setAmount, tokenIn]);
+
+  return { payBalance, setAmountToMax };
+}
+
+export function SwapQuoteProvider({ children }) {
+  const {
+    address,
+    amountIn,
+    api,
+    balances,
+    existentialDeposit,
+    pools,
+    slippageBps,
+    swapPath,
+    setAmount,
+  } = useSwap();
+  const { feeAssetInfo, feeAssetType } = useFeeAssetConfig();
+  const { tokenIn, tokenOut } = pools;
+  const quote = useSwapQuoteState({ amountIn, tokenIn, tokenOut });
+  const minimumReceived = calculateMinimumReceived(quote.quote, slippageBps);
+  const priceImpact = getQuotePriceImpact(quote);
+
+  const { estimatedFee, gasFee, getTxFunc, isGasFeeLoading } =
+    useSwapTransaction({
+      address,
+      amountIn,
+      api,
+      existentialDeposit,
+      feeAssetType,
+      minimumReceived,
+      swapPath,
+      tokenIn,
+    });
+  const { payBalance, setAmountToMax } = useSwapPayBalance({
+    amountIn,
+    balance: balances.tokenIn,
+    estimatedFee,
+    existentialDeposit,
+    feeAssetInfo,
+    setAmount,
+    tokenIn,
+  });
+
+  const submitDisabledReason = getSubmitDisabledReason({
+    address,
+    amountIn,
+    api,
+    balances,
+    gasFee: estimatedFee,
+    isGasFeeLoading,
+    minimumReceived,
+    payBalance,
+    pools,
+    quote,
+    swapPath,
+  });
 
   const value = useMemo(
     () => ({
+      gasFee,
       getTxFunc,
+      isGasFeeLoading,
       minimumReceived,
+      payBalance,
       priceImpact,
       quote,
+      setAmountToMax,
       submitDisabledReason,
     }),
-    [getTxFunc, minimumReceived, priceImpact, quote, submitDisabledReason],
+    [
+      gasFee,
+      getTxFunc,
+      isGasFeeLoading,
+      minimumReceived,
+      payBalance,
+      priceImpact,
+      quote,
+      setAmountToMax,
+      submitDisabledReason,
+    ],
   );
 
   return (

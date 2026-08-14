@@ -12,14 +12,10 @@ import useAccountNonce from "next-common/hooks/useAccountNonce";
 import useGasFeeEstimate from "next-common/hooks/useGasFeeEstimate";
 import useShouldSendEvmTx from "next-common/hooks/useShouldSendEvmTx";
 
-function InnerEstimatedGas({ getTxFunc }) {
+function EstimatedGasContent({ gasFee, isGasFeeLoading }) {
   const { enableAssetFee } = useChainSettings();
-  const { feeAssetType, feeAssetInfo } = useFeeAssetConfig();
+  const { feeAssetInfo } = useFeeAssetConfig();
   const { accountNonce, isLoading: isNonceLoading } = useAccountNonce();
-  const { gasFee, isGasFeeLoading } = useGasFeeEstimate(
-    getTxFunc,
-    feeAssetType,
-  );
   const shouldSendEvmTx = useShouldSendEvmTx();
 
   return (
@@ -58,10 +54,29 @@ function InnerEstimatedGas({ getTxFunc }) {
   );
 }
 
-export default function EstimatedGas({ getTxFunc }) {
+function InnerEstimatedGas({ getTxFunc }) {
+  const { feeAssetType } = useFeeAssetConfig();
+  const { gasFee, isGasFeeLoading } = useGasFeeEstimate(
+    getTxFunc,
+    feeAssetType,
+  );
+
+  return (
+    <EstimatedGasContent
+      gasFee={gasFee}
+      isGasFeeLoading={isGasFeeLoading}
+    />
+  );
+}
+
+export default function EstimatedGas({ getTxFunc, gasFeeState }) {
   const isKintsugi = useIsKintsugi();
   if (isKintsugi) {
     return null;
+  }
+
+  if (gasFeeState) {
+    return <EstimatedGasContent {...gasFeeState} />;
   }
 
   return <InnerEstimatedGas getTxFunc={getTxFunc} />;

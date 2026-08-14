@@ -15,11 +15,7 @@ import useSwapPreflight from "../hooks/useSwapPreflight";
 import useWatchTokenBalance from "../hooks/useWatchTokenBalance";
 import { DEFAULT_SLIPPAGE_BPS } from "../constants";
 import { getSwapLocationKey } from "../location";
-import {
-  calculateMaxAmount,
-  isInsufficientBalance,
-  parseTokenAmount,
-} from "../utils";
+import { parseTokenAmount } from "../utils";
 
 const SwapContext = createContext(null);
 
@@ -29,30 +25,6 @@ export function useSwap() {
     throw new Error("useSwap must be used within a SwapProvider");
   }
   return value;
-}
-
-function getPayBalance({ amountIn, balance, existentialDeposit, tokenIn }) {
-  const isNative = tokenIn?.type === "native";
-
-  if (isNil(balance) || (isNative && isNil(existentialDeposit))) {
-    return { insufficient: false, maxAmount: null };
-  }
-
-  const maxAmount = calculateMaxAmount({
-    balance,
-    existentialDeposit: existentialDeposit ?? 0n,
-    isNative,
-  });
-
-  return {
-    insufficient: isInsufficientBalance({
-      amountIn,
-      balance,
-      isNative,
-      maxAmount,
-    }),
-    maxAmount,
-  };
 }
 
 export function SwapProvider({ children }) {
@@ -113,13 +85,6 @@ export function SwapProvider({ children }) {
     tokenOutIsNative,
   ]);
 
-  const payBalance = getPayBalance({
-    amountIn,
-    balance: balances.tokenIn,
-    existentialDeposit,
-    tokenIn,
-  });
-
   const setAmountByPercentage = useCallback(
     (percentage) => {
       if (isNil(balances.tokenIn) || !tokenIn) {
@@ -131,13 +96,6 @@ export function SwapProvider({ children }) {
     [balances.tokenIn, tokenIn],
   );
 
-  const setAmountToMax = useCallback(() => {
-    if (isNil(payBalance.maxAmount) || !tokenIn) {
-      return;
-    }
-    setAmount(toPrecision(payBalance.maxAmount, tokenIn.decimals));
-  }, [payBalance.maxAmount, tokenIn]);
-
   const value = useMemo(
     () => ({
       address,
@@ -146,11 +104,9 @@ export function SwapProvider({ children }) {
       api,
       balances,
       existentialDeposit,
-      payBalance,
       pools,
       setAmount,
       setAmountByPercentage,
-      setAmountToMax,
       setSlippageBps,
       slippageBps,
       swapPath,
@@ -162,10 +118,8 @@ export function SwapProvider({ children }) {
       api,
       balances,
       existentialDeposit,
-      payBalance,
       pools,
       setAmountByPercentage,
-      setAmountToMax,
       slippageBps,
       swapPath,
     ],
