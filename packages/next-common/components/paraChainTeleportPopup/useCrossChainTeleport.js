@@ -6,7 +6,9 @@ import { useChain } from "next-common/context/chain";
 import Select from "next-common/components/select";
 import Chains from "next-common/utils/consts/chains";
 import getChainSettings from "next-common/utils/consts/settings";
-import { getRelayChain, isPeopleChain } from "next-common/utils/chain";
+import { getRelayChain, isRelayChain } from "next-common/utils/chain";
+import { useRelayChain } from "next-common/hooks/useRelayChain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 const ArrowLineLeft = dynamic(() =>
   import("@osn/icons/subsquare/ArrowLineLeft"),
@@ -122,23 +124,24 @@ function ChainSeparator() {
 
 export default function useCrossChainTeleport() {
   const currChain = useChain();
+  const relayChain = useRelayChain();
+  const assetHubChain = useAssetHubChain();
   const allChainOptions = useMemo(
     () => transformToChainOptions(currChain),
     [currChain],
   );
 
   const defaultSourceChain = useMemo(() => {
-    if (isPeopleChain(currChain)) {
-      return currChain;
-    }
+    const isSelectable =
+      !isRelayChain(currChain) &&
+      allChainOptions.some(({ value }) => value === currChain);
 
-    return allChainOptions[0]?.value || "";
-  }, [allChainOptions, currChain]);
+    return isSelectable ? currChain : assetHubChain;
+  }, [allChainOptions, currChain, assetHubChain]);
 
-  const defaultDestinationChain = useMemo(
-    () => allChainOptions[1]?.value || "",
-    [allChainOptions],
-  );
+  const defaultDestinationChain = useMemo(() => {
+    return defaultSourceChain === assetHubChain ? relayChain : assetHubChain;
+  }, [defaultSourceChain, assetHubChain, relayChain]);
 
   const [sourceChain, setSourceChain] = useState(defaultSourceChain);
   const [destinationChain, setDestinationChain] = useState(
