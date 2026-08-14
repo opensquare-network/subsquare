@@ -124,6 +124,12 @@ function calcHeatmapHeight(referendumCount, containerWidth) {
   const squareGap = 6;
   const spaceForOneSquare = squareWidth + squareGap;
 
+  // The container has not been measured yet (width is 0 or undefined),
+  // avoid dividing by zero which would produce an Infinity height.
+  if (!containerWidth) {
+    return 0;
+  }
+
   const colsCount =
     Math.floor(containerWidth / spaceForOneSquare) +
     (containerWidth % spaceForOneSquare >= squareWidth ? 1 : 0);
