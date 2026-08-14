@@ -12,6 +12,11 @@ import { LoadingContent } from "next-common/components/fellowship/statistics/com
 const CHART_HEIGHT = 360;
 const MAX_RANK = 7;
 
+// The area fill under the line is derived from the line color via CSS
+// color-mix() with transparent, so it follows the theme while staying
+// semi-transparent (canvas fillStyle supports color-mix in modern browsers).
+const FILL_OPACITY = 5; // percent of the line color over transparent
+
 const EVENT_NAMES = {
   Promoted: "Promotion",
   Demoted: "Demotion",
@@ -188,7 +193,7 @@ export default function ProfileFellowshipCoreRank() {
           label: "Rank",
           data: points,
           borderColor: theme.theme500,
-          backgroundColor: theme.theme100,
+          backgroundColor: `color-mix(in srgb, ${theme.theme500} ${FILL_OPACITY}%, transparent)`,
           borderWidth: 2,
           pointRadius: (ctx) => (ctx.dataIndex === points.length - 1 ? 0 : 3),
           pointBackgroundColor: theme.theme500,
@@ -207,7 +212,7 @@ export default function ProfileFellowshipCoreRank() {
         },
       ],
     }),
-    [points, theme.theme500, theme.theme100],
+    [points, theme.theme500],
   );
 
   const options = useMemo(
