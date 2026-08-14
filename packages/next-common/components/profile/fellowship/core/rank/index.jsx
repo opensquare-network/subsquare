@@ -3,14 +3,10 @@ import "next-common/components/charts/globalConfig";
 import dayjs from "dayjs";
 import { useCallback, useMemo, useState } from "react";
 import { useAsync } from "react-use";
-import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
 import { backendApi } from "next-common/services/nextApi";
-import {
-  ambassadorStatisticsMemberRankHistoryApi,
-  fellowshipStatisticsMemberRankHistoryApi,
-} from "next-common/services/url";
+import { fellowshipStatisticsMemberRankHistoryApi } from "next-common/services/url";
 import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 
 const CHART_HEIGHT = 360;
@@ -91,11 +87,7 @@ function RankChartTooltip({ x, y, visible, data }) {
 
 export default function ProfileFellowshipCoreRank() {
   const { id } = usePageProps();
-  const { section } = useCollectivesContext();
-  const rankHistoryApi =
-    section === "ambassador"
-      ? ambassadorStatisticsMemberRankHistoryApi(id)
-      : fellowshipStatisticsMemberRankHistoryApi(id);
+  const rankHistoryApi = fellowshipStatisticsMemberRankHistoryApi(id);
 
   const { value, loading } = useAsync(async () => {
     if (!rankHistoryApi) {
