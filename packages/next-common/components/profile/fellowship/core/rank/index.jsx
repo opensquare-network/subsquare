@@ -198,6 +198,12 @@ export default function ProfileFellowshipCoreRank() {
           pointHitRadius: 10,
           fill: true,
           stepped: true,
+          // Allow the rank-0 point (sitting exactly on the bottom edge of the
+          // plot area) to overflow a little below it, so it renders a full
+          // circle instead of being clipped in half. The space below the plot
+          // area before the x-axis labels is ample for the point radius (3)
+          // and hover radius (5); the other sides clip exactly at the area.
+          clip: { top: 0, right: 0, bottom: 6, left: 0 },
         },
       ],
     }),
