@@ -42,7 +42,7 @@ function PopupContent() {
   } = useVestedTransferForm(balance?.transferrable);
 
   const onInBlock = useCallback(() => {
-    dispatch(newSuccessToast("Vested transfer successful"));
+    dispatch(newSuccessToast("Vested transfer successfully"));
   }, [dispatch]);
 
   return (

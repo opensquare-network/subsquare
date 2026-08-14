@@ -21,12 +21,35 @@ const xcmPaymentApiMethods = {
     params: [{ name: "message", type: "XcmVersionedXcm" }],
     type: "Result<WeightV2, XcmPaymentApiError>",
   },
+  // Signature matches Asset Hub (destination, message, fee_asset). Chains whose
+  // metadata already declares query_delivery_fees (e.g. Hydration's 2-arg
+  // variant) keep their own via the metadata-first merge below.
+  query_delivery_fees: {
+    description: "The API to query the delivery fees of an XCM message",
+    params: [
+      { name: "destination", type: "XcmVersionedLocation" },
+      { name: "message", type: "XcmVersionedXcm" },
+      { name: "feeAsset", type: "XcmVersionedAssetId" },
+    ],
+    // The chain returns xcm::VersionedAssets (V3/V4/V5 assets), NOT a bare
+    // Vec<XcmAsset> — the latter is only declared inside the runtime API and
+    // resolves to DoNotConstruct when the api is built from a metadata keyed
+    // by genesis-specVersion. XcmVersionedAssets is a registered core type.
+    type: "Result<XcmVersionedAssets, XcmPaymentApiError>",
+  },
 };
 
 const xcmPaymentApiRuntimeVersions = [
   { methods: xcmPaymentApiMethods, version: 1 },
   { methods: xcmPaymentApiMethods, version: 2 },
 ];
+
+// Runtime API definitions for XcmPaymentApi. Exported for API instances that
+// are built from metadata only (see getChainApi) so methods like
+// query_delivery_fees stay decorated even when the cached metadata is stale.
+export function getXcmPaymentApiRuntime() {
+  return { XcmPaymentApi: xcmPaymentApiRuntimeVersions };
+}
 
 function mergeRuntimeDefinitions(runtime = {}) {
   const existingXcmPaymentApiVersions = runtime.XcmPaymentApi || [];

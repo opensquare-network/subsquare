@@ -1,4 +1,4 @@
-import { ArrowUp } from "@osn/icons/subsquare";
+import { ArrowDown } from "@osn/icons/subsquare";
 import { useEffect, useRef, useState } from "react";
 import { OptionsWrapper } from "../select/styled";
 import Option from "../select/option";
@@ -33,6 +33,11 @@ export default function SymbolSelectInput({
     setShowOptions(!showOptions);
   };
 
+  const handleSymbolChange = (item) => {
+    onSymbolChange(item);
+    onValueChange?.("");
+  };
+
   return (
     <div className="relative">
       <CurrencyInput
@@ -49,7 +54,9 @@ export default function SymbolSelectInput({
           >
             <span>{symbol}</span>
             <div className="inline-flex mr-[-6px]">
-              <ArrowUp className={cn("w-4 h-4", showOptions && "rotate-180")} />
+              <ArrowDown
+                className={cn("w-4 h-4", showOptions && "rotate-180")}
+              />
             </div>
           </div>
         }
@@ -57,7 +64,7 @@ export default function SymbolSelectInput({
       {showOptions && (
         <OptionsWrapper className="left-auto max-w-[160px] text14Medium">
           {symbolOptions.map((item) => (
-            <Option key={item} onClick={() => onSymbolChange(item)}>
+            <Option key={item} onClick={() => handleSymbolChange(item)}>
               {item}
             </Option>
           ))}
