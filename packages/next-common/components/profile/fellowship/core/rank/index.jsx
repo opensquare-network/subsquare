@@ -65,7 +65,7 @@ function RankChartTooltip({ x, y, visible, data }) {
   return (
     <div
       className="absolute z-50 pointer-events-none -translate-x-1/2 -translate-y-full"
-      style={{ left: x, top: y }}
+      style={{ left: x, top: y - 12 }}
     >
       <div className="rounded py-1.5 px-3 text12Normal text-white bg-tooltipBg">
         <div>{dayjs(time).format("YYYY-MM-DD")}</div>
