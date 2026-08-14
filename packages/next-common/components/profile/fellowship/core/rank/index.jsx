@@ -16,6 +16,9 @@ const EVENT_NAMES = {
   Promoted: "Promotion",
   Demoted: "Demotion",
   Proven: "Retention",
+  Inducted: "Inducted",
+  Offboarded: "Offboarded",
+  Imported: "Imported",
 };
 
 export function buildRankChartData(points = []) {
@@ -28,14 +31,15 @@ export function buildRankChartData(points = []) {
     }))
     .sort((a, b) => a.time - b.time);
 
-  const firstPositiveIndex = events.findIndex((p) => p.rank > 0);
-  if (firstPositiveIndex < 0) {
+  // A member who never held a rank greater than 0 (e.g. only inducted then
+  // offboarded) has no meaningful rank history to plot.
+  if (!events.some((p) => p.rank > 0)) {
     return { points: [] };
   }
 
   const stepPoints = [];
   let prevRank = 0;
-  for (const point of events.slice(firstPositiveIndex)) {
+  for (const point of events) {
     stepPoints.push({
       x: point.time,
       y: point.rank,
@@ -60,7 +64,12 @@ function RankChartTooltip({ x, y, visible, data }) {
   const time = data.x;
   const rank = data.y;
   const fromRank = data.fromRank;
-  const isRankChange = event === "Promoted" || event === "Demoted";
+  const isRankChange =
+    (event === "Promoted" ||
+      event === "Demoted" ||
+      event === "Imported" ||
+      event === "Offboarded") &&
+    fromRank !== rank;
 
   return (
     <div
