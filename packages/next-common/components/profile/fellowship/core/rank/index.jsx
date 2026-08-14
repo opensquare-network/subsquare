@@ -113,7 +113,7 @@ function RankChartTooltip({ x, y, visible, data }) {
     >
       <div className="rounded py-1.5 px-3 text12Normal text-white bg-tooltipBg whitespace-nowrap">
         <div>{dayjs(time).format("YYYY-MM-DD")}</div>
-        <div>rank: {isRankChange ? `${fromRank} → ${rank}` : rank}</div>
+        <div>Rank: {isRankChange ? `${fromRank} → ${rank}` : rank}</div>
         {EVENT_NAMES[event] && <div>Event: {EVENT_NAMES[event]}</div>}
         <div
           className="absolute w-0 h-0 -translate-x-1/2"
