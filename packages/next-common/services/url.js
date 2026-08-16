@@ -145,7 +145,7 @@ export const ambassadorTrackReferendaApi = (trackId) =>
 export const ambassadorTrackReferendaSummaryApi = (trackId) =>
   ambassadorTracksApi + `/${trackId}/referenda/summary`;
 export const ambassadorTrackApi = (trackId) =>
-  fellowshipTracksApi + `/${trackId}`;
+  ambassadorTracksApi + `/${trackId}`;
 // ambassador salary
 export const ambassadorSalaryHistoryCyclesApi =
   "ambassador/salary/history_cycles";

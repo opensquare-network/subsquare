@@ -1,7 +1,6 @@
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import {
-  ambassadorTrackApi,
   ambassadorTrackReferendaApi,
   ambassadorTrackReferendaSummaryApi,
   ambassadorTracksApi,
@@ -33,7 +32,7 @@ export default function AmbassadorTrackPage({
   detailedTracks,
   trackReferendaSummary,
 }) {
-  if (isEmpty(detailedTracks)) {
+  if (isEmpty(detailedTracks) || !track) {
     return <TrackNotFound />;
   }
 
@@ -72,7 +71,7 @@ export default function AmbassadorTrackPage({
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { page = 1, page_size: pageSize = 50, id } = context.query;
-  const { result: detailedTracks } = await backendApi.fetch(
+  const { result: detailedTracks = [] } = await backendApi.fetch(
     ambassadorTracksApi,
   );
   const track =
@@ -84,7 +83,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
     tracksProps,
     { result: posts },
     { result: trackReferendaSummary },
-    { result: ambassadorTracksDetail },
   ] = await Promise.all([
     fetchOpenGovTracksProps(),
     track
@@ -97,7 +95,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
     track
       ? backendApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id))
       : {},
-    track ? backendApi.fetch(ambassadorTrackApi(track?.id)) : {},
   ]);
 
   return {
@@ -105,7 +102,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       posts: posts ?? EmptyList,
       title: "Ambassador " + startCase(track?.name),
       trackReferendaSummary: trackReferendaSummary ?? {},
-      detailedTracks: ambassadorTracksDetail ?? {},
+      detailedTracks,
       track,
       ...tracksProps,
     },
