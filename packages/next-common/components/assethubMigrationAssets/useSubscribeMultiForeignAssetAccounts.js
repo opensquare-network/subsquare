@@ -1,5 +1,6 @@
 import { useContextApi } from "next-common/context/api";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import useSubscribeMultiAccounts from "next-common/utils/hooks/useSubscribeMultiAccounts";
 
 export default function useSubscribeMultiForeignAssetAccounts(
   metadata,
@@ -7,7 +8,6 @@ export default function useSubscribeMultiForeignAssetAccounts(
 ) {
   const api = useContextApi();
   const query = api?.query?.foreignAssets?.account;
-  const [multiAccounts, setMultiAccounts] = useState();
 
   const keys = useMemo(() => {
     if (!metadata || !address) {
@@ -17,49 +17,5 @@ export default function useSubscribeMultiForeignAssetAccounts(
     return metadata.map((asset) => [asset.storageLocation, address]);
   }, [address, metadata]);
 
-  useEffect(() => {
-    if (!keys || !query) {
-      setMultiAccounts();
-      return;
-    }
-
-    if (keys.length === 0) {
-      setMultiAccounts([]);
-      return;
-    }
-
-    let isActive = true;
-    let unsubscribe;
-    setMultiAccounts();
-
-    async function subscribe() {
-      try {
-        const unsubscribeResult = await query.multi(keys, (results) => {
-          if (isActive) {
-            setMultiAccounts(results || []);
-          }
-        });
-
-        if (isActive) {
-          unsubscribe = unsubscribeResult;
-        } else {
-          unsubscribeResult?.();
-        }
-      } catch (error) {
-        if (isActive) {
-          console.error("Failed to subscribe foreign asset accounts", error);
-          setMultiAccounts([]);
-        }
-      }
-    }
-
-    subscribe();
-
-    return () => {
-      isActive = false;
-      unsubscribe?.();
-    };
-  }, [keys, query]);
-
-  return multiAccounts;
+  return useSubscribeMultiAccounts(query, keys);
 }

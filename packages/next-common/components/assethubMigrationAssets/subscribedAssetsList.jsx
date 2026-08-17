@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import useSortedAssetMetadata from "./useAssetsWithBalances";
 import { useTotalCounts } from "./context/assetHubTabsProvider";
 import DynamicAssetsTable from "./dynamicAssetsTable";
-import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
+import useSubscribeMultiAccounts from "next-common/utils/hooks/useSubscribeMultiAccounts";
 
 export default function SubscribedAssetsList({ address, columnsDef }) {
   const api = useContextApi();
@@ -17,7 +17,10 @@ export default function SubscribedAssetsList({ address, columnsDef }) {
 
     return sortedMetadata.map((asset) => [asset.assetId, address]);
   }, [address, sortedMetadata]);
-  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey, api);
+  const multiAccounts = useSubscribeMultiAccounts(
+    api?.query?.assets?.account,
+    multiAccountKey,
+  );
 
   const assetsWithBalance = useMemo(() => {
     if (!sortedMetadata || !multiAccounts) {
