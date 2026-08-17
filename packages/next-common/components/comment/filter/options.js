@@ -1,7 +1,10 @@
 import { useContextApi } from "next-common/context/api";
+import { useChain } from "next-common/context/chain";
+import { usePost } from "next-common/context/post";
 import Checkbox from "next-common/components/checkbox";
 import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
+import { isReferendumInDVPeriod } from "next-common/utils/dv";
 import { useStagedCommentFilterParams } from "./utils";
 import { emptyFilterValues } from ".";
 
@@ -72,8 +75,18 @@ export function DiscussionCommentFilterOptions() {
   ));
 }
 
-export default function CommentFilterOptions() {
+export function ReferendaCommentFilterOptions() {
   const api = useContextApi();
+  const post = usePost();
+  const chain = useChain();
+
+  // The DV (Decentralized Voices) option is only shown for referenda whose
+  // existence (creation block ~ end) overlaps the DV program period.
+  const inDVPeriod = isReferendumInDVPeriod(chain, post);
+  const visibleOptionItems = inDVPeriod
+    ? optionItems
+    : optionItems.filter((item) => item.key !== "show_dv_only");
+
   const disabledOptions = {
     hide_0: !api,
   };
@@ -90,7 +103,7 @@ export default function CommentFilterOptions() {
     });
   };
 
-  return optionItems.map((item) => (
+  return visibleOptionItems.map((item) => (
     <Tooltip
       key={item.key}
       content={disabledOptions[item.key] && "Not available"}
