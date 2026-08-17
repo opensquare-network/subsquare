@@ -18,9 +18,9 @@ function ProfileFellowshipContent() {
 
   const panelPath = `/user/${maybeEvmAddress}/fellowship`;
 
-  if (pathname === `${panelPath}/overview`) {
+  if (pathname === panelPath) {
     return <ProfileFellowshipOverview />;
-  } else if (pathname === panelPath) {
+  } else if (pathname === `${panelPath}/votes`) {
     return <ProfileFellowshipVotes />;
   } else if (pathname === `${panelPath}/membership`) {
     return <ProfileFellowshipCore />;

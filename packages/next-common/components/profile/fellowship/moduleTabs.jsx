@@ -19,8 +19,8 @@ export default function ProfileFellowshipModuleTabs() {
   const maybeEvmAddress = tryConvertToEvmAddress(id);
 
   const urls = {
-    overview: `/user/${maybeEvmAddress}/${section}/overview`,
-    votes: `/user/${maybeEvmAddress}/${section}`,
+    overview: `/user/${maybeEvmAddress}/${section}`,
+    votes: `/user/${maybeEvmAddress}/${section}/votes`,
     core: `/user/${maybeEvmAddress}/${section}/membership`,
     salary: `/user/${maybeEvmAddress}/${section}/salary`,
   };
