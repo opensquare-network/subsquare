@@ -1,8 +1,5 @@
 import { useMemo } from "react";
-import { useAsync } from "react-use";
 import { CardTitle } from "./styled";
-import { backendApi } from "next-common/services/nextApi";
-import { fellowshipMemberHeatmapApi } from "next-common/services/url";
 import Loading from "next-common/components/loading";
 import { useContextApi } from "next-common/context/api";
 import useCall from "next-common/utils/hooks/useCall";
@@ -75,7 +72,8 @@ function WinPercentage({ heatmap }) {
 }
 
 export default function VoteActivitySummary() {
-  const { id: address, fellowshipReferendaMaxIndex } = usePageProps();
+  const { fellowshipReferendaMaxIndex, fellowshipMemberHeatmap } =
+    usePageProps();
   const api = useContextApi();
   const referendaPallet = useReferendaFellowshipPallet();
   const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
@@ -87,11 +85,10 @@ export default function VoteActivitySummary() {
     : 0;
   // Prefer the live on-chain value, fall back to the SSR value otherwise
   const referendumCount = onChainReferendumCount ?? ssrReferendumCount;
-
-  const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
-    useAsync(async () => {
-      return await backendApi.fetch(fellowshipMemberHeatmapApi(address));
-    }, [address]);
+  const heatmap = useMemo(
+    () => fellowshipMemberHeatmap || [],
+    [fellowshipMemberHeatmap],
+  );
 
   const {
     component: slider,
@@ -110,7 +107,7 @@ export default function VoteActivitySummary() {
   }, [heatmap, rangeFrom, rangeTo]);
 
   // Only show loading when neither the on-chain value nor the SSR fallback is available
-  if (isHeatmapLoading || (!isReferendumCountLoaded && !ssrReferendumCount)) {
+  if (!isReferendumCountLoaded && !ssrReferendumCount) {
     return (
       <div className="flex justify-center p-[16px]">
         <Loading size={20} />
