@@ -3,7 +3,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useMemo } from "react";
 import { useAssetHubMetadata } from "../context/assetHubMetadataContext";
 import { useAssetHubApi } from "next-common/hooks/chain/useAssetHubApi";
-import useSubscribeMultiAssetAccounts from "next-common/utils/hooks/useSubscribeMultiAssetAccounts";
+import useSubscribeMultiAccounts from "next-common/utils/hooks/useSubscribeMultiAccounts";
 
 export default function useAssetsFromAssetHub() {
   const address = useRealAddress();
@@ -13,7 +13,10 @@ export default function useAssetsFromAssetHub() {
     () => allMetadata?.map((item) => [item.assetId, address]),
     [allMetadata, address],
   );
-  const multiAccounts = useSubscribeMultiAssetAccounts(multiAccountKey, api);
+  const multiAccounts = useSubscribeMultiAccounts(
+    api?.query?.assets?.account,
+    multiAccountKey,
+  );
 
   return useMemo(() => {
     if (!allMetadata || !multiAccounts || !address) {
@@ -22,7 +25,7 @@ export default function useAssetsFromAssetHub() {
 
     const assets = (allMetadata || []).reduce((result, item, index) => {
       const account = multiAccounts[index];
-      if (account.isNone) {
+      if (!account || account.isNone) {
         return result;
       }
 
