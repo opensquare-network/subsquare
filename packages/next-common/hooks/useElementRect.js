@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 
 export function useElementRect(elementRef) {
   const [rect, setRect] = useState({
@@ -10,7 +10,10 @@ export function useElementRect(elementRef) {
     bottom: 0,
   });
 
-  useEffect(() => {
+  // useLayoutEffect measures before paint so layouts that depend on the
+  // measured size (e.g. the heatmap's fixed-height flex-wrap grid) never
+  // flash with an unmeasured (zero) size on the first frame.
+  useLayoutEffect(() => {
     if (!elementRef.current) return;
 
     const updateRect = () => {
