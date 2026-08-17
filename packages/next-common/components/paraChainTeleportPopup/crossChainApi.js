@@ -36,10 +36,10 @@ export function useChainApi(chain) {
 
   const coretimeApi = useCoretimeApi();
 
-  if (chain === currChain) {
-    return currChainApi;
-  } else if (chain === relayChain) {
+  if (chain === relayChain) {
     return relayChainApi;
+  } else if (chain === currChain) {
+    return currChainApi;
   } else if (chain === assetHubChain) {
     return assetHubApi;
   } else if (chain === Chains.collectives) {

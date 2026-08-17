@@ -5,7 +5,10 @@ import { useState, useMemo, useCallback } from "react";
 import { useChain } from "next-common/context/chain";
 import Select from "next-common/components/select";
 import Chains from "next-common/utils/consts/chains";
-import { getRelayChain, isPeopleChain } from "next-common/utils/chain";
+import getChainSettings from "next-common/utils/consts/settings";
+import { getRelayChain, isRelayChain } from "next-common/utils/chain";
+import { useRelayChain } from "next-common/hooks/useRelayChain";
+import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 
 const ArrowLineLeft = dynamic(() =>
   import("@osn/icons/subsquare/ArrowLineLeft"),
@@ -92,12 +95,19 @@ function transformToChainOptions(chain) {
   const relayChain = getRelayChain(chain);
   const paraChains = PARACHAIN_MAP[relayChain] || [];
 
-  return paraChains.map(({ value, name, id }) => ({
-    icon: <ChainIcon chain={value} />,
-    label: name,
-    value,
-    id,
-  }));
+  return [
+    {
+      icon: <ChainIcon chain={relayChain} />,
+      label: `${getChainSettings(relayChain).name} Relay`,
+      value: relayChain,
+    },
+    ...paraChains.map(({ value, name, id }) => ({
+      icon: <ChainIcon chain={value} />,
+      label: name,
+      value,
+      id,
+    })),
+  ];
 }
 
 function ChainSeparator() {
@@ -114,26 +124,24 @@ function ChainSeparator() {
 
 export default function useCrossChainTeleport() {
   const currChain = useChain();
+  const relayChain = useRelayChain();
+  const assetHubChain = useAssetHubChain();
   const allChainOptions = useMemo(
     () => transformToChainOptions(currChain),
     [currChain],
   );
 
   const defaultSourceChain = useMemo(() => {
-    if (isPeopleChain(currChain)) {
-      return currChain;
-    }
+    const isSelectable =
+      !isRelayChain(currChain) &&
+      allChainOptions.some(({ value }) => value === currChain);
 
-    return allChainOptions[0]?.value || "";
-  }, [allChainOptions, currChain]);
+    return isSelectable ? currChain : assetHubChain;
+  }, [allChainOptions, currChain, assetHubChain]);
 
   const defaultDestinationChain = useMemo(() => {
-    if (isPeopleChain(currChain)) {
-      return allChainOptions[0]?.value || "";
-    }
-
-    return allChainOptions[1]?.value || "";
-  }, [allChainOptions, currChain]);
+    return defaultSourceChain === assetHubChain ? relayChain : assetHubChain;
+  }, [defaultSourceChain, assetHubChain, relayChain]);
 
   const [sourceChain, setSourceChain] = useState(defaultSourceChain);
   const [destinationChain, setDestinationChain] = useState(
