@@ -3,14 +3,13 @@ import { backendApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchProfileTreasuryProps } from "next-common/services/serverSide/prefile/treasury";
-import { fetchUserStatisticsProps } from "next-common/services/serverSide/fellowship/userStatistics";
 import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
 
 export default Profile;
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const {
-    params: [id, activityType],
+    params: [id],
   } = context.query;
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
@@ -21,10 +20,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
   const treasuryProps = await fetchProfileTreasuryProps(maybeAddress);
-  const userStatisticsProps = await fetchUserStatisticsProps(
-    maybeAddress,
-    activityType,
-  );
 
   return {
     props: {
@@ -34,7 +29,6 @@ export const getServerSideProps = withCommonProps(async (context) => {
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,
       ...treasuryProps,
-      ...userStatisticsProps,
     },
   };
 });
