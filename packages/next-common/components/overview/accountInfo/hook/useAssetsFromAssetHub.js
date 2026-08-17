@@ -25,7 +25,7 @@ export default function useAssetsFromAssetHub() {
 
     const assets = (allMetadata || []).reduce((result, item, index) => {
       const account = multiAccounts[index];
-      if (account.isNone) {
+      if (!account || account.isNone) {
         return result;
       }
 
