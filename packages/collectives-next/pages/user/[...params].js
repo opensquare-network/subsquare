@@ -4,7 +4,10 @@ import Profile from "next-common/components/profile";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
-import { fetchUserStatisticsProps } from "next-common/services/serverSide/fellowship/userStatistics";
+import {
+  fetchUserStatisticsProps,
+  fetchUserRankHistoryProps,
+} from "next-common/services/serverSide/fellowship/userStatistics";
 import {
   ambassadorCoreFeedsApiUri,
   ambassadorMembersApiUri,
@@ -52,6 +55,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: fellowshipParams },
     { result: ambassadorParams },
     userStatisticsProps,
+    rankHistoryProps,
   ] = await Promise.all([
     backendApi.fetch(`users/${maybeAddress}/counts`),
     backendApi.fetch(`users/${maybeAddress}`),
@@ -63,6 +67,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     backendApi.fetch(fellowshipParamsApi),
     backendApi.fetch(ambassadorParamsApi),
     fetchUserStatisticsProps(maybeAddress, activityType),
+    fetchUserRankHistoryProps(maybeAddress, activityType),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
 
@@ -81,6 +86,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,
       ...userStatisticsProps,
+      ...rankHistoryProps,
     },
   };
 });

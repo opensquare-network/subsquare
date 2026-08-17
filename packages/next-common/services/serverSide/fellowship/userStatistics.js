@@ -1,43 +1,53 @@
 import { backendApi } from "next-common/services/nextApi";
 import getChainSettings from "next-common/utils/consts/settings";
 import {
-  ambassadorStatisticsUsersApi,
+  fellowshipStatisticsMemberRankHistoryApi,
   fellowshipStatisticsUsersApi,
 } from "next-common/services/url";
 
 /**
- * Fetch fellowship / ambassador user statistics on the server side.
- * Skips the request when the chain doesn't support the module, to avoid
- * hitting a backend that has no fellowship / ambassador statistics API.
+ * Fetch a member's fellowship statistics on the server side.
+ * Ambassador is not in use yet, so only the fellowship section is handled.
  */
 export async function fetchUserStatisticsProps(address, section) {
-  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-
-  if (section === "fellowship") {
-    if (!chainSettings.modules.fellowship) {
-      return {};
-    }
-  } else if (section === "ambassador") {
-    if (!chainSettings.modules.ambassador) {
-      return {};
-    }
-  } else {
+  if (section !== "fellowship") {
     return {};
   }
 
-  const statisticsApi =
-    section === "ambassador"
-      ? ambassadorStatisticsUsersApi(address)
-      : fellowshipStatisticsUsersApi(address);
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.modules.fellowship) {
+    return {};
+  }
 
-  const { result } = await backendApi.fetch(statisticsApi);
-
-  const key =
-    section === "ambassador"
-      ? "ambassadorUserStatistics"
-      : "fellowshipUserStatistics";
+  const { result } = await backendApi.fetch(
+    fellowshipStatisticsUsersApi(address),
+  );
 
   return {
-    [key]: result ?? null,
+    fellowshipUserStatistics: result ?? null,
+  };
+}
+
+/**
+ * Fetch a member's fellowship rank history on the server side.
+ * The backend has no ambassador rank history endpoint, so this only runs on
+ * the fellowship section; ambassador pages just show no rank data.
+ */
+export async function fetchUserRankHistoryProps(address, section) {
+  if (section !== "fellowship") {
+    return {};
+  }
+
+  const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
+  if (!chainSettings.modules.fellowship) {
+    return {};
+  }
+
+  const { result } = await backendApi.fetch(
+    fellowshipStatisticsMemberRankHistoryApi(address),
+  );
+
+  return {
+    fellowshipUserRankHistory: result ?? null,
   };
 }
