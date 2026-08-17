@@ -9,6 +9,7 @@ import ProfileFellowshipStatisticsInfo from "./statisticsInfo";
 import ProfileFellowshipModuleTabs from "./moduleTabs";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
 import ProfileFellowshipEvidence from "./evidence";
+import ProfileFellowshipOverview from "./overview";
 
 function ProfileFellowshipContent() {
   const pathname = usePathname();
@@ -17,7 +18,9 @@ function ProfileFellowshipContent() {
 
   const panelPath = `/user/${maybeEvmAddress}/fellowship`;
 
-  if (pathname === panelPath) {
+  if (pathname === `${panelPath}/overview`) {
+    return <ProfileFellowshipOverview />;
+  } else if (pathname === panelPath) {
     return <ProfileFellowshipVotes />;
   } else if (pathname === `${panelPath}/membership`) {
     return <ProfileFellowshipCore />;
