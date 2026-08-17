@@ -34,6 +34,7 @@ export const fellowshipReferendaVoteActionsApi = (index) =>
   `fellowship/referenda/${index}/actions`;
 export const fellowshipMemberHeatmapApi = (address) =>
   `fellowship/referenda/members/${address}/heatmap`;
+export const fellowshipReferendaMaxIndexApi = "fellowship/referenda/max-index";
 
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>

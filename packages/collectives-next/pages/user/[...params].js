@@ -16,6 +16,7 @@ import {
   fellowshipMemberLastSalaryPaymentApi,
   fellowshipMembersApiUri,
   fellowshipParamsApi,
+  fellowshipReferendaMaxIndexApi,
 } from "next-common/services/url";
 
 export default Profile;
@@ -54,6 +55,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: lastSalaryPayment },
     { result: fellowshipParams },
     { result: ambassadorParams },
+    { result: fellowshipReferendaMaxIndexResult },
     userStatisticsProps,
     rankHistoryProps,
   ] = await Promise.all([
@@ -66,6 +68,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     backendApi.fetch(fellowshipMemberLastSalaryPaymentApi(id)),
     backendApi.fetch(fellowshipParamsApi),
     backendApi.fetch(ambassadorParamsApi),
+    backendApi.fetch(fellowshipReferendaMaxIndexApi),
     fetchUserStatisticsProps(maybeAddress, activityType),
     fetchUserRankHistoryProps(maybeAddress, activityType),
   ]);
@@ -82,6 +85,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
       lastSalaryPayment: lastSalaryPayment ?? {},
       fellowshipParams: fellowshipParams ?? {},
       ambassadorParams: ambassadorParams ?? {},
+      fellowshipReferendaMaxIndex:
+        fellowshipReferendaMaxIndexResult?.maxReferendumIndex ?? 0,
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,

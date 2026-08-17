@@ -75,12 +75,18 @@ function WinPercentage({ heatmap }) {
 }
 
 export default function VoteActivitySummary() {
-  const { id: address } = usePageProps();
+  const { id: address, fellowshipReferendaMaxIndex } = usePageProps();
   const api = useContextApi();
   const referendaPallet = useReferendaFellowshipPallet();
   const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
     useCall(api?.query?.[referendaPallet]?.referendumCount, []);
-  const referendumCount = referendumCountValue?.toNumber();
+  const onChainReferendumCount = referendumCountValue?.toNumber();
+  // Referendum indexes are 0-based contiguous on chain, so count = maxIndex + 1
+  const ssrReferendumCount = fellowshipReferendaMaxIndex
+    ? fellowshipReferendaMaxIndex + 1
+    : 0;
+  // Prefer the live on-chain value, fall back to the SSR value otherwise
+  const referendumCount = onChainReferendumCount ?? ssrReferendumCount;
 
   const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
     useAsync(async () => {
@@ -103,7 +109,8 @@ export default function VoteActivitySummary() {
     );
   }, [heatmap, rangeFrom, rangeTo]);
 
-  if (!isReferendumCountLoaded || isHeatmapLoading) {
+  // Only show loading when neither the on-chain value nor the SSR fallback is available
+  if (isHeatmapLoading || (!isReferendumCountLoaded && !ssrReferendumCount)) {
     return (
       <div className="flex justify-center p-[16px]">
         <Loading size={20} />
