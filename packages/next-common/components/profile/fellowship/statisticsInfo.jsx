@@ -15,9 +15,9 @@ import MemberRankChanges from "./memberRankChanges";
 
 function useUserStatisticsData(address, section) {
   let statisticsApi;
-  if (section === "fellowship") {
+  if (address && section === "fellowship") {
     statisticsApi = fellowshipStatisticsUsersApi(address);
-  } else if (section === "ambassador") {
+  } else if (address && section === "ambassador") {
     statisticsApi = ambassadorStatisticsUsersApi(address);
   }
 
@@ -33,24 +33,43 @@ function useUserStatisticsData(address, section) {
 }
 
 function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
-  const { id: address } = usePageProps();
-  const { value, loading } = useUserStatisticsData(address, section);
+  const {
+    id: address,
+    fellowshipUserStatistics,
+    ambassadorUserStatistics,
+  } = usePageProps();
+
+  // Prefer SSR-provided statistics, fall back to client-side fetching.
+  const serverStatistics =
+    section === "ambassador"
+      ? ambassadorUserStatistics
+      : fellowshipUserStatistics;
+  const { value, loading } = useUserStatisticsData(
+    isNil(serverStatistics) ? address : null,
+    section,
+  );
+  const statistics = serverStatistics ?? value;
+  const isLoading = loading && isNil(serverStatistics);
 
   return (
     <NeutralPanel className="p-6">
       <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1">
         <SummaryItem title="Total Salary Paid">
-          <LoadableContent isLoading={loading || isNil(value?.totalPaid)}>
-            <SalaryAssetValues salary={value?.totalPaid} align="left" />
+          <LoadableContent
+            isLoading={isLoading || isNil(statistics?.totalPaid)}
+          >
+            <SalaryAssetValues salary={statistics?.totalPaid} align="left" />
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Joined Cycles">
-          <LoadableContent isLoading={loading || isNil(value?.joinedCycles)}>
-            {value?.joinedCycles}
+          <LoadableContent
+            isLoading={isLoading || isNil(statistics?.joinedCycles)}
+          >
+            {statistics?.joinedCycles}
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Member Rank Changes">
-          <MemberRankChanges value={value} loading={loading} />
+          <MemberRankChanges value={statistics} loading={isLoading} />
         </SummaryItem>
       </SummaryLayout>
     </NeutralPanel>
