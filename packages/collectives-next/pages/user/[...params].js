@@ -7,9 +7,11 @@ import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
 import {
   ambassadorCoreFeedsApiUri,
   ambassadorMembersApiUri,
+  ambassadorParamsApi,
   fellowshipCoreFeedsApiUri,
   fellowshipMemberLastSalaryPaymentApi,
   fellowshipMembersApiUri,
+  fellowshipParamsApi,
 } from "next-common/services/url";
 
 export default Profile;
@@ -46,6 +48,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: fellowshipFeeds },
     { result: ambassadorFeeds },
     { result: lastSalaryPayment },
+    { result: fellowshipParams },
+    { result: ambassadorParams },
   ] = await Promise.all([
     backendApi.fetch(`users/${maybeAddress}/counts`),
     backendApi.fetch(`users/${maybeAddress}`),
@@ -54,6 +58,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
     backendApi.fetch(fellowshipCoreFeedsApiUri, queryFeedsParams),
     backendApi.fetch(ambassadorCoreFeedsApiUri, queryFeedsParams),
     backendApi.fetch(fellowshipMemberLastSalaryPaymentApi(id)),
+    backendApi.fetch(fellowshipParamsApi),
+    backendApi.fetch(ambassadorParamsApi),
   ]);
   const tracksProps = await fetchOpenGovTracksProps();
 
@@ -66,6 +72,8 @@ export const getServerSideProps = withCommonProps(async (context) => {
       fellowshipFeeds: fellowshipFeeds ?? EmptyList,
       ambassadorFeeds: ambassadorFeeds ?? EmptyList,
       lastSalaryPayment: lastSalaryPayment ?? {},
+      fellowshipParams: fellowshipParams ?? {},
+      ambassadorParams: ambassadorParams ?? {},
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,
