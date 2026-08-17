@@ -1,21 +1,10 @@
 import { useOnchainData, useTimelineData } from "../index";
 import { gov2State, gov2VotingStates } from "../../../utils/consts/state";
+import { getReferendumFinishIndexer } from "../../../utils/timeline/finish";
 import { useMemo } from "react";
 
 export function useReferendumVotingFinishIndexer() {
-  const timeline = useTimelineData();
-  const finishItem = (timeline || []).find((item) =>
-    [
-      gov2State.Approved,
-      gov2State.Rejected,
-      gov2State.TimedOut,
-      gov2State.Cancelled,
-      gov2State.Killed,
-      "Confirmed",
-    ].includes(item.name),
-  );
-
-  return finishItem?.indexer;
+  return getReferendumFinishIndexer(useTimelineData());
 }
 
 export function useIsReferendumFinalState() {

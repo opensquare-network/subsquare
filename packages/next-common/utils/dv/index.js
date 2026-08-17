@@ -1,6 +1,7 @@
 import chainDvDelegates from "next-common/utils/dv/delegates";
 import { isNil, isNumber } from "lodash-es";
 import { isBeforeAhm } from "next-common/hooks/useCompatibleMigrationHeight";
+import { getReferendumFinishTime } from "next-common/utils/timeline/finish";
 
 /**
  * DV (Decentralized Voices) program existence period — hardcoded block times.
@@ -27,26 +28,6 @@ const dvExistencePeriods = {
   },
 };
 
-// Final state names used to determine a referendum's lifetime end height
-// (consistent with useReferendumVotingFinishIndexer)
-const referendumFinishStateNames = [
-  "Approved",
-  "Rejected",
-  "TimedOut",
-  "Cancelled",
-  "Killed",
-  "Confirmed",
-];
-
-function getReferendumFinishTime(referendum) {
-  const timeline = referendum?.onchainData?.timeline || [];
-  const finishItem = timeline.find((item) =>
-    referendumFinishStateNames.includes(item.name),
-  );
-
-  return finishItem?.indexer?.blockTime;
-}
-
 export function isReferendumInDVPeriod(chain, referendum) {
   const period = dvExistencePeriods[chain];
   if (!period) {
@@ -61,7 +42,9 @@ export function isReferendumInDVPeriod(chain, referendum) {
 
   // Lifetime end time; an ongoing referendum has no end time,
   // treated as extending to the present
-  const endTime = getReferendumFinishTime(referendum);
+  const endTime = getReferendumFinishTime(
+    referendum?.onchainData?.timeline || [],
+  );
   const effectiveEnd = isNil(endTime) ? Number.POSITIVE_INFINITY : endTime;
 
   // 1. Whether the creation time falls within the DV existence period
