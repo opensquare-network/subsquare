@@ -98,7 +98,7 @@ function transformToChainOptions(chain) {
   return [
     {
       icon: <ChainIcon chain={relayChain} />,
-      label: getChainSettings(relayChain).name,
+      label: `${getChainSettings(relayChain).name} Relay`,
       value: relayChain,
     },
     ...paraChains.map(({ value, name, id }) => ({
