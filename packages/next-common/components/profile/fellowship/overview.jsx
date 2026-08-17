@@ -16,12 +16,12 @@ function TabPanel({ label, children }) {
 export default function ProfileFellowshipOverview() {
   return (
     <div className="space-y-4">
-      <TabPanel label="Votes">
-        <VoteActivitySummary />
-      </TabPanel>
-
       <TabPanel label="Rank">
         <ProfileFellowshipCoreRank />
+      </TabPanel>
+
+      <TabPanel label="Votes">
+        <VoteActivitySummary />
       </TabPanel>
     </div>
   );
