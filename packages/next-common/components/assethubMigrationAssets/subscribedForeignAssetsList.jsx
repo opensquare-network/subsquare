@@ -1,52 +1,60 @@
-import { useMemo, useState, useEffect, useCallback } from "react";
+import BigNumber from "bignumber.js";
+import { useEffect, useMemo } from "react";
 import useSortedForeignAssetMetadata from "./useForeignAssetsWithBalances";
 import { useTotalCounts } from "./context/assetHubTabsProvider";
 import DynamicForeignAssetsTable from "./dynamicForeignAssetsTable";
+import useSubscribeMultiForeignAssetAccounts from "./useSubscribeMultiForeignAssetAccounts";
 
 export default function SubscribedForeignAssetsList({ address, columnsDef }) {
   const sortedMetadata = useSortedForeignAssetMetadata();
   const [, setTotalCount] = useTotalCounts();
-  const [loadedAssets, setLoadedAssets] = useState({});
+  const multiAccounts = useSubscribeMultiForeignAssetAccounts(
+    sortedMetadata,
+    address,
+  );
 
-  const handleAssetLoaded = useCallback((assetId, hasBalance) => {
-    setLoadedAssets((prev) => ({ ...prev, [assetId]: hasBalance }));
-  }, []);
-
-  const allAssetsLoaded = useMemo(() => {
-    if (!sortedMetadata) {
-      return false;
+  const assetsWithBalance = useMemo(() => {
+    if (!sortedMetadata || !multiAccounts) {
+      return [];
     }
 
-    if (sortedMetadata.length === 0) {
-      return true;
-    }
+    return sortedMetadata.reduce((assets, asset, index) => {
+      const account = multiAccounts[index];
+      if (!account || account.isNone) {
+        return assets;
+      }
 
-    return sortedMetadata.every((asset) => asset.assetId in loadedAssets);
-  }, [sortedMetadata, loadedAssets]);
+      const value = account.unwrap();
+      const balance = value.balance?.toString?.() || "0";
+      if (new BigNumber(balance).isZero()) {
+        return assets;
+      }
 
-  const assetsWithBalanceCount = useMemo(() => {
-    return Object.values(loadedAssets).filter(Boolean).length;
-  }, [loadedAssets]);
+      return [
+        ...assets,
+        {
+          ...asset,
+          balance,
+          transferable: value.status?.isFrozen ? "0" : balance,
+        },
+      ];
+    }, []);
+  }, [multiAccounts, sortedMetadata]);
 
-  const loading = !sortedMetadata || !allAssetsLoaded;
+  const loading =
+    !sortedMetadata || (sortedMetadata.length > 0 && !multiAccounts);
 
   useEffect(() => {
-    if (allAssetsLoaded) {
-      setTotalCount("assets", assetsWithBalanceCount);
+    if (!loading) {
+      setTotalCount("assets", assetsWithBalance.length);
     }
-  }, [allAssetsLoaded, assetsWithBalanceCount, setTotalCount]);
-
-  const showHiddenCollectors = loading || assetsWithBalanceCount === 0;
+  }, [assetsWithBalance.length, loading, setTotalCount]);
 
   return (
     <DynamicForeignAssetsTable
-      assetsWithBalanceCount={assetsWithBalanceCount}
-      assetsMetadata={sortedMetadata || []}
-      address={address}
+      assets={assetsWithBalance}
       columnsDef={columnsDef}
       loading={loading}
-      onLoaded={handleAssetLoaded}
-      showHiddenCollectors={showHiddenCollectors}
     />
   );
 }

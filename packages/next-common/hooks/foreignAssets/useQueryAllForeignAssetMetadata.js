@@ -25,6 +25,7 @@ export default function useQueryAllForeignAssetMetadata() {
           return {
             assetId,
             location: assetLocation.toJSON(),
+            storageLocation: assetLocation,
             symbol: metadata.symbol.toHuman(),
             name: metadata.name.toHuman(),
             decimals: metadata.decimals.toNumber(),
