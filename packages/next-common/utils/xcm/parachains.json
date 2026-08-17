@@ -1,0 +1,97 @@
+[
+  {
+    "relay": "polkadot",
+    "paraId": 1000,
+    "name": "Polkadot Asset Hub"
+  },
+  {
+    "relay": "kusama",
+    "paraId": 1000,
+    "name": "Kusama Asset Hub"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2000,
+    "name": "Acala"
+  },
+  {
+    "relay": "kusama",
+    "paraId": 2000,
+    "name": "Karura"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2004,
+    "name": "Moonbeam"
+  },
+  {
+    "relay": "kusama",
+    "paraId": 2023,
+    "name": "Moonriver"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2006,
+    "name": "Astar"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2011,
+    "name": "Equilibrium"
+  },
+  {
+    "relay": "kusama",
+    "paraId": 2015,
+    "name": "Integritee Kusama"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2030,
+    "name": "Bifrost Polkadot"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2031,
+    "name": "Centrifuge"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2032,
+    "name": "Interlay"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2043,
+    "name": "Zeitgeist"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2034,
+    "name": "Hydration"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2039,
+    "name": "Integritee Polkadot"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 2051,
+    "name": "Ajuna Network"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 3369,
+    "name": "Mythos"
+  },
+  {
+    "relay": "polkadot",
+    "paraId": 3370,
+    "name": "LAOS Network"
+  },
+  {
+    "relay": "kusama",
+    "paraId": 2125,
+    "name": "Tinkernet"
+  }
+]

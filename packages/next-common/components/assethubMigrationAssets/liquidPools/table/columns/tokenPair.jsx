@@ -4,10 +4,14 @@ import useKnownAssetHubAssetIcon, {
   useNativeTokenIcon,
 } from "next-common/components/assethubMigrationAssets/known";
 
-function useTokenIcon(token) {
+export function useTokenIcon(token) {
   const nativeTokenIcon = useNativeTokenIcon();
-  const knownAssetIcon = useKnownAssetHubAssetIcon(token.assetId);
-  const knownForeignAssetIcon = useKnownForeignAssetIcon(token.assetId);
+  const knownAssetIcon = useKnownAssetHubAssetIcon(token?.assetId);
+  const knownForeignAssetIcon = useKnownForeignAssetIcon(token?.assetId);
+
+  if (!token) {
+    return null;
+  }
 
   if (token.type === "native") {
     return nativeTokenIcon;

@@ -34,6 +34,7 @@ function normalizeToken(
     return {
       type: "native",
       key: "native",
+      location,
       symbol: nativeSymbol,
       decimals: nativeDecimals,
       hasName: true,
@@ -45,6 +46,7 @@ function normalizeToken(
     return {
       type: "asset",
       key: `asset:${parsed.assetId}`,
+      location,
       assetId: parsed.assetId,
       symbol: meta.symbol || `#${parsed.assetId}`,
       decimals: meta.decimals ?? 0,
@@ -66,7 +68,7 @@ function normalizeToken(
   };
 }
 
-function readReserveBalance(result, tokenType) {
+export function readReserveBalance(result, tokenType) {
   if (!result) {
     return new BigNumber(0);
   }
@@ -97,7 +99,10 @@ async function fetchPoolEntries(papi) {
     papi.query.AssetConversion.Pools.getEntries(),
     papi.query.PoolAssets.Asset.getEntries(),
     papi.query.Assets.Metadata.getEntries(),
-    papi.query.ForeignAssets.Metadata.getEntries(),
+    papi.query.ForeignAssets.Metadata.getEntries().catch((error) => {
+      console.warn("Failed to get ForeignAssets.Metadata entries:", error);
+      return [];
+    }),
   ]);
 
   return {
@@ -226,16 +231,14 @@ function buildPools(
   return pools;
 }
 
-// Build the on-chain balance query for a single pool token, held in the pool
-// vault's owner account.
-function buildBalanceQuery(papi, token, owner) {
+export function buildBalanceQuery(papi, token, address) {
   if (token.type === "native") {
-    return papi.query.System.Account.getValue(owner);
+    return papi.query.System.Account.getValue(address);
   }
   if (token.type === "asset") {
-    return papi.query.Assets.Account.getValue(token.assetId, owner);
+    return papi.query.Assets.Account.getValue(token.assetId, address);
   }
-  return papi.query.ForeignAssets.Account.getValue(token.location, owner);
+  return papi.query.ForeignAssets.Account.getValue(token.location, address);
 }
 
 // Fetch a single pool's reserve balances ([reserve1, reserve2]) as BigNumbers.
