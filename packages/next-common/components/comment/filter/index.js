@@ -4,9 +4,10 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import usePostCommentsFilterReady from "next-common/hooks/usePostCommentsFilterReady";
 import { DropdownFilter } from "next-common/components/dropdownFilter";
 import CommentsSorter, { defaultSortBy, sortByQueryName } from "./sorter";
-import CommentFilterOptions, {
+import {
   optionItems,
   DiscussionCommentFilterOptions,
+  ReferendaCommentFilterOptions,
 } from "./options";
 
 export const emptyFilterValues = {
@@ -30,43 +31,31 @@ export const discussionDefaultFilterValues = {
   hide_spam: true,
 };
 
-function DropdownCommentFilter() {
-  return (
-    <DropdownFilter>
-      <CommentsSorter />
-      <div className="flex flex-col py-[10px] gap-[4px]">
-        <CommentFilterOptions />
-      </div>
-    </DropdownFilter>
-  );
-}
-
-function InnerCommentsFilter() {
+function ReferendaCommentsFilter() {
   const ready = usePostCommentsFilterReady();
 
   return (
     <div className="flex items-center gap-x-2">
       {!ready && <Loading size={16} />}
 
-      <DropdownCommentFilter />
+      <DropdownFilter>
+        <CommentsSorter />
+        <div className="flex flex-col py-[10px] gap-[4px]">
+          <ReferendaCommentFilterOptions />
+        </div>
+      </DropdownFilter>
     </div>
-  );
-}
-
-function DropdownDiscussionCommentFilter() {
-  return (
-    <DropdownFilter>
-      <div className="flex flex-col py-[10px] gap-[4px] w-[200px]">
-        <DiscussionCommentFilterOptions />
-      </div>
-    </DropdownFilter>
   );
 }
 
 export function DiscussionCommentsFilter() {
   return (
     <div className="flex items-center gap-x-2">
-      <DropdownDiscussionCommentFilter />
+      <DropdownFilter>
+        <div className="flex flex-col py-[10px] gap-[4px] w-[200px]">
+          <DiscussionCommentFilterOptions />
+        </div>
+      </DropdownFilter>
     </div>
   );
 }
@@ -78,7 +67,7 @@ export default function CommentsFilter() {
     detailType === detailPageCategory.GOV2_REFERENDUM ||
     detailType === detailPageCategory.DEMOCRACY_REFERENDUM
   ) {
-    return <InnerCommentsFilter />;
+    return <ReferendaCommentsFilter />;
   }
 
   return <DiscussionCommentsFilter />;
