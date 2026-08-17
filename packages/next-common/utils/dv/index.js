@@ -47,15 +47,10 @@ export function isReferendumInDVPeriod(chain, referendum) {
   );
   const effectiveEnd = isNil(endTime) ? Number.POSITIVE_INFINITY : endTime;
 
-  // 1. Whether the creation time falls within the DV existence period
-  const creationInPeriod =
-    startTime >= period.startBlockTime && startTime <= period.endBlockTime;
-
-  // 2. Whether the lifetime (creation ~ end) overlaps the DV existence period
-  const lifespanOverlaps =
-    startTime <= period.endBlockTime && effectiveEnd >= period.startBlockTime;
-
-  return creationInPeriod || lifespanOverlaps;
+  // Whether the lifetime (creation ~ end) overlaps the DV existence period.
+  return (
+    startTime <= period.endBlockTime && effectiveEnd >= period.startBlockTime
+  );
 }
 
 const getFinalBlockHeight = (ahmHeightsOrBlockHeight = null, indexer) => {
