@@ -1,11 +1,7 @@
 import { useMemo } from "react";
 import { CardTitle } from "./styled";
-import Loading from "next-common/components/loading";
-import { useContextApi } from "next-common/context/api";
-import useCall from "next-common/utils/hooks/useCall";
 import Heatmap, { LegendBar } from "./heatmap";
 import Tooltip from "next-common/components/tooltip";
-import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import useReferendaSlider from "./referendaSlider";
 import { WinRateTooltip } from "next-common/components/referenda/dv/delegates/desktopList";
@@ -74,17 +70,10 @@ function WinPercentage({ heatmap }) {
 export default function VoteActivitySummary() {
   const { fellowshipReferendaMaxIndex, fellowshipMemberHeatmap } =
     usePageProps();
-  const api = useContextApi();
-  const referendaPallet = useReferendaFellowshipPallet();
-  const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
-    useCall(api?.query?.[referendaPallet]?.referendumCount, []);
-  const onChainReferendumCount = referendumCountValue?.toNumber();
   // Referendum indexes are 0-based contiguous on chain, so count = maxIndex + 1
-  const ssrReferendumCount = fellowshipReferendaMaxIndex
+  const referendumCount = fellowshipReferendaMaxIndex
     ? fellowshipReferendaMaxIndex + 1
     : 0;
-  // Prefer the live on-chain value, fall back to the SSR value otherwise
-  const referendumCount = onChainReferendumCount ?? ssrReferendumCount;
   const heatmap = useMemo(
     () => fellowshipMemberHeatmap || [],
     [fellowshipMemberHeatmap],
@@ -105,15 +94,6 @@ export default function VoteActivitySummary() {
         referendumIndex >= rangeFrom && referendumIndex <= rangeTo,
     );
   }, [heatmap, rangeFrom, rangeTo]);
-
-  // Only show loading when neither the on-chain value nor the SSR fallback is available
-  if (!isReferendumCountLoaded && !ssrReferendumCount) {
-    return (
-      <div className="flex justify-center p-[16px]">
-        <Loading size={20} />
-      </div>
-    );
-  }
 
   if (!referendumCount) {
     return (
