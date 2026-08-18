@@ -15,6 +15,8 @@ export default function useFellowshipMemberEvidence(address) {
     serverEvidence?.wish &&
     (serverEvidence?.hex || serverEvidence?.cid)
   );
+  const serverContent = serverEvidence?.content || "";
+  const hasServerContent = !!serverContent;
 
   const { loading, wish, evidence } = useSubCoreFellowshipEvidence(
     address,
@@ -55,8 +57,8 @@ export default function useFellowshipMemberEvidence(address) {
       rank: activeMember?.rank ?? serverEvidence.rank,
       relatedReferenda,
       isReferendaLoading: false,
-      content: serverEvidence.content || "",
-      hasServerContent: !!serverEvidence.content,
+      content: serverContent,
+      hasServerContent,
     };
   }
 
@@ -76,7 +78,7 @@ export default function useFellowshipMemberEvidence(address) {
     rank: activeMember?.rank,
     relatedReferenda,
     isReferendaLoading,
-    content: "",
-    hasServerContent: false,
+    content: serverContent,
+    hasServerContent,
   };
 }

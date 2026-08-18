@@ -73,11 +73,12 @@ function BlockEvidenceOrEmpty({
         relatedReferenda={relatedReferenda}
         isReferendaLoading={isReferendaLoading}
       />
-      {hasServerContent ? (
-        <EvidencePanel cid={cid} address={address} value={content} />
-      ) : (
-        <EvidenceContent evidence={evidence} cid={cid} />
-      )}
+      <EvidenceContent
+        evidence={evidence}
+        cid={cid}
+        content={content}
+        hasServerContent={hasServerContent}
+      />
     </>
   ) : (
     <NoEvidence />
@@ -149,7 +150,7 @@ function EvidencePanel({ cid, address, value, loading = false, error = null }) {
   );
 }
 
-function EvidenceContent({ evidence, cid }) {
+function EvidenceContent({ evidence, cid, content, hasServerContent }) {
   const address = useContextAddress();
   const isInlineText = !isHash(evidence);
 
@@ -163,19 +164,27 @@ function EvidenceContent({ evidence, cid }) {
     );
   }
 
-  return <IpfsEvidenceContent cid={cid} address={address} />;
+  return (
+    <IpfsEvidenceContent
+      cid={cid}
+      address={address}
+      content={content}
+      hasServerContent={hasServerContent}
+    />
+  );
 }
 
-function IpfsEvidenceContent({ cid, address }) {
-  const { value, loading, error } = useIpfsContent(cid);
+function IpfsEvidenceContent({ cid, address, content, hasServerContent }) {
+  const { value: ipfsContent, loading, error } = useIpfsContent(cid);
+  const displayContent = ipfsContent ?? content;
 
   return (
     <EvidencePanel
       cid={cid}
       address={address}
-      value={value}
-      loading={loading}
-      error={error}
+      value={displayContent}
+      loading={loading && !hasServerContent}
+      error={hasServerContent ? null : error}
     />
   );
 }
