@@ -18,9 +18,14 @@ const SWITCH_POINTS = {
  */
 export function getSalaryAsset(section = "fellowship", blockHeight) {
   const switches = SWITCH_POINTS[section] || [];
-  const active = [...switches]
-    .reverse()
-    .find((s) => !isNil(blockHeight) && blockHeight >= s.blockHeight);
+  let active;
+
+  if (isNil(blockHeight)) {
+    active = switches[switches.length - 1];
+  } else {
+    active = [...switches].reverse().find((s) => blockHeight >= s.blockHeight);
+  }
+
   if (active) return { symbol: active.symbol, decimals: active.decimals };
   return { symbol: "USDT", decimals: 6 };
 }
