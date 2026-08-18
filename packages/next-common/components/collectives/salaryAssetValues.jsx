@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import ValueDisplay from "next-common/components/valueDisplay";
+import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 
 export function normalizeSalaryAssetValue(value = {}) {
   if (typeof value === "string" || typeof value === "number") {
@@ -21,12 +22,13 @@ export default function SalaryAssetValues({
   align = "right",
   className = "",
 }) {
+  const { symbol } = useSalaryAsset();
   const value = normalizeSalaryAssetValue(salary);
   const hasUsdt = isPositiveAmount(value.usdt);
   const hasHollar = isPositiveAmount(value.hollar);
 
   if (!hasUsdt && !hasHollar) {
-    return <span className="text-textTertiary">-</span>;
+    return <ValueDisplay value="0" symbol={symbol} />;
   }
 
   return (
