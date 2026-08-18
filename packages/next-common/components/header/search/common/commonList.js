@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import DataList from "next-common/components/dataList";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
+import {
+  WIKI_ORIGIN,
+  WIKI_SEARCH_TYPE,
+} from "next-common/components/header/search/utils/wiki";
 
 export const SearchType = {
   REFERENDA: "Referenda",
@@ -16,6 +20,7 @@ export const SearchType = {
   FELLOWSHIP_TREASURY_SPENDS: "FellowshipTreasurySpends",
   FELLOWSHIP_MEMBERS: "FellowshipMembers",
   TREASURY_FUNDED_PROJECTS: "TreasuryFundedProjects",
+  WIKI: WIKI_SEARCH_TYPE,
 };
 
 export function getSearchItemPath(proposalType, index) {
@@ -73,6 +78,8 @@ export function getCategoryPath(proposalType) {
       return "/fellowship/members";
     case SearchType.TREASURY_FUNDED_PROJECTS:
       return "/treasury/projects";
+    case SearchType.WIKI:
+      return WIKI_ORIGIN;
     default:
       return "/";
   }
@@ -87,6 +94,9 @@ export function getCategoryOrSearchItemPath(item) {
   }
   if (item.proposalType === SearchType.FELLOWSHIP_MEMBERS) {
     return getSearchItemPath(item.proposalType, item.address);
+  }
+  if (item.proposalType === SearchType.WIKI) {
+    return item.href;
   }
 
   return getSearchItemPath(item.proposalType, item.index);
@@ -118,6 +128,8 @@ export function getCategoryName(proposalType) {
       return "Fellowship Members";
     case SearchType.TREASURY_FUNDED_PROJECTS:
       return "Treasury Funded Projects";
+    case SearchType.WIKI:
+      return "Wiki";
     default:
       return "Unknown";
   }
