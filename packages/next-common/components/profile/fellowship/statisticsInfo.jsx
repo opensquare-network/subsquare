@@ -7,31 +7,31 @@ import SalaryAssetValues from "next-common/components/collectives/salaryAssetVal
 import { usePageProps } from "next-common/context/page";
 import MemberRankChanges from "./memberRankChanges";
 
-function ProfileFellowshipStatisticsInfoImpl() {
-  const { fellowshipUserStatistics } = usePageProps();
+function ProfileFellowshipStatisticsInfoImpl({ section }) {
+  const { fellowshipUserStatistics, ambassadorUserStatistics } = usePageProps();
+  const userStatistics =
+    section === "fellowship"
+      ? fellowshipUserStatistics
+      : ambassadorUserStatistics;
 
   return (
     <NeutralPanel className="p-6">
       <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1">
         <SummaryItem title="Total Salary Paid">
-          <LoadableContent
-            isLoading={isNil(fellowshipUserStatistics?.totalPaid)}
-          >
+          <LoadableContent isLoading={isNil(userStatistics?.totalPaid)}>
             <SalaryAssetValues
-              salary={fellowshipUserStatistics?.totalPaid}
+              salary={userStatistics?.totalPaid}
               align="left"
             />
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Joined Cycles">
-          <LoadableContent
-            isLoading={isNil(fellowshipUserStatistics?.joinedCycles)}
-          >
-            {fellowshipUserStatistics?.joinedCycles}
+          <LoadableContent isLoading={isNil(userStatistics?.joinedCycles)}>
+            {userStatistics?.joinedCycles}
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Member Rank Changes">
-          <MemberRankChanges value={fellowshipUserStatistics} loading={false} />
+          <MemberRankChanges value={userStatistics} loading={false} />
         </SummaryItem>
       </SummaryLayout>
     </NeutralPanel>
@@ -41,11 +41,9 @@ function ProfileFellowshipStatisticsInfoImpl() {
 export default function ProfileFellowshipStatisticsInfo({
   section = "fellowship",
 }) {
-  // Ambassador is not in use yet, so statistics are only shown on the
-  // fellowship section.
-  if (section !== "fellowship") {
+  if (section !== "fellowship" && section !== "ambassador") {
     return null;
   }
 
-  return <ProfileFellowshipStatisticsInfoImpl />;
+  return <ProfileFellowshipStatisticsInfoImpl section={section} />;
 }

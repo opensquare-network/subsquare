@@ -71,9 +71,8 @@ export default function VoteActivitySummary() {
   const { fellowshipReferendaMaxIndex, fellowshipMemberHeatmap } =
     usePageProps();
   // Referendum indexes are 0-based contiguous on chain, so count = maxIndex + 1
-  const referendumCount = fellowshipReferendaMaxIndex
-    ? fellowshipReferendaMaxIndex + 1
-    : 0;
+  const referendumCount =
+    fellowshipReferendaMaxIndex === null ? 0 : fellowshipReferendaMaxIndex + 1;
   const heatmap = useMemo(
     () => fellowshipMemberHeatmap || [],
     [fellowshipMemberHeatmap],

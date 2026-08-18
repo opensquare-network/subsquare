@@ -130,14 +130,16 @@ function RankChartTooltip({ x, y, visible, data }) {
 }
 
 export default function ProfileFellowshipCoreRank() {
-  const { fellowshipUserRankHistory } = usePageProps();
+  const { fellowshipUserRankHistory, ambassadorUserRankHistory } =
+    usePageProps();
   const section = useCollectivesSection();
 
-  // The backend has no ambassador rank history endpoint, so the rank chart is
-  // only available on the fellowship section. Ambassador pages show no data
-  // instead of misusing the fellowship rank history.
   const rankHistory =
-    section === "fellowship" ? fellowshipUserRankHistory : null;
+    section === "fellowship"
+      ? fellowshipUserRankHistory
+      : section === "ambassador"
+      ? ambassadorUserRankHistory
+      : null;
 
   const theme = useThemeSetting();
 

@@ -92,7 +92,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       fellowshipParams: fellowshipParams ?? {},
       ambassadorParams: ambassadorParams ?? {},
       fellowshipReferendaMaxIndex:
-        fellowshipReferendaMaxIndexResult?.maxReferendumIndex ?? 0,
+        fellowshipReferendaMaxIndexResult?.maxReferendumIndex ?? null,
       fellowshipMemberHeatmap: fellowshipMemberHeatmap ?? [],
       fellowshipMemberActiveEvidence: fellowshipMemberActiveEvidence ?? null,
       user: user ?? {},

@@ -171,6 +171,8 @@ export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
 
 export const ambassadorStatisticsUsersApi = (address) =>
   `ambassador/statistics/users/${address}`;
+export const ambassadorStatisticsMemberRankHistoryApi = (address) =>
+  `ambassador/statistics/members/${address}/ranks`;
 
 // treasury bounties
 export const treasuryBountiesAppendantApi = (index) =>

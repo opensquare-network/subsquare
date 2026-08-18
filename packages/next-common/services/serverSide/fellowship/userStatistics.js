@@ -1,53 +1,61 @@
 import { backendApi } from "next-common/services/nextApi";
 import getChainSettings from "next-common/utils/consts/settings";
 import {
+  ambassadorStatisticsMemberRankHistoryApi,
+  ambassadorStatisticsUsersApi,
   fellowshipStatisticsMemberRankHistoryApi,
   fellowshipStatisticsUsersApi,
 } from "next-common/services/url";
 
-/**
- * Fetch a member's fellowship statistics on the server side.
- * Ambassador is not in use yet, so only the fellowship section is handled.
- */
+const sectionConfig = {
+  fellowship: {
+    module: "fellowship",
+    statisticsApi: fellowshipStatisticsUsersApi,
+    rankHistoryApi: fellowshipStatisticsMemberRankHistoryApi,
+    statisticsProp: "fellowshipUserStatistics",
+    rankHistoryProp: "fellowshipUserRankHistory",
+  },
+  ambassador: {
+    module: "ambassador",
+    statisticsApi: ambassadorStatisticsUsersApi,
+    rankHistoryApi: ambassadorStatisticsMemberRankHistoryApi,
+    statisticsProp: "ambassadorUserStatistics",
+    rankHistoryProp: "ambassadorUserRankHistory",
+  },
+};
+
 export async function fetchUserStatisticsProps(address, section) {
-  if (section !== "fellowship") {
+  const config = sectionConfig[section];
+  if (!config) {
     return {};
   }
 
   const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.modules.fellowship) {
+  if (!chainSettings.modules[config.module]) {
     return {};
   }
 
-  const { result } = await backendApi.fetch(
-    fellowshipStatisticsUsersApi(address),
-  );
+  const { result } = await backendApi.fetch(config.statisticsApi(address));
 
   return {
-    fellowshipUserStatistics: result ?? null,
+    [config.statisticsProp]: result ?? null,
   };
 }
 
-/**
- * Fetch a member's fellowship rank history on the server side.
- * The backend has no ambassador rank history endpoint, so this only runs on
- * the fellowship section; ambassador pages just show no rank data.
- */
 export async function fetchUserRankHistoryProps(address, section) {
-  if (section !== "fellowship") {
+  const config = sectionConfig[section];
+  if (!config) {
     return {};
   }
 
   const chainSettings = getChainSettings(process.env.NEXT_PUBLIC_CHAIN);
-  if (!chainSettings.modules.fellowship) {
+  if (!chainSettings.modules[config.module]) {
     return {};
   }
 
-  const { result } = await backendApi.fetch(
-    fellowshipStatisticsMemberRankHistoryApi(address),
-  );
+  const { result } = await backendApi.fetch(config.rankHistoryApi(address));
 
   return {
-    fellowshipUserRankHistory: result ?? null,
+    [config.rankHistoryProp]: result ?? null,
   };
 }
