@@ -73,12 +73,11 @@ function BlockEvidenceOrEmpty({
         relatedReferenda={relatedReferenda}
         isReferendaLoading={isReferendaLoading}
       />
-      <EvidenceContent
-        evidence={evidence}
-        cid={cid}
-        content={content}
-        hasServerContent={hasServerContent}
-      />
+      {hasServerContent ? (
+        <EvidencePanel cid={cid} address={address} value={content} />
+      ) : (
+        <EvidenceContent evidence={evidence} cid={cid} />
+      )}
     </>
   ) : (
     <NoEvidence />
@@ -113,23 +112,7 @@ function EvidenceStatisticsInfo({
   );
 }
 
-function EvidenceContent({ evidence, cid, content, hasServerContent }) {
-  const address = useContextAddress();
-  const isInlineText = !isHash(evidence);
-  const {
-    value: ifpsContent,
-    loading,
-    error,
-  } = useIpfsContent(hasServerContent || isInlineText ? null : cid);
-
-  const displayContent = hasServerContent
-    ? content
-    : isInlineText
-    ? hexToString(evidence)
-    : ifpsContent;
-  const displayLoading = hasServerContent || isInlineText ? false : loading;
-  const displayError = hasServerContent || isInlineText ? null : error;
-
+function EvidencePanel({ cid, address, value, loading = false, error = null }) {
   return (
     <>
       <Divider className="mt-4" />
@@ -139,15 +122,15 @@ function EvidenceContent({ evidence, cid, content, hasServerContent }) {
         className={cn(
           "flex relative h-12 overflow-hidden after:h-28 after:hidden after:bg-gradient-to-b after:from-transparent after:via-neutral200-80 after:to-neutral200 after:absolute after:w-full after:bottom-0",
           {
-            "h-60 after:block": !!displayContent,
+            "h-60 after:block": !!value,
           },
         )}
       >
         <div className="flex-1 absolute left-4 right-4 top-4">
           <IpfsEvidenceRawContent
-            loading={displayLoading}
-            value={displayContent}
-            error={displayError}
+            loading={loading}
+            value={value}
+            error={error}
           />
         </div>
         <EvidenceLink
@@ -155,7 +138,7 @@ function EvidenceContent({ evidence, cid, content, hasServerContent }) {
           address={address}
           className={cn(
             "absolute top-4 right-4 bg-theme500 text-textPrimaryContrast hidden h-7 rounded-md text12Medium py-[5px] px-[11px]",
-            { block: !!displayContent },
+            { block: !!value },
           )}
           showTooltip={false}
         >
@@ -163,6 +146,37 @@ function EvidenceContent({ evidence, cid, content, hasServerContent }) {
         </EvidenceLink>
       </GreyPanel>
     </>
+  );
+}
+
+function EvidenceContent({ evidence, cid }) {
+  const address = useContextAddress();
+  const isInlineText = !isHash(evidence);
+
+  if (isInlineText) {
+    return (
+      <EvidencePanel
+        cid={cid}
+        address={address}
+        value={hexToString(evidence)}
+      />
+    );
+  }
+
+  return <IpfsEvidenceContent cid={cid} address={address} />;
+}
+
+function IpfsEvidenceContent({ cid, address }) {
+  const { value, loading, error } = useIpfsContent(cid);
+
+  return (
+    <EvidencePanel
+      cid={cid}
+      address={address}
+      value={value}
+      loading={loading}
+      error={error}
+    />
   );
 }
 
