@@ -129,7 +129,7 @@ export function getCategoryName(proposalType) {
     case SearchType.TREASURY_FUNDED_PROJECTS:
       return "Treasury Funded Projects";
     case SearchType.WIKI:
-      return "Wiki";
+      return "Polkadot Wiki";
     default:
       return "Unknown";
   }
