@@ -20,13 +20,14 @@ export default function useFellowshipMemberEvidence(address) {
     address,
     "fellowshipCore",
   );
+  const shouldUseServerData = hasServerData && loading;
 
   const { relatedReferenda: chainReferenda, isLoading: isChainLoading } =
     useFellowshipCoreRelatedReferenda(address);
 
   const onChainCid =
     evidence && isHash(evidence) ? getCidByEvidence(evidence) : null;
-  const evidenceId = hasServerData ? null : onChainCid;
+  const evidenceId = shouldUseServerData ? null : onChainCid;
   const { loading: isDocLoading, value: evidenceDoc } = useAsync(async () => {
     if (!evidenceId) {
       return null;
@@ -41,7 +42,7 @@ export default function useFellowshipMemberEvidence(address) {
     isSameAddress(m.address, address),
   );
 
-  if (hasServerData) {
+  if (shouldUseServerData) {
     const relatedReferenda = (serverEvidence?.referenda ?? []).map(
       ({ index }) => ({ referendumIndex: index }),
     );
