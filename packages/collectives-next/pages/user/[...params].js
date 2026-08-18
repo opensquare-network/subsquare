@@ -13,6 +13,7 @@ import {
   ambassadorMembersApiUri,
   ambassadorParamsApi,
   fellowshipCoreFeedsApiUri,
+  fellowshipMemberActiveEvidenceApi,
   fellowshipMemberHeatmapApi,
   fellowshipMemberLastSalaryPaymentApi,
   fellowshipMembersApiUri,
@@ -58,6 +59,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     { result: ambassadorParams },
     { result: fellowshipReferendaMaxIndexResult },
     { result: fellowshipMemberHeatmap },
+    { result: fellowshipMemberActiveEvidence },
     userStatisticsProps,
     rankHistoryProps,
   ] = await Promise.all([
@@ -72,6 +74,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     backendApi.fetch(ambassadorParamsApi),
     backendApi.fetch(fellowshipReferendaMaxIndexApi),
     backendApi.fetch(fellowshipMemberHeatmapApi(maybeAddress)),
+    backendApi.fetch(fellowshipMemberActiveEvidenceApi(maybeAddress)),
     fetchUserStatisticsProps(maybeAddress, activityType),
     fetchUserRankHistoryProps(maybeAddress, activityType),
   ]);
@@ -91,6 +94,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       fellowshipReferendaMaxIndex:
         fellowshipReferendaMaxIndexResult?.maxReferendumIndex ?? 0,
       fellowshipMemberHeatmap: fellowshipMemberHeatmap ?? [],
+      fellowshipMemberActiveEvidence: fellowshipMemberActiveEvidence ?? null,
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,
