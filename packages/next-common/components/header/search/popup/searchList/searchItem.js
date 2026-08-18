@@ -12,10 +12,12 @@ import {
   MenuChildBounties,
   MenuTreasurySpend,
   MenuTreasuryProposal,
+  InfoDocs,
 } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
 import { ItemType } from "next-common/components/header/hooks/useSearchResults";
 import CommonSearchItem, {
+  CommonSearchItemContent,
   handleLinkClick,
   IdentitySearchItem,
   MemberSearchItem,
@@ -69,6 +71,31 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
         name={name}
         onClose={onClose}
       />
+    );
+  }
+
+  if (proposalType === SearchType.WIKI) {
+    const content = (
+      <CommonSearchItemContent
+        IconComponent={InfoDocs}
+        title={row.title}
+        content={row.content}
+      />
+    );
+
+    if (!row.href) {
+      return <div>{content}</div>;
+    }
+
+    return (
+      <a
+        href={row.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="cursor-pointer"
+      >
+        {content}
+      </a>
     );
   }
 

@@ -4,6 +4,10 @@ import { markdownToText } from "next-common/components/header/search/utils";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
 import useSearchFellowshipMembers from "next-common/components/header/hooks/useSearchFellowshipMembers";
 import {
+  normalizeWikiResults,
+  WIKI_SEARCH_TYPE,
+} from "next-common/components/header/search/utils/wiki";
+import {
   getChildBountyDisplayIndex,
   getChildBountyIndex,
 } from "next-common/utils/viewfuncs/treasury/childBounty";
@@ -249,6 +253,11 @@ function formatResults(results) {
         return formatSearchResult("Identities", value);
       case "fellowshipMembers":
         return formatSearchResult("FellowshipMembers", value);
+      case "wiki":
+        return formatSearchResult(
+          WIKI_SEARCH_TYPE,
+          normalizeWikiResults(value),
+        );
       case "treasuryTips":
         return formatItems("TreasuryTips", value, "hash", "hash", true);
       case "projects":
