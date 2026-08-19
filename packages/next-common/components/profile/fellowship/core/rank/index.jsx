@@ -2,12 +2,9 @@ import { Line } from "react-chartjs-2";
 import "next-common/components/charts/globalConfig";
 import dayjs from "dayjs";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useAsync } from "react-use";
+import { useCollectivesSection } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import { useThemeSetting } from "next-common/context/theme";
-import { backendApi } from "next-common/services/nextApi";
-import { fellowshipStatisticsMemberRankHistoryApi } from "next-common/services/url";
-import { LoadingContent } from "next-common/components/fellowship/statistics/common";
 
 const CHART_HEIGHT = 360;
 const MAX_RANK = 7;
@@ -133,25 +130,23 @@ function RankChartTooltip({ x, y, visible, data }) {
 }
 
 export default function ProfileFellowshipCoreRank() {
-  const { id } = usePageProps();
-  const rankHistoryApi = fellowshipStatisticsMemberRankHistoryApi(id);
+  const { fellowshipUserRankHistory, ambassadorUserRankHistory } =
+    usePageProps();
+  const section = useCollectivesSection();
 
-  const { value, loading } = useAsync(async () => {
-    if (!rankHistoryApi) {
-      return {};
-    }
-
-    try {
-      const resp = await backendApi.fetch(rankHistoryApi);
-      return resp?.result || {};
-    } catch {
-      return {};
-    }
-  }, [rankHistoryApi]);
+  const rankHistory =
+    section === "fellowship"
+      ? fellowshipUserRankHistory
+      : section === "ambassador"
+      ? ambassadorUserRankHistory
+      : null;
 
   const theme = useThemeSetting();
 
-  const { points } = useMemo(() => buildRankChartData(value || []), [value]);
+  const { points } = useMemo(
+    () => buildRankChartData(rankHistory || []),
+    [rankHistory],
+  );
 
   const [tooltip, setTooltip] = useState(null);
 
@@ -274,14 +269,6 @@ export default function ProfileFellowshipCoreRank() {
     }),
     [externalTooltip, theme.textTertiary, theme.neutral300],
   );
-
-  if (loading) {
-    return (
-      <div style={{ height: CHART_HEIGHT }}>
-        <LoadingContent />
-      </div>
-    );
-  }
 
   if (!points.length) {
     return (

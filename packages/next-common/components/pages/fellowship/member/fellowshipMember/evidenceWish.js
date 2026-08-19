@@ -4,34 +4,34 @@ import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Divider from "next-common/components/styled/layout/divider";
-import useSubCoreFellowshipEvidence from "next-common/hooks/collectives/useSubCoreFellowshipEvidence";
+import useFellowshipMemberEvidence from "next-common/hooks/collectives/useFellowshipMemberEvidence";
 import { usePageProps } from "next-common/context/page";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
 import { Skeleton } from "next-common/components/skeleton";
 import { cn, isHash } from "next-common/utils";
+import { hexToString } from "@polkadot/util";
 import { IpfsEvidenceRawContent } from "next-common/components/collectives/core/evidenceContent";
-import {
-  CoreFellowshipMemberRelatedReferendaActionsContent,
-  useFellowshipCoreRelatedReferenda,
-} from "next-common/components/collectives/core/member/relatedReferenda";
-import { getCidByEvidence } from "next-common/utils/collective/getCidByEvidence";
+import { CoreFellowshipMemberRelatedReferendaActionsContent } from "next-common/components/collectives/core/member/relatedReferenda";
 import { useIpfsContent } from "next-common/hooks/useIpfsContent";
 import { WishBar } from "./wishBar";
-import {
-  useCoreFellowshipPallet,
-  useCollectivesContext,
-} from "next-common/context/collectives/collectives";
-import { useAsync } from "react-use";
+import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import EvidenceLink from "next-common/components/profile/fellowship/core/evidence/link";
 import { useContextAddress } from "next-common/context/address";
 
 export default function EvidenceWish() {
-  const { id: address, fellowshipMembers } = usePageProps();
-  const { loading, wish, evidence } = useSubCoreFellowshipEvidence(address);
+  const { id: address } = usePageProps();
+  const {
+    loading,
+    wish,
+    evidence,
+    cid,
+    rank,
+    relatedReferenda,
+    isReferendaLoading,
+    content,
+    hasServerContent,
+  } = useFellowshipMemberEvidence(address);
 
-  const activeMember = fellowshipMembers?.find(
-    (member) => member.address === address,
-  );
   return (
     <SecondaryCard>
       {loading ? (
@@ -40,53 +40,58 @@ export default function EvidenceWish() {
         <BlockEvidenceOrEmpty
           wish={wish}
           evidence={evidence}
+          cid={cid}
+          rank={rank}
           address={address}
-          activeMember={activeMember}
+          relatedReferenda={relatedReferenda}
+          isReferendaLoading={isReferendaLoading}
+          content={content}
+          hasServerContent={hasServerContent}
         />
       )}
     </SecondaryCard>
   );
 }
 
-function BlockEvidenceOrEmpty({ wish, evidence, address, activeMember }) {
+function BlockEvidenceOrEmpty({
+  wish,
+  evidence,
+  cid,
+  rank,
+  address,
+  relatedReferenda,
+  isReferendaLoading,
+  content,
+  hasServerContent,
+}) {
   return wish && evidence ? (
     <>
-      <WishBar wish={wish} rank={activeMember?.rank} address={address} />
-      <OnchainEvidenceStatisticsInfoImpl
+      <WishBar wish={wish} rank={rank} address={address} />
+      <EvidenceStatisticsInfo
         wish={wish}
         address={address}
-        evidence={evidence}
+        relatedReferenda={relatedReferenda}
+        isReferendaLoading={isReferendaLoading}
       />
-      <OnchainEvidenceContent evidence={evidence} wish={wish} />
+      <EvidenceContent
+        evidence={evidence}
+        cid={cid}
+        content={content}
+        hasServerContent={hasServerContent}
+      />
     </>
   ) : (
     <NoEvidence />
   );
 }
 
-function OnchainEvidenceStatisticsInfoImpl({ wish, address, evidence }) {
+function EvidenceStatisticsInfo({
+  wish,
+  address,
+  relatedReferenda,
+  isReferendaLoading,
+}) {
   const pallet = useCoreFellowshipPallet();
-  const { section } = useCollectivesContext();
-  const { relatedReferenda: chainReferenda, isLoading: isChainLoading } =
-    useFellowshipCoreRelatedReferenda(address);
-
-  const evidenceId =
-    evidence && isHash(evidence) ? getCidByEvidence(evidence) : null;
-  const { loading: isDocLoading, value: evidenceDoc } = useAsync(async () => {
-    if (!evidenceId) return null;
-    const res = await fetch(
-      `/api/${section}/members/${address}/evidences/${evidenceId}`,
-    );
-    return res.ok ? res.json() : null;
-  }, [section, address, evidenceId]);
-
-  const dbReferenda = (evidenceDoc?.referenda ?? []).map(({ index }) => ({
-    referendumIndex: index,
-  }));
-  const relatedReferenda =
-    dbReferenda.length > 0 ? dbReferenda : chainReferenda;
-  const isLoading =
-    isDocLoading || (dbReferenda.length === 0 && isChainLoading);
 
   return (
     <SummaryLayout className="mt-4">
@@ -99,7 +104,7 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address, evidence }) {
             pallet={pallet}
             who={address}
             relatedReferenda={relatedReferenda}
-            isLoading={isLoading}
+            isLoading={isReferendaLoading}
             size={20}
           />
         </LoadableContent>
@@ -108,12 +113,7 @@ function OnchainEvidenceStatisticsInfoImpl({ wish, address, evidence }) {
   );
 }
 
-function OnchainEvidenceContent({ evidence }) {
-  const address = useContextAddress();
-
-  const cid = getCidByEvidence(evidence);
-  const { value: ifpsContent, loading, error } = useIpfsContent(cid);
-
+function EvidencePanel({ cid, address, value, loading = false, error = null }) {
   return (
     <>
       <Divider className="mt-4" />
@@ -123,14 +123,14 @@ function OnchainEvidenceContent({ evidence }) {
         className={cn(
           "flex relative h-12 overflow-hidden after:h-28 after:hidden after:bg-gradient-to-b after:from-transparent after:via-neutral200-80 after:to-neutral200 after:absolute after:w-full after:bottom-0",
           {
-            "h-60 after:block": !!ifpsContent,
+            "h-60 after:block": !!value,
           },
         )}
       >
         <div className="flex-1 absolute left-4 right-4 top-4">
           <IpfsEvidenceRawContent
             loading={loading}
-            value={ifpsContent}
+            value={value}
             error={error}
           />
         </div>
@@ -139,7 +139,7 @@ function OnchainEvidenceContent({ evidence }) {
           address={address}
           className={cn(
             "absolute top-4 right-4 bg-theme500 text-textPrimaryContrast hidden h-7 rounded-md text12Medium py-[5px] px-[11px]",
-            { block: !!ifpsContent },
+            { block: !!value },
           )}
           showTooltip={false}
         >
@@ -147,6 +147,45 @@ function OnchainEvidenceContent({ evidence }) {
         </EvidenceLink>
       </GreyPanel>
     </>
+  );
+}
+
+function EvidenceContent({ evidence, cid, content, hasServerContent }) {
+  const address = useContextAddress();
+  const isInlineText = !isHash(evidence) && !cid;
+
+  if (isInlineText) {
+    return (
+      <EvidencePanel
+        cid={cid}
+        address={address}
+        value={hexToString(evidence)}
+      />
+    );
+  }
+
+  return (
+    <IpfsEvidenceContent
+      cid={cid}
+      address={address}
+      content={content}
+      hasServerContent={hasServerContent}
+    />
+  );
+}
+
+function IpfsEvidenceContent({ cid, address, content, hasServerContent }) {
+  const { value: ipfsContent, loading, error } = useIpfsContent(cid);
+  const displayContent = ipfsContent ?? content;
+
+  return (
+    <EvidencePanel
+      cid={cid}
+      address={address}
+      value={displayContent}
+      loading={loading && !hasServerContent}
+      error={hasServerContent ? null : error}
+    />
   );
 }
 

@@ -34,6 +34,7 @@ export const fellowshipReferendaVoteActionsApi = (index) =>
   `fellowship/referenda/${index}/actions`;
 export const fellowshipMemberHeatmapApi = (address) =>
   `fellowship/referenda/members/${address}/heatmap`;
+export const fellowshipReferendaMaxIndexApi = "fellowship/referenda/max-index";
 
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>
@@ -59,6 +60,8 @@ export const fellowshipParamsApi = "fellowship/params";
 export const fellowshipMembersApiUri = "fellowship/members";
 export const fellowshipCoreFeedsApiUri = "fellowship/core/feeds";
 export const fellowshipCoreEvidencesApiUri = "fellowship/core/evidences";
+export const fellowshipMemberActiveEvidenceApi = (address) =>
+  `fellowship/members/${address}/evidences/active`;
 
 // fellowship salary
 export const fellowshipSalaryCycleApi = (index) =>
@@ -168,6 +171,8 @@ export const ambassadorSalaryPaymentsApi = "ambassador/salary/payments";
 
 export const ambassadorStatisticsUsersApi = (address) =>
   `ambassador/statistics/users/${address}`;
+export const ambassadorStatisticsMemberRankHistoryApi = (address) =>
+  `ambassador/statistics/members/${address}/ranks`;
 
 // treasury bounties
 export const treasuryBountiesAppendantApi = (index) =>

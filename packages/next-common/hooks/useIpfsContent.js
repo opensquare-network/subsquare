@@ -4,7 +4,11 @@ import { useAsync } from "react-use";
 const REQUEST_TIMEOUT = 30000; // 30s
 
 export function useIpfsContent(cid) {
-  return useAsync(async () => {
+  const result = useAsync(async () => {
+    if (!cid) {
+      return null;
+    }
+
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => {
         reject(new Error("Request timeout"));
@@ -21,4 +25,10 @@ export function useIpfsContent(cid) {
 
     return Promise.race([fetchPromise, timeoutPromise]);
   }, [cid]);
+
+  if (!cid) {
+    return { value: null, loading: false, error: null };
+  }
+
+  return result;
 }

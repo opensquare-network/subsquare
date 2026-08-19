@@ -29,71 +29,105 @@ export default function ProfileFellowshipMemberInfo({
 }) {
   const { id: address } = usePageProps();
 
-  if (section === "fellowship") {
-    return <ProfileFellowshipMemberInfoImpl address={address} />;
-  } else if (section === "ambassador") {
-    return <ProfileFellowshipAmbassadorMemberInfoImpl address={address} />;
+  if (section !== "fellowship" && section !== "ambassador") {
+    return null;
   }
 
-  return null;
+  return (
+    <ProfileFellowshipMemberInfoImpl address={address} section={section} />
+  );
 }
 
-function ProfileFellowshipMemberInfoImpl({ address }) {
-  const { members } = useFellowshipCoreMembersWithRank();
-  const member = find(members, { address });
+function ProfileFellowshipMemberInfoImpl({ address, section }) {
+  const { fellowshipMembers, ambassadorMembers } = usePageProps();
+  const { members: chainMembers, loading: chainLoading } =
+    useFellowshipCoreMembersWithRank();
+  const { params, loading: paramsLoading } = useFellowshipParams(section);
+
+  // Member data provided by backend/SSR (contains rank, no status)
+  const ssrMembers =
+    section === "fellowship" ? fellowshipMembers : ambassadorMembers;
+  const ssrMember = find(ssrMembers || [], { address });
+  // Chain queried data (contains rank and status), preferred
+  const chainMember = find(chainMembers || [], { address });
+
+  // Prefer chain data, fall back to SSR data while chain is not ready
+  const member = chainMember || ssrMember;
 
   if (!member) {
+    return null;
+  }
+
+  // Chain query finished but the member was not found, SSR data is stale, hide the panel
+  if (!chainLoading && !chainMember) {
     return null;
   }
 
   return (
     <ProfileFellowshipMemberInfoPanel
       member={member}
-      paramsApi={fellowshipParamsApi}
+      params={params}
+      // status only exists on chain, not provided by SSR; show loading while chain is not ready
+      statusLoading={chainLoading && !chainMember}
+      paramsLoading={paramsLoading}
     />
   );
 }
 
-function ProfileFellowshipAmbassadorMemberInfoImpl({ address }) {
-  const { members } = useFellowshipCoreMembersWithRank();
-  const member = find(members, { address });
+function useFellowshipParams(section) {
+  const { fellowshipParams, ambassadorParams } = usePageProps();
+  const ssrParams =
+    section === "fellowship" ? fellowshipParams : ambassadorParams;
+  const paramsApi =
+    section === "fellowship" ? fellowshipParamsApi : ambassadorParamsApi;
 
-  if (!member) {
-    return null;
-  }
+  // gSSP always provides an object ({} when the backend call failed), so check
+  // whether it is non-empty to decide if SSR params are actually available;
+  // otherwise fall back to a client request
+  const hasSsrParams = !!ssrParams && Object.keys(ssrParams).length > 0;
 
-  return (
-    <ProfileFellowshipMemberInfoPanel
-      member={member}
-      paramsApi={ambassadorParamsApi}
-    />
-  );
-}
-
-function ProfileFellowshipMemberInfoPanel({ member, paramsApi }) {
-  const { value: params = {}, loading } = useAsync(async () => {
+  const { value: fetchedParams, loading: fetchLoading } = useAsync(async () => {
+    if (hasSsrParams) {
+      return undefined;
+    }
     const resp = await backendApi.fetch(paramsApi);
     if (resp.result) {
       return resp.result;
     }
   });
 
+  const params = hasSsrParams ? ssrParams : fetchedParams || {};
+  const loading = !hasSsrParams && fetchLoading;
+
+  return { params, loading };
+}
+
+function ProfileFellowshipMemberInfoPanel({
+  member,
+  params,
+  statusLoading,
+  paramsLoading,
+}) {
   const { rank, status } = member;
   const { lastProof, lastPromotion, isActive } = status || {};
+
+  const loading = statusLoading || paramsLoading;
 
   return (
     <NeutralPanel className="p-6">
       <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1">
         <SummaryItem title="Status">
-          <div
-            className={cn(
-              "flex items-center gap-x-2",
-              isActive ? "text-green500" : "text-textDisabled",
-            )}
-          >
-            <SignalIndicator className="w-4 h-4" active={isActive} />
-            {isActive ? "Active" : "Inactive"}
-          </div>
+          <LoadableContent isLoading={loading}>
+            <div
+              className={cn(
+                "flex items-center gap-x-2",
+                isActive ? "text-green500" : "text-textDisabled",
+              )}
+            >
+              <SignalIndicator className="w-4 h-4" active={isActive} />
+              {isActive ? "Active" : "Inactive"}
+            </div>
+          </LoadableContent>
         </SummaryItem>
 
         <SummaryItem title="Member">

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 export function useElementRect(elementRef) {
   const [rect, setRect] = useState({
@@ -10,7 +11,12 @@ export function useElementRect(elementRef) {
     bottom: 0,
   });
 
-  useEffect(() => {
+  // useIsomorphicLayoutEffect is useLayoutEffect on the client and useEffect
+  // on the server, avoiding the React SSR warning. It measures before paint
+  // so layouts that depend on the measured size (e.g. the heatmap's
+  // fixed-height flex-wrap grid) never flash with an unmeasured (zero) size
+  // on the first frame.
+  useIsomorphicLayoutEffect(() => {
     if (!elementRef.current) return;
 
     const updateRect = () => {

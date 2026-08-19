@@ -1,14 +1,9 @@
 import { useMemo } from "react";
-import { useAsync } from "react-use";
+import { isNil } from "lodash-es";
 import { CardTitle } from "./styled";
-import { backendApi } from "next-common/services/nextApi";
-import { fellowshipMemberHeatmapApi } from "next-common/services/url";
-import Loading from "next-common/components/loading";
-import { useContextApi } from "next-common/context/api";
-import useCall from "next-common/utils/hooks/useCall";
 import Heatmap, { LegendBar } from "./heatmap";
+import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
-import { useReferendaFellowshipPallet } from "next-common/context/collectives/collectives";
 import { usePageProps } from "next-common/context/page";
 import useReferendaSlider from "./referendaSlider";
 import { WinRateTooltip } from "next-common/components/referenda/dv/delegates/desktopList";
@@ -75,17 +70,16 @@ function WinPercentage({ heatmap }) {
 }
 
 export default function VoteActivitySummary() {
-  const { id: address } = usePageProps();
-  const api = useContextApi();
-  const referendaPallet = useReferendaFellowshipPallet();
-  const { value: referendumCountValue, loaded: isReferendumCountLoaded } =
-    useCall(api?.query?.[referendaPallet]?.referendumCount, []);
-  const referendumCount = referendumCountValue?.toNumber();
-
-  const { value: { result: heatmap = [] } = {}, loading: isHeatmapLoading } =
-    useAsync(async () => {
-      return await backendApi.fetch(fellowshipMemberHeatmapApi(address));
-    }, [address]);
+  const { fellowshipReferendaMaxIndex, fellowshipMemberHeatmap } =
+    usePageProps();
+  // Referendum indexes are 0-based contiguous on chain, so count = maxIndex + 1
+  const referendumCount = isNil(fellowshipReferendaMaxIndex)
+    ? 0
+    : fellowshipReferendaMaxIndex + 1;
+  const heatmap = useMemo(
+    () => fellowshipMemberHeatmap || [],
+    [fellowshipMemberHeatmap],
+  );
 
   const {
     component: slider,
@@ -103,9 +97,12 @@ export default function VoteActivitySummary() {
     );
   }, [heatmap, rangeFrom, rangeTo]);
 
-  if (!isReferendumCountLoaded || isHeatmapLoading) {
+  if (
+    fellowshipReferendaMaxIndex === undefined ||
+    fellowshipMemberHeatmap === undefined
+  ) {
     return (
-      <div className="flex justify-center p-[16px]">
+      <div className="flex justify-center w-full my-[16px]">
         <Loading size={20} />
       </div>
     );

@@ -5,52 +5,33 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SalaryAssetValues from "next-common/components/collectives/salaryAssetValues";
 import { usePageProps } from "next-common/context/page";
-import { backendApi } from "next-common/services/nextApi";
-import {
-  ambassadorStatisticsUsersApi,
-  fellowshipStatisticsUsersApi,
-} from "next-common/services/url";
-import { useAsync } from "react-use";
 import MemberRankChanges from "./memberRankChanges";
 
-function useUserStatisticsData(address, section) {
-  let statisticsApi;
-  if (section === "fellowship") {
-    statisticsApi = fellowshipStatisticsUsersApi(address);
-  } else if (section === "ambassador") {
-    statisticsApi = ambassadorStatisticsUsersApi(address);
-  }
-
-  return useAsync(async () => {
-    if (!statisticsApi) {
-      return;
-    }
-
-    const resp = await backendApi.fetch(statisticsApi);
-
-    return resp?.result;
-  }, [address, statisticsApi]);
-}
-
-function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
-  const { id: address } = usePageProps();
-  const { value, loading } = useUserStatisticsData(address, section);
+function ProfileFellowshipStatisticsInfoImpl({ section }) {
+  const { fellowshipUserStatistics, ambassadorUserStatistics } = usePageProps();
+  const userStatistics =
+    section === "fellowship"
+      ? fellowshipUserStatistics
+      : ambassadorUserStatistics;
 
   return (
     <NeutralPanel className="p-6">
       <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1">
         <SummaryItem title="Total Salary Paid">
-          <LoadableContent isLoading={loading || isNil(value?.totalPaid)}>
-            <SalaryAssetValues salary={value?.totalPaid} align="left" />
+          <LoadableContent isLoading={isNil(userStatistics?.totalPaid)}>
+            <SalaryAssetValues
+              salary={userStatistics?.totalPaid}
+              align="left"
+            />
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Joined Cycles">
-          <LoadableContent isLoading={loading || isNil(value?.joinedCycles)}>
-            {value?.joinedCycles}
+          <LoadableContent isLoading={isNil(userStatistics?.joinedCycles)}>
+            {userStatistics?.joinedCycles}
           </LoadableContent>
         </SummaryItem>
         <SummaryItem title="Member Rank Changes">
-          <MemberRankChanges value={value} loading={loading} />
+          <MemberRankChanges value={userStatistics} loading={false} />
         </SummaryItem>
       </SummaryLayout>
     </NeutralPanel>
@@ -60,7 +41,7 @@ function ProfileFellowshipStatisticsInfoImpl({ section = "fellowship" }) {
 export default function ProfileFellowshipStatisticsInfo({
   section = "fellowship",
 }) {
-  if (!section) {
+  if (section !== "fellowship" && section !== "ambassador") {
     return null;
   }
 
