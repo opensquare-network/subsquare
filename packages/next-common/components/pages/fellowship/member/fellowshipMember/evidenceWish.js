@@ -152,7 +152,7 @@ function EvidencePanel({ cid, address, value, loading = false, error = null }) {
 
 function EvidenceContent({ evidence, cid, content, hasServerContent }) {
   const address = useContextAddress();
-  const isInlineText = !isHash(evidence);
+  const isInlineText = !isHash(evidence) && !cid;
 
   if (isInlineText) {
     return (
