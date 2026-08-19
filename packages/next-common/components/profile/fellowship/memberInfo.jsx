@@ -81,9 +81,13 @@ function useFellowshipParams(section) {
   const paramsApi =
     section === "fellowship" ? fellowshipParamsApi : ambassadorParamsApi;
 
-  // Use SSR params directly if provided; otherwise fall back to a client request
+  // gSSP always provides an object ({} when the backend call failed), so check
+  // whether it is non-empty to decide if SSR params are actually available;
+  // otherwise fall back to a client request
+  const hasSsrParams = !!ssrParams && Object.keys(ssrParams).length > 0;
+
   const { value: fetchedParams, loading: fetchLoading } = useAsync(async () => {
-    if (ssrParams) {
+    if (hasSsrParams) {
       return undefined;
     }
     const resp = await backendApi.fetch(paramsApi);
@@ -92,8 +96,8 @@ function useFellowshipParams(section) {
     }
   });
 
-  const params = ssrParams || fetchedParams || {};
-  const loading = !ssrParams && fetchLoading;
+  const params = hasSsrParams ? ssrParams : fetchedParams || {};
+  const loading = !hasSsrParams && fetchLoading;
 
   return { params, loading };
 }
