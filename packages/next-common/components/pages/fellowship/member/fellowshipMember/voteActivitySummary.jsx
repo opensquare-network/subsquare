@@ -1,6 +1,8 @@
 import { useMemo } from "react";
+import { isNil } from "lodash-es";
 import { CardTitle } from "./styled";
 import Heatmap, { LegendBar } from "./heatmap";
+import Loading from "next-common/components/loading";
 import Tooltip from "next-common/components/tooltip";
 import { usePageProps } from "next-common/context/page";
 import useReferendaSlider from "./referendaSlider";
@@ -71,8 +73,9 @@ export default function VoteActivitySummary() {
   const { fellowshipReferendaMaxIndex, fellowshipMemberHeatmap } =
     usePageProps();
   // Referendum indexes are 0-based contiguous on chain, so count = maxIndex + 1
-  const referendumCount =
-    fellowshipReferendaMaxIndex === null ? 0 : fellowshipReferendaMaxIndex + 1;
+  const referendumCount = isNil(fellowshipReferendaMaxIndex)
+    ? 0
+    : fellowshipReferendaMaxIndex + 1;
   const heatmap = useMemo(
     () => fellowshipMemberHeatmap || [],
     [fellowshipMemberHeatmap],
@@ -93,6 +96,17 @@ export default function VoteActivitySummary() {
         referendumIndex >= rangeFrom && referendumIndex <= rangeTo,
     );
   }, [heatmap, rangeFrom, rangeTo]);
+
+  if (
+    fellowshipReferendaMaxIndex === undefined ||
+    fellowshipMemberHeatmap === undefined
+  ) {
+    return (
+      <div className="flex justify-center w-full my-[16px]">
+        <Loading size={20} />
+      </div>
+    );
+  }
 
   if (!referendumCount) {
     return (

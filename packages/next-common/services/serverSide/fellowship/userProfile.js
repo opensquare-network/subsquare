@@ -106,7 +106,9 @@ async function fetchActiveSectionProps(id, maybeAddress, config) {
 
   if (config.maxIndexApi) {
     const { result } = await backendApi.fetch(config.maxIndexApi);
-    props[config.maxIndexProp] = result?.maxReferendumIndex ?? null;
+    if (result) {
+      props[config.maxIndexProp] = result.maxReferendumIndex ?? null;
+    }
   }
 
   if (config.salaryApi) {
@@ -116,7 +118,9 @@ async function fetchActiveSectionProps(id, maybeAddress, config) {
 
   if (config.heatmapApi) {
     const { result } = await backendApi.fetch(config.heatmapApi(maybeAddress));
-    props[config.heatmapProp] = result ?? [];
+    if (result) {
+      props[config.heatmapProp] = result;
+    }
   }
 
   if (config.evidenceApi) {
