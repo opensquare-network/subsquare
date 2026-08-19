@@ -7,8 +7,11 @@ import { isHash, isSameAddress } from "next-common/utils";
 import { useAsync } from "react-use";
 
 export default function useFellowshipMemberEvidence(address) {
-  const { fellowshipMembers, fellowshipMemberActiveEvidence: serverEvidence } =
-    usePageProps();
+  const {
+    fellowshipMembers,
+    ambassadorMembers,
+    fellowshipMemberActiveEvidence: serverEvidence,
+  } = usePageProps();
   const { section } = useCollectivesContext();
 
   const hasServerData = !!(
@@ -40,7 +43,10 @@ export default function useFellowshipMemberEvidence(address) {
     return res.ok ? res.json() : null;
   }, [section, address, evidenceId]);
 
-  const activeMember = (fellowshipMembers || []).find((m) =>
+  // Ambassador section members live in ambassadorMembers, not fellowshipMembers
+  const members =
+    section === "ambassador" ? ambassadorMembers : fellowshipMembers;
+  const activeMember = (members || []).find((m) =>
     isSameAddress(m.address, address),
   );
 
@@ -70,6 +76,9 @@ export default function useFellowshipMemberEvidence(address) {
   const isReferendaLoading =
     isDocLoading || (dbReferenda.length === 0 && isChainLoading);
 
+  // NOTE: the client path still falls back to the SSR server content. If the
+  // on-chain evidence was updated but the IPFS document fetch fails, the stale
+  // server content may be shown. Acceptable for now.
   return {
     loading,
     wish,
