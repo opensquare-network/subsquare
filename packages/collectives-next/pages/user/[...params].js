@@ -1,25 +1,13 @@
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import Profile from "next-common/components/profile";
-import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { tryConvertToSubstrateAddress } from "next-common/utils/mixedChainUtil";
 import {
   fetchUserStatisticsProps,
   fetchUserRankHistoryProps,
 } from "next-common/services/serverSide/fellowship/userStatistics";
-import {
-  ambassadorCoreFeedsApiUri,
-  ambassadorMembersApiUri,
-  ambassadorParamsApi,
-  fellowshipCoreFeedsApiUri,
-  fellowshipMemberActiveEvidenceApi,
-  fellowshipMemberHeatmapApi,
-  fellowshipMemberLastSalaryPaymentApi,
-  fellowshipMembersApiUri,
-  fellowshipParamsApi,
-  fellowshipReferendaMaxIndexApi,
-} from "next-common/services/url";
+import { fetchCollectiveUserProfileProps } from "next-common/services/serverSide/fellowship/userProfile";
 
 export default Profile;
 
@@ -41,40 +29,30 @@ export const getServerSideProps = withCommonProps(async (context) => {
 
   const maybeAddress = tryConvertToSubstrateAddress(id);
 
-  const queryFeedsParams = {
-    page: page,
-    page_size: defaultPageSize,
-    who: id,
-  };
+  // fellowship / ambassador props are module gated, and per-tab data
+  // (params, max-index, salary, heatmap, evidence) is only fetched when the
+  // user is actually on the corresponding section tab
+  const onFellowshipTab = activityType === "fellowship";
+  const onAmbassadorTab = activityType === "ambassador";
 
   const [
     { result: userSummary },
     { result: user },
-    { result: fellowshipMembers },
-    { result: ambassadorMembers },
-    { result: fellowshipFeeds },
-    { result: ambassadorFeeds },
-    { result: lastSalaryPayment },
-    { result: fellowshipParams },
-    { result: ambassadorParams },
-    { result: fellowshipReferendaMaxIndexResult },
-    { result: fellowshipMemberHeatmap },
-    { result: fellowshipMemberActiveEvidence },
+    fellowshipProps,
+    ambassadorProps,
     userStatisticsProps,
     rankHistoryProps,
   ] = await Promise.all([
     backendApi.fetch(`users/${maybeAddress}/counts`),
     backendApi.fetch(`users/${maybeAddress}`),
-    backendApi.fetch(fellowshipMembersApiUri),
-    backendApi.fetch(ambassadorMembersApiUri),
-    backendApi.fetch(fellowshipCoreFeedsApiUri, queryFeedsParams),
-    backendApi.fetch(ambassadorCoreFeedsApiUri, queryFeedsParams),
-    backendApi.fetch(fellowshipMemberLastSalaryPaymentApi(id)),
-    backendApi.fetch(fellowshipParamsApi),
-    backendApi.fetch(ambassadorParamsApi),
-    backendApi.fetch(fellowshipReferendaMaxIndexApi),
-    backendApi.fetch(fellowshipMemberHeatmapApi(maybeAddress)),
-    backendApi.fetch(fellowshipMemberActiveEvidenceApi(maybeAddress)),
+    fetchCollectiveUserProfileProps(id, "fellowship", {
+      active: onFellowshipTab,
+      page,
+    }),
+    fetchCollectiveUserProfileProps(id, "ambassador", {
+      active: onAmbassadorTab,
+      page,
+    }),
     fetchUserStatisticsProps(maybeAddress, activityType),
     fetchUserRankHistoryProps(maybeAddress, activityType),
   ]);
@@ -84,20 +62,11 @@ export const getServerSideProps = withCommonProps(async (context) => {
     props: {
       id: maybeAddress,
       userSummary: userSummary ?? {},
-      fellowshipMembers: fellowshipMembers ?? null,
-      ambassadorMembers: ambassadorMembers ?? null,
-      fellowshipFeeds: fellowshipFeeds ?? EmptyList,
-      ambassadorFeeds: ambassadorFeeds ?? EmptyList,
-      lastSalaryPayment: lastSalaryPayment ?? {},
-      fellowshipParams: fellowshipParams ?? {},
-      ambassadorParams: ambassadorParams ?? {},
-      fellowshipReferendaMaxIndex:
-        fellowshipReferendaMaxIndexResult?.maxReferendumIndex ?? null,
-      fellowshipMemberHeatmap: fellowshipMemberHeatmap ?? [],
-      fellowshipMemberActiveEvidence: fellowshipMemberActiveEvidence ?? null,
       user: user ?? {},
       route: context.query?.params?.slice(1)?.join("/") ?? "",
       ...tracksProps,
+      ...fellowshipProps,
+      ...ambassadorProps,
       ...userStatisticsProps,
       ...rankHistoryProps,
     },
