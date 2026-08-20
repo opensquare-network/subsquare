@@ -103,6 +103,7 @@ const polkadot = {
     polkassembly: {
       discussions: true,
     },
+    profileXcm: true,
   },
   multisigWallets: {
     mimir: true,

@@ -132,6 +132,17 @@ export default function useProfileTabs() {
     }
   }
 
+  if (integrations?.profileXcm) {
+    tabs.push({
+      label({ active }) {
+        return <TabTitle active={active}>XCM</TabTitle>;
+      },
+      value: "xcm",
+      url: `${prefix}xcm`,
+      exactMatch: false,
+    });
+  }
+
   if (proxy) {
     tabs.push({
       label({ active }) {
