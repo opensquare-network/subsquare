@@ -22,7 +22,6 @@ const PARACHAIN_CHAINS = {
   kusama: {
     0: Chains.kusama,
     1000: Chains.kusamaAssetHub,
-    1001: Chains.collectives,
     1002: Chainspolyfill.kusamaBridge,
     1004: Chains.kusamaPeople,
     1005: Chains.kusamaCoretime,
@@ -37,6 +36,7 @@ const PARACHAIN_CHAINS = {
   westend: {
     0: Chains.westend,
     1000: Chains.westendAssetHub,
+    1001: Chains.westendCollectives,
     1004: Chains.westendPeople,
   },
 };
