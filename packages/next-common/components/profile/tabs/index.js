@@ -111,13 +111,13 @@ export default function useProfileTabs() {
     });
   }
 
-  if (integrations?.profileXcm) {
+  if (integrations?.profileCrossChain) {
     tabs.push({
       label({ active }) {
-        return <TabTitle active={active}>XCM</TabTitle>;
+        return <TabTitle active={active}>Cross Chain</TabTitle>;
       },
-      value: "xcm",
-      url: `${prefix}xcm`,
+      value: "cross-chain",
+      url: `${prefix}cross-chain`,
       exactMatch: false,
     });
   }

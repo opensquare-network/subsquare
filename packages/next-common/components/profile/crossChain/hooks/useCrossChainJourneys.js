@@ -11,7 +11,7 @@ const EMPTY_PAGE_INFO = {
   endCursor: null,
 };
 
-async function fetchXcmJourneys({ address, cursor = null }) {
+async function fetchCrossChainJourneys({ address, cursor = null }) {
   const response = await fetch(OCELLOIDS_URL, {
     method: "POST",
     headers: {
@@ -35,7 +35,7 @@ async function fetchXcmJourneys({ address, cursor = null }) {
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result?.message || "Unable to load XCM data");
+    throw new Error(result?.message || "Unable to load cross-chain data");
   }
 
   return {
@@ -44,7 +44,7 @@ async function fetchXcmJourneys({ address, cursor = null }) {
   };
 }
 
-export default function useXcmJourneys(cursor = null) {
+export default function useCrossChainJourneys(cursor = null) {
   const address = useProfileAddress();
   const { value, loading } = useAsync(async () => {
     if (!address) {
@@ -54,7 +54,7 @@ export default function useXcmJourneys(cursor = null) {
       };
     }
 
-    return fetchXcmJourneys({ address, cursor });
+    return fetchCrossChainJourneys({ address, cursor });
   }, [address, cursor]);
 
   return {

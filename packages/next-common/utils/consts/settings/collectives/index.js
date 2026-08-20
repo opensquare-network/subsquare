@@ -50,7 +50,7 @@ const collectives = {
     discussionsRFCs: {
       link: "https://github.com/polkadot-fellows/RFCs/issues",
     },
-    profileXcm: true,
+    profileCrossChain: true,
   },
   multisigWallets: {
     mimir: true,

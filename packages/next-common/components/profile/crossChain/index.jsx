@@ -2,16 +2,16 @@ import { MapDataList } from "next-common/components/dataList";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { memo, useState } from "react";
-import useXcmJourneys from "./hooks/useCrossChainJourneys";
+import useCrossChainJourneys from "./hooks/useCrossChainJourneys";
 import CursorPagination from "./pagination";
 import PoweredBy from "./poweredBy";
 import { useColumnsDef } from "./table";
 
-function ProfileXcmContent() {
+function ProfileCrossChainContent() {
   const [page, setPage] = useState(1);
   const [cursors, setCursors] = useState([null]);
   const cursor = cursors[page - 1] ?? null;
-  const { isLoading, items, pageInfo } = useXcmJourneys(cursor);
+  const { isLoading, items, pageInfo } = useCrossChainJourneys(cursor);
 
   const hasNextPage = pageInfo.hasNextPage && Boolean(pageInfo.endCursor);
 
@@ -28,7 +28,10 @@ function ProfileXcmContent() {
 
   return (
     <SecondaryCard>
-      <XcmDataList data={items} loading={isLoading && items.length === 0} />
+      <CrossChainDataList
+        data={items}
+        loading={isLoading && items.length === 0}
+      />
       <div className="mt-2 flex min-h-7 items-center justify-between gap-x-4">
         <PoweredBy />
         <CursorPagination
@@ -44,7 +47,7 @@ function ProfileXcmContent() {
   );
 }
 
-const XcmDataList = memo(function XcmDataList({ data, loading }) {
+const CrossChainDataList = memo(function CrossChainDataList({ data, loading }) {
   const columnsDef = useColumnsDef();
 
   return (
@@ -52,13 +55,13 @@ const XcmDataList = memo(function XcmDataList({ data, loading }) {
       columnsDef={columnsDef}
       data={data}
       loading={loading}
-      noDataText="No XCM data"
+      noDataText="No cross-chain data"
     />
   );
 });
 
-export default function ProfileXcm() {
+export default function ProfileCrossChain() {
   const address = useProfileAddress();
 
-  return <ProfileXcmContent key={address} />;
+  return <ProfileCrossChainContent key={address} />;
 }
