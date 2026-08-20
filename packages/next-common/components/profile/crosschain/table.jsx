@@ -13,7 +13,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { toPrecision } from "next-common/utils";
 import capitalize from "next-common/utils/capitalize";
-import getChainSettings from "next-common/utils/consts/settings";
+import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 import { getParachainChain } from "next-common/utils/xcm/parachains";
 
 const ACTION_LABELS = {
@@ -109,7 +109,7 @@ function getChainInfo(chainId) {
   if (knownChain) {
     return {
       chain: knownChain,
-      label: getChainSettings(knownChain).name,
+      label: getChainSettingsPolyfill(knownChain).name,
     };
   }
 
