@@ -1,12 +1,11 @@
 import { MapDataList } from "next-common/components/dataList";
-import { ExecutionTimeProvider } from "next-common/components/pages/components/scheduler/context";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
-import { useState } from "react";
+import { memo, useState } from "react";
 import useXcmJourneys from "./hooks/useCrossChainJourneys";
 import CursorPagination from "./pagination";
 import PoweredBy from "./poweredBy";
-import { XCM_COLUMNS } from "./table";
+import { useColumnsDef } from "./table";
 
 function ProfileXcmContent() {
   const [page, setPage] = useState(1);
@@ -29,12 +28,7 @@ function ProfileXcmContent() {
 
   return (
     <SecondaryCard>
-      <MapDataList
-        columnsDef={XCM_COLUMNS}
-        data={items}
-        loading={isLoading && items.length === 0}
-        noDataText="No XCM data"
-      />
+      <XcmDataList data={items} loading={isLoading && items.length === 0} />
       <div className="mt-2 flex min-h-7 items-center justify-between gap-x-4">
         <PoweredBy />
         <CursorPagination
@@ -50,12 +44,21 @@ function ProfileXcmContent() {
   );
 }
 
+const XcmDataList = memo(function XcmDataList({ data, loading }) {
+  const columnsDef = useColumnsDef();
+
+  return (
+    <MapDataList
+      columnsDef={columnsDef}
+      data={data}
+      loading={loading}
+      noDataText="No XCM data"
+    />
+  );
+});
+
 export default function ProfileXcm() {
   const address = useProfileAddress();
 
-  return (
-    <ExecutionTimeProvider>
-      <ProfileXcmContent key={address} />
-    </ExecutionTimeProvider>
-  );
+  return <ProfileXcmContent key={address} />;
 }

@@ -1,7 +1,5 @@
 import ChainIcon from "next-common/components/header/chainIcon";
 import ExternalLink from "next-common/components/externalLink";
-import { ExecutionTimeButton } from "next-common/components/pages/components/scheduler/columns";
-import { useExecutionTimeContext } from "next-common/components/pages/components/scheduler/context";
 import {
   ActiveTag,
   NegativeTag,
@@ -15,6 +13,7 @@ import { toPrecision } from "next-common/utils";
 import capitalize from "next-common/utils/capitalize";
 import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 import { getParachainChain } from "next-common/utils/xcm/parachains";
+import { useMemo, useState } from "react";
 
 const ACTION_LABELS = {
   transfer: "Transfer",
@@ -38,14 +37,7 @@ const STATUS_TAGS = {
   sent: ActiveTag,
 };
 
-export const XCM_COLUMNS = [
-  {
-    name: <ExecutionTimeButton />,
-    style: { flex: 1.2, minWidth: 0 },
-    render: (journey) => (
-      <JourneyTimeCell time={journey?.sentAt || journey?.createdAt} />
-    ),
-  },
+const STATIC_COLUMNS = [
   {
     name: "Action",
     style: { flex: 0.7, minWidth: 0 },
@@ -86,6 +78,34 @@ export const XCM_COLUMNS = [
     render: (journey) => <StatusCell status={journey?.status} />,
   },
 ];
+
+export function useColumnsDef() {
+  const [isTime, setIsTime] = useState(false);
+
+  return useMemo(
+    () => [
+      {
+        name: (
+          <button
+            className="text-theme500"
+            onClick={() => setIsTime((value) => !value)}
+          >
+            {isTime ? "Time" : "Age"}
+          </button>
+        ),
+        style: { flex: 1.2, minWidth: 0 },
+        render: (journey) => (
+          <JourneyTimeCell
+            isTime={isTime}
+            time={journey?.sentAt || journey?.createdAt}
+          />
+        ),
+      },
+      ...STATIC_COLUMNS,
+    ],
+    [isTime],
+  );
+}
 
 function getXcscanUrl(journey) {
   return journey?.correlationId
@@ -173,8 +193,6 @@ function StatusCell({ status }) {
   return <Tag>{STATUS_LABELS[status]}</Tag>;
 }
 
-function JourneyTimeCell({ time }) {
-  const { isTime } = useExecutionTimeContext();
-
+function JourneyTimeCell({ isTime, time }) {
   return <TimeAge isTime={isTime} time={time} />;
 }
