@@ -29,7 +29,9 @@ function ProfileCrossChainContent() {
 
   return (
     <SecondaryCard>
-      <CrossChainDataList data={items} loading={isLoading} />
+      <Spin spinning={isLoading}>
+        <CrossChainDataList data={items} />
+      </Spin>
       <div className="mt-2 flex min-h-7 items-center justify-between gap-x-4">
         <PoweredBy />
         <CursorPagination
@@ -45,17 +47,15 @@ function ProfileCrossChainContent() {
   );
 }
 
-const CrossChainDataList = memo(function CrossChainDataList({ data, loading }) {
+const CrossChainDataList = memo(function CrossChainDataList({ data }) {
   const columnsDef = useColumnsDef();
 
   return (
-    <Spin spinning={loading}>
-      <MapDataList
-        columnsDef={columnsDef}
-        data={data}
-        noDataText="No cross-chain data"
-      />
-    </Spin>
+    <MapDataList
+      columnsDef={columnsDef}
+      data={data}
+      noDataText="No cross-chain data"
+    />
   );
 });
 
