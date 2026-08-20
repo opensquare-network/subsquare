@@ -49,7 +49,7 @@ const STATIC_COLUMNS = [
     render: (journey) => (
       <ChainAccount
         chain={journey?.origin}
-        address={journey?.fromFormatted}
+        address={journey?.fromFormatted || journey?.from}
         xcscanUrl={getXcscanUrl(journey)}
       />
     ),
@@ -60,7 +60,7 @@ const STATIC_COLUMNS = [
     render: (journey) => (
       <ChainAccount
         chain={journey?.destination}
-        address={journey?.toFormatted}
+        address={journey?.toFormatted || journey?.to}
         xcscanUrl={getXcscanUrl(journey)}
       />
     ),
@@ -141,6 +141,10 @@ function getChainInfo(chainId) {
 }
 
 function ChainAccount({ chain, address, xcscanUrl }) {
+  if (!address) {
+    return null;
+  }
+
   const { chain: projectChain, label } = getChainInfo(chain);
   const chainContent = (
     <span className="inline-flex items-center gap-x-1 text14Medium h-6">
