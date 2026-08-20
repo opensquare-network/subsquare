@@ -1,5 +1,6 @@
 import { MapDataList } from "next-common/components/dataList";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import Spin from "next-common/components/spin";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { memo, useState } from "react";
 import useCrossChainJourneys from "./hooks/useCrossChainJourneys";
@@ -28,10 +29,7 @@ function ProfileCrossChainContent() {
 
   return (
     <SecondaryCard>
-      <CrossChainDataList
-        data={items}
-        loading={isLoading && items.length === 0}
-      />
+      <CrossChainDataList data={items} loading={isLoading} />
       <div className="mt-2 flex min-h-7 items-center justify-between gap-x-4">
         <PoweredBy />
         <CursorPagination
@@ -51,12 +49,13 @@ const CrossChainDataList = memo(function CrossChainDataList({ data, loading }) {
   const columnsDef = useColumnsDef();
 
   return (
-    <MapDataList
-      columnsDef={columnsDef}
-      data={data}
-      loading={loading}
-      noDataText="No cross-chain data"
-    />
+    <Spin spinning={loading}>
+      <MapDataList
+        columnsDef={columnsDef}
+        data={data}
+        noDataText="No cross-chain data"
+      />
+    </Spin>
   );
 });
 
