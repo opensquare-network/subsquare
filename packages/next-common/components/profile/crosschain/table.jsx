@@ -95,7 +95,7 @@ export function useColumnsDef() {
         ),
         style: { flex: 1.2, minWidth: 0 },
         render: (journey) => (
-          <JourneyTimeCell
+          <TimeAge
             isTime={isTime}
             time={journey?.sentAt || journey?.createdAt}
           />
@@ -191,8 +191,4 @@ function StatusCell({ status }) {
   }
 
   return <Tag>{STATUS_LABELS[status]}</Tag>;
-}
-
-function JourneyTimeCell({ isTime, time }) {
-  return <TimeAge isTime={isTime} time={time} />;
 }
