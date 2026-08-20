@@ -2,7 +2,8 @@ import { useAsync } from "react-use";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
 
 const OCELLOIDS_URL = "https://api.ocelloids.net/query/crosschain";
-const OCELLOIDS_API_KEY = process.env.NEXT_PUBLIC_OCELLOIDS_API_KEY;
+const OCELLOIDS_API_KEY =
+  "eyJhbGciOiJFZERTQSIsImtpZCI6Im92SFVDU3hRM0NiYkJmc01STVh1aVdjQkNZcDVydmpvamphT2J4dUxxRDQ9In0.ewogICJpc3MiOiAiYXBpLm9jZWxsb2lkcy5uZXQiLAogICJqdGkiOiAiMDEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLAogICJzdWIiOiAicHVibGljQG9jZWxsb2lkcyIKfQo.qKSfxo6QYGxzv40Ox7ec6kpt2aVywKmhpg6lue4jqmZyY6y3SwfT-DyX6Niv-ine5k23E0RKGQdm_MbtyPp9CA";
 const PAGE_SIZE = 25;
 const XCM_PROTOCOL = "xcm";
 const EMPTY_PAGE_INFO = {
@@ -11,13 +12,6 @@ const EMPTY_PAGE_INFO = {
 };
 
 async function fetchXcmJourneys({ address, cursor = null }) {
-  if (!OCELLOIDS_API_KEY) {
-    return {
-      items: [],
-      pageInfo: EMPTY_PAGE_INFO,
-    };
-  }
-
   const response = await fetch(OCELLOIDS_URL, {
     method: "POST",
     headers: {
