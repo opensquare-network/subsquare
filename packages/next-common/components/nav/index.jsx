@@ -83,7 +83,10 @@ function NavDesktop() {
         "max-w-[300px] max-sm:hidden h-full overflow-x-hidden overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
         "scrollbar-hidden",
-        "transition-[width] duration-300 ease-out motion-reduce:transition-none",
+        "transition-[width] motion-reduce:transition-none",
+        navCollapsed
+          ? "duration-[220ms] ease-in"
+          : "duration-[260ms] ease-out",
       )}
       style={
         navigationBgFrom &&
@@ -95,17 +98,38 @@ function NavDesktop() {
       <div>
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
-          <Link href="/">
-            <div className={cn(navCollapsed && "hidden")}>
+          <Link
+            href="/"
+            className="min-w-0"
+            aria-hidden={navCollapsed}
+            tabIndex={navCollapsed ? -1 : undefined}
+          >
+            <div
+              className={cn(
+                "whitespace-nowrap transition-opacity ease-out motion-reduce:transition-none",
+                navCollapsed
+                  ? "opacity-0 duration-100 pointer-events-none"
+                  : "opacity-100 duration-150 delay-100",
+              )}
+            >
               <ChainName />
               <BrandingHint />
             </div>
           </Link>
-          <div>
-            <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
+          <div className="shrink-0">
+            <ToggleMenuButton
+              aria-expanded={!navCollapsed}
+              aria-label={
+                navCollapsed ? "Expand navigation" : "Collapse navigation"
+              }
+              onClick={() => setNavCollapsed(!navCollapsed)}
+            >
               <ArrowFold
                 className={cn(
-                  "transition-transform duration-300 ease-out motion-reduce:transition-none",
+                  "transition-transform motion-reduce:transition-none",
+                  navCollapsed
+                    ? "duration-[220ms] ease-in"
+                    : "duration-[260ms] ease-out",
                   navCollapsed && "rotate-180",
                 )}
               />
@@ -114,8 +138,10 @@ function NavDesktop() {
         </div>
       </div>
 
-      <div className="p-4">
-        <NavMenu collapsed={navCollapsed} />
+      <div className="overflow-hidden">
+        <div className="w-[300px] p-4">
+          <NavMenu collapsed={navCollapsed} />
+        </div>
       </div>
     </nav>
   );
@@ -178,10 +204,16 @@ function NavMobile() {
     >
       <div className={cn("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>
-          <ToggleMenuButton onClick={menuToggle}>
+          <ToggleMenuButton
+            aria-expanded={menuVisible}
+            aria-label={
+              menuVisible ? "Close navigation menu" : "Open navigation menu"
+            }
+            onClick={menuToggle}
+          >
             <ArrowFold
               className={cn(
-                "transition-transform duration-300 ease-out motion-reduce:transition-none",
+                "transition-transform duration-200 ease-out motion-reduce:transition-none",
                 !menuVisible && "rotate-180",
               )}
             />

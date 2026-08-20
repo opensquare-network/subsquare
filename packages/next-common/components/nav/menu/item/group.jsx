@@ -61,10 +61,13 @@ export default function NavMenuItemGroup({
   };
 
   return (
-    <ul>
-      <li>
+    <ul className="w-full">
+      <li className="w-full">
         <HoverCard.Root openDelay={0} closeDelay={0}>
-          <HoverCard.Trigger>
+          <HoverCard.Trigger
+            className="w-full"
+            aria-expanded={submenuVisible}
+          >
             <NavMenuItemItem
               item={{
                 ...(menu.type === NAV_MENU_TYPE.subspace
@@ -92,6 +95,7 @@ export default function NavMenuItemGroup({
                 <span>
                   <ArrowDown
                     className={cn(
+                      "transition-transform duration-200 ease-out motion-reduce:transition-none",
                       submenuVisible && "rotate-180",
                       "[&_path]:stroke-navigationTextTertiary",
                     )}
@@ -110,13 +114,23 @@ export default function NavMenuItemGroup({
         </HoverCard.Root>
       </li>
       {menu.items?.length > 0 && (
-        <SubMenuItems
+        <li
+          aria-hidden={!submenuVisible}
+          inert={submenuVisible ? undefined : ""}
           className={cn(
-            submenuVisible ? "block" : "hidden",
-            padSubMenuItems && "pl-10 pb-2",
+            "w-full grid transition-[grid-template-rows,opacity] motion-reduce:transition-none",
+            submenuVisible
+              ? "grid-rows-[1fr] opacity-100 duration-200 ease-out"
+              : "grid-rows-[0fr] opacity-0 duration-150 ease-in pointer-events-none",
           )}
-          items={menu.items}
-        />
+        >
+          <div className="min-h-0 overflow-hidden">
+            <SubMenuItems
+              className={cn(padSubMenuItems && "pl-10 pb-2")}
+              items={menu.items}
+            />
+          </div>
+        </li>
       )}
     </ul>
   );

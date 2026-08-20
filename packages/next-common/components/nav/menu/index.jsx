@@ -40,7 +40,7 @@ export default function NavMenu({ collapsed }) {
   }
 
   return (
-    <ul>
+    <ul className="w-full">
       {menu.map((m, idx) => (
         <NavMenuItem
           key={`${m.value || ""}-${idx}`}

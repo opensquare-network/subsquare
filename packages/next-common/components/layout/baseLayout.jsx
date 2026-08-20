@@ -38,7 +38,10 @@ export default function BaseLayout({
         <section
           className={cn(
             "flex flex-col flex-1",
-            "transition-[max-width] duration-300 ease-out motion-reduce:transition-none",
+            "transition-[max-width] motion-reduce:transition-none",
+            navCollapsed
+              ? "duration-[220ms] ease-in"
+              : "duration-[260ms] ease-out",
             navCollapsed
               ? "max-w-[calc(100%-72px)]"
               : "max-w-[calc(100%-300px)]",
