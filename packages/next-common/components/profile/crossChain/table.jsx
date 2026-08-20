@@ -141,10 +141,8 @@ function getChainInfo(chainId) {
 }
 
 function ChainAccount({ chain, address, xcscanUrl }) {
-  if (!address) {
-    return null;
-  }
-
+  const shouldRenderAddress =
+    typeof address === "string" && !address.startsWith("urn");
   const { chain: projectChain, label } = getChainInfo(chain);
   const chainContent = (
     <span className="inline-flex items-center gap-x-1 text14Medium h-6">
@@ -156,7 +154,7 @@ function ChainAccount({ chain, address, xcscanUrl }) {
   );
 
   return (
-    <div className="space-y-2">
+    <div className={shouldRenderAddress ? "space-y-2" : undefined}>
       {xcscanUrl ? (
         <ExternalLink
           className="!text-textPrimary"
@@ -169,7 +167,7 @@ function ChainAccount({ chain, address, xcscanUrl }) {
       ) : (
         chainContent
       )}
-      <AddressUser add={address} maxWidth={160} />
+      {shouldRenderAddress && <AddressUser add={address} maxWidth={160} />}
     </div>
   );
 }
