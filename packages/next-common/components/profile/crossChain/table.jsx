@@ -13,6 +13,7 @@ import { toPrecision } from "next-common/utils";
 import capitalize from "next-common/utils/capitalize";
 import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
 import { getParachainChain } from "next-common/utils/xcm/parachains";
+import { cn } from "next-common/utils";
 import { useMemo, useState } from "react";
 
 const ACTION_LABELS = {
@@ -154,7 +155,7 @@ function ChainAccount({ chain, address, xcscanUrl }) {
   );
 
   return (
-    <div className={shouldRenderAddress ? "space-y-2" : undefined}>
+    <div className={cn(shouldRenderAddress && "space-y-2")}>
       {xcscanUrl ? (
         <ExternalLink
           className="!text-textPrimary"

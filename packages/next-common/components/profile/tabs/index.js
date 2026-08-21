@@ -14,6 +14,7 @@ export function TabTitle({ active, children }) {
     <div
       className={cn(
         "text16Bold",
+        "whitespace-nowrap",
         active ? "text-textPrimary" : "text-textTertiary",
       )}
       role="button"
