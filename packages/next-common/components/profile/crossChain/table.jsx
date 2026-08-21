@@ -1,5 +1,3 @@
-import ChainIcon from "next-common/components/header/chainIcon";
-import ExternalLink from "next-common/components/externalLink";
 import {
   ActiveTag,
   NegativeTag,
@@ -7,14 +5,9 @@ import {
   WarningTag,
 } from "next-common/components/tags/state/styled";
 import TimeAge from "next-common/components/time/timeAge";
-import AddressUser from "next-common/components/user/addressUser";
-import ValueDisplay from "next-common/components/valueDisplay";
-import { toPrecision } from "next-common/utils";
-import capitalize from "next-common/utils/capitalize";
-import { getChainSettingsPolyfill } from "next-common/utils/consts/settingsPolyfill";
-import { getParachainChain } from "next-common/utils/xcm/parachains";
-import { cn } from "next-common/utils";
 import { useMemo, useState } from "react";
+import AssetCell from "./assetCell";
+import ChainAccount from "./chainAccount";
 
 const ACTION_LABELS = {
   transfer: "Transfer",
@@ -112,79 +105,6 @@ function getXcscanUrl(journey) {
   return journey?.correlationId
     ? `https://xcscan.io/tx/#${encodeURIComponent(journey.correlationId)}`
     : null;
-}
-
-function getChainInfo(chainId) {
-  if (!chainId) {
-    return { chain: null, label: null };
-  }
-
-  const [, , ecosystem = "", chainIdNumber = ""] = chainId.split(":");
-  if (!ecosystem || !chainIdNumber) {
-    return { chain: null, label: chainId };
-  }
-
-  const paraId = Number(chainIdNumber);
-
-  const knownChain = getParachainChain(ecosystem, paraId);
-  if (knownChain) {
-    return {
-      chain: knownChain,
-      label: getChainSettingsPolyfill(knownChain).name,
-    };
-  }
-
-  const suffix = chainIdNumber === "0" ? "" : ` ${chainIdNumber}`;
-  return {
-    chain: null,
-    label: `${capitalize(ecosystem)}${suffix}`,
-  };
-}
-
-function ChainAccount({ chain, address, xcscanUrl }) {
-  const shouldRenderAddress =
-    typeof address === "string" && !address.startsWith("urn");
-  const { chain: projectChain, label } = getChainInfo(chain);
-  const chainContent = (
-    <span className="inline-flex items-center gap-x-1 text14Medium h-6">
-      {projectChain && (
-        <ChainIcon chain={projectChain} className="!h-5 !w-5 shrink-0" />
-      )}
-      <span className="text-textPrimary">{label}</span>
-    </span>
-  );
-
-  return (
-    <div className={cn(shouldRenderAddress && "space-y-2")}>
-      {xcscanUrl ? (
-        <ExternalLink
-          className="!text-textPrimary"
-          externalIcon={false}
-          href={xcscanUrl}
-          title="View transaction on Xcscan"
-        >
-          {chainContent}
-        </ExternalLink>
-      ) : (
-        chainContent
-      )}
-      {shouldRenderAddress && <AddressUser add={address} maxWidth={160} />}
-    </div>
-  );
-}
-
-function AssetCell({ assets = [] }) {
-  return (
-    <div className="flex flex-col items-end gap-y-1">
-      {assets.map((asset, index) => (
-        <ValueDisplay
-          key={`${asset?.symbol}-${index}`}
-          value={toPrecision(asset?.amount ?? 0, asset?.decimals)}
-          symbol={asset?.symbol}
-        />
-      ))}
-    </div>
-  );
 }
 
 function StatusCell({ status }) {
