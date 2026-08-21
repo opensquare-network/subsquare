@@ -90,6 +90,19 @@ function getFellowshipSalaryMenu() {
   };
 }
 
+function getFellowshipManifestoMenu() {
+  if (!isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
+    return null;
+  }
+
+  return {
+    value: "fellowship-manifesto",
+    name: "Manifesto",
+    pathname:
+      "https://github.com/polkadot-fellows/manifesto/blob/main/manifesto.pdf",
+  };
+}
+
 function getFellowshipStatisticsMenu() {
   if (!isCollectivesChain(process.env.NEXT_PUBLIC_CHAIN)) {
     return null;
@@ -226,6 +239,7 @@ export function getFellowshipMenu(overviewSummary, currentTrackId) {
       getFellowshipTreasuryMenu(overviewSummary),
       getFellowshipApplicationsMenu(overviewSummary),
       getFellowshipStatisticsMenu(),
+      getFellowshipManifestoMenu(),
     ].filter(Boolean),
   };
 
