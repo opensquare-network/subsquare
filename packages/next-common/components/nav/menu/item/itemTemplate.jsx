@@ -72,10 +72,7 @@ export function NavMenuItemTemplateContent({
       <span
         className={cn(
           "w-full inline-flex justify-between items-center",
-          "transition-opacity ease-out motion-reduce:transition-none",
-          collapsed
-            ? "opacity-0 duration-100 pointer-events-none"
-            : "opacity-100 duration-150 delay-100",
+          collapsed && "hidden",
         )}
       >
         <span className="w-full text14Medium">

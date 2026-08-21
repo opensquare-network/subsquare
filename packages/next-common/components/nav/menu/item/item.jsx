@@ -79,11 +79,11 @@ export default function NavMenuItemItem({
     );
   }
 
-  if (typeof collapsed === "boolean" && hoverTooltipLabel) {
+  if (collapsed && hoverTooltipLabel) {
     content = (
       <Tooltip
         side="right"
-        content={collapsed ? item?.name : null}
+        content={item?.name}
         sideOffset={20}
         className="flex w-full"
       >

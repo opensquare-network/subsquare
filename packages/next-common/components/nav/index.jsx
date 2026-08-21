@@ -138,10 +138,8 @@ function NavDesktop() {
         </div>
       </div>
 
-      <div className="overflow-hidden">
-        <div className="w-[300px] p-4">
-          <NavMenu collapsed={navCollapsed} />
-        </div>
+      <div className="p-4">
+        <NavMenu collapsed={navCollapsed} />
       </div>
     </nav>
   );
