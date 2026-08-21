@@ -98,6 +98,7 @@ const kusama = {
     polkassembly: {
       discussions: true,
     },
+    profileCrossChain: true,
   },
   multisigWallets: {
     mimir: true,

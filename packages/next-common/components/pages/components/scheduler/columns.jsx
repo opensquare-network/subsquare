@@ -1,4 +1,5 @@
 import Tooltip from "next-common/components/tooltip";
+import TimeAge from "next-common/components/time/timeAge";
 import useBlockTimestamp, {
   useCalculatedBlockTimestamp,
 } from "next-common/hooks/common/useBlockTimestamp";
@@ -7,11 +8,9 @@ import { useSelector } from "react-redux";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import CallColumnContent from "./callColumnContent";
 import { useMemo } from "react";
-import Duration from "next-common/components/duration";
-import dayjs from "dayjs";
 import { useExecutionTimeContext } from "./context";
 
-function ExecutionTimeButton() {
+export function ExecutionTimeButton() {
   const { isTime, toggleIsTime } = useExecutionTimeContext();
   return (
     <button className="text-theme500" onClick={toggleIsTime}>
@@ -85,15 +84,11 @@ function ExecutionTimeColumnContent({ height }) {
     return "-";
   }
 
-  let content;
-
-  if (isTime) {
-    content = dayjs(timestamp).format("YYYY-MM-DD HH:mm:ss");
-  } else {
-    content = <Duration time={timestamp} />;
-  }
-
-  return <Tooltip content={`#${height?.toLocaleString()}`}>{content}</Tooltip>;
+  return (
+    <Tooltip content={`#${height?.toLocaleString()}`}>
+      <TimeAge isTime={isTime} time={timestamp} />
+    </Tooltip>
+  );
 }
 
 function PeriodicColumnContent({ periodic, blockNumber }) {
