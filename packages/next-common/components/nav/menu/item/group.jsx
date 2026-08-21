@@ -153,7 +153,7 @@ function SubMenuItems({ className = "", items = [] }) {
               <NavMenuDivider className="my-4 mx-3" />
             ) : (
               <>
-                <div className="ml-1 w-1 h-1 rounded-full bg-textSecondary" />
+                <div className="ml-1 h-1 w-1 shrink-0 rounded-full bg-textSecondary" />
                 <NavMenuItemItem
                   item={item}
                   items={item.items}
