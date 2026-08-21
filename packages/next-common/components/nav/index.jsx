@@ -8,7 +8,7 @@ import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
@@ -71,61 +71,90 @@ w-6 h-6 bg-navigationActive rounded
 [&_svg_path]:stroke-navigationTextTertiary
 `;
 
+const MotionNav = motion.nav;
+
+const desktopNavVariants = {
+  collapsed: {
+    width: 72,
+    transition: { duration: 0.22, ease: "easeIn" },
+  },
+  expanded: {
+    width: 300,
+    transition: { duration: 0.26, ease: "easeOut" },
+  },
+};
+
 function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
+  const [contentCollapsed, setContentCollapsed] = useState(navCollapsed);
   const { navigationBgFrom, navigationBgTo } = useThemeSetting();
 
+  const handleNavAnimationStart = () => {
+    if (!navCollapsed) {
+      setContentCollapsed(false);
+    }
+  };
+
+  const handleNavAnimationComplete = () => {
+    setContentCollapsed(navCollapsed);
+  };
+
   return (
-    <nav
-      className={cn(
-        navCollapsed ? "w-[72px]" : "w-[300px]",
-        "border-r border-neutral300",
-        "max-w-[300px] max-sm:hidden h-full overflow-x-hidden overflow-y-scroll",
-        "bg-navigationBg dark:bg-neutral100 text-navigationText",
-        "scrollbar-hidden",
-        "transition-[width] motion-reduce:transition-none",
-        navCollapsed
-          ? "duration-[220ms] ease-in"
-          : "duration-[260ms] ease-out",
-      )}
-      style={
-        navigationBgFrom &&
-        navigationBgTo && {
-          backgroundImage: `linear-gradient(180deg, ${navigationBgFrom}, ${navigationBgTo})`,
+    <MotionConfig reducedMotion="user">
+      <MotionNav
+        initial={false}
+        animate={navCollapsed ? "collapsed" : "expanded"}
+        variants={desktopNavVariants}
+        onAnimationStart={handleNavAnimationStart}
+        onAnimationComplete={handleNavAnimationComplete}
+        className={cn(
+          "border-r border-neutral300",
+          "max-w-[300px] max-sm:hidden h-full overflow-x-hidden overflow-y-scroll",
+          "bg-navigationBg dark:bg-neutral100 text-navigationText",
+          "scrollbar-hidden",
+        )}
+        style={
+          navigationBgFrom &&
+          navigationBgTo && {
+            backgroundImage: `linear-gradient(180deg, ${navigationBgFrom}, ${navigationBgTo})`,
+          }
         }
-      }
-    >
-      <div>
-        <ChainLogo className="p-4 flex" />
-        <div className="py-4 px-6 flex justify-between h-[84px]">
-          <Link href="/" className="min-w-0">
-            <div className={cn("whitespace-nowrap", navCollapsed && "hidden")}>
-              <ChainName />
-              <BrandingHint />
-            </div>
-          </Link>
-          <div className="shrink-0">
-            <ToggleMenuButton
-              onClick={() => setNavCollapsed(!navCollapsed)}
-            >
-              <ArrowFold
+      >
+        <div>
+          <ChainLogo className="p-4 flex" />
+          <div className="py-4 px-6 flex justify-between h-[84px]">
+            <Link href="/" className="min-w-0">
+              <div
                 className={cn(
-                  "transition-transform motion-reduce:transition-none",
-                  navCollapsed
-                    ? "duration-[220ms] ease-in"
-                    : "duration-[260ms] ease-out",
-                  navCollapsed && "rotate-180",
+                  "whitespace-nowrap",
+                  contentCollapsed && "hidden",
                 )}
-              />
-            </ToggleMenuButton>
+              >
+                <ChainName />
+                <BrandingHint />
+              </div>
+            </Link>
+            <div className="shrink-0">
+              <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
+                <ArrowFold
+                  className={cn(
+                    "transition-transform motion-reduce:transition-none",
+                    navCollapsed
+                      ? "duration-[220ms] ease-in"
+                      : "duration-[260ms] ease-out",
+                    navCollapsed && "rotate-180",
+                  )}
+                />
+              </ToggleMenuButton>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="p-4">
-        <NavMenu collapsed={navCollapsed} />
-      </div>
-    </nav>
+        <div className="p-4">
+          <NavMenu collapsed={contentCollapsed} />
+        </div>
+      </MotionNav>
+    </MotionConfig>
   );
 }
 

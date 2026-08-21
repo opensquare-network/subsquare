@@ -115,8 +115,6 @@ export default function NavMenuItemGroup({
       </li>
       {menu.items?.length > 0 && (
         <li
-          aria-hidden={!submenuVisible}
-          inert={submenuVisible ? undefined : ""}
           className={cn(
             "w-full grid transition-[grid-template-rows,opacity] motion-reduce:transition-none",
             submenuVisible

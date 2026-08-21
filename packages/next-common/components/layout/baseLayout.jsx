@@ -6,8 +6,6 @@ import Nav from "../nav";
 import SEO from "../SEO";
 import Toast from "../toast";
 import Footer from "./footer";
-import { cn } from "next-common/utils";
-import { useNavCollapsed } from "next-common/context/nav";
 import LoginGlobalPopup from "../login/globalPopup";
 import GlobalNotification from "next-common/components/globalNotification";
 import { ScanHeightSubscriber } from "../scanHeightSubscriber";
@@ -23,7 +21,6 @@ export default function BaseLayout({
   contentStyle = {},
 }) {
   const { sm } = useScreenSize();
-  const [navCollapsed] = useNavCollapsed();
 
   return (
     <>
@@ -35,19 +32,7 @@ export default function BaseLayout({
           <Nav />
         </section>
 
-        <section
-          className={cn(
-            "flex flex-col flex-1",
-            "transition-[max-width] motion-reduce:transition-none",
-            navCollapsed
-              ? "duration-[220ms] ease-in"
-              : "duration-[260ms] ease-out",
-            navCollapsed
-              ? "max-w-[calc(100%-72px)]"
-              : "max-w-[calc(100%-300px)]",
-            "max-sm:max-w-full max-sm:transition-none",
-          )}
-        >
+        <section className="flex min-w-0 flex-1 flex-col">
           {!sm && (
             <div className="sticky top-0 z-50 max-sm:hidden">
               <Header />
