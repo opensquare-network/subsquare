@@ -71,7 +71,9 @@ export function NavMenuItemTemplateContent({
       )}
       <span
         className={cn(
-          "w-full inline-flex justify-between items-center",
+          "nav-menu-item-content",
+          "w-full inline-flex justify-between items-center whitespace-nowrap",
+          "transition-opacity duration-[260ms] ease-out motion-reduce:transition-none",
           collapsed && "hidden",
         )}
       >

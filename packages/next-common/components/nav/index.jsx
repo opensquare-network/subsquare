@@ -8,7 +8,7 @@ import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
@@ -73,7 +73,19 @@ w-6 h-6 bg-navigationActive rounded
 
 function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
+  const [navContentVisible, setNavContentVisible] = useState(!navCollapsed);
   const { navigationBgFrom, navigationBgTo } = useThemeSetting();
+
+  useEffect(() => {
+    setNavContentVisible(!navCollapsed);
+  }, [navCollapsed]);
+
+  const handleToggleMenu = () => {
+    if (!navCollapsed) {
+      setNavContentVisible(false);
+    }
+    setNavCollapsed(!navCollapsed);
+  };
 
   return (
     <nav
@@ -98,18 +110,13 @@ function NavDesktop() {
       <div>
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
-          <Link
-            href="/"
-            className="min-w-0"
-            aria-hidden={navCollapsed}
-            tabIndex={navCollapsed ? -1 : undefined}
-          >
+          <Link href="/" className="min-w-0">
             <div
               className={cn(
                 "whitespace-nowrap transition-opacity ease-out motion-reduce:transition-none",
-                navCollapsed
-                  ? "opacity-0 duration-100 pointer-events-none"
-                  : "opacity-100 duration-150 delay-100",
+                navContentVisible
+                  ? "opacity-100 duration-[260ms]"
+                  : "opacity-0 duration-100 pointer-events-none",
               )}
             >
               <ChainName />
@@ -117,13 +124,7 @@ function NavDesktop() {
             </div>
           </Link>
           <div className="shrink-0">
-            <ToggleMenuButton
-              aria-expanded={!navCollapsed}
-              aria-label={
-                navCollapsed ? "Expand navigation" : "Collapse navigation"
-              }
-              onClick={() => setNavCollapsed(!navCollapsed)}
-            >
+            <ToggleMenuButton onClick={handleToggleMenu}>
               <ArrowFold
                 className={cn(
                   "transition-transform motion-reduce:transition-none",
@@ -138,7 +139,13 @@ function NavDesktop() {
         </div>
       </div>
 
-      <div className="p-4">
+      <div
+        className={cn(
+          "p-4",
+          !navContentVisible &&
+            "[&_.nav-menu-item-content]:opacity-0 [&_.nav-menu-item-content]:duration-100",
+        )}
+      >
         <NavMenu collapsed={navCollapsed} />
       </div>
     </nav>
@@ -202,13 +209,7 @@ function NavMobile() {
     >
       <div className={cn("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>
-          <ToggleMenuButton
-            aria-expanded={menuVisible}
-            aria-label={
-              menuVisible ? "Close navigation menu" : "Open navigation menu"
-            }
-            onClick={menuToggle}
-          >
+          <ToggleMenuButton onClick={menuToggle}>
             <ArrowFold
               className={cn(
                 "transition-transform duration-200 ease-out motion-reduce:transition-none",
