@@ -61,13 +61,10 @@ export default function NavMenuItemGroup({
   };
 
   return (
-    <ul className="w-full">
-      <li className="w-full">
+    <ul>
+      <li>
         <HoverCard.Root openDelay={0} closeDelay={0}>
-          <HoverCard.Trigger
-            className="w-full"
-            aria-expanded={submenuVisible}
-          >
+          <HoverCard.Trigger className="w-full">
             <NavMenuItemItem
               item={{
                 ...(menu.type === NAV_MENU_TYPE.subspace
@@ -116,7 +113,7 @@ export default function NavMenuItemGroup({
       {menu.items?.length > 0 && (
         <li
           className={cn(
-            "w-full grid transition-[grid-template-rows,opacity] motion-reduce:transition-none",
+            "grid transition-[grid-template-rows,opacity] motion-reduce:transition-none",
             submenuVisible
               ? "grid-rows-[1fr] opacity-100 duration-200 ease-out"
               : "grid-rows-[0fr] opacity-0 duration-150 ease-in pointer-events-none",
