@@ -8,13 +8,14 @@ import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
 import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
 import { useMountedState } from "react-use";
 import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 
 export default function Nav() {
   const isMobileFromUA = useIsMobileDevice();
@@ -30,10 +31,10 @@ export default function Nav() {
   }, [isMobileFromDetect, isMobileFromUA, isMounted]);
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       {!isMobileDevice && <NavDesktop />}
       <NavMobile />
-    </>
+    </MotionConfig>
   );
 }
 
@@ -70,16 +71,40 @@ w-6 h-6 bg-navigationActive rounded
 [&_svg_path]:stroke-navigationTextTertiary
 `;
 
+const desktopNavVariants = {
+  collapsed: {
+    width: 72,
+    transition: { duration: 0.22, ease: "easeIn" },
+  },
+  expanded: {
+    width: 300,
+    transition: { duration: 0.26, ease: "easeOut" },
+  },
+};
+
 function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
+  const [contentCollapsed, setContentCollapsed] = useState(navCollapsed);
   const { navigationBgFrom, navigationBgTo } = useThemeSetting();
 
+  const handleNavAnimationStart = () => {
+    setContentCollapsed(false);
+  };
+
+  const handleNavAnimationComplete = () => {
+    setContentCollapsed(navCollapsed);
+  };
+
   return (
-    <nav
+    <motion.nav
+      initial={false}
+      animate={navCollapsed ? "collapsed" : "expanded"}
+      variants={desktopNavVariants}
+      onAnimationStart={handleNavAnimationStart}
+      onAnimationComplete={handleNavAnimationComplete}
       className={cn(
-        navCollapsed ? "w-[72px]" : "w-[300px]",
         "border-r border-neutral300",
-        "max-w-[300px] max-sm:hidden h-full overflow-y-scroll",
+        "max-w-[300px] max-sm:hidden h-full overflow-x-hidden overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
         "scrollbar-hidden",
       )}
@@ -93,24 +118,34 @@ function NavDesktop() {
       <div>
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
-          <Link href="/">
-            <div className={cn(navCollapsed && "hidden")}>
+          <Link href="/" className="min-w-0">
+            <div
+              className={cn("whitespace-nowrap", contentCollapsed && "hidden")}
+            >
               <ChainName />
               <BrandingHint />
             </div>
           </Link>
-          <div>
+          <div className="shrink-0">
             <ToggleMenuButton onClick={() => setNavCollapsed(!navCollapsed)}>
-              <ArrowFold className={cn(navCollapsed && "rotate-180")} />
+              <ArrowFold
+                className={cn(
+                  "transition-transform motion-reduce:transition-none",
+                  navCollapsed
+                    ? "duration-[220ms] ease-in"
+                    : "duration-[260ms] ease-out",
+                  navCollapsed && "rotate-180",
+                )}
+              />
             </ToggleMenuButton>
           </div>
         </div>
       </div>
 
       <div className="p-4">
-        <NavMenu collapsed={navCollapsed} />
+        <NavMenu collapsed={contentCollapsed} />
       </div>
-    </nav>
+    </motion.nav>
   );
 }
 
@@ -121,6 +156,34 @@ const NavMobileFloatContainer = tw.div`
 fixed bottom-0 top-16 left-0 right-0
 p-4 overflow-y-scroll
 `;
+const MotionNavMobileFloatContainer = motion(NavMobileFloatContainer);
+
+const leftMenuVariants = {
+  hidden: {
+    x: -24,
+    opacity: 0,
+    transition: { duration: 0.16, ease: "easeIn" },
+  },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const topMenuVariants = {
+  hidden: {
+    y: -16,
+    opacity: 0,
+    transition: { duration: 0.16, ease: "easeIn" },
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 function NavMobile() {
   const [menuVisible, menuToggle] = useToggle(false);
   const [toolbarVisible, toolbarToggle] = useToggle(false);
@@ -144,7 +207,12 @@ function NavMobile() {
       <div className={cn("h-16", "flex items-center justify-between")}>
         <NavMobileToolbarItem>
           <ToggleMenuButton onClick={menuToggle}>
-            <ArrowFold className={cn(!menuVisible && "rotate-180")} />
+            <ArrowFold
+              className={cn(
+                "transition-transform duration-200 ease-out motion-reduce:transition-none",
+                !menuVisible && "rotate-180",
+              )}
+            />
           </ToggleMenuButton>
         </NavMobileToolbarItem>
         <Link href="/">
@@ -171,17 +239,33 @@ function NavMobile() {
         </NavMobileToolbarItem>
       </div>
 
-      {menuVisible && (
-        <NavMobileFloatContainer className={cn("bg-navigationBg")}>
-          <NavMenu />
-        </NavMobileFloatContainer>
-      )}
+      <AnimatePresence initial={false}>
+        {menuVisible && (
+          <MotionNavMobileFloatContainer
+            key="navigation-menu"
+            variants={leftMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="bg-navigationBg"
+          >
+            <NavMenu />
+          </MotionNavMobileFloatContainer>
+        )}
 
-      {toolbarVisible && (
-        <NavMobileFloatContainer className={cn("bg-neutral100")}>
-          <HeaderDrawer />
-        </NavMobileFloatContainer>
-      )}
+        {toolbarVisible && (
+          <MotionNavMobileFloatContainer
+            key="toolbar-menu"
+            variants={topMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="bg-neutral100"
+          >
+            <HeaderDrawer />
+          </MotionNavMobileFloatContainer>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

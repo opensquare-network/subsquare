@@ -64,7 +64,7 @@ export default function NavMenuItemGroup({
     <ul>
       <li>
         <HoverCard.Root openDelay={0} closeDelay={0}>
-          <HoverCard.Trigger>
+          <HoverCard.Trigger className="w-full">
             <NavMenuItemItem
               item={{
                 ...(menu.type === NAV_MENU_TYPE.subspace
@@ -92,6 +92,7 @@ export default function NavMenuItemGroup({
                 <span>
                   <ArrowDown
                     className={cn(
+                      "transition-transform duration-200 ease-out motion-reduce:transition-none",
                       submenuVisible && "rotate-180",
                       "[&_path]:stroke-navigationTextTertiary",
                     )}
@@ -110,13 +111,21 @@ export default function NavMenuItemGroup({
         </HoverCard.Root>
       </li>
       {menu.items?.length > 0 && (
-        <SubMenuItems
+        <li
           className={cn(
-            submenuVisible ? "block" : "hidden",
-            padSubMenuItems && "pl-10 pb-2",
+            "grid transition-[grid-template-rows,opacity] motion-reduce:transition-none",
+            submenuVisible
+              ? "grid-rows-[1fr] opacity-100 duration-200 ease-out"
+              : "grid-rows-[0fr] opacity-0 duration-150 ease-in pointer-events-none",
           )}
-          items={menu.items}
-        />
+        >
+          <div className="min-h-0 overflow-hidden">
+            <SubMenuItems
+              className={cn(padSubMenuItems && "pl-10 pb-2")}
+              items={menu.items}
+            />
+          </div>
+        </li>
       )}
     </ul>
   );
@@ -144,7 +153,7 @@ function SubMenuItems({ className = "", items = [] }) {
               <NavMenuDivider className="my-4 mx-3" />
             ) : (
               <>
-                <div className="ml-1 w-1 h-1 rounded-full bg-textSecondary" />
+                <div className="ml-1 h-1 w-1 shrink-0 rounded-full bg-textSecondary" />
                 <NavMenuItemItem
                   item={item}
                   items={item.items}
