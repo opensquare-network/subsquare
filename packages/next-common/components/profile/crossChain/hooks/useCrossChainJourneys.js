@@ -12,30 +12,43 @@ const EMPTY_PAGE_INFO = {
 };
 
 async function fetchCrossChainJourneys({ address, cursor = null }) {
-  const response = await fetch(OCELLOIDS_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${OCELLOIDS_API_KEY}`,
-    },
-    body: JSON.stringify({
-      pagination: {
-        limit: PAGE_SIZE,
-        ...(cursor ? { cursor } : {}),
+  let response;
+  try {
+    response = await fetch(OCELLOIDS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OCELLOIDS_API_KEY}`,
       },
-      args: {
-        op: "journeys.list",
-        criteria: {
-          address,
-          protocols: [XCM_PROTOCOL],
+      body: JSON.stringify({
+        pagination: {
+          limit: PAGE_SIZE,
+          ...(cursor ? { cursor } : {}),
         },
-      },
-    }),
-  });
-  const result = await response.json();
+        args: {
+          op: "journeys.list",
+          criteria: {
+            address,
+            protocols: [XCM_PROTOCOL],
+          },
+        },
+      }),
+    });
+  } catch {
+    throw new Error("Unable to connect to the cross-chain data provider");
+  }
+
+  let result;
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("Invalid response from the cross-chain data provider");
+  }
 
   if (!response.ok) {
-    throw new Error(result?.message || "Unable to load cross-chain data");
+    throw new Error(
+      result?.reason || result?.message || "Unable to load cross-chain data",
+    );
   }
 
   return {
@@ -46,7 +59,7 @@ async function fetchCrossChainJourneys({ address, cursor = null }) {
 
 export default function useCrossChainJourneys(cursor = null) {
   const address = useProfileAddress();
-  const { value, loading } = useAsync(async () => {
+  const { value, loading, error } = useAsync(async () => {
     if (!address) {
       return {
         items: [],
@@ -61,5 +74,6 @@ export default function useCrossChainJourneys(cursor = null) {
     isLoading: loading,
     items: value?.items ?? [],
     pageInfo: value?.pageInfo ?? EMPTY_PAGE_INFO,
+    error,
   };
 }

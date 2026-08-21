@@ -12,7 +12,7 @@ function ProfileCrossChainContent() {
   const [page, setPage] = useState(1);
   const [cursors, setCursors] = useState([null]);
   const cursor = cursors[page - 1] ?? null;
-  const { isLoading, items, pageInfo } = useCrossChainJourneys(cursor);
+  const { isLoading, items, pageInfo, error } = useCrossChainJourneys(cursor);
 
   const hasNextPage = pageInfo.hasNextPage && Boolean(pageInfo.endCursor);
 
@@ -30,7 +30,7 @@ function ProfileCrossChainContent() {
   return (
     <SecondaryCard>
       <Spin spinning={isLoading}>
-        <CrossChainDataList data={items} />
+        <CrossChainDataList data={items} error={error} />
       </Spin>
       <div className="mt-2 flex min-h-7 items-center justify-between gap-x-4">
         <PoweredBy />
@@ -47,14 +47,15 @@ function ProfileCrossChainContent() {
   );
 }
 
-const CrossChainDataList = memo(function CrossChainDataList({ data }) {
+const CrossChainDataList = memo(function CrossChainDataList({ data, error }) {
   const columnsDef = useColumnsDef();
+  const noDataText = error?.message || "No cross-chain data";
 
   return (
     <MapDataList
       columnsDef={columnsDef}
       data={data}
-      noDataText="No cross-chain data"
+      noDataText={noDataText}
     />
   );
 });
