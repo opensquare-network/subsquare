@@ -8,7 +8,7 @@ import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
@@ -73,19 +73,7 @@ w-6 h-6 bg-navigationActive rounded
 
 function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
-  const [navContentVisible, setNavContentVisible] = useState(!navCollapsed);
   const { navigationBgFrom, navigationBgTo } = useThemeSetting();
-
-  useEffect(() => {
-    setNavContentVisible(!navCollapsed);
-  }, [navCollapsed]);
-
-  const handleToggleMenu = () => {
-    if (!navCollapsed) {
-      setNavContentVisible(false);
-    }
-    setNavCollapsed(!navCollapsed);
-  };
 
   return (
     <nav
@@ -111,20 +99,15 @@ function NavDesktop() {
         <ChainLogo className="p-4 flex" />
         <div className="py-4 px-6 flex justify-between h-[84px]">
           <Link href="/" className="min-w-0">
-            <div
-              className={cn(
-                "whitespace-nowrap transition-opacity ease-out motion-reduce:transition-none",
-                navContentVisible
-                  ? "opacity-100 duration-[260ms]"
-                  : "opacity-0 duration-100 pointer-events-none",
-              )}
-            >
+            <div className={cn("whitespace-nowrap", navCollapsed && "hidden")}>
               <ChainName />
               <BrandingHint />
             </div>
           </Link>
           <div className="shrink-0">
-            <ToggleMenuButton onClick={handleToggleMenu}>
+            <ToggleMenuButton
+              onClick={() => setNavCollapsed(!navCollapsed)}
+            >
               <ArrowFold
                 className={cn(
                   "transition-transform motion-reduce:transition-none",
@@ -139,13 +122,7 @@ function NavDesktop() {
         </div>
       </div>
 
-      <div
-        className={cn(
-          "p-4",
-          !navContentVisible &&
-            "[&_.nav-menu-item-content]:opacity-0 [&_.nav-menu-item-content]:duration-100",
-        )}
-      >
+      <div className="p-4">
         <NavMenu collapsed={navCollapsed} />
       </div>
     </nav>

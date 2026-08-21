@@ -158,7 +158,7 @@ function SubMenuItems({ className = "", items = [] }) {
               <NavMenuDivider className="my-4 mx-3" />
             ) : (
               <>
-                <div className="nav-menu-item-content ml-1 w-1 h-1 rounded-full bg-textSecondary transition-opacity duration-[260ms] ease-out motion-reduce:transition-none" />
+                <div className="ml-1 w-1 h-1 rounded-full bg-textSecondary" />
                 <NavMenuItemItem
                   item={item}
                   items={item.items}
