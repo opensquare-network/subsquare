@@ -2,9 +2,11 @@ import { usePost } from "next-common/context/post";
 import Tooltip from "next-common/components/tooltip";
 import { SystemInfo } from "@osn/icons/subsquare";
 import { gov2State } from "next-common/utils/consts/state";
-import TimeDuration from "next-common/components/TimeDuration";
+import TimeDurationWithBlockTime from "next-common/components/TimeDurationWithBlockTime";
+import useReferendumBlockTime from "next-common/hooks/referenda/useReferendumBlockTime";
 
 function AttemptsLastTimeDuration({ start, end }) {
+  const blockTime = useReferendumBlockTime();
   if (!start || !end) {
     return null;
   }
@@ -13,7 +15,11 @@ function AttemptsLastTimeDuration({ start, end }) {
   return (
     <span>
       ,&nbsp;
-      <TimeDuration blocks={blocks} showMonths={false} />
+      <TimeDurationWithBlockTime
+        blocks={blocks}
+        blockTime={blockTime}
+        showMonths={false}
+      />
     </span>
   );
 }

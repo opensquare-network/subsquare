@@ -3,7 +3,7 @@ import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import Progress from "next-common/components/progress";
-import TimeDuration from "next-common/components/TimeDuration";
+import TimeDurationWithBlockTime from "next-common/components/TimeDurationWithBlockTime";
 import {
   ProgressBarWrapper,
   ProgressGroup,
@@ -12,6 +12,7 @@ import {
 } from "../styled";
 import Threshold from "next-common/components/referenda/threshold";
 import { useDecision } from "next-common/context/post/gov2/track";
+import useReferendumBlockTime from "next-common/hooks/referenda/useReferendumBlockTime";
 import { toPercentage } from "next-common/utils";
 import DecisionTooltip from "./tooltip";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
@@ -32,6 +33,7 @@ function OverDecisionMarker({ allBlocks, normalCaseBlocks }) {
 
 export default function DecisionProgress() {
   const latestHeight = useAhmLatestHeight();
+  const blockTime = useReferendumBlockTime();
 
   const decisionBlocks = useDecisionBlocks();
   const period = useDecision();
@@ -74,7 +76,11 @@ export default function DecisionProgress() {
           className="absolute"
           style={{ right: `${100 - decisionTimePercentage}%` }}
         >
-          <TimeDuration blocks={period} showMonths={false} />
+          <TimeDurationWithBlockTime
+            blocks={period}
+            blockTime={blockTime}
+            showMonths={false}
+          />
         </span>
       </ProgressInfo>
     </ProgressGroup>

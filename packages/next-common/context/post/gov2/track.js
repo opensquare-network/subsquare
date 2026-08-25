@@ -1,8 +1,16 @@
 import { usePostOnChainData } from "../index";
 import { useDecisionBlocks } from "next-common/components/pages/components/gov2/sidebar/status/useDecisionPercentage";
+import useOnChainTrackInfo from "next-common/hooks/referenda/useOnChainTrackInfo";
 
 export function useTrack() {
-  const { trackInfo } = usePostOnChainData();
+  const onchainData = usePostOnChainData();
+  const ssrTrackInfo = onchainData.trackInfo;
+  // prefer on-chain track info, fall back to ssr data
+  const onChainTrackInfo = useOnChainTrackInfo(
+    ssrTrackInfo?.id ?? onchainData.track,
+  );
+  const trackInfo = onChainTrackInfo || ssrTrackInfo;
+
   if (!trackInfo) {
     throw new Error(
       "No track info, make sure track existed before using `useTrack`",

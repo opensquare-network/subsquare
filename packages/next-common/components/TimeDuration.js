@@ -1,22 +1,9 @@
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useMemo } from "react";
-import BigNumber from "bignumber.js";
-import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
+import TimeDurationWithBlockTime from "./TimeDurationWithBlockTime";
 
-export default function TimeDuration({
-  blocks = 0,
-  showMonths = true,
-  slice = 2,
-}) {
+export default function TimeDuration(props) {
   const blockTime = useSelector(blockTimeSelector);
 
-  return useMemo(() => {
-    const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-
-    return formatTimeDuration(value, {
-      showMonths,
-      slice,
-    });
-  }, [blocks, blockTime, showMonths, slice]);
+  return <TimeDurationWithBlockTime {...props} blockTime={blockTime} />;
 }

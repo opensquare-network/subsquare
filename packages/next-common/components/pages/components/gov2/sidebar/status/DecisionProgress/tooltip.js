@@ -1,12 +1,11 @@
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
-import { useSelector } from "react-redux";
 import { useDecisionBlocks, useDecisionEnd } from "../useDecisionPercentage";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useDecision } from "next-common/context/post/gov2/track";
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
+import useReferendumBlockTime from "next-common/hooks/referenda/useReferendumBlockTime";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 
 export default function DecisionTooltip() {
@@ -16,7 +15,7 @@ export default function DecisionTooltip() {
   const decisionBlocks = useDecisionBlocks();
   const end = useDecisionEnd();
   const votingFinishedHeight = useReferendumVotingFinishHeight();
-  const blockTime = useSelector(blockTimeSelector);
+  const blockTime = useReferendumBlockTime();
 
   const decisionPercentage = useMemo(() => {
     if (isNil(latestHeight)) {
