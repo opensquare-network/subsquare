@@ -108,6 +108,7 @@ const hydradx = {
   }),
   integrations: {
     subscan: true,
+    profileCrossChain: true,
   },
   referendaActions: {
     startFrom: 98,

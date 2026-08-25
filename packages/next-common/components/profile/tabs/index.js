@@ -14,6 +14,7 @@ export function TabTitle({ active, children }) {
     <div
       className={cn(
         "text16Bold",
+        "whitespace-nowrap",
         active ? "text-textPrimary" : "text-textTertiary",
       )}
       role="button"
@@ -109,7 +110,20 @@ export default function useProfileTabs() {
       url: `${prefix}transfers`,
       exactMatch: false,
     });
+  }
 
+  if (integrations?.profileCrossChain) {
+    tabs.push({
+      label({ active }) {
+        return <TabTitle active={active}>Cross Chain</TabTitle>;
+      },
+      value: "cross-chain",
+      url: `${prefix}cross-chain`,
+      exactMatch: false,
+    });
+  }
+
+  if (integrations?.statescan) {
     if (beneficiariesSummary) {
       tabs.push({
         label({ active }) {
