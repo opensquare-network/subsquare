@@ -151,6 +151,12 @@ export const estimateBlocksTime = (blocks, blockTime) => {
   return formatTimeDuration(value, { withUnitSpace: true });
 };
 
+export {
+  getBlockTimeHistory,
+  estimateBlockTimeSpanMs,
+  estimateBlocksTimeV2,
+} from "./estimateBlocksTimeV2";
+
 export const estimateBlocksTimeInDate = (blocks, blockTime) => {
   if (!blockTime) {
     return null;
