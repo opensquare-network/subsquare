@@ -2,8 +2,7 @@ import { useTrack } from "next-common/context/post/gov2/track";
 import { useDecidingSince } from "next-common/context/post/gov2/referendum";
 import { useOnchainData } from "next-common/context/post";
 import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import useReferendumBlockTime from "next-common/hooks/referenda/useReferendumBlockTime";
 import useChainOrScanHeight from "next-common/hooks/height";
 import { useMemo } from "react";
 
@@ -48,7 +47,7 @@ const oneHour = 3600 * 1000;
  * @returns
  */
 export function useBlockSteps() {
-  const blockTime = useSelector(blockTimeSelector);
+  const blockTime = useReferendumBlockTime();
   return oneHour / blockTime; // it means the blocks between 2 dots.
 }
 

@@ -1,8 +1,21 @@
 import { usePostOnChainData } from "../index";
 import { useDecisionBlocks } from "next-common/components/pages/components/gov2/sidebar/status/useDecisionPercentage";
+import useOnChainTrackInfo from "next-common/hooks/referenda/useOnChainTrackInfo";
+import useReferendumVotingFinishHeight from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 
 export function useTrack() {
-  const { trackInfo } = usePostOnChainData();
+  const onchainData = usePostOnChainData();
+  const ssrTrackInfo = onchainData.trackInfo;
+  const trackId = ssrTrackInfo?.id ?? onchainData.track;
+  const finishHeight = useReferendumVotingFinishHeight();
+  // ongoing referendum: latest on-chain track info; finished referendum:
+  // on-chain track info as of the height it ended
+  const onChainTrackInfo = useOnChainTrackInfo(
+    trackId,
+    typeof finishHeight === "number" ? finishHeight : null,
+  );
+  const trackInfo = onChainTrackInfo || ssrTrackInfo;
+
   if (!trackInfo) {
     throw new Error(
       "No track info, make sure track existed before using `useTrack`",

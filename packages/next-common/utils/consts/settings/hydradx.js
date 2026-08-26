@@ -76,7 +76,22 @@ const hydradx = {
   identity: "hydradx",
   symbol: "HDX",
   decimals: 12,
-  blockTime: 6000,
+  blockTime: 2000,
+  // Block time history: each entry means "from this block height onwards,
+  // blocks take blockTimeMs". Used to estimate block spans across historical
+  // block-time changes.
+  blockTimeHistory: [
+    // 12s: genesis era, one 12s block per 6s relay slot.
+    { height: 0, blockTimeMs: 12000 },
+    // 6s: 2025-05-22. Block production switched to one 6s block per slot.
+    // Client/collator-side change (no runtime spec bump, spec stayed v313).
+    { height: 7603071, blockTimeMs: 6000 },
+    // 2s: 2026-08-24 (runtime v435 -> v440). v440 enabled async backing
+    // (pallet_aura AllowMultipleBlocksPerSlot = true,
+    // BLOCK_PROCESSING_VELOCITY = 3): up to 3 blocks per 6s relay slot,
+    // giving ~2s average block time.
+    { height: 13762620, blockTimeMs: 2000 },
+  ],
   hasElections: true,
   ss58Format: 0,
   avatar: ProjectIconHydrationLight,

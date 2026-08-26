@@ -21,7 +21,8 @@ import {
   useDecidingSince,
 } from "next-common/context/post/gov2/referendum";
 import { isNil } from "lodash-es";
-import TimeDuration from "next-common/components/TimeDuration";
+import TimeDurationWithBlockTime from "next-common/components/TimeDurationWithBlockTime";
+import useReferendumBlockTime from "next-common/hooks/referenda/useReferendumBlockTime";
 import { useDecisionBlocks } from "./useDecisionPercentage";
 import { useZoomMode, zoomModes } from "./context/zoomContext";
 import { usePostState } from "next-common/context/post";
@@ -90,6 +91,7 @@ function useFinishedConfirmationProgressItems() {
   const decisionBlocks = useDecisionBlocks();
   const decisionSince = useDecidingSince();
   const confirmFailPairs = useConfirmTimelineFinishedPairs();
+  const blockTime = useReferendumBlockTime();
 
   return useMemo(() => {
     return (confirmFailPairs || []).map((pair) => {
@@ -122,13 +124,17 @@ function useFinishedConfirmationProgressItems() {
           <ProgressTooltipFailContent>
             <span>Started: {startedHeight?.toLocaleString?.()}</span>
             <span>
-              Duration: <TimeDuration blocks={abortedHeight - startedHeight} />
+              Duration:{" "}
+              <TimeDurationWithBlockTime
+                blocks={abortedHeight - startedHeight}
+                blockTime={blockTime}
+              />
             </span>
           </ProgressTooltipFailContent>
         ),
       };
     });
-  }, [confirmFailPairs, decisionBlocks, decisionSince]);
+  }, [confirmFailPairs, decisionBlocks, decisionSince, blockTime]);
 }
 
 function useOngoingConfirmationProgressItem() {
