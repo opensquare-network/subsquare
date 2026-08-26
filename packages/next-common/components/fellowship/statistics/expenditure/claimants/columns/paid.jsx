@@ -1,4 +1,4 @@
-import SalaryAssetValues from "next-common/components/collectives/salaryAssetValues";
+import SalaryTotalWithTooltip from "next-common/components/collectives/salaryTotalWithTooltip";
 
 export function useStatisticsClaimantsPaidColumn() {
   return {
@@ -6,7 +6,7 @@ export function useStatisticsClaimantsPaidColumn() {
     width: 240,
     className: "text-right",
     cellRender(data, idx) {
-      return <SalaryAssetValues key={idx} salary={data.salary} />;
+      return <SalaryTotalWithTooltip key={idx} salary={data.salary} />;
     },
   };
 }
