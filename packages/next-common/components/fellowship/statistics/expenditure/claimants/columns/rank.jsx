@@ -1,4 +1,6 @@
-import FellowshipRank from "next-common/components/fellowship/rank";
+import FellowshipRank, {
+  OffboardedFellowshipRank,
+} from "next-common/components/fellowship/rank";
 import { isNil } from "lodash-es";
 
 export function useStatisticsClaimantsRankColumn() {
@@ -7,7 +9,7 @@ export function useStatisticsClaimantsRankColumn() {
     width: 80,
     cellRender(data, idx) {
       if (isNil(data?.rank)) {
-        return "-";
+        return <OffboardedFellowshipRank />;
       }
       return <FellowshipRank key={idx} rank={data.rank} />;
     },
