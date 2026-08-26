@@ -8,10 +8,9 @@ import {
   useSupportPoints,
 } from "next-common/components/charts/thresholdCurve/annotations";
 import { useDecidingEndHeight } from "next-common/context/post/gov2/decidingPercentage";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useBeginHeight } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
 import { useBlockSteps } from "next-common/utils/hooks/referenda/detail/useReferendumBlocks";
+import useReferendumBlockTime from "next-common/hooks/referenda/useReferendumBlockTime";
 import { useMemo } from "react";
 import useChainOrScanHeight from "next-common/hooks/height";
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
@@ -24,7 +23,7 @@ export default function useInnerPoints(labels) {
   const supportThreshold = useSupportThreshold();
   const beginHeight = useBeginHeight();
   const decidingEnd = useDecidingEndHeight();
-  const blockTime = useSelector(blockTimeSelector);
+  const blockTime = useReferendumBlockTime();
 
   const gone = decidingEnd ? decidingEnd - beginHeight : 0;
 
