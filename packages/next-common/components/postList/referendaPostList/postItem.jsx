@@ -27,6 +27,7 @@ import { getGov2ReferendumStateArgs } from "next-common/utils/gov2/result";
 import PostListMyReferendaVoteMark from "next-common/components/postList/myVoteMark/referenda";
 import Flex from "next-common/components/styled/flex";
 import { gov2VotingStates } from "next-common/utils/consts/state";
+import { EnactmentErrorIndicator } from "next-common/components/gov2/referendum/enactmentErrorWarning";
 
 export default function PostItem({ data }) {
   let stateArgs = useMemo(
@@ -63,6 +64,7 @@ export default function PostItem({ data }) {
             <PostItemLabel labels={data?.labels} />
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
+            <EnactmentErrorIndicator data={data} />
           </Footer>
           <Flex className="gap-x-2">
             <PostListMyReferendaVoteMark data={data} />

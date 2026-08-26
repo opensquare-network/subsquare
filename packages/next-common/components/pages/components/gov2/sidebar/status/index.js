@@ -10,7 +10,7 @@ import EnactmentProgress from "./enactment";
 import Zoom from "./zoom";
 import { ZoomProvider } from "./context/zoomContext";
 import DecisionWarning from "./warning";
-import CallUnavailableWarning from "./callUnavailableWarning";
+import EnactmentErrorWarning from "next-common/components/gov2/referendum/enactmentErrorWarning";
 
 export default function Gov2Status() {
   const state = usePostState();
@@ -19,7 +19,7 @@ export default function Gov2Status() {
     return (
       <StatusWrapper>
         <EnactmentProgress />
-        <CallUnavailableWarning />
+        <EnactmentErrorWarning />
       </StatusWrapper>
     );
   }
