@@ -6,7 +6,7 @@ import { gov2State } from "next-common/utils/consts/state";
 
 const enactmentErrorMessages = {
   CallUnavailable: "The call was not found when execution.",
-  PermanentlyOverweight: "This task is permanently overweight.",
+  PermanentlyOverweight: "Execution failed due to overweight.",
 };
 
 export function EnactmentErrorIndicator({ data }) {
