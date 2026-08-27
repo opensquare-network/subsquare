@@ -37,7 +37,7 @@ export function ToBeAwardedItem({ price }) {
   );
 }
 
-function NextBurnItem({ free, isLoading }) {
+export function NextBurnItem({ free, isLoading }) {
   return (
     <SummaryItem title="Next Burn">
       <LoadableContent isLoading={isLoading}>

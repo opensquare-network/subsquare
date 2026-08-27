@@ -7,8 +7,13 @@ import MembersInduction from "./fellowship/membersInduction";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import PolkadotTreasuryStats from "./polkadotTreasuryStats";
 // import FellowshipTreasuryStats from "./fellowship/fellowshipTreasuryStats";
-import { isPolkadotChain, isKusamaChain } from "next-common/utils/chain";
+import {
+  isPolkadotChain,
+  isKusamaChain,
+  isHydrationChain,
+} from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
+import HydrationTreasuryStats from "./hydrationTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import OnlyChain from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
@@ -28,6 +33,10 @@ function ConditionTreasuryStats() {
 
   if (isKusamaChain(chain)) {
     return <KusamaTreasuryStats />;
+  }
+
+  if (isHydrationChain(chain)) {
+    return <HydrationTreasuryStats />;
   }
 
   return <TreasuryStats />;
