@@ -3,38 +3,10 @@ import { useCallback, useState, useEffect } from "react";
 import useAllAssets from "./common/useAllAssets";
 import useAccountBalance from "./common/useAccountBalance";
 import { useHydrationSDK } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
+import { queryAssetPrice } from "next-common/hooks/ecoAssets/hydration/queryAssetPrice";
 import { external } from "./utils/assetUtils";
-import { USDT_ASSET_ID } from "./utils/constants";
 
-export async function queryAssetPrice(sdk, assetIn, assetOut = USDT_ASSET_ID) {
-  if (!assetIn || !assetOut || !sdk) {
-    return NaN;
-  }
-
-  if (assetIn === assetOut) {
-    return 1;
-  }
-
-  const { api } = sdk;
-  let spotPrice = NaN;
-  try {
-    const res = await api.router.getBestSpotPrice(
-      assetIn.toString(),
-      assetOut.toString(),
-    );
-
-    if (res && res.amount.isFinite()) {
-      spotPrice = res.amount
-        .shiftedBy(-res.decimals)
-        .decimalPlaces(10)
-        .toString();
-    }
-  } catch (error) {
-    console.error(error);
-  }
-
-  return spotPrice;
-}
+export { queryAssetPrice };
 
 async function calculateTotalBalance(sdk, balances) {
   let totalSum = new BigNumber(0);
