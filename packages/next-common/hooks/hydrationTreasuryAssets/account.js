@@ -10,13 +10,14 @@ function normalizeBalance(balance = {}) {
   const freeBase = toBigNumber(balance.free);
   const reservedBase = toBigNumber(balance.reserved);
   const frozenBase = toBigNumber(balance.frozen);
+  const lockedBase = BigNumber.maximum(frozenBase.minus(reservedBase), 0);
 
   return {
     freeBase,
     reservedBase,
     frozenBase,
     totalBase: freeBase.plus(reservedBase),
-    transferableBase: BigNumber.maximum(freeBase.minus(frozenBase), 0),
+    transferableBase: BigNumber.maximum(freeBase.minus(lockedBase), 0),
   };
 }
 
@@ -39,6 +40,24 @@ function normalizeTokenBalances(entries, assetsById) {
   }
 
   return balances;
+}
+
+async function fetchSystemAccountOrNull(api, address) {
+  try {
+    return await api.query.system.account(address);
+  } catch (error) {
+    console.error("Error fetching hydration treasury native balance:", error);
+    return null;
+  }
+}
+
+async function fetchTokenEntriesOrEmpty(api, address) {
+  try {
+    return await api.query.tokens.accounts.entries(address);
+  } catch (error) {
+    console.error("Error fetching hydration treasury token balances:", error);
+    return [];
+  }
 }
 
 async function fetchErc20Balances(sdk, address, assetsById) {
@@ -74,8 +93,8 @@ export async function fetchAccountHoldings({
   nativeAsset,
 }) {
   const [systemAccount, tokenEntries, erc20Balances] = await Promise.all([
-    api.query.system.account(address),
-    api.query.tokens.accounts.entries(address),
+    fetchSystemAccountOrNull(api, address),
+    fetchTokenEntriesOrEmpty(api, address),
     fetchErc20Balances(sdk, address, assetsById),
   ]);
 
