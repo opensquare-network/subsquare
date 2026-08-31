@@ -25,6 +25,7 @@ import { gov2State, gov2VotingStates } from "next-common/utils/consts/state";
 import FellowshipPreparingCountdown from "next-common/components/fellowship/referenda/preparingCountdown";
 import DecisionCountdown from "next-common/components/gov2/postList/decisionCountdown";
 import ConfirmCountdown from "next-common/components/gov2/postList/confirmCountdown";
+import { EnactmentErrorIndicator } from "next-common/components/gov2/referendum/enactmentErrorWarning";
 import PostItemVotesSummary from "./postItemVotesSummary";
 
 export default function PostItem({ data }) {
@@ -74,6 +75,7 @@ export default function PostItem({ data }) {
             <PostItemLabel labels={data?.labels} />
             <PostItemMalicious isMalicious={data?.isMalicious} />
             <PostItemAISummary data={data} />
+            <EnactmentErrorIndicator data={data} />
           </Footer>
           <Gov2ReferendaTag state={data.status} args={stateArgs} />
         </FooterWrapper>
