@@ -91,6 +91,7 @@ export default function FellowshipReferendaFilter({ isUnVotedOnlyLoading }) {
               {address && (
                 <div className="py-3">
                   <UnVotedOnlyOption
+                    tooltip="Only referenda I can but haven't voted"
                     className="justify-between"
                     isOn={value.unVotedOnly}
                     setIsOn={(unVotedOnly) => {
