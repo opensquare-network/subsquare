@@ -11,51 +11,42 @@ import normalizeFellowshipReferendaListItem from "next-common/utils/gov2/list/no
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import NewFellowshipProposalButton from "next-common/components/summary/newFellowshipProposalButton";
 import CollectivesProvider from "next-common/context/collectives/collectives";
-import UnVotedOnlyOption from "next-common/components/referenda/unVotedOnlyOption";
 import useMyUnVotedCollectiveReferenda from "next-common/hooks/referenda/useMyUnVotedCollectiveReferenda";
-import { useEffect, useMemo, useState } from "react";
+import { camelCase, isEmpty, upperFirst } from "lodash-es";
+import { useMemo, useState } from "react";
 import { usePageProps } from "next-common/context/page";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import {
   UnVotedOnlyProvider,
   useUnVotedOnlyContext,
 } from "next-common/components/referenda/list/unVotedContext";
 import FellowshipListLayout from "next-common/components/fellowship/fellowshipListLayout";
+import FellowshipReferendaFilter from "next-common/components/fellowship/referenda/filter";
 import TrackPanel from "next-common/components/referenda/trackPanel";
 import { MigrationConditionalApiProvider } from "next-common/context/migration/conditionalApi";
+import { useAsync } from "react-use";
 
 function useMyUnVotedReferendaPosts() {
-  const [posts, setPosts] = useState();
-  const [isLoading, setIsLoading] = useState(true);
+  const { status } = usePageProps();
   const { myUnVotedReferenda, isLoading: isLoadingMyUnVotedReferenda } =
     useMyUnVotedCollectiveReferenda();
 
-  useEffect(() => {
-    if (isLoadingMyUnVotedReferenda) {
-      return;
+  const { value: posts, loading: isLoadingPosts } = useAsync(async () => {
+    if (isLoadingMyUnVotedReferenda || isEmpty(myUnVotedReferenda)) {
+      return [];
     }
 
-    backendApi
-      .fetch(
-        `${fellowshipReferendumsApi}?simple=1&referendum_index=${myUnVotedReferenda.join(
-          ",",
-        )}`,
-      )
-      .then(({ result, error }) => {
-        if (error) {
-          setPosts([]);
-          return;
-        }
-        setPosts(result);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [myUnVotedReferenda, isLoadingMyUnVotedReferenda]);
+    const { result, error } = await backendApi.fetch(fellowshipReferendumsApi, {
+      simple: 1,
+      referendumIndex: myUnVotedReferenda.join(","),
+      ...status,
+    });
+
+    return error ? [] : result ?? [];
+  }, [myUnVotedReferenda, isLoadingMyUnVotedReferenda, status]);
 
   return {
     posts,
-    isLoading,
+    isLoading: isLoadingMyUnVotedReferenda || isLoadingPosts,
   };
 }
 
@@ -66,8 +57,6 @@ function WithFilterPostList({
   pagination,
 }) {
   const { fellowshipTracks } = usePageProps();
-  const address = useRealAddress();
-  const { unVotedOnly, setUnVotedOnly } = useUnVotedOnlyContext();
 
   const items = (posts || []).map((item) =>
     normalizeFellowshipReferendaListItem(item, fellowshipTracks),
@@ -77,17 +66,12 @@ function WithFilterPostList({
     <FellowshipReferendaPostList
       items={items}
       pagination={pagination}
-      titleCount={total}
+      titleCount={isUnVotedOnlyLoading ? "Filtering un-voted..." : total}
       titleExtra={
         <div className="flex gap-[12px] items-center">
-          {address && (
-            <UnVotedOnlyOption
-              tooltip="Only referenda I can but haven't voted"
-              isLoading={isUnVotedOnlyLoading}
-              isOn={unVotedOnly}
-              setIsOn={setUnVotedOnly}
-            />
-          )}
+          <FellowshipReferendaFilter
+            isUnVotedOnlyLoading={isUnVotedOnlyLoading}
+          />
           <NewFellowshipProposalButton />
         </div>
       }
@@ -191,7 +175,12 @@ export default function FellowshipPage({ fellowshipSummary }) {
 }
 
 export const getServerSideProps = withCommonProps(async (context) => {
-  const { page = 1, page_size: pageSize = defaultPageSize } = context.query;
+  const {
+    page = 1,
+    page_size: pageSize = defaultPageSize,
+    status = "",
+  } = context.query;
+  const normalizedStatus = upperFirst(camelCase(status));
 
   const [
     tracksProps,
@@ -204,6 +193,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       page,
       pageSize,
       simple: true,
+      ...(normalizedStatus ? { status: normalizedStatus } : {}),
     }),
     backendApi.fetch(fellowshipReferendumsSummaryApi),
     backendApi.fetch(fellowshipTracksApi),
@@ -214,6 +204,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
       posts: posts ?? EmptyList,
       fellowshipSummary: fellowshipSummary ?? {},
       fellowshipTracksDetail: fellowshipTracksDetail ?? null,
+      status: normalizedStatus ?? {},
       ...tracksProps,
     },
   };
