@@ -88,6 +88,7 @@ export function useSendTransaction() {
     async ({
       api,
       tx,
+      onTxStart = noop,
       onInBlock = noop,
       onSubmitted = noop,
       onFinalized = noop,
@@ -119,6 +120,7 @@ export function useSendTransaction() {
         dispatch(
           newPendingToast(toastId, `(1/${totalSteps}) Waiting for signing...`),
         );
+        onTxStart?.();
       };
 
       const _onSubmitted = () => {
@@ -189,6 +191,7 @@ export function useSendTransaction() {
             tx,
             onStarted: () => {
               dispatch(newPendingToast(toastId, "Waiting for signing..."));
+              onTxStart?.();
             },
             onSubmitted: () => {
               dispatch(newSuccessToast("Multisig transaction submitted"));
@@ -260,6 +263,7 @@ export function useSendTransaction() {
             tx,
             onStarted: () => {
               dispatch(newPendingToast(toastId, "Waiting for signing..."));
+              onTxStart?.();
             },
             onInBlock: _onInBlock,
             onSubmitted: _onSubmitted,

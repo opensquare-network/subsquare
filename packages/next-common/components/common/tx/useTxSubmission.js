@@ -16,6 +16,7 @@ export default function useTxSubmission({
   onSubmitted = noop,
   onCancelled = noop,
   onTxError = noop,
+  onTxStart = noop,
 }) {
   const dispatch = useDispatch();
   const defaultApi = useContextApi();
@@ -75,6 +76,7 @@ export default function useTxSubmission({
       await sendTxFunc({
         api: apiToUse,
         tx,
+        onTxStart,
         onSubmitted,
         onInBlock: maybeMultisigOnInBlock,
         onFinalized: maybeMultisigOnFinalized,
@@ -88,6 +90,7 @@ export default function useTxSubmission({
       signerAccount,
       getTx,
       sendTxFunc,
+      onTxStart,
       onSubmitted,
       maybeMultisigOnInBlock,
       maybeMultisigOnFinalized,
