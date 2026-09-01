@@ -15,6 +15,9 @@ export default function TxSubmissionButton({
   onFinalized = noop,
   onInBlock = noop,
   onSubmitted = noop,
+  onCancelled = noop,
+  onTxError = noop,
+  onTxStart = noop,
   autoClose = true,
 }) {
   const onClose = usePopupOnClose();
@@ -23,11 +26,14 @@ export default function TxSubmissionButton({
     getTxFunc,
     onFinalized,
     onInBlock,
+    onCancelled,
+    onTxError,
+    onTxStart,
     onSubmitted: () => {
+      onSubmitted();
       if (autoClose) {
         onClose();
       }
-      onSubmitted();
     },
   });
 
@@ -58,12 +64,18 @@ export function useTxSubmissionButton({
   onFinalized = noop,
   onInBlock = noop,
   onSubmitted = noop,
+  onCancelled = noop,
+  onTxError = noop,
+  onTxStart = noop,
 }) {
   const { isSubmitting, isWrapping, doSubmit } = useTxSubmission({
     getTxFunc,
     onFinalized,
     onInBlock,
     onSubmitted,
+    onCancelled,
+    onTxError,
+    onTxStart,
   });
 
   return {

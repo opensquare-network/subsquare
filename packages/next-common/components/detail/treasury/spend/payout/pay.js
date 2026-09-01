@@ -1,6 +1,6 @@
 import { useOnchainData, usePostState } from "next-common/context/post";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasurySpend";
 import { isNil } from "lodash-es";
@@ -13,30 +13,55 @@ const Popup = dynamicPopup(() => import("./popup"));
 
 export default function TreasurySpendPay() {
   const [showPopup, setShowPopup] = useState(false);
+  const [payoutLoading, setPayoutLoading] = useState(false);
+  const flowStartedRef = useRef(false);
   const state = usePostState();
 
   if (["Paid", "Processed"].includes(state)) {
     return null;
   }
 
+  const onOpen = () => {
+    setShowPopup(true);
+  };
+
+  const onClose = () => {
+    setShowPopup(false);
+    if (!flowStartedRef.current) {
+      setPayoutLoading(false);
+    }
+  };
+
+  const stopPayoutLoading = () => {
+    flowStartedRef.current = false;
+    setPayoutLoading(false);
+  };
+
   return (
     <>
-      <ExpiredGuard setShowPopup={setShowPopup}>
-        <PayoutContent setShowPopup={setShowPopup} />
+      <ExpiredGuard onOpen={onOpen}>
+        <PayoutContent onOpen={onOpen} payoutLoading={payoutLoading} />
       </ExpiredGuard>
-      {showPopup && <Popup onClose={() => setShowPopup(false)} />}
+      {showPopup && (
+        <Popup
+          onClose={onClose}
+          onTxStart={() => {
+            flowStartedRef.current = true;
+            setPayoutLoading(true);
+          }}
+          onInBlock={stopPayoutLoading}
+          onTxError={stopPayoutLoading}
+          onCancelled={stopPayoutLoading}
+        />
+      )}
     </>
   );
 }
 
-function ExpiredGuard({ children, setShowPopup = noop }) {
+function ExpiredGuard({ children, onOpen = noop }) {
   const latestHeight = useAhmLatestHeight();
   const { meta } = useOnchainData() || {};
   const { expireAt } = meta || {};
-
-  const onStillPayout = () => {
-    setShowPopup(true);
-  };
 
   if (expireAt && latestHeight >= expireAt) {
     return (
@@ -44,7 +69,7 @@ function ExpiredGuard({ children, setShowPopup = noop }) {
         This treasury spend is expired,{" "}
         <span
           className={cn("text-theme500 cursor-pointer font-bold")}
-          onClick={onStillPayout}
+          onClick={onOpen}
         >
           still payout.
         </span>
@@ -55,7 +80,7 @@ function ExpiredGuard({ children, setShowPopup = noop }) {
   }
 }
 
-function PayoutContent({ setShowPopup = noop }) {
+function PayoutContent({ onOpen = noop, payoutLoading = false }) {
   const { index, meta } = useOnchainData() || {};
   const latestHeight = useAhmLatestHeight();
   const { spend: onchainStatus, loading } = useSubTreasurySpend(index);
@@ -78,14 +103,14 @@ function PayoutContent({ setShowPopup = noop }) {
     if (isDisabled) {
       return;
     }
-    setShowPopup(true);
+    onOpen();
   };
 
   return (
     <Tooltip content={tooltipContent}>
       <PrimaryButton
         className="w-full"
-        loading={loading}
+        loading={loading || payoutLoading}
         disabled={isDisabled}
         onClick={onAttemptPayout}
       >
