@@ -8,6 +8,7 @@ import { cn } from "next-common/utils";
 import { useProfileMultisigsActiveContext } from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
 import { isKusamaChain, isPolkadotChain } from "next-common/utils/chain";
+import isHydradx from "next-common/utils/isHydradx";
 
 export function TabTitle({ active, children }) {
   return (
@@ -158,7 +159,7 @@ export default function useProfileTabs() {
     });
   }
 
-  if (isAssetHubMigrated()) {
+  if (isAssetHubMigrated() || isHydradx()) {
     tabs.push({
       label({ active }) {
         return <TabTitle active={active}>Assets</TabTitle>;

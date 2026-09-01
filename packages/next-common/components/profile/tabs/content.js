@@ -19,9 +19,15 @@ import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
 import ProfileVesting from "next-common/components/profile/vesting";
 import ProfileStaking from "next-common/components/profile/staking";
 import ProfileCrossChain from "next-common/components/profile/crossChain";
+import isHydradx from "next-common/utils/isHydradx";
 
 const ProfileHydrationAssets = dynamic(
   () => import("next-common/components/profile/hydrationAssets"),
+  { ssr: false },
+);
+
+const ProfileHydrationAssetsTab = dynamic(
+  () => import("next-common/components/profile/hydrationAssets/assetsTab"),
   { ssr: false },
 );
 
@@ -46,6 +52,10 @@ export default function useProfileTabContent() {
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/identity`)) {
     return <ProfileIdentity />;
   } else if (pathname.startsWith(`/user/${maybeEvmAddress}/assets`)) {
+    if (isHydradx()) {
+      return <ProfileHydrationAssetsTab />;
+    }
+
     return (
       <div className="flex flex-col gap-[16px]">
         <ProfileAssets />
