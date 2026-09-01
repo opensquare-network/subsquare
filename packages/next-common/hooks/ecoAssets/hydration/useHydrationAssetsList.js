@@ -71,7 +71,7 @@ export default function useHydrationAssetsList(address) {
         for (const { balance, asset } of accountAssetsMap.values()) {
           if (isCancelled()) break;
 
-          if (asset.isShareToken || asset.isStableSwap) {
+          if (!asset.isToken && !asset.isErc20) {
             continue;
           }
 

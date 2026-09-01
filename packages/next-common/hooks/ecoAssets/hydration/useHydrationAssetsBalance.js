@@ -46,8 +46,7 @@ export default function useHydrationAssetsBalance(address) {
         } of accountAssetsMap.values()) {
           if (isCancelled()) break;
 
-          // Only account asset balances, exclude liquidity positions.
-          if (asset.isShareToken || asset.isStableSwap) {
+          if (!asset.isToken && !asset.isErc20) {
             continue;
           }
 
