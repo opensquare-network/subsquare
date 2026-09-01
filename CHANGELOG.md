@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.8.0
+
+Date:
+2026-09-01. [Code diff](https://github.com/opensquare-network/subsquare/compare/fb9305186...4da9a545c0e473bd2ff3e4bcb195b6b458952761).
+
+- [Medium] AssetHub assets:
+  - Support swap on the assets page.
+  - Add liquid pools tab to the assets page and fix the liquidity pools list.
+  - Improve asset balance loading with batched account queries.
+- [Medium] Cross-chain transfers:
+  - Implement DOT/USDC/USDT cross-chain transfer between AssetHub and Hydration.
+  - Support relay chain cross-chain transfer.
+  - Add XCM history to user profile page.
+- [Medium] Fellowship:
+  - Add an overview tab on fellowship member profile page and enable SSR render for the profile fellowship page.
+  - Add fellowship member rank chart to user profile overview tab.
+  - Add a fellowship menu on polkadot.
+  - Add secretary salary registration and payout todos.
+  - Add a status filter to fellowship referenda list. Related backend API is included.
+  - Handle fellowship referenda which got approved but not executed, and show warnings for such referenda.
+  - Show fellowship member total paid in one value on the statistics page.
+  - Improve history member rank display on the statistics page.
+  - Show the fellowship manifesto on subsquare.
+  - Fix fellowship feeds filters and identity search navigation.
+  - Handle scientific notation in salary expenditure.
+  - Fix ambassador referendum page crash and title, and fix the collectives ambassador track page crash.
+- [Medium] Wiki search: integrate polkadot wiki search results into the search popup.
+- Treasury:
+  - Support treasury funded projects with bounty and multi-asset bounty.
+  - Show detailed hydration treasury info.
+  - Improve treasury spend payout button state management.
+  - Fix referenda navigation bar spend indexes sort.
+- Show assets list on Hydration user profile page.
+- Backend:
+  - Add fellowship member rank curve API for user profile.
+  - Support profile fellowship SSR.
+  - Add a backend crash log.
+  - Fix ambassador referendum collection name.
+- Scan:
+  - PAPI migration is still in progress. Work includes migrating secretary events and ambassador events, refining PAPI
+    value serialization, fixing Asset Hub conviction voting event parsing, preserving papi block hash and guarding
+    preimage storage queries, saving payment id as hex, and fixing spendLocal beneficiary and isTreasuryV1 flag.
+  - Fix multi-asset bounty address.
+  - Fix whale votes calculation with optional delegation votes.
+  - Fix ambassador referendum remarks field.
+  - Add paseo treasury project statistics.
+  - Add call unavailable script and backfill referendum enactment errors for polkadot and kusama fellowship referenda.
+- Bug fixes:
+  - Add guard for null Hydration balance on polkadot user profile page.
+  - Fix hydration block time to 2 secs.
+- UI:
+  - Update polkadot theme by polkadot new design.
+  - Use theme colors for the polkadot editor switch.
+  - Add animation to the menu.
+  - Fix tooltip text capitalization.
+  - Fix invalid `Infinity` height css style property warning.
+- OpenGov Referenda: hide DV filter for comments when there is no DV program.
+- Upgrade dependencies.
+
 # 6.7.0
 
 Date:
