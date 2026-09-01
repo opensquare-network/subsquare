@@ -13,6 +13,7 @@
 import {
   AssetIconDot,
   AssetIconEurc,
+  AssetIconH2O,
   AssetIconHdx,
   AssetIconHollar,
   AssetIconSol,
@@ -24,6 +25,7 @@ import {
 
 const knownHydrationAssets = [
   { symbol: "HDX", assetId: 0, icon: AssetIconHdx },
+  { symbol: "H2O", assetId: 1, icon: AssetIconH2O },
   { symbol: "atBTC", assetId: 1006, icon: AssetIconWbtc },
   { symbol: "GETH", assetId: 420, icon: AssetIconWeth },
   { symbol: "HEURC", assetId: 4444, icon: AssetIconEurc },
