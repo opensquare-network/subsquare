@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { isEmpty } from "lodash-es";
 import SubScanLink from "./subscanLink";
 import StatescanLink from "./statescanLink";
+import NeckworkLink from "./neckworkLink";
 import Flex from "../styled/flex";
 import { useChainSettings } from "next-common/context/chain";
 
@@ -25,6 +26,8 @@ export default function ExplorerLink({
   let LinkComponent = Fragment;
   if (integrations?.statescan) {
     LinkComponent = StatescanLink;
+  } else if (integrations?.neckwork) {
+    LinkComponent = NeckworkLink;
   } else if (integrations?.subscan) {
     LinkComponent = SubScanLink;
   }

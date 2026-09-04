@@ -122,7 +122,11 @@ const hydradx = {
     },
   }),
   integrations: {
-    subscan: true,
+    // Hydration uses the Neckwork block explorer
+    // (https://hydration-explorer.neckwork.net) instead of subscan.io
+    neckwork: {
+      domain: "hydration-explorer",
+    },
     profileCrossChain: true,
   },
   referendaActions: {

@@ -4,6 +4,7 @@ import Flex from "../styled/flex";
 import DotreasuryAccountLink from "./dotreasuryAccountLink";
 import StatescanAccountLink from "./statescanAccountLink";
 import SubScanAccountLink from "./subscanAccountLink";
+import NeckworkAccountLink from "./neckworkAccountLink";
 import ConditionalMimirIcon from "./conditionalMimirIcon";
 // import { useChain } from "next-common/context/chain";
 // import CouncilorLink from "./councilorLink";
@@ -40,6 +41,7 @@ export default function AccountLinks({
       <StatescanAccountLink address={address} />
       <DotreasuryAccountLink address={address} />
       <SubScanAccountLink address={address} />
+      <NeckworkAccountLink address={address} />
       <IdentityInfoLinks address={address} />
       {/* {showCouncilorLink && <CouncilorLink address={address} />} */}
       {showConditionalMimirIcon && <ConditionalMimirIcon address={address} />}

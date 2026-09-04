@@ -13,6 +13,10 @@ import TokenSymbolAsset from "../common/tokenSymbolAsset";
 import { toPrecision } from "next-common/utils";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 import AddressLinks from "next-common/components/styled/addressLinks";
+import Chains from "next-common/utils/consts/chains";
+import { getNeckworkBaseUrl } from "next-common/utils/neckwork";
+
+const hydrationExplorerBaseUrl = getNeckworkBaseUrl(Chains.hydradx);
 
 export default function TreasuryOnHydration() {
   const { dot, usdt, usdc, isLoading } = useHydrationTreasurySummary();
@@ -22,7 +26,7 @@ export default function TreasuryOnHydration() {
       title={
         <Link
           className="text12Medium"
-          href={`https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount2}`}
+          href={`${hydrationExplorerBaseUrl}/account/${PolkadotTreasuryOnHydrationAccount2}`}
           target="_blank"
           rel="noreferrer"
         >
@@ -59,15 +63,15 @@ function TreasuryOnHydrationAddressLinks() {
     <AddressLinks
       items={[
         {
-          href: `https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount1}`,
+          href: `${hydrationExplorerBaseUrl}/account/${PolkadotTreasuryOnHydrationAccount1}`,
           tooltip: "Treasury stablecoin acquisition #1",
         },
         {
-          href: `https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount2}`,
+          href: `${hydrationExplorerBaseUrl}/account/${PolkadotTreasuryOnHydrationAccount2}`,
           tooltip: "Treasury stablecoin acquisition #2",
         },
         {
-          href: `https://hydration.subscan.io/account/${PolkadotTreasuryOnHydrationAccount4}`,
+          href: `${hydrationExplorerBaseUrl}/account/${PolkadotTreasuryOnHydrationAccount4}`,
           tooltip: "Treasury stablecoin acquisition #3",
         },
       ]}

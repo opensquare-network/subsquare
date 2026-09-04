@@ -7,7 +7,12 @@ import {
 import { useDetailType } from "../context/page";
 import ExternalLink from "./externalLink";
 import { getSubscanLink } from "next-common/utils/subscan";
-import { LinkPolkassembly, LinkSubscan } from "@osn/icons/subsquare";
+import { getNeckworkPostLink } from "next-common/utils/neckwork";
+import {
+  LinkPolkassembly,
+  LinkSubscan,
+  LinkNeckwork,
+} from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 
 export default function PostDataSource() {
@@ -16,6 +21,7 @@ export default function PostDataSource() {
   const chain = useChain();
   const chainSettings = useChainSettings();
   const { usePolkassemblyBackupData } = chainSettings;
+  const { subscan, neckwork } = chainSettings.integrations || {};
 
   const sources = [
     !usePolkassemblyBackupData && {
@@ -25,8 +31,13 @@ export default function PostDataSource() {
     },
     {
       label: <LinkSubscan />,
-      when: chainSettings.integrations?.subscan,
+      when: subscan,
       link: getSubscanLink(chain, type, post),
+    },
+    {
+      label: <LinkNeckwork />,
+      when: neckwork,
+      link: getNeckworkPostLink(chain, type, post),
     },
   ].filter((source) => source && source.when && source.link);
 
