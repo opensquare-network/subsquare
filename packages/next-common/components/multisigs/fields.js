@@ -13,7 +13,9 @@ export function When({ height, index }) {
   const { integrations, assethubMigration } = useChainSettings();
 
   if (
-    (!integrations?.statescan && !integrations?.subscan) ||
+    (!integrations?.statescan &&
+      !integrations?.subscan &&
+      !integrations?.neckwork) ||
     isNil(height) ||
     isNil(index)
   ) {
@@ -31,6 +33,8 @@ export function When({ height, index }) {
     }
 
     baseUrl = `https://${domain}.statescan.io/#/extrinsics`;
+  } else if (integrations?.neckwork?.domain) {
+    baseUrl = `https://${integrations.neckwork.domain}.neckwork.net/extrinsic`;
   } else if (integrations?.subscan) {
     baseUrl = `https://${
       integrations?.subscan?.domain || chain
