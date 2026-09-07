@@ -7,6 +7,11 @@ import CurrencyInput from "next-common/components/currencyInput";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMount } from "react-use";
+import {
+  useSignerAccount,
+  useSignerContext,
+} from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -17,6 +22,7 @@ import {
   ASSET_TYPE,
   getAssetInfoFromAssetKind,
 } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+import { wrapTxByRole } from "next-common/utils/sendTransaction/wrapTxByRole";
 
 // FixedU128 accuracy (10^18) used by AssetRate.conversionRateToNative.
 const fixedU128Accuracy = new BigNumber(10).pow(18);
@@ -28,12 +34,14 @@ const FALLBACK_CURATOR_DEPOSIT_MULTIPLIER_PERMILL = 500000;
 const FALLBACK_CURATOR_DEPOSIT_MIN_DOLLARS = 10;
 const FALLBACK_CURATOR_DEPOSIT_MAX_DOLLARS = 200;
 
-export function useAcceptCuratorPopup(bountyIndex) {
+export function useAcceptCuratorPopup(bountyIndex, curator, role) {
   const [isOpen, setIsOpen] = useState(false);
 
   const component = isOpen && (
     <AcceptCuratorPopup
       bountyIndex={bountyIndex}
+      curator={curator}
+      role={role}
       onClose={() => {
         setIsOpen(false);
       }}
@@ -177,10 +185,30 @@ function useCuratorDeposit() {
   return { assetInfo, deposit, min, max, isLoading, unavailable };
 }
 
-function PopupContent({ bountyIndex }) {
+// accept_curator is always dispatched as the curator itself, so the tx signer
+// must be the connected account (the curator, or a multisig signatory who
+// creates the multisig transaction). Drop any leftover proxy / multisig
+// signer mode chosen elsewhere so the shared submission layer does not wrap
+// the already-complete tx again.
+function UseConnectedAccountSigner() {
+  const { setSelectedProxyAddress, setMultisig } = useSignerContext();
+
+  useMount(() => {
+    setSelectedProxyAddress();
+    setMultisig();
+  });
+
+  return null;
+}
+
+function PopupContent({ bountyIndex, curator, role }) {
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
   const { deposit, isLoading, unavailable } = useCuratorDeposit();
   const api = useConditionalContextApi();
+  const signerAccount = useSignerAccount();
+
+  const connectedAddress =
+    signerAccount?.proxyAddress || signerAccount?.address;
 
   const getTxFunc = useCallback(() => {
     if (!api?.tx?.multiAssetBounties?.acceptCurator) {
@@ -189,21 +217,29 @@ function PopupContent({ bountyIndex }) {
 
     // accept_curator(parent_bounty_id, child_bounty_id)
     // child_bounty_id is null for a parent bounty.
-    return api.tx.multiAssetBounties.acceptCurator(bountyIndex, null);
-  }, [api, bountyIndex]);
+    const innerTx = api.tx.multiAssetBounties.acceptCurator(bountyIndex, null);
+
+    return wrapTxByRole(api, {
+      role,
+      tx: innerTx,
+      connectedAddress,
+      origin: curator,
+    });
+  }, [api, bountyIndex, curator, role, connectedAddress]);
 
   const depositReady = deposit && !isLoading && !unavailable;
 
   return (
     <>
-      <SignerWithBalance />
+      <UseConnectedAccountSigner />
+      <SignerWithBalance noSwitchSigner />
       <PopupLabel text="Curator Deposit" />
       {isLoading ? (
-        <InfoMessage className="justify-center min-h-[38px]">
+        <InfoMessage className="justify-center min-h-9.5">
           <Loading size={20} />
         </InfoMessage>
       ) : unavailable ? (
-        <InfoMessage className="min-h-[38px]">
+        <InfoMessage className="min-h-9.5">
           Unable to compute the curator deposit
         </InfoMessage>
       ) : (
@@ -227,10 +263,10 @@ function PopupContent({ bountyIndex }) {
   );
 }
 
-function AcceptCuratorPopup({ bountyIndex, onClose }) {
+function AcceptCuratorPopup({ bountyIndex, curator, role, onClose }) {
   return (
     <PopupWithSigner title="Accept Curator" onClose={onClose}>
-      <PopupContent bountyIndex={bountyIndex} />
+      <PopupContent bountyIndex={bountyIndex} curator={curator} role={role} />
     </PopupWithSigner>
   );
 }

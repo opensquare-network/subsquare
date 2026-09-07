@@ -1,18 +1,15 @@
 import PrimaryButton from "next-common/lib/button/primary";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { isSameAddress } from "next-common/utils";
 import { useContextPapi } from "next-common/context/papi";
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
 import { useEffect, useState } from "react";
+import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 
 export default function MultiAssetBountyAcceptCuratorButton() {
   const { bountyIndex } = useOnchainData();
   const { api: papi, checkPallet } = useContextPapi();
-  const address = useRealAddress();
-  const [result, setResult] = useState(null);
-  const { showPopupFn, component } = useAcceptCuratorPopup(bountyIndex);
+  const [bounty, setBounty] = useState(null);
 
   useEffect(() => {
     if (
@@ -24,20 +21,33 @@ export default function MultiAssetBountyAcceptCuratorButton() {
     }
 
     papi.query.MultiAssetBounties.Bounties.getValue(bountyIndex).then((value) =>
-      setResult(value),
+      setBounty(value),
     );
   }, [papi, checkPallet, bountyIndex]);
 
-  const { status } = result || {};
+  // The proposed curator address read from the on-chain bounty storage
+  // (undefined while the storage query above is still in flight).
+  const curator = bounty?.status?.value?.curator;
 
-  // accept_curator requires the bounty in `Funded` state and can only be
-  // called by the proposed curator.
-  if (status?.type !== "Funded") {
+  // Whether the current user may accept depends on the on-chain curator
+  // structure (is the curator a multisig, is it behind a proxy delegate that
+  // is a multisig, etc.) combined with the current user's role.
+  const { loading: isRoleLoading, role } = useAccountRole(curator);
+  const { showPopupFn, component } = useAcceptCuratorPopup(
+    bountyIndex,
+    curator,
+    role,
+  );
+
+  // accept_curator requires the bounty to be in `Funded` state.
+  if (bounty?.status?.type !== "Funded") {
     return null;
   }
 
-  const curator = status?.value?.curator;
-  if (!curator || !isSameAddress(curator, address)) {
+  // Show the button to the curator itself, and to every signatory of the
+  // multisig that ultimately controls the curator. role stays null while
+  // the curator authority structure is being resolved.
+  if (!curator || isRoleLoading || !role) {
     return null;
   }
 
