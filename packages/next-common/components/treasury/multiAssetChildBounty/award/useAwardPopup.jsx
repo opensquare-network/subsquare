@@ -89,7 +89,7 @@ function PopupContent() {
 
 function AwardPopup(props) {
   return (
-    <PopupWithSigner title="Award Bounty" {...props}>
+    <PopupWithSigner title="Award Child Bounty" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );
