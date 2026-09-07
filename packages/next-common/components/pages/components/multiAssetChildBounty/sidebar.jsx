@@ -17,6 +17,7 @@ import {
 } from "next-common/components/treasury/bounty/balance";
 import { useMemo } from "react";
 import MultiAssetChildBountyProposeCurator from "next-common/components/treasury/multiAssetChildBounty/proposeCurator";
+import MultiAssetChildBountyAcceptCurator from "next-common/components/treasury/multiAssetChildBounty/acceptCurator";
 import MultiAssetChildBountyAward from "next-common/components/treasury/multiAssetChildBounty/award";
 import MultiAssetChildBountyPaymentAction from "next-common/components/treasury/multiAssetChildBounty/paymentAction";
 
@@ -73,6 +74,7 @@ function MultiAssetChildBountySidebar() {
     <RightBarWrapper>
       <MultiAssetChildBountySidebarBalance />
       <MultiAssetChildBountyProposeCurator />
+      <MultiAssetChildBountyAcceptCurator />
       <MultiAssetChildBountyAward />
       <MultiAssetChildBountyPaymentAction />
       <BountySidebarCurator />
