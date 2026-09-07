@@ -8,39 +8,71 @@ import { useContextApi } from "next-common/context/api";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
+import { addressToPublicKey } from "next-common/utils/address";
+
+function getBeneficiaryParam(beneficiary) {
+  return {
+    V5: {
+      location: {
+        parents: 0,
+        interior: "Here",
+      },
+      accountId: {
+        parents: 0,
+        interior: {
+          X1: [
+            {
+              AccountId32: {
+                network: null,
+                id: `0x${addressToPublicKey(beneficiary)}`,
+              },
+            },
+          ],
+        },
+      },
+    },
+  };
+}
 
 function PopupContent() {
   const api = useContextApi();
   const { parentBountyId, childBountyId } = useOnchainData();
-  const { value: curator, component: curatorSelect } = useAddressComboField({
-    title: "Curator",
-  });
+  const { value: beneficiary, component: beneficiarySelect } =
+    useAddressComboField({ title: "Beneficiary" });
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
-      if (!curator) {
-        toastError("Curator address is required");
+      if (!beneficiary) {
+        toastError("Beneficiary address is required");
         return null;
       }
 
-      if (!api?.tx?.multiAssetBounties?.proposeCurator) {
-        toastError("Propose curator transaction is unavailable");
+      if (!api?.tx?.multiAssetBounties?.awardBounty) {
+        toastError("Award bounty transaction is unavailable");
         return null;
       }
 
-      return api.tx.multiAssetBounties.proposeCurator(
+      let beneficiaryParam;
+      try {
+        beneficiaryParam = getBeneficiaryParam(beneficiary);
+      } catch {
+        toastError("Beneficiary address is invalid");
+        return null;
+      }
+
+      return api.tx.multiAssetBounties.awardBounty(
         parentBountyId,
         childBountyId,
-        curator,
+        beneficiaryParam,
       );
     },
-    [api, parentBountyId, childBountyId, curator],
+    [api, parentBountyId, childBountyId, beneficiary],
   );
 
   return (
     <>
       <SignerWithBalance />
-      {curatorSelect}
+      {beneficiarySelect}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
@@ -51,21 +83,19 @@ function PopupContent() {
   );
 }
 
-function ProposeCuratorPopup(props) {
+function AwardPopup(props) {
   return (
-    <PopupWithSigner title="Propose Curator" {...props}>
+    <PopupWithSigner title="Award Bounty" {...props}>
       <PopupContent />
     </PopupWithSigner>
   );
 }
 
-export default function useProposeCuratorPopup() {
+export default function useAwardPopup() {
   const [isOpen, setIsOpen] = useState(false);
 
   return {
     showPopup: () => setIsOpen(true),
-    popup: isOpen ? (
-      <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
-    ) : null,
+    popup: isOpen ? <AwardPopup onClose={() => setIsOpen(false)} /> : null,
   };
 }

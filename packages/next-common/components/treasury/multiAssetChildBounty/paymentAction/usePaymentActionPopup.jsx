@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
@@ -9,38 +8,25 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 
-function PopupContent() {
+function PopupContent({ action }) {
   const api = useContextApi();
   const { parentBountyId, childBountyId } = useOnchainData();
-  const { value: curator, component: curatorSelect } = useAddressComboField({
-    title: "Curator",
-  });
-
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
-      if (!curator) {
-        toastError("Curator address is required");
+      const txApi = api?.tx?.multiAssetBounties;
+      if (!txApi?.[action.method]) {
+        toastError(`${action.title} transaction is unavailable`);
         return null;
       }
 
-      if (!api?.tx?.multiAssetBounties?.proposeCurator) {
-        toastError("Propose curator transaction is unavailable");
-        return null;
-      }
-
-      return api.tx.multiAssetBounties.proposeCurator(
-        parentBountyId,
-        childBountyId,
-        curator,
-      );
+      return txApi[action.method](parentBountyId, childBountyId);
     },
-    [api, parentBountyId, childBountyId, curator],
+    [api, action, parentBountyId, childBountyId],
   );
 
   return (
     <>
       <SignerWithBalance />
-      {curatorSelect}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
@@ -51,21 +37,22 @@ function PopupContent() {
   );
 }
 
-function ProposeCuratorPopup(props) {
+function PaymentActionPopup({ action, ...props }) {
   return (
-    <PopupWithSigner title="Propose Curator" {...props}>
-      <PopupContent />
+    <PopupWithSigner title={action.title} {...props}>
+      <PopupContent action={action} />
     </PopupWithSigner>
   );
 }
 
-export default function useProposeCuratorPopup() {
+export default function usePaymentActionPopup(action) {
   const [isOpen, setIsOpen] = useState(false);
 
   return {
     showPopup: () => setIsOpen(true),
-    popup: isOpen ? (
-      <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
-    ) : null,
+    popup:
+      isOpen && action ? (
+        <PaymentActionPopup action={action} onClose={() => setIsOpen(false)} />
+      ) : null,
   };
 }

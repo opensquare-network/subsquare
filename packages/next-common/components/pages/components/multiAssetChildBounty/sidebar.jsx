@@ -17,6 +17,8 @@ import {
 } from "next-common/components/treasury/bounty/balance";
 import { useMemo } from "react";
 import MultiAssetChildBountyProposeCurator from "next-common/components/treasury/multiAssetChildBounty/proposeCurator";
+import MultiAssetChildBountyAward from "next-common/components/treasury/multiAssetChildBounty/award";
+import MultiAssetChildBountyPaymentAction from "next-common/components/treasury/multiAssetChildBounty/paymentAction";
 
 function MultiAssetChildBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -71,6 +73,8 @@ function MultiAssetChildBountySidebar() {
     <RightBarWrapper>
       <MultiAssetChildBountySidebarBalance />
       <MultiAssetChildBountyProposeCurator />
+      <MultiAssetChildBountyAward />
+      <MultiAssetChildBountyPaymentAction />
       <BountySidebarCurator />
       <MultiAssetChildBountyMeta />
     </RightBarWrapper>
