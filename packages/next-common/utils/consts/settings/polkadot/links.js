@@ -13,7 +13,7 @@ const polkadotLinks = [
   },
   {
     name: "discord",
-    url: "https://dot.li/discord",
+    url: "https://polkadot-discord.w3f.tools",
   },
   {
     name: "github",
@@ -22,6 +22,10 @@ const polkadotLinks = [
   {
     name: "element",
     url: "https://matrix.to/#/#Polkadot-Direction:parity.io",
+  },
+  {
+    name: "telegram",
+    url: "https://t.me/PolkadotOfficial",
   },
 ];
 
