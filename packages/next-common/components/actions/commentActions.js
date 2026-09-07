@@ -4,6 +4,7 @@ import ThumbsUp from "../thumbsUp";
 import ThumbsDown from "../thumbsDown";
 import ReplyButton from "./replyButton";
 import ThumbUpList from "./thumbUpList";
+import CommentEditedDropdown from "next-common/sima/components/actions/commentEditedDropdown";
 import { Wrapper } from "./styled";
 import CommentEditor from "../comment/editor";
 import { usePost } from "next-common/context/post";
@@ -222,6 +223,7 @@ export default function CommentActions({
               setShowThumbsDownList={setShowThumbsDownList}
             />
           )}
+          <CommentEditedDropdown />
         </Wrapper>
         <MaybeSimaCommentContextMenu setIsEdit={setIsEdit} />
       </div>
