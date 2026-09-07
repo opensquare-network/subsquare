@@ -13,7 +13,10 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
-import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+import {
+  ASSET_TYPE,
+  getAssetInfoFromAssetKind,
+} from "next-common/utils/treasury/multiAssetBounty/assetKind";
 
 // FixedU128 accuracy (10^18) used by AssetRate.conversionRateToNative.
 const fixedU128Accuracy = new BigNumber(10).pow(18);
@@ -47,10 +50,13 @@ export function useAcceptCuratorPopup(bountyIndex) {
 
 // Reproduce pallet-multi-asset-bounties accept_curator deposit calculation:
 //   1. native_amount = BalanceConverter::from_asset_balance(bounty.value, asset_kind)
-//        = floor(bounty.value * conversionRateToNative / 10^18) when an asset rate
-//          exists, otherwise the asset is treated as native (identity, rate = 1)
-//   2. deposit = clamp(floor(native_amount * CuratorDepositMultiplier), min, max)
-//   3. The deposit is held in the NATIVE token (e.g. DOT), not the bounty asset.
+//        - for the chain's NATIVE token the runtime uses identity (rate = 1)
+//        - for any other asset it requires AssetRate.conversionRateToNative;
+//          without a rate accept_curator fails with FailedToConvertBalance,
+//          so we must NOT fall back to 1:1 in that case
+//   2. native_amount = floor(bounty.value * conversionRateToNative / 10^18)
+//   3. deposit = clamp(floor(native_amount * CuratorDepositMultiplier), min, max)
+//   4. The deposit is held in the NATIVE token (e.g. DOT), not the bounty asset.
 function useCuratorDeposit() {
   const { assetKind, value } = useOnchainData();
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
@@ -58,7 +64,16 @@ function useCuratorDeposit() {
 
   const [config, setConfig] = useState(null);
   const [rate, setRate] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [rateLoading, setRateLoading] = useState(true);
+
+  const assetInfo = useMemo(
+    () => getAssetInfoFromAssetKind(assetKind, nativeDecimals, nativeSymbol),
+    [assetKind, nativeDecimals, nativeSymbol],
+  );
+
+  // Only the chain's own native token converts 1:1 (no rate lookup).
+  // e.g. DOT on Asset Hub Polkadot. Anything else needs an AssetRate entry.
+  const isNativeAsset = assetInfo?.assetType === ASSET_TYPE.native;
 
   useEffect(() => {
     if (!api) {
@@ -77,30 +92,45 @@ function useCuratorDeposit() {
 
   useEffect(() => {
     if (!api || !assetKind) {
-      setIsLoading(false);
+      setRateLoading(false);
+      return;
+    }
+
+    // Native asset: the runtime converts with identity, no rate needed.
+    if (isNativeAsset) {
+      setRate(null);
+      setRateLoading(false);
       return;
     }
 
     const rateQuery = api.query?.assetRate?.conversionRateToNative;
     if (!rateQuery) {
       setRate(null);
-      setIsLoading(false);
+      setRateLoading(false);
       return;
     }
 
-    setIsLoading(true);
+    setRateLoading(true);
     rateQuery(assetKind)
-      .then((option) =>
-        setRate(option?.isSome ? option.unwrap().toString() : null),
-      )
-      .catch(() => setRate(null))
-      .finally(() => setIsLoading(false));
-  }, [api, assetKind]);
+      .then((option) => {
+        if (option?.isSome) {
+          setRate(option.unwrap().toString());
+        } else {
+          // No rate set on-chain for this asset kind.
+          setRate(null);
+        }
+      })
+      .catch(() => {
+        // RPC error: do not guess a rate; keep the deposit unknown.
+        setRate(null);
+      })
+      .finally(() => setRateLoading(false));
+  }, [api, assetKind, isNativeAsset]);
 
-  const assetInfo = useMemo(
-    () => getAssetInfoFromAssetKind(assetKind, nativeDecimals, nativeSymbol),
-    [assetKind, nativeDecimals, nativeSymbol],
-  );
+  const isLoading = !config || rateLoading;
+  // Non-native asset with no usable rate: the chain itself would reject the
+  // accept with FailedToConvertBalance, so we must not fabricate an amount.
+  const unavailable = !isNativeAsset && !rate && !rateLoading;
 
   const { deposit, min, max } = useMemo(() => {
     if (!config || value == null) {
@@ -118,7 +148,11 @@ function useCuratorDeposit() {
         : new BigNumber(FALLBACK_CURATOR_DEPOSIT_MAX_DOLLARS).times(one);
 
     let nativeBalance = new BigNumber(value);
-    if (rate) {
+    if (!isNativeAsset) {
+      if (!rate) {
+        // Conversion rate unavailable, cannot compute a reliable amount.
+        return { deposit: null, min: minBalance, max: maxBalance };
+      }
       nativeBalance = nativeBalance
         .times(new BigNumber(rate))
         .dividedBy(fixedU128Accuracy)
@@ -138,14 +172,14 @@ function useCuratorDeposit() {
     }
 
     return { deposit: depositBalance, min: minBalance, max: maxBalance };
-  }, [config, rate, value, nativeDecimals]);
+  }, [config, rate, value, nativeDecimals, isNativeAsset]);
 
-  return { assetInfo, value, deposit, min, max, isLoading };
+  return { assetInfo, deposit, min, max, isLoading, unavailable };
 }
 
 function PopupContent({ bountyIndex }) {
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
-  const { deposit, isLoading } = useCuratorDeposit();
+  const { deposit, isLoading, unavailable } = useCuratorDeposit();
   const api = useConditionalContextApi();
 
   const getTxFunc = useCallback(() => {
@@ -158,15 +192,19 @@ function PopupContent({ bountyIndex }) {
     return api.tx.multiAssetBounties.acceptCurator(bountyIndex, null);
   }, [api, bountyIndex]);
 
-  const depositReady = deposit && !isLoading;
+  const depositReady = deposit && !isLoading && !unavailable;
 
   return (
     <>
       <SignerWithBalance />
       <PopupLabel text="Curator Deposit" />
-      {!depositReady ? (
+      {isLoading ? (
         <InfoMessage className="justify-center min-h-[38px]">
           <Loading size={20} />
+        </InfoMessage>
+      ) : unavailable ? (
+        <InfoMessage className="min-h-[38px]">
+          Unable to compute the curator deposit
         </InfoMessage>
       ) : (
         <CurrencyInput
@@ -179,7 +217,11 @@ function PopupContent({ bountyIndex }) {
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton title="Confirm" getTxFunc={getTxFunc} />
+        <TxSubmissionButton
+          title="Confirm"
+          getTxFunc={getTxFunc}
+          disabled={!depositReady}
+        />
       </div>
     </>
   );
