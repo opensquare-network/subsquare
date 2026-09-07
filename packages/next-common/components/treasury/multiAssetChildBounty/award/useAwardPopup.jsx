@@ -4,7 +4,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
@@ -35,7 +35,7 @@ function getBeneficiaryParam(beneficiary) {
 }
 
 function PopupContent() {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const { parentBountyId, childBountyId } = useOnchainData();
   const { value: beneficiary, component: beneficiarySelect } =
     useAddressComboField({ title: "Beneficiary" });
@@ -77,7 +77,11 @@ function PopupContent() {
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton title="Confirm" getTxFunc={getTxFuncForSubmit} />
+        <TxSubmissionButton
+          api={api}
+          title="Confirm"
+          getTxFunc={getTxFuncForSubmit}
+        />
       </div>
     </>
   );

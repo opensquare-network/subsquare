@@ -3,13 +3,13 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useContextApi } from "next-common/context/api";
+import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 
 function PopupContent({ action }) {
-  const api = useContextApi();
+  const api = useConditionalContextApi();
   const { parentBountyId, childBountyId } = useOnchainData();
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -31,7 +31,11 @@ function PopupContent({ action }) {
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TxSubmissionButton title="Confirm" getTxFunc={getTxFuncForSubmit} />
+        <TxSubmissionButton
+          api={api}
+          title="Confirm"
+          getTxFunc={getTxFuncForSubmit}
+        />
       </div>
     </>
   );
