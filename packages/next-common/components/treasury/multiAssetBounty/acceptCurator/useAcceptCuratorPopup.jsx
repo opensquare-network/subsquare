@@ -13,7 +13,7 @@ import {
   useSignerContext,
 } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import BigNumber from "bignumber.js";
@@ -68,7 +68,7 @@ export function useAcceptCuratorPopup(bountyIndex, curator, role) {
 function useCuratorDeposit() {
   const { assetKind, value } = useOnchainData();
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
-  const api = useConditionalContextApi();
+  const api = useContextApi();
 
   const [config, setConfig] = useState(null);
   const [rate, setRate] = useState(null);
@@ -204,7 +204,7 @@ function UseConnectedAccountSigner() {
 function PopupContent({ bountyIndex, curator, role }) {
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
   const { deposit, isLoading, unavailable } = useCuratorDeposit();
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const signerAccount = useSignerAccount();
 
   const connectedAddress =
