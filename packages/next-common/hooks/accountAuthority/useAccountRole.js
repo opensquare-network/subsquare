@@ -1,33 +1,24 @@
 import { useMemo } from "react";
-import { useUser } from "next-common/context/user";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useAccountAuthority from "./useAccountAuthority";
-import { resolveAccountRole } from "./resolveAccountRole";
+import { resolveAccountRoles } from "./resolveAccountRole";
 
-// Combine an origin account's authority structure with the current logged-in
-// user, and tell which role (if any) the user plays for dispatching calls
-// whose origin must be that account.
+// Resolve how the current user's real address can dispatch calls whose
+// origin must be `origin`.
 //
-// @returns { loading, role }
-//   role: see resolveAccountRole for possible values; null means the current
-//         user cannot dispatch a call for the origin.
+// @returns { loading, roles, role }
+//   roles: every valid route from resolveAccountRoles; [] = cannot dispatch.
+//   role:  the preferred role, i.e. roles[0] ?? null.
 export default function useAccountRole(origin) {
-  const user = useUser();
   const realAddress = useRealAddress();
   const { loading, ...structure } = useAccountAuthority(origin);
 
-  // The connected account, plus the address the user acts on behalf of
-  // (their own address, or their configured proxy delegator when they are a
-  // proxy holder).
-  const userAddresses = useMemo(
-    () => [user?.address, realAddress].filter(Boolean),
-    [user?.address, realAddress],
+  const roles = useMemo(
+    () => resolveAccountRoles(origin, structure, realAddress),
+    [origin, structure, realAddress],
   );
 
-  const role = useMemo(
-    () => resolveAccountRole(origin, structure, userAddresses),
-    [origin, structure, userAddresses],
-  );
+  const role = useMemo(() => roles[0] ?? null, [roles]);
 
-  return { loading, role };
+  return { loading, role, roles };
 }

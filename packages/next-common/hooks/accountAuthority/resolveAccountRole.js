@@ -39,94 +39,97 @@ export function classifyAccountAuthority({ multisig, delegates = [] }) {
   };
 }
 
-// Decide how a given user is allowed to dispatch a transaction whose origin
-// must be `origin`, based on the origin account's authority structure.
+// Route priority (lower = preferred; roles[0] is the default).
+const ROUTE_PRIORITY = {
+  direct: 0,
+  "multisig:direct": 1, // origin itself is the multisig
+  proxy: 2, // a keyed delegate of the origin
+  "multisig:proxy": 3, // a delegate multisig of the origin
+};
+
+function routePriority(role) {
+  if (role?.kind === "direct") {
+    return ROUTE_PRIORITY.direct;
+  }
+  if (role?.kind === "proxy") {
+    return ROUTE_PRIORITY.proxy;
+  }
+  return role?.viaProxy
+    ? ROUTE_PRIORITY["multisig:proxy"]
+    : ROUTE_PRIORITY["multisig:direct"];
+}
+
+// All ways a user can dispatch a call whose origin must be `origin`. A user
+// may have several valid routes at once (e.g. a pure proxy delegating to
+// several multisigs the user is a signatory of), so we return the full list,
+// ordered by ROUTE_PRIORITY, instead of a single winner.
 //
-// A call can only run with the origin account as its origin:
-//   - a plain account holds a private key, so its owner signs directly;
-//   - a pure proxy account has no key, it must be dispatched by its delegate
-//     stored in `Proxy.Proxies(origin)` through `proxy.proxy(origin, call)`.
-//
-// An account may connect to the system either:
-//   - AS the account itself (its address == one of the user's addresses). It
-//     is treated like a plain signer: even when the account is a multisig, a
-//     multisig-capable wallet (e.g. Mimir) rewrites the signature into a
-//     multisig transaction, so we do NOT build asMulti ourselves;
-//   - AS ONE OF ITS SIGNATORIES (a member holding its own private key). A
-//     member key cannot dispatch as the multisig directly, so the app must
-//     build the multisig transaction (asMulti) itself.
+// A plain account signs directly; a pure proxy (no key) is dispatched through
+// its delegate in Proxy.Proxies(origin) via proxy.proxy(origin, call). The
+// user either IS the origin account (a multisig wallet rewrites the
+// signature, so we do NOT build asMulti), or is one of its signatories (then
+// the app must build the multisig transaction).
 //
 // @param origin          the account that must be the transaction origin
 // @param structure       resolved by useAccountAuthority: { multisig, delegates }
-// @param userAddresses   all addresses the current user can sign with
+// @param userAddress     the address the current user can sign with
 //
-// @returns
-//   null                          -> user cannot dispatch a call for origin
-//   { kind: "direct" }            -> user is (or acts as) the origin itself;
-//                                    sign the call directly (if the origin is
-//                                    a multisig, the wallet handles asMulti)
-//   { kind: "proxy", proxy }      -> user is a proxy delegate of origin (even
-//                                    if that delegate is a multisig signed via
-//                                    a multisig wallet); only the origin proxy
-//                                    wrapping is applied
+// @returns Role[], ordered by ROUTE_PRIORITY (roles[0] is the default). Each
+//          item is self-contained:
+//   { kind: "direct" }
+//   { kind: "proxy", proxy }
 //   { kind: "multisig", multisig, viaProxy }
-//     - the user is a SIGNATORY of `multisig` (member with its own key); the
-//       app creates the multisig transaction
-//     - viaProxy=false: origin itself is the multisig (asMulti(call))
-//     - viaProxy=true:  origin is behind a proxy whose delegate is the
-//       multisig (asMulti(proxy.proxy(origin, call)))
-export function resolveAccountRole(origin, structure, userAddresses = []) {
+//     - viaProxy=false: origin itself is the multisig
+//     - viaProxy=true:  origin is behind the delegate multisig
+export function resolveAccountRoles(origin, structure, userAddress) {
   if (isNil(origin) || !structure) {
-    return null;
+    return [];
   }
 
-  const isOneOfUserAddresses = (address) =>
-    userAddresses.some((userAddress) => isSameAddress(address, userAddress));
+  const userIs = (address) => isSameAddress(address, userAddress);
 
   const isUserASignatory = (multisig) =>
-    (multisig?.signatories || []).some((signatory) =>
-      isOneOfUserAddresses(signatory),
-    );
+    (multisig?.signatories || []).some((signatory) => userIs(signatory));
 
-  const userIs = (address) => isOneOfUserAddresses(address);
+  const roles = [];
 
-  // 1. The user is (or acts as) the origin itself. Sign the call directly; if
-  //    the origin is a multisig, the connected multisig wallet handles the
-  //    asMulti rewriting.
+  // 1. User is the origin itself (a multisig wallet handles asMulti).
   if (userIs(origin)) {
-    return { kind: "direct" };
+    roles.push({ kind: "direct" });
   }
 
-  // 2. The origin itself is a multisig and the user is one of its signatories
-  //    (a member with its own key): build asMulti(call) so the origin becomes
-  //    the multisig.
+  // 2. User is a signatory of the origin multisig.
   if (structure.multisig && isUserASignatory(structure.multisig)) {
-    return {
+    roles.push({
       kind: "multisig",
       multisig: structure.multisig,
       viaProxy: false,
-    };
+    });
   }
 
-  // 3. The origin is controlled through its proxy delegate(s):
+  // 3. Routes through the origin's proxy delegate(s).
   for (const delegate of structure.delegates || []) {
-    //    - a signatory of a multisig delegate (member with its own key):
-    //      build asMulti(proxy.proxy(origin, call));
+    //    - user is a signatory of a multisig delegate.
     if (delegate?.multisig && isUserASignatory(delegate.multisig)) {
-      return {
+      roles.push({
         kind: "multisig",
         multisig: delegate.multisig,
         viaProxy: true,
-      };
+      });
     }
 
-    //    - the user IS the delegate itself (a plain account, or a multisig
-    //      connected as a signer via a multisig wallet): only wrap through the
-    //      origin proxy, proxy.proxy(origin, call).
+    //    - user IS the delegate itself.
     if (userIs(delegate?.delegate)) {
-      return { kind: "proxy", proxy: delegate.delegate };
+      roles.push({ kind: "proxy", proxy: delegate.delegate });
     }
   }
 
-  return null;
+  // Stable sort: same-priority routes keep the on-chain delegate order.
+  return roles.sort((a, b) => routePriority(a) - routePriority(b));
+}
+
+// Preferred role (roles[0]) for callers that only need a default. Use
+// resolveAccountRoles to get every valid route.
+export function resolveAccountRole(origin, structure, userAddress) {
+  return resolveAccountRoles(origin, structure, userAddress)[0] ?? null;
 }

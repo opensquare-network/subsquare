@@ -34,24 +34,26 @@ const FALLBACK_CURATOR_DEPOSIT_MULTIPLIER_PERMILL = 500000;
 const FALLBACK_CURATOR_DEPOSIT_MIN_DOLLARS = 10;
 const FALLBACK_CURATOR_DEPOSIT_MAX_DOLLARS = 200;
 
-export function useAcceptCuratorPopup(bountyIndex, curator, role) {
-  const [isOpen, setIsOpen] = useState(false);
+export function useAcceptCuratorPopup(bountyIndex, curator) {
+  // The dispatch role is chosen when the popup is opened (the accept button
+  // may offer several routes).
+  const [openRole, setOpenRole] = useState(null);
 
-  const component = isOpen && (
+  const component = openRole && (
     <AcceptCuratorPopup
       bountyIndex={bountyIndex}
       curator={curator}
-      role={role}
+      role={openRole}
       onClose={() => {
-        setIsOpen(false);
+        setOpenRole(null);
       }}
     />
   );
 
   return {
     component,
-    showPopupFn() {
-      setIsOpen(true);
+    showPopupFn(role) {
+      setOpenRole(role);
     },
   };
 }

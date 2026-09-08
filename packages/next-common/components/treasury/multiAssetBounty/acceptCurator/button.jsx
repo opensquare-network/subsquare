@@ -1,4 +1,4 @@
-import PrimaryButton from "next-common/lib/button/primary";
+import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
 import { useContextPapi } from "next-common/context/papi";
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
@@ -25,18 +25,15 @@ export default function MultiAssetBountyAcceptCuratorButton() {
     );
   }, [papi, checkPallet, bountyIndex]);
 
-  // The proposed curator address read from the on-chain bounty storage
-  // (undefined while the storage query above is still in flight).
+  // Proposed curator address from the on-chain bounty storage.
   const curator = bounty?.status?.value?.curator;
 
-  // Whether the current user may accept depends on the on-chain curator
-  // structure (is the curator a multisig, is it behind a proxy delegate that
-  // is a multisig, etc.) combined with the current user's role.
-  const { loading: isRoleLoading, role } = useAccountRole(curator);
+  // A user may accept through several roles (e.g. several delegate multisigs),
+  // each a different route; the split button lets the user pick one.
+  const { loading: isRoleLoading, roles } = useAccountRole(curator);
   const { showPopupFn, component } = useAcceptCuratorPopup(
     bountyIndex,
     curator,
-    role,
   );
 
   // accept_curator requires the bounty to be in `Funded` state.
@@ -44,18 +41,19 @@ export default function MultiAssetBountyAcceptCuratorButton() {
     return null;
   }
 
-  // Show the button to the curator itself, and to every signatory of the
-  // multisig that ultimately controls the curator. role stays null while
-  // the curator authority structure is being resolved.
-  if (!curator || isRoleLoading || !role) {
+  // Show only while roles are resolved and the user can dispatch.
+  if (!curator || isRoleLoading || roles.length === 0) {
     return null;
   }
 
   return (
     <>
-      <PrimaryButton className="w-full" onClick={() => showPopupFn()}>
-        Accept Curator
-      </PrimaryButton>
+      <SplitRoleMenuButton
+        fullWidth
+        action="Accept Curator"
+        roles={roles}
+        onClick={(role) => showPopupFn(role)}
+      />
 
       {component}
     </>
