@@ -1,5 +1,7 @@
 import getOriginForExtension from "next-common/utils/extension/origin";
-import { sortAddresses } from "@polkadot/util-crypto";
+import { wrapWithMultisig, wrapWithProxy } from "./wrap";
+
+export { wrapWithMultisig, wrapWithProxy };
 
 export {
   getFeeAssetMultiLocation,
@@ -19,10 +21,6 @@ export async function getSigner(signerAddress) {
   await web3Enable(getOriginForExtension());
   const injector = await web3FromAddress(signerAddress);
   return injector.signer;
-}
-
-export function wrapWithProxy(api, tx, proxyAddress) {
-  return api.tx.proxy.proxy(proxyAddress, null, tx);
 }
 
 export async function wrapTransaction(api, tx, signerAccount) {
@@ -47,24 +45,6 @@ export async function wrapTransaction(api, tx, signerAccount) {
   }
 
   return wrappedTx;
-}
-
-export async function wrapWithMultisig(api, tx, multisig, userAddress) {
-  const callData = tx.method.toHex();
-  const result = await tx.paymentInfo(multisig.multisigAddress);
-  const weight = result.weight;
-
-  const otherSigners = sortAddresses(
-    multisig.signatories.filter((signer) => signer !== userAddress),
-  );
-
-  return api.tx.multisig.asMulti(
-    multisig.threshold,
-    otherSigners,
-    multisig.when,
-    callData,
-    weight,
-  );
 }
 
 export function getEventData(events, sectionName, methodName) {

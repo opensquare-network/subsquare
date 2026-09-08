@@ -24,36 +24,47 @@ export default function SplitButton({
   loading,
   disabled,
   dropdownContent,
+  mainClickOpensMenu = false,
+  fullWidth = false,
   children,
+  onClick,
   ...props
 }) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
   useClickAway(ref, () => setShowDropdown(false));
 
+  const toggleDropdown = () => setShowDropdown((show) => !show);
+
   if (loading) {
     return (
-      <PrimaryButton loading={loading} {...props}>
+      <PrimaryButton
+        loading={loading}
+        {...props}
+        onClick={onClick}
+        className={cn(props?.className, fullWidth && "w-full")}
+      >
         {children}
       </PrimaryButton>
     );
   }
 
   return (
-    <div className="flex gap-[1px]">
+    <div className={cn("flex gap-[1px]", fullWidth && "w-full")}>
       <PrimaryButton
         disabled={disabled}
         {...props}
-        className="rounded-tr-none rounded-br-none"
+        onClick={mainClickOpensMenu ? toggleDropdown : onClick}
+        className={cn("rounded-tr-none rounded-br-none", fullWidth && "flex-1")}
       >
         {children}
       </PrimaryButton>
-      <div ref={ref} className="relative">
+      <div ref={ref} className={cn("relative", fullWidth && "shrink-0")}>
         <PrimaryButton
           disabled={disabled}
           {...props}
+          onClick={toggleDropdown}
           className="rounded-tl-none rounded-bl-none p-[8px]"
-          onClick={() => setShowDropdown(!showDropdown)}
         >
           <ArrowDown width={24} height={24} />
         </PrimaryButton>
