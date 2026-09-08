@@ -78,15 +78,14 @@ export default function MultiAssetBountyAcceptCuratorButton() {
         !disabledTooltip &&
         (canManagePendingMultisig ? (
           <div className="text-textSecondary text14Medium mt-2">
-            An accept curator multisig has already been created.{" "}
+            There is an ongoing multisig about this bounty.{" "}
             <Link className="underline" href="/account/multisigs">
               Manage it here
             </Link>
           </div>
         ) : (
           <div className="text-textSecondary text14Medium mt-2">
-            An accept curator multisig has already been created by another
-            group.
+            There is an ongoing multisig about this bounty.
           </div>
         ))}
 
