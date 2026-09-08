@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
+import { useCurator } from "next-common/context/treasury/bounties";
 import NewChildBountyPopup from "./newChildBountyPopup";
-import PrimaryButton from "next-common/lib/button/primary";
+import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
+import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import { useContextPapi } from "next-common/context/papi";
-import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { isSameAddress } from "next-common/utils";
 import Tooltip from "next-common/components/tooltip";
 
 function useMultiAssetBountyStatus(bountyIndex) {
@@ -82,20 +82,23 @@ function useMultiAssetChildBountyLimit(bountyIndex) {
 }
 
 export default function NewChildBountyButton() {
-  const address = useRealAddress();
   const { bountyIndex } = useOnchainData();
-  const [open, setOpen] = useState(false);
+  const [openRole, setOpenRole] = useState(null);
   const status = useMultiAssetBountyStatus(bountyIndex);
   const { childBountiesCount, maxActiveChildBountyCount } =
     useMultiAssetChildBountyLimit(bountyIndex);
+
+  const parentCurator = useCurator();
+  const { loading: isRoleLoading, roles } = useAccountRole(parentCurator);
 
   if (bountyIndex == null || status?.type !== "Active") {
     return null;
   }
 
-  const curator = status.value.curator;
   let disabledTooltip = "";
-  if (!isSameAddress(curator, address)) {
+  if (isRoleLoading) {
+    disabledTooltip = "Loading curator roles";
+  } else if (roles.length === 0) {
     disabledTooltip = "Only curators can create a child bounty";
   } else if (childBountiesCount == null || maxActiveChildBountyCount == null) {
     disabledTooltip = "Loading child bounty limit";
@@ -106,16 +109,20 @@ export default function NewChildBountyButton() {
   return (
     <>
       <Tooltip content={disabledTooltip}>
-        <PrimaryButton
-          className="w-full"
+        <SplitRoleMenuButton
+          fullWidth
+          action="New Child Bounty"
+          roles={roles}
           disabled={!!disabledTooltip}
-          onClick={() => setOpen(true)}
-        >
-          New Child Bounty
-        </PrimaryButton>
+          onClick={setOpenRole}
+        />
       </Tooltip>
-      {open && !disabledTooltip && (
-        <NewChildBountyPopup onClose={() => setOpen(false)} />
+      {openRole && !disabledTooltip && (
+        <NewChildBountyPopup
+          parentCurator={parentCurator}
+          role={openRole}
+          onClose={() => setOpenRole(null)}
+        />
       )}
     </>
   );

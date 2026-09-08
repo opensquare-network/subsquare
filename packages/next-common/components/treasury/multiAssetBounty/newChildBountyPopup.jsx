@@ -1,4 +1,13 @@
 import React, { useMemo, useState } from "react";
+import { useMount } from "react-use";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import {
+  useSignerAccount,
+  useSignerContext,
+} from "next-common/components/popupWithSigner/context";
+import { wrapTxByRole } from "next-common/utils/sendTransaction/wrapTxByRole";
+import { isSameAddress } from "next-common/utils/isSameAddress";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -58,7 +67,23 @@ function getMetadata({ inputMode, description, inputMetadataHash }) {
   return { metadataHash };
 }
 
-function PopupContent() {
+function UseConnectedAccountSigner() {
+  const { setSelectedProxyAddress, setMultisig } = useSignerContext();
+
+  useMount(() => {
+    // The selected role is already wrapped by the transaction builder.
+    setSelectedProxyAddress();
+    setMultisig();
+  });
+
+  return null;
+}
+
+function PopupContent({ parentCurator, role }) {
+  const dispatch = useDispatch();
+  const signerAccount = useSignerAccount();
+  const connectedAddress =
+    signerAccount?.proxyAddress || signerAccount?.address;
   const api = useContextApi();
   const router = useRouter();
   const { address, bountyIndex, assetKind } = useOnchainData();
@@ -76,17 +101,37 @@ function PopupContent() {
   const [description, setDescription] = useState("");
   const [inputMode, setInputMode] = useState("text");
   const [inputMetadataHash, setInputMetadataHash] = useState("");
-  const { value: curator, component: curatorField } = useAddressComboField({
-    title: (
-      <span className="inline-flex items-center gap-1">
-        Curator
-        <Tooltip content="Optional. Defaults to the parent bounty curator." />
-      </span>
-    ),
-  });
+  const { value: childCurator, component: curatorField } = useAddressComboField(
+    {
+      title: (
+        <span className="inline-flex items-center gap-1">
+          Curator
+          <Tooltip content="Optional. Defaults to the parent bounty curator." />
+        </span>
+      ),
+    },
+  );
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     async (toastError) => {
       try {
+        if (!role || !connectedAddress) {
+          throw new Error("Select an authorized curator account");
+        }
+        const isDirectSigner =
+          role.kind === "direct" &&
+          isSameAddress(parentCurator, connectedAddress);
+        const isProxySigner =
+          role.kind === "proxy" && isSameAddress(role.proxy, connectedAddress);
+        const isMultisigSigner =
+          role.kind === "multisig" &&
+          role.multisig?.signatories?.some((signatory) =>
+            isSameAddress(signatory, connectedAddress),
+          );
+        if (!isDirectSigner && !isProxySigner && !isMultisigSigner) {
+          throw new Error(
+            "The connected account does not match the selected curator role",
+          );
+        }
         const value = getCheckedValue({
           amount,
           decimals,
@@ -112,17 +157,27 @@ function PopupContent() {
           bountyIndex,
           value,
           metadataHash,
-          curator || null,
+          childCurator || null,
         );
 
-        if (preimageLen !== null) {
-          return fundChildBounty;
+        let tx = fundChildBounty;
+        if (preimageLen === null) {
+          tx = api.tx.utility.batchAll([
+            api.tx.preimage.notePreimage(metadata),
+            fundChildBounty,
+          ]);
         }
 
-        return api.tx.utility.batchAll([
-          api.tx.preimage.notePreimage(metadata),
-          fundChildBounty,
-        ]);
+        const wrappedTx = await wrapTxByRole(api, {
+          role,
+          tx,
+          connectedAddress,
+          origin: parentCurator,
+        });
+        if (!wrappedTx) {
+          throw new Error("Unable to create the child bounty transaction");
+        }
+        return wrappedTx;
       } catch (error) {
         toastError(error.message);
         return null;
@@ -135,7 +190,10 @@ function PopupContent() {
       description,
       inputMode,
       inputMetadataHash,
-      curator,
+      childCurator,
+      parentCurator,
+      role,
+      connectedAddress,
       transferrable,
       decimals,
       isLoading,
@@ -143,7 +201,8 @@ function PopupContent() {
   );
   return (
     <>
-      <SignerWithBalance />
+      <UseConnectedAccountSigner />
+      <SignerWithBalance noSwitchSigner />
       <AmountInputWithHint
         label="Value"
         hintLabel="Available"
@@ -193,20 +252,30 @@ function PopupContent() {
             "multiAssetBounties",
             "ChildBountyCreated",
           );
-          if (eventData)
+          if (eventData) {
             router.push(
               `/treasury/multi-asset-child-bounties/${eventData[0]}_${eventData[1]}`,
             );
+          } else if (
+            role?.kind === "multisig" &&
+            getEventData(events, "multisig", "NewMultisig")
+          ) {
+            dispatch(
+              newSuccessToast(
+                "Multisig transaction submitted. Waiting for other signatories.",
+              ),
+            );
+          }
         }}
       />
     </>
   );
 }
 
-export default function NewChildBountyPopup({ onClose }) {
+export default function NewChildBountyPopup({ onClose, parentCurator, role }) {
   return (
     <PopupWithSigner title="New Child Bounty" onClose={onClose}>
-      <PopupContent />
+      <PopupContent parentCurator={parentCurator} role={role} />
     </PopupWithSigner>
   );
 }

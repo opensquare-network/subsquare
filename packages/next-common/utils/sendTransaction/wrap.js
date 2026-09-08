@@ -1,4 +1,5 @@
 import { sortAddresses } from "@polkadot/util-crypto";
+import { isSameAddress } from "../isSameAddress";
 
 // Wrap a transaction so that it is dispatched through a proxy, i.e. the
 // actual origin of the call becomes `proxyAddress`. Used when the connected
@@ -17,7 +18,7 @@ export async function wrapWithMultisig(api, tx, multisig, userAddress) {
   const weight = result.weight;
 
   const otherSigners = sortAddresses(
-    multisig.signatories.filter((signer) => signer !== userAddress),
+    multisig.signatories.filter((signer) => !isSameAddress(signer, userAddress)),
   );
 
   return api.tx.multisig.asMulti(
