@@ -3,14 +3,20 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
+import { UseConnectedAccountSigner } from "next-common/components/treasury/multiAssetBounty/acceptCurator/useAcceptCuratorPopup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import { wrapTxByRole } from "next-common/utils/sendTransaction/wrapTxByRole";
 import { useContextApi } from "next-common/context/api";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 
-function PopupContent() {
+function PopupContent({ origin, role }) {
   const api = useContextApi();
+  const signerAccount = useSignerAccount();
+  const connectedAddress =
+    signerAccount?.proxyAddress || signerAccount?.address;
   const { parentBountyId, childBountyId } = useOnchainData();
   const { value: curator, component: curatorSelect } = useAddressComboField({
     title: "Curator",
@@ -28,47 +34,56 @@ function PopupContent() {
         return null;
       }
 
-      return api.tx.multiAssetBounties.proposeCurator(
+      const tx = api.tx.multiAssetBounties.proposeCurator(
         parentBountyId,
         childBountyId,
         curator,
       );
+      return wrapTxByRole(api, { role, tx, connectedAddress, origin });
     },
-    [api, parentBountyId, childBountyId, curator],
+    [
+      api,
+      role,
+      connectedAddress,
+      origin,
+      parentBountyId,
+      childBountyId,
+      curator,
+    ],
   );
 
   return (
     <>
-      <SignerWithBalance />
+      <UseConnectedAccountSigner />
+      <SignerWithBalance noSwitchSigner />
       {curatorSelect}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
-      <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFuncForSubmit}
-        />
-      </div>
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFuncForSubmit} />
     </>
   );
 }
 
-function ProposeCuratorPopup(props) {
+function ProposeCuratorPopup({ origin, role, ...props }) {
   return (
     <PopupWithSigner title="Propose Curator" {...props}>
-      <PopupContent />
+      <PopupContent origin={origin} role={role} />
     </PopupWithSigner>
   );
 }
 
-export default function useProposeCuratorPopup() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function useProposeCuratorPopup(origin) {
+  const [openRole, setOpenRole] = useState(null);
 
   return {
-    showPopup: () => setIsOpen(true),
-    popup: isOpen ? (
-      <ProposeCuratorPopup onClose={() => setIsOpen(false)} />
+    showPopup: setOpenRole,
+    popup: openRole ? (
+      <ProposeCuratorPopup
+        origin={origin}
+        role={openRole}
+        onClose={() => setOpenRole(null)}
+      />
     ) : null,
   };
 }

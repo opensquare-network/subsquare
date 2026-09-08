@@ -30,12 +30,7 @@ function PopupContent({ action }) {
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
-      <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFuncForSubmit}
-        />
-      </div>
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFuncForSubmit} />
     </>
   );
 }

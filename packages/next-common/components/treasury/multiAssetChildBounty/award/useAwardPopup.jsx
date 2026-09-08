@@ -3,7 +3,10 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
+import { UseConnectedAccountSigner } from "next-common/components/treasury/multiAssetBounty/acceptCurator/useAcceptCuratorPopup";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import { wrapTxByRole } from "next-common/utils/sendTransaction/wrapTxByRole";
 import { useContextApi } from "next-common/context/api";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
@@ -34,8 +37,11 @@ function getBeneficiaryParam(beneficiary) {
   };
 }
 
-function PopupContent() {
+function PopupContent({ origin, role }) {
   const api = useContextApi();
+  const signerAccount = useSignerAccount();
+  const connectedAddress =
+    signerAccount?.proxyAddress || signerAccount?.address;
   const { parentBountyId, childBountyId } = useOnchainData();
   const { value: beneficiary, component: beneficiarySelect } =
     useAddressComboField({ title: "Beneficiary" });
@@ -60,45 +66,56 @@ function PopupContent() {
         return null;
       }
 
-      return api.tx.multiAssetBounties.awardBounty(
+      const tx = api.tx.multiAssetBounties.awardBounty(
         parentBountyId,
         childBountyId,
         beneficiaryParam,
       );
+      return wrapTxByRole(api, { role, tx, connectedAddress, origin });
     },
-    [api, parentBountyId, childBountyId, beneficiary],
+    [
+      api,
+      role,
+      connectedAddress,
+      origin,
+      parentBountyId,
+      childBountyId,
+      beneficiary,
+    ],
   );
 
   return (
     <>
-      <SignerWithBalance />
+      <UseConnectedAccountSigner />
+      <SignerWithBalance noSwitchSigner />
       {beneficiarySelect}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
-      <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFuncForSubmit}
-        />
-      </div>
+      <TxSubmissionButton title="Confirm" getTxFunc={getTxFuncForSubmit} />
     </>
   );
 }
 
-function AwardPopup(props) {
+function AwardPopup({ origin, role, ...props }) {
   return (
     <PopupWithSigner title="Award Child Bounty" {...props}>
-      <PopupContent />
+      <PopupContent origin={origin} role={role} />
     </PopupWithSigner>
   );
 }
 
-export default function useAwardPopup() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function useAwardPopup(origin) {
+  const [openRole, setOpenRole] = useState(null);
 
   return {
-    showPopup: () => setIsOpen(true),
-    popup: isOpen ? <AwardPopup onClose={() => setIsOpen(false)} /> : null,
+    showPopup: setOpenRole,
+    popup: openRole ? (
+      <AwardPopup
+        origin={origin}
+        role={openRole}
+        onClose={() => setOpenRole(null)}
+      />
+    ) : null,
   };
 }

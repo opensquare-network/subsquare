@@ -1,6 +1,7 @@
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { useOnchainData } from "next-common/context/post";
 import BountySidebarCurator from "next-common/components/treasury/bounty/curator";
+import { CuratorProvider } from "next-common/context/treasury/bounties";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { Value } from "next-common/components/referenda/tally/styled";
 import { InfoUser, SystemCoins } from "@osn/icons/subsquare";
@@ -77,7 +78,9 @@ function MultiAssetChildBountySidebar() {
       <MultiAssetChildBountyAcceptCurator />
       <MultiAssetChildBountyAward />
       <MultiAssetChildBountyPaymentAction />
-      <BountySidebarCurator />
+      <CuratorProvider curator={curator}>
+        <BountySidebarCurator />
+      </CuratorProvider>
       <MultiAssetChildBountyMeta />
     </RightBarWrapper>
   );
