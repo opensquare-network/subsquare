@@ -17,6 +17,7 @@ import {
   CopyableAddress,
 } from "next-common/components/treasury/bounty/balance";
 import { useMemo } from "react";
+import NewChildBountyButton from "next-common/components/treasury/multiAssetBounty/newChildBountyButton";
 
 function MultiAssetBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -78,6 +79,7 @@ function MultiAssetBountySidebar() {
       <MultiAssetBountySidebarBalance />
       <MultiAssetBountyAcceptCuratorButton />
       <BountySidebarCurator />
+      <NewChildBountyButton />
     </RightBarWrapper>
   );
 }
