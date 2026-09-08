@@ -1,36 +1,23 @@
 import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
 import Tooltip from "next-common/components/tooltip";
-import { useContextPapi } from "next-common/context/papi";
 import Link from "next-common/components/link";
 import { useOnchainData } from "next-common/context/post";
-import { isNil } from "lodash-es";
-import { useEffect, useState } from "react";
 import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import { isSameAddress } from "next-common/utils/isSameAddress";
 import usePendingAcceptCuratorMultisig from "./usePendingAcceptCuratorMultisig";
+import useMultiAssetBountyStatus from "../useMultiAssetBountyStatus";
 import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 
 export default function MultiAssetBountyAcceptCuratorButton() {
   const { bountyIndex } = useOnchainData();
-  const { api: papi, checkPallet } = useContextPapi();
-  const [bounty, setBounty] = useState(null);
 
-  useEffect(() => {
-    if (
-      !papi ||
-      !checkPallet("MultiAssetBounties", "Bounties") ||
-      isNil(bountyIndex)
-    ) {
-      return;
-    }
-
-    papi.query.MultiAssetBounties.Bounties.getValue(bountyIndex).then((value) =>
-      setBounty(value),
-    );
-  }, [papi, checkPallet, bountyIndex]);
+  // Live on-chain status. Subscribes via watchValue so the button reacts as
+  // soon as a tx changes the storage, e.g. after accept_curator lands the
+  // status flips Funded -> Active and this button disappears by itself.
+  const status = useMultiAssetBountyStatus(bountyIndex);
 
   // Proposed curator address from the on-chain bounty storage.
-  const curator = bounty?.status?.value?.curator;
+  const curator = status?.value?.curator;
 
   // A user may accept through several roles (e.g. several delegate multisigs),
   // each a different route; the split button lets the user pick one. The
@@ -59,7 +46,7 @@ export default function MultiAssetBountyAcceptCuratorButton() {
   );
 
   // accept_curator requires the bounty to be in `Funded` state.
-  if (bounty?.status?.type !== "Funded") {
+  if (status?.type !== "Funded") {
     return null;
   }
 
