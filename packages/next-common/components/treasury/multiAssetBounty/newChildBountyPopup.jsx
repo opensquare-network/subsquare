@@ -11,13 +11,50 @@ import { useOnchainData } from "next-common/context/post";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import useAssetBalance from "next-common/hooks/treasury/useAssetBalance";
 import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
-import BigNumber from "bignumber.js";
+import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
 import { stringToHex } from "@polkadot/util";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { chainApiHash } from "next-common/utils/chain";
 import queryPreimageLen from "next-common/hooks/preimages/query/len";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
+import Tab from "next-common/components/tab";
+import Input from "next-common/lib/input";
+import PopupLabel from "next-common/components/popup/label";
+import { isValidPreimageHash } from "next-common/utils";
+
+const metadataTabs = [
+  { tabId: "text", tabTitle: "Text" },
+  { tabId: "metadata", tabTitle: "Metadata Hash" },
+];
+
+function getCheckedValue({ amount, decimals, transferrable, isLoading }) {
+  if (isLoading || transferrable == null) {
+    throw new Error("Available bounty balance is loading");
+  }
+
+  return checkTransferAmount({
+    transferAmount: amount,
+    decimals,
+    transferrable: String(transferrable),
+  });
+}
+
+function getMetadata({ inputMode, description, inputMetadataHash }) {
+  if (inputMode === "text") {
+    if (!description.trim()) {
+      throw new Error("Description is required");
+    }
+    const metadata = stringToHex(description);
+    return { metadata, metadataHash: chainApiHash(metadata) };
+  }
+
+  const metadataHash = inputMetadataHash.trim();
+  if (!isValidPreimageHash(metadataHash)) {
+    throw new Error("Please enter a valid 32-byte metadata hash");
+  }
+  return { metadataHash };
+}
 
 function PopupContent() {
   const api = useConditionalContextApi();
@@ -35,38 +72,35 @@ function PopupContent() {
   );
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+  const [inputMode, setInputMode] = useState("text");
+  const [inputMetadataHash, setInputMetadataHash] = useState("");
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     async (toastError) => {
       try {
-        const value = new BigNumber(amount).times(Math.pow(10, decimals));
-        if (!value.isFinite() || !value.isInteger() || !value.gt(0)) {
-          throw new Error(
-            "Child bounty value must be a positive amount with valid precision",
-          );
-        }
-        if (isLoading || transferrable == null) {
-          throw new Error("Available bounty balance is loading");
-        }
-        if (value.gt(transferrable))
-          throw new Error(
-            "Child bounty value must not be greater than available balance",
-          );
-        // The runtime converts the asset value to native units to check its minimum.
+        const value = getCheckedValue({
+          amount,
+          decimals,
+          transferrable,
+          isLoading,
+        });
         if (!api?.tx.multiAssetBounties?.fundChildBounty) {
           throw new Error(
             "Creating multi-asset child bounties is not available",
           );
         }
-        if (!description.trim()) {
-          throw new Error("Description is required");
-        }
+        const { metadata, metadataHash } = getMetadata({
+          inputMode,
+          description,
+          inputMetadataHash,
+        });
 
-        const metadata = stringToHex(description);
-        const metadataHash = blake2AsHex(metadata);
         const preimageLen = await queryPreimageLen(api, metadataHash);
+        if (inputMode === "metadata" && preimageLen === null) {
+          throw new Error("The metadata preimage must already exist on chain");
+        }
         const fundChildBounty = api.tx.multiAssetBounties.fundChildBounty(
           bountyIndex,
-          value.toFixed(0),
+          value,
           metadataHash,
           null,
         );
@@ -84,7 +118,17 @@ function PopupContent() {
         return null;
       }
     },
-    [api, bountyIndex, amount, description, transferrable, decimals, isLoading],
+    [
+      api,
+      bountyIndex,
+      amount,
+      description,
+      inputMode,
+      inputMetadataHash,
+      transferrable,
+      decimals,
+      isLoading,
+    ],
   );
   return (
     <>
@@ -100,12 +144,31 @@ function PopupContent() {
         inputAmount={amount}
         setInputAmount={setAmount}
       />
-      <TextAreaField
-        title="Description"
-        placeholder="Please fill the description about this child bounty..."
-        text={description}
-        setText={setDescription}
+      <Tab
+        tabs={metadataTabs}
+        selectedTabId={inputMode}
+        setSelectedTabId={setInputMode}
       />
+      {inputMode === "text" ? (
+        <TextAreaField
+          title="Description"
+          placeholder="Please fill the description about this child bounty..."
+          text={description}
+          setText={setDescription}
+        />
+      ) : (
+        <div>
+          <PopupLabel text="Metadata Hash" />
+          <Input
+            placeholder="0x..."
+            value={inputMetadataHash}
+            onChange={(event) => setInputMetadataHash(event.target.value)}
+          />
+          <p className="mt-2 text12Medium text-textTertiary">
+            The metadata preimage must already exist on chain.
+          </p>
+        </div>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
