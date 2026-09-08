@@ -1,4 +1,5 @@
 import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
+import Tooltip from "next-common/components/tooltip";
 import { useContextPapi } from "next-common/context/papi";
 import { useOnchainData } from "next-common/context/post";
 import { isNil } from "lodash-es";
@@ -41,19 +42,29 @@ export default function MultiAssetBountyAcceptCuratorButton() {
     return null;
   }
 
-  // Show only while roles are resolved and the user can dispatch.
-  if (!curator || isRoleLoading || roles.length === 0) {
+  // No curator proposed yet, nothing to accept.
+  if (!curator) {
     return null;
+  }
+
+  let disabledTooltip = "";
+  if (isRoleLoading) {
+    disabledTooltip = "Loading curator roles";
+  } else if (roles.length === 0) {
+    disabledTooltip = "Only the curator can accept";
   }
 
   return (
     <>
-      <SplitRoleMenuButton
-        fullWidth
-        action="Accept Curator"
-        roles={roles}
-        onClick={(role) => showPopupFn(role)}
-      />
+      <Tooltip content={disabledTooltip}>
+        <SplitRoleMenuButton
+          fullWidth
+          action="Accept Curator"
+          roles={roles}
+          disabled={!!disabledTooltip}
+          onClick={(role) => showPopupFn(role)}
+        />
+      </Tooltip>
 
       {component}
     </>

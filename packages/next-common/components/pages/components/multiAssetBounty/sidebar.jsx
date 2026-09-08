@@ -77,8 +77,8 @@ function MultiAssetBountySidebar() {
   return (
     <RightBarWrapper>
       <MultiAssetBountySidebarBalance />
-      <MultiAssetBountyAcceptCuratorButton />
       <BountySidebarCurator />
+      <MultiAssetBountyAcceptCuratorButton />
       <NewChildBountyButton />
     </RightBarWrapper>
   );
