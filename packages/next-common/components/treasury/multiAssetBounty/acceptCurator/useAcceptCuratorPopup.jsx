@@ -8,6 +8,9 @@ import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useMount } from "react-use";
+import { useDispatch } from "react-redux";
+import { newSuccessToast } from "next-common/store/reducers/toastSlice";
+import { getEventData } from "next-common/utils/sendTransaction";
 import {
   useSignerAccount,
   useSignerContext,
@@ -204,6 +207,7 @@ function UseConnectedAccountSigner() {
 }
 
 function PopupContent({ bountyIndex, curator, role }) {
+  const dispatch = useDispatch();
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
   const { deposit, isLoading, unavailable } = useCuratorDeposit();
   const api = useContextApi();
@@ -259,6 +263,18 @@ function PopupContent({ bountyIndex, curator, role }) {
           title="Confirm"
           getTxFunc={getTxFunc}
           disabled={!depositReady}
+          onInBlock={({ events }) => {
+            if (
+              role?.kind === "multisig" &&
+              getEventData(events, "multisig", "NewMultisig")
+            ) {
+              dispatch(
+                newSuccessToast(
+                  "Multisig transaction submitted. Waiting for other signatories.",
+                ),
+              );
+            }
+          }}
         />
       </div>
     </>
