@@ -118,14 +118,15 @@ function SalesHistoryList() {
   const sale = useCoretimeSale();
   const { isInterludePhase, isLoading } = useCoretimeSaleIsInterlude();
   const [activeTabValue, setActiveTabValue] = useState("");
+  const isRenewalsFirst = isInterludePhase || sale?.purchaseCount === 0;
 
   useEffect(() => {
     if (isLoading) {
       return;
     }
 
-    setActiveTabValue(isInterludePhase ? "renewals" : "purchases");
-  }, [isInterludePhase, isLoading]);
+    setActiveTabValue(isRenewalsFirst ? "renewals" : "purchases");
+  }, [isRenewalsFirst, isLoading]);
 
   const renewalsTabInfo = {
     value: "renewals",
@@ -141,7 +142,7 @@ function SalesHistoryList() {
     content: <SalesHistoryPurchases />,
   };
 
-  const tabs = isInterludePhase
+  const tabs = isRenewalsFirst
     ? [renewalsTabInfo, purchasesTabInfo]
     : [purchasesTabInfo, renewalsTabInfo];
 
