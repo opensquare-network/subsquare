@@ -6,35 +6,7 @@ import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
 import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import { useContextPapi } from "next-common/context/papi";
 import Tooltip from "next-common/components/tooltip";
-
-function useMultiAssetBountyStatus(bountyIndex) {
-  const { api: papi, checkPallet } = useContextPapi();
-  const [bounty, setBounty] = useState(null);
-
-  useEffect(() => {
-    setBounty(null);
-    if (
-      !papi ||
-      bountyIndex == null ||
-      !checkPallet("MultiAssetBounties", "Bounties")
-    ) {
-      return;
-    }
-
-    const bountySub = papi.query.MultiAssetBounties.Bounties.watchValue(
-      bountyIndex,
-    ).subscribe({
-      next: ({ value }) => setBounty(value ?? null),
-      error: (error) => {
-        setBounty(null);
-        console.error(error);
-      },
-    });
-    return () => bountySub.unsubscribe();
-  }, [papi, bountyIndex, checkPallet]);
-
-  return bounty?.status;
-}
+import useMultiAssetBountyStatus from "./useMultiAssetBountyStatus";
 
 function useMultiAssetChildBountyLimit(bountyIndex) {
   const { api: papi, checkPallet } = useContextPapi();
