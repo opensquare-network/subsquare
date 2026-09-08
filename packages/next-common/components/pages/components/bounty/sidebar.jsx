@@ -24,9 +24,9 @@ function BountySidebar() {
     <RightBarWrapper>
       <BountySidebarBalance />
       <BountyProposeCuratorButton />
-      <BountyAcceptCuratorButton params={[bountyIndex]} />
       <BountyClaim />
       <BountySidebarCurator />
+      <BountyAcceptCuratorButton params={[bountyIndex]} />
       <NewChildBountyButton />
       {showActionTip && <BountySidebarActionTip className="!mt-4" />}
     </RightBarWrapper>
