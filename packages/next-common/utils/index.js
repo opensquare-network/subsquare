@@ -1,6 +1,9 @@
 import BigNumber from "bignumber.js";
-import { encodeAddress, isEthereumAddress } from "@polkadot/util-crypto";
+import { isEthereumAddress } from "@polkadot/util-crypto";
 import dayjs from "dayjs";
+import { isSameAddress } from "./isSameAddress";
+
+export { isSameAddress };
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
@@ -222,26 +225,6 @@ export function checkInputValue(
   }
 
   return bnValue;
-}
-
-export function isSameAddress(addr1, addr2) {
-  if (!addr1 || !addr2) {
-    return false;
-  }
-
-  if (addr1 === addr2) {
-    return true;
-  }
-
-  if (isEthereumAddress(addr1) && isEthereumAddress(addr2)) {
-    return addr1.toLowerCase() === addr2.toLowerCase();
-  }
-
-  try {
-    return encodeAddress(addr1, 42) === encodeAddress(addr2, 42);
-  } catch {
-    return false;
-  }
 }
 
 export function isAddressInGroup(addr, addresses = []) {
