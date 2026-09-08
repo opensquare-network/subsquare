@@ -121,6 +121,7 @@ function StatisticsImpl({
       datasets: [
         // progress
         {
+          order: 1,
           data: [
             { x: 0, y: maxPrice },
             { x: currentIndex, y: maxPrice },
