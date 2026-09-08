@@ -22,6 +22,8 @@ import Tab from "next-common/components/tab";
 import Input from "next-common/lib/input";
 import PopupLabel from "next-common/components/popup/label";
 import { isValidPreimageHash } from "next-common/utils";
+import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import Tooltip from "next-common/components/tooltip";
 
 const metadataTabs = [
   { tabId: "text", tabTitle: "Text" },
@@ -74,6 +76,14 @@ function PopupContent() {
   const [description, setDescription] = useState("");
   const [inputMode, setInputMode] = useState("text");
   const [inputMetadataHash, setInputMetadataHash] = useState("");
+  const { value: curator, component: curatorField } = useAddressComboField({
+    title: (
+      <span className="inline-flex items-center gap-1">
+        Curator
+        <Tooltip content="Optional. Defaults to the parent bounty curator." />
+      </span>
+    ),
+  });
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     async (toastError) => {
       try {
@@ -102,7 +112,7 @@ function PopupContent() {
           bountyIndex,
           value,
           metadataHash,
-          null,
+          curator || null,
         );
 
         if (preimageLen !== null) {
@@ -125,6 +135,7 @@ function PopupContent() {
       description,
       inputMode,
       inputMetadataHash,
+      curator,
       transferrable,
       decimals,
       isLoading,
@@ -144,6 +155,7 @@ function PopupContent() {
         inputAmount={amount}
         setInputAmount={setAmount}
       />
+      {curatorField}
       <Tab
         tabs={metadataTabs}
         selectedTabId={inputMode}
