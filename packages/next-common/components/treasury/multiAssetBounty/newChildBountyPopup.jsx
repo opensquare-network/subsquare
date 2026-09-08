@@ -8,7 +8,7 @@ import AmountInputWithHint from "next-common/components/popup/fields/amountInput
 import TextAreaField from "next-common/components/popup/fields/textAreaField";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
-import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
+import { useContextApi } from "next-common/context/api";
 import useAssetBalance from "next-common/hooks/treasury/useAssetBalance";
 import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
@@ -59,7 +59,7 @@ function getMetadata({ inputMode, description, inputMetadataHash }) {
 }
 
 function PopupContent() {
-  const api = useConditionalContextApi();
+  const api = useContextApi();
   const router = useRouter();
   const { address, bountyIndex, assetKind } = useOnchainData();
   const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
@@ -185,7 +185,6 @@ function PopupContent() {
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
       <TxSubmissionButton
-        api={api}
         title="Confirm"
         getTxFunc={getTxFuncForSubmit}
         onInBlock={({ events }) => {
