@@ -259,6 +259,8 @@ const transferEnabledChains = [
   Chains.paseo,
   Chains.hyperBridge,
   Chains.hydradx,
+  Chains.polkadotCoretime,
+  Chains.kusamaCoretime,
 ];
 
 const paraChainTeleportEnabledChains = [Chains.collectives, Chains.hydradx];

@@ -85,8 +85,8 @@ function PopupContent() {
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const address = signerAccount?.realAddress;
-  const { value: balance, loading } = useSubBalanceInfo(address);
   const api = useContextApi();
+  const { value: balance, loading } = useSubBalanceInfo(address, api);
   const dispatch = useDispatch();
   const {
     getCheckedValue: getCheckedTransferAmount,
@@ -132,7 +132,7 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance />
+      <SignerWithBalance api={api} />
       {transferToAddressField}
       {transferAmountField}
       {showDestinationWarning && <DestinationTransferWarning />}
