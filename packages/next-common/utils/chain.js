@@ -158,6 +158,8 @@ export function getRelayChain(chain) {
     return Chains.polkadot;
   } else if (isPolkadotPeopleChain(chain)) {
     return Chains.polkadot;
+  } else if (chain === Chains.polkadotCoretime) {
+    return Chains.polkadot;
   } else if (isHyperBridgeChain(chain)) {
     return Chains.polkadot;
   } else if (chain === Chains.hydradx) {
@@ -165,6 +167,8 @@ export function getRelayChain(chain) {
   } else if (isKusamaAssetHubChain(chain)) {
     return Chains.kusama;
   } else if (isKusamaPeopleChain(chain)) {
+    return Chains.kusama;
+  } else if (chain === Chains.kusamaCoretime) {
     return Chains.kusama;
   } else if (isWestendAssetHubChain(chain)) {
     return Chains.westend;

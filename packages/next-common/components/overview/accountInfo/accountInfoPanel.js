@@ -272,6 +272,8 @@ const paraChainTeleportOnRelayChainEnabledChains = [
   Chains.kusamaPeople,
   Chains.paseoPeople,
   Chains.westendPeople,
+  Chains.polkadotCoretime,
+  Chains.kusamaCoretime,
 ];
 
 export function AccountHead({ width }) {
