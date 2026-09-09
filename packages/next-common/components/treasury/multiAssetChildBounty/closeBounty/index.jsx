@@ -2,10 +2,11 @@ import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
 import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next-common/components/link";
-import { useOnchainData, usePostState } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import { usePageProps } from "next-common/context/page";
 import { isSameAddress } from "next-common/utils/isSameAddress";
+import useMultiAssetChildBountyStatus from "../useMultiAssetChildBountyStatus";
+import useMultiAssetBountyStatus from "../../multiAssetBounty/useMultiAssetBountyStatus";
 import usePendingCloseBountyMultisig from "./usePendingCloseBountyMultisig";
 import useCloseBountyPopup from "./useCloseBountyPopup";
 
@@ -15,6 +16,10 @@ import useCloseBountyPopup from "./useCloseBountyPopup";
 // RejectOrigin can also close, but that is out of scope for a user-facing
 // button.
 //
+// We subscribe to the live on-chain status of both the child and its parent
+// bounty, so the button reflects state as soon as anything lands instead of
+// relying on the scanner's display state.
+//
 // Whether the connected account can act as a curator is decided by its
 // account roles (direct / proxy delegate / multisig signatory) for that
 // curator address. Button rules:
@@ -22,18 +27,31 @@ import useCloseBountyPopup from "./useCloseBountyPopup";
 //  - else if it can act as the parent curator     -> show only that route;
 //  - if it can act as both, the child curator route wins;
 //  - if it can act as neither, show a disabled button with a tooltip.
-const CLOSEABLE_STATES = ["Funded", "Active", "CuratorUnassigned"];
+const CLOSEABLE_STATUSES = ["Funded", "Active", "CuratorUnassigned"];
 
 export default function MultiAssetChildBountyCloseBounty() {
   const address = useRealAddress();
-  const state = usePostState();
-  const {
-    parentBountyId,
-    childBountyId,
-    curator: childCurator,
-  } = useOnchainData();
-  const { parentBounty } = usePageProps();
-  const parentCurator = parentBounty?.onchainData?.curator;
+  const { parentBountyId, childBountyId } = useOnchainData();
+
+  // Live on-chain statuses: the child's own status decides whether it is
+  // closeable, and the child/parent curators are read from chain storage so
+  // the button does not depend on the scanner's display state.
+  const status = useMultiAssetChildBountyStatus(parentBountyId, childBountyId);
+  const parentStatus = useMultiAssetBountyStatus(parentBountyId);
+
+  // The child curator is part of the child status while it is Funded/Active.
+  // After unassign_curator the child is CuratorUnassigned and carries no
+  // curator, so only the parent curator (or governance) can close it.
+  const childCurator =
+    status?.type === "Funded" || status?.type === "Active"
+      ? status?.value?.curator
+      : null;
+
+  // The parent curator can close the child while the parent is Funded/Active.
+  const parentCurator =
+    parentStatus?.type === "Funded" || parentStatus?.type === "Active"
+      ? parentStatus?.value?.curator
+      : null;
 
   // useAccountRole(origin) resolves every route the current user has to
   // dispatch with `origin`; it returns [] when the user is not that curator
@@ -119,7 +137,7 @@ export default function MultiAssetChildBountyCloseBounty() {
   // could close it, which is out of scope for a user-facing button.
   if (
     !address ||
-    !CLOSEABLE_STATES.includes(state) ||
+    !CLOSEABLE_STATUSES.includes(status?.type) ||
     (!childCurator && !parentCurator)
   ) {
     return null;
