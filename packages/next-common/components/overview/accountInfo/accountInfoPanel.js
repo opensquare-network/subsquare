@@ -259,6 +259,8 @@ const transferEnabledChains = [
   Chains.paseo,
   Chains.hyperBridge,
   Chains.hydradx,
+  Chains.polkadotCoretime,
+  Chains.kusamaCoretime,
 ];
 
 const paraChainTeleportEnabledChains = [Chains.collectives, Chains.hydradx];
@@ -272,6 +274,8 @@ const paraChainTeleportOnRelayChainEnabledChains = [
   Chains.kusamaPeople,
   Chains.paseoPeople,
   Chains.westendPeople,
+  Chains.polkadotCoretime,
+  Chains.kusamaCoretime,
 ];
 
 export function AccountHead({ width }) {

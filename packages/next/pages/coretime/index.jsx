@@ -20,6 +20,12 @@ import {
 } from "next-common/services/gql/coretime/chart";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import queryCoretimeSaleTimeline from "next-common/services/gql/coretime/timeline";
+import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
+import { PapiProvider } from "next-common/context/papi";
+
+const AccountInfo = dynamicClientOnly(() =>
+  import("next-common/components/overview/accountInfo"),
+);
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -66,6 +72,9 @@ function CoretimeOverviewPageImpl() {
       description={description}
     >
       <div className="space-y-6">
+        <PapiProvider>
+          <AccountInfo />
+        </PapiProvider>
         <CoretimeSalePanel />
         <CoretimeSalesHistorySection />
       </div>
