@@ -21,6 +21,7 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import {
   ASSET_TYPE,
   getAssetInfoFromAssetKind,
@@ -70,7 +71,7 @@ export function useAcceptCuratorPopup(bountyIndex, curator) {
 //   2. native_amount = floor(bounty.value * conversionRateToNative / 10^18)
 //   3. deposit = clamp(floor(native_amount * CuratorDepositMultiplier), min, max)
 //   4. The deposit is held in the NATIVE token (e.g. DOT), not the bounty asset.
-function useCuratorDeposit() {
+export function useCuratorDeposit() {
   const { assetKind, value } = useOnchainData();
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
   const api = useContextApi();
@@ -216,7 +217,25 @@ function PopupContent({ bountyIndex, curator, role }) {
   const connectedAddress =
     signerAccount?.proxyAddress || signerAccount?.address;
 
+  // The deposit is held on the origin (curator) account, so pre-check that
+  // account's native transferable balance (for a multisig curator this is the
+  // multisig account itself).
+  const { value: curatorBalanceInfo, loading: curatorBalanceLoading } =
+    useSubBalanceInfo(curator, api);
+  const curatorTransferable = curatorBalanceInfo?.transferrable;
+
+  const depositReady = !!deposit && !isLoading && !unavailable;
+  const insufficientBalance =
+    depositReady &&
+    !curatorBalanceLoading &&
+    curatorTransferable != null &&
+    new BigNumber(deposit).gt(new BigNumber(curatorTransferable));
+
   const getTxFunc = useCallback(() => {
+    if (!depositReady || insufficientBalance) {
+      return null;
+    }
+
     if (!api?.tx?.multiAssetBounties?.acceptCurator) {
       return null;
     }
@@ -231,9 +250,15 @@ function PopupContent({ bountyIndex, curator, role }) {
       connectedAddress,
       origin: curator,
     });
-  }, [api, bountyIndex, curator, role, connectedAddress]);
-
-  const depositReady = deposit && !isLoading && !unavailable;
+  }, [
+    api,
+    bountyIndex,
+    curator,
+    role,
+    connectedAddress,
+    depositReady,
+    insufficientBalance,
+  ]);
 
   return (
     <>
@@ -255,6 +280,11 @@ function PopupContent({ bountyIndex, curator, role }) {
           symbol={nativeSymbol}
         />
       )}
+      {insufficientBalance && (
+        <InfoMessage className="min-h-9.5">
+          Insufficient native balance for the curator deposit
+        </InfoMessage>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
@@ -262,7 +292,7 @@ function PopupContent({ bountyIndex, curator, role }) {
         <TxSubmissionButton
           title="Confirm"
           getTxFunc={getTxFunc}
-          disabled={!depositReady}
+          disabled={!depositReady || insufficientBalance}
           onInBlock={({ events }) => {
             if (
               role?.kind === "multisig" &&
