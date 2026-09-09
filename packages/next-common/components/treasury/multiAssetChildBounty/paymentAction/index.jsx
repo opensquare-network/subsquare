@@ -1,30 +1,43 @@
 import PrimaryButton from "next-common/lib/button/primary";
-import { useOnchainData, usePostState } from "next-common/context/post";
+import { useOnchainData } from "next-common/context/post";
+import useMultiAssetChildBountyStatus from "../useMultiAssetChildBountyStatus";
 import usePaymentActionPopup from "./usePaymentActionPopup";
 
-const PAYMENT_ACTIONS = {
-  attempted: {
-    method: "checkStatus",
-    title: "Check Status",
-  },
-  failed: {
-    method: "retryPayment",
-    title: "Retry Payment",
-  },
-  pending: {
-    method: "retryPayment",
-    title: "Retry Payment",
-  },
-};
+// A child bounty with an in-flight payment attempt sits in one of the
+// `*Attempted` on-chain states:
+//   FundingAttempted / RefundAttempted / PayoutAttempted
+// check_status resolves an initiated (Attempted/Pending) payment, while
+// retry_payment re-initiates a failed one. Both are permissionless (any
+// signed account), so this is a plain button without a role menu.
+const PAYMENT_ATTEMPT_STATUSES = [
+  "FundingAttempted",
+  "RefundAttempted",
+  "PayoutAttempted",
+];
+
+function resolvePaymentAction(status) {
+  if (!PAYMENT_ATTEMPT_STATUSES.includes(status?.type)) {
+    return null;
+  }
+
+  const paymentStatus = status?.value?.payment_status?.type;
+  if (paymentStatus === "Failed" || paymentStatus === "Pending") {
+    return { method: "retryPayment", title: "Retry Payment" };
+  }
+  if (paymentStatus === "Attempted") {
+    return { method: "checkStatus", title: "Check Status" };
+  }
+
+  return null;
+}
 
 export default function MultiAssetChildBountyPaymentAction() {
-  const state = usePostState();
-  const { lastPaymentStatus, meta } = useOnchainData();
-  const action = PAYMENT_ACTIONS[lastPaymentStatus];
-  const isPayoutAttempted = Boolean(meta?.status?.payoutAttempted);
+  const { parentBountyId, childBountyId } = useOnchainData();
+  const status = useMultiAssetChildBountyStatus(parentBountyId, childBountyId);
+  const action = resolvePaymentAction(status);
   const { showPopup, popup } = usePaymentActionPopup(action);
 
-  if (state !== "Awarded" || !isPayoutAttempted || !action) {
+  if (!action) {
     return null;
   }
 
