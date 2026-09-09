@@ -1,38 +1,38 @@
 import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
+import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import Tooltip from "next-common/components/tooltip";
 import Link from "next-common/components/link";
 import { useOnchainData } from "next-common/context/post";
-import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils/isSameAddress";
-import usePendingAcceptCuratorMultisig from "./usePendingAcceptCuratorMultisig";
 import useMultiAssetBountyStatus from "../useMultiAssetBountyStatus";
-import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
+import useMultiAssetActiveChildBountyCount from "../useMultiAssetActiveChildBountyCount";
+import usePendingCloseBountyMultisig from "./usePendingCloseBountyMultisig";
+import useCloseBountyPopup from "./useCloseBountyPopup";
 
-export default function MultiAssetBountyAcceptCuratorButton() {
+// close_bounty can be called by the curator (or RejectOrigin) when the bounty
+// is in `Funded` or `Active`, refunding the pot back to the treasury. On chain
+// a parent bounty can only be closed when it has NO active child bounties in
+// storage (ChildBountiesPerParent == 0). We subscribe to the live on-chain
+// status so the button reflects the state as soon as anything lands.
+const CLOSEABLE_STATUSES = ["Funded", "Active"];
+
+export default function MultiAssetBountyCloseBounty() {
+  const address = useRealAddress();
   const { bountyIndex } = useOnchainData();
-
-  // Live on-chain status. Subscribes via watchValue so the button reacts as
-  // soon as a tx changes the storage, e.g. after accept_curator lands the
-  // status flips Funded -> Active and this button disappears by itself.
   const status = useMultiAssetBountyStatus(bountyIndex);
-
-  // Proposed curator address from the on-chain bounty storage.
   const curator = status?.value?.curator;
+  const childBountiesCount = useMultiAssetActiveChildBountyCount(bountyIndex);
 
-  // A user may accept through several roles (e.g. several delegate multisigs),
-  // each a different route; the split button lets the user pick one. The
-  // authority also exposes multisig routes the user is NOT a member of.
+  // The authority also exposes multisig routes the user is NOT a member of.
   const { loading: isRoleLoading, roles, authority } = useAccountRole(curator);
-  const { showPopupFn, component } = useAcceptCuratorPopup(
-    bountyIndex,
-    curator,
-  );
+  const { showPopup, popup } = useCloseBountyPopup(curator);
 
-  // Whether an identical accept curator multisig is already in progress
-  // on-chain (possibly initiated by others through a multisig the user is not
-  // a member of), to warn the user against initiating a duplicate.
-  const { pending: hasPendingAcceptCuratorMultisig, multisigAddresses } =
-    usePendingAcceptCuratorMultisig(bountyIndex, curator, authority);
+  // Whether an identical close bounty multisig is already in progress on-chain
+  // (possibly initiated by others through a multisig the user is not a member
+  // of), to warn the user against initiating a duplicate.
+  const { pending: hasPendingCloseBountyMultisig, multisigAddresses } =
+    usePendingCloseBountyMultisig(bountyIndex, curator, authority);
 
   // The pending operation may belong to a multisig the current user is a
   // signatory of (manageable from their own multisig list) or to another
@@ -45,13 +45,7 @@ export default function MultiAssetBountyAcceptCuratorButton() {
     ),
   );
 
-  // accept_curator requires the bounty to be in `Funded` state.
-  if (status?.type !== "Funded") {
-    return null;
-  }
-
-  // No curator proposed yet, nothing to accept.
-  if (!curator) {
+  if (!address || !CLOSEABLE_STATUSES.includes(status?.type) || !curator) {
     return null;
   }
 
@@ -59,7 +53,11 @@ export default function MultiAssetBountyAcceptCuratorButton() {
   if (isRoleLoading) {
     disabledTooltip = "Loading curator roles";
   } else if (roles.length === 0) {
-    disabledTooltip = "Only the curator can accept";
+    disabledTooltip = "Only the bounty curator can close the bounty";
+  } else if (childBountiesCount == null) {
+    disabledTooltip = "Loading child bounties";
+  } else if (childBountiesCount > 0) {
+    disabledTooltip = "This bounty still has active child bounties";
   }
 
   return (
@@ -67,14 +65,14 @@ export default function MultiAssetBountyAcceptCuratorButton() {
       <Tooltip className="w-full" content={disabledTooltip}>
         <SplitRoleMenuButton
           fullWidth
-          action="Accept Curator"
+          action="Close Bounty"
           roles={roles}
           disabled={!!disabledTooltip}
-          onClick={(role) => showPopupFn(role)}
+          onClick={showPopup}
         />
       </Tooltip>
 
-      {hasPendingAcceptCuratorMultisig &&
+      {hasPendingCloseBountyMultisig &&
         !disabledTooltip &&
         (canManagePendingMultisig ? (
           <div className="text-textSecondary text14Medium mt-2">
@@ -89,7 +87,7 @@ export default function MultiAssetBountyAcceptCuratorButton() {
           </div>
         ))}
 
-      {component}
+      {popup}
     </div>
   );
 }

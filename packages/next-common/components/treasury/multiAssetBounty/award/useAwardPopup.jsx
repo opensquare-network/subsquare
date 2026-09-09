@@ -46,7 +46,7 @@ function PopupContent({ origin, role }) {
   const signerAccount = useSignerAccount();
   const connectedAddress =
     signerAccount?.proxyAddress || signerAccount?.address;
-  const { parentBountyId, childBountyId } = useOnchainData();
+  const { bountyIndex } = useOnchainData();
   const { value: beneficiary, component: beneficiarySelect } =
     useAddressComboField({ title: "Beneficiary" });
 
@@ -70,22 +70,16 @@ function PopupContent({ origin, role }) {
         return null;
       }
 
+      // award_bounty(bounty_id, None, beneficiary)
+      // child_bounty_id is null for a parent bounty.
       const tx = api.tx.multiAssetBounties.awardBounty(
-        parentBountyId,
-        childBountyId,
+        bountyIndex,
+        null,
         beneficiaryParam,
       );
       return wrapTxByRole(api, { role, tx, connectedAddress, origin });
     },
-    [
-      api,
-      role,
-      connectedAddress,
-      origin,
-      parentBountyId,
-      childBountyId,
-      beneficiary,
-    ],
+    [api, role, connectedAddress, origin, bountyIndex, beneficiary],
   );
 
   return (
@@ -118,7 +112,7 @@ function PopupContent({ origin, role }) {
 
 function AwardPopup({ origin, role, ...props }) {
   return (
-    <PopupWithSigner title="Award Child Bounty" {...props}>
+    <PopupWithSigner title="Award Bounty" {...props}>
       <PopupContent origin={origin} role={role} />
     </PopupWithSigner>
   );

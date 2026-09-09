@@ -18,6 +18,9 @@ import {
 } from "next-common/components/treasury/bounty/balance";
 import { useMemo } from "react";
 import NewChildBountyButton from "next-common/components/treasury/multiAssetBounty/newChildBountyButton";
+import MultiAssetBountyAward from "next-common/components/treasury/multiAssetBounty/award";
+import MultiAssetBountyCloseBounty from "next-common/components/treasury/multiAssetBounty/closeBounty";
+import MultiAssetBountyPaymentAction from "next-common/components/treasury/multiAssetBounty/paymentAction";
 
 function MultiAssetBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -79,6 +82,9 @@ function MultiAssetBountySidebar() {
       <MultiAssetBountySidebarBalance />
       <BountySidebarCurator />
       <MultiAssetBountyAcceptCuratorButton />
+      <MultiAssetBountyAward />
+      <MultiAssetBountyCloseBounty />
+      <MultiAssetBountyPaymentAction />
       <NewChildBountyButton />
     </RightBarWrapper>
   );

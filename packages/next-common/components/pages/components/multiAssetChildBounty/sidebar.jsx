@@ -20,6 +20,7 @@ import { useMemo } from "react";
 import MultiAssetChildBountyProposeCurator from "next-common/components/treasury/multiAssetChildBounty/proposeCurator";
 import MultiAssetChildBountyAcceptCurator from "next-common/components/treasury/multiAssetChildBounty/acceptCurator";
 import MultiAssetChildBountyAward from "next-common/components/treasury/multiAssetChildBounty/award";
+import MultiAssetChildBountyCloseBounty from "next-common/components/treasury/multiAssetChildBounty/closeBounty";
 import MultiAssetChildBountyPaymentAction from "next-common/components/treasury/multiAssetChildBounty/paymentAction";
 
 function MultiAssetChildBountySidebarBalance() {
@@ -77,6 +78,7 @@ function MultiAssetChildBountySidebar() {
       <MultiAssetChildBountyProposeCurator />
       <MultiAssetChildBountyAcceptCurator />
       <MultiAssetChildBountyAward />
+      <MultiAssetChildBountyCloseBounty />
       <MultiAssetChildBountyPaymentAction />
       <CuratorProvider curator={curator}>
         <BountySidebarCurator />

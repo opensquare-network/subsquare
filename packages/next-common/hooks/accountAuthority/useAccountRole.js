@@ -6,17 +6,17 @@ import { resolveAccountRoles } from "./resolveAccountRole";
 // Resolve how the current user's real address can dispatch calls whose
 // origin must be `origin`.
 //
-// @returns { loading, roles, role, structure }
+// @returns { loading, roles, role, authority }
 //   roles: every valid route from resolveAccountRoles; [] = cannot dispatch.
 //   role:  the preferred role, i.e. roles[0] ?? null.
-//   structure: the full authority structure of `origin` ({ multisig,
-//     delegates }), including multisig routes the current user is NOT a
-//     member of; useful for e.g. detecting operations initiated by others.
+//   authority: the account authority of `origin` ({ multisig, delegates }),
+//     including multisig routes the current user is NOT a member of; useful
+//     for e.g. detecting operations initiated by others.
 export default function useAccountRole(origin) {
   const realAddress = useRealAddress();
 
   // useAccountAuthority memoizes its result, so reuse that object directly as
-  // `structure`. Spreading it into a new object here would create a fresh
+  // `authority`. Spreading it into a new object here would create a fresh
   // reference on every render and break consumers that use it in effect deps
   // (causing an infinite effect loop).
   const authority = useAccountAuthority(origin);
@@ -29,5 +29,5 @@ export default function useAccountRole(origin) {
 
   const role = useMemo(() => roles[0] ?? null, [roles]);
 
-  return { loading, role, roles, structure: authority };
+  return { loading, role, roles, authority };
 }

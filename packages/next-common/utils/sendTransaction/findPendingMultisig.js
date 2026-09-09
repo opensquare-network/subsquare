@@ -6,25 +6,25 @@ import { isNil } from "lodash-es";
 //
 // A multisig operation is keyed by (multisigAddress, callHash) and storage
 // cannot be enumerated by call hash, so we enumerate every multisig that
-// could host such an operation from the origin's authority `structure`:
+// could host such an operation from the origin's account `authority`:
 //   - the origin itself when it is a multisig account (its signatories
 //     dispatch the plain call with the origin as the multisig origin);
 //   - every multisig delegate of the origin in Proxy.Proxies(origin), which
 //     dispatch through proxy.proxy(origin, call) so the final origin is still
 //     the origin.
-// Both are present in `structure` regardless of the current user's
+// Both are present in `authority` regardless of the current user's
 // membership, so operations initiated by others (through a multisig the user
 // is not a signatory of) are detected too.
 //
 // @param api       polkadot api used to build the wrapped calls and query
 // @param call      the inner call that a multisig would dispatch
 // @param origin    the account that must be the final transaction origin
-// @param structure the origin's authority structure, e.g. from
+// @param authority the origin's account authority, e.g. from
 //                  useAccountAuthority / useAccountRole
 //                  ({ multisig, delegates })
 // @returns Promise<Array<string>> the multisig addresses that already have
 //          this exact call pending; empty when none.
-export async function findPendingMultisig(api, call, origin, structure) {
+export async function findPendingMultisig(api, call, origin, authority) {
   if (!api?.query?.multisig?.multisigs || !call || isNil(origin)) {
     return [];
   }
@@ -33,16 +33,16 @@ export async function findPendingMultisig(api, call, origin, structure) {
 
   // The origin itself is a multisig: its signatories dispatch the plain call
   // with the origin as the multisig origin.
-  if (structure?.multisig?.multisigAddress) {
+  if (authority?.multisig?.multisigAddress) {
     candidates.push({
-      multisigAddress: structure.multisig.multisigAddress,
+      multisigAddress: authority.multisig.multisigAddress,
       dispatchTx: call,
     });
   }
 
   // A multisig delegate of the origin dispatches through
   // proxy.proxy(origin, call) first, so the final origin is the origin.
-  for (const delegate of structure?.delegates || []) {
+  for (const delegate of authority?.delegates || []) {
     const multisigAddress = delegate?.multisig?.multisigAddress;
     if (!multisigAddress) {
       continue;

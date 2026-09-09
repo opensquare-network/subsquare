@@ -12,7 +12,7 @@ import { isSameAddress } from "next-common/utils/isSameAddress";
 //   - a "pure proxy to multisig" account is a pure proxy whose delegate is a
 //     multisig account.
 //
-// @param structure  e.g. from useAccountAuthority: { multisig, delegates }
+// @param authority  e.g. from useAccountAuthority: { multisig, delegates }
 // @returns flags describing the account, plus the multisig that ultimately
 //          controls it (the account itself, or its delegate multisig).
 export function classifyAccountAuthority({ multisig, delegates = [] }) {
@@ -71,7 +71,7 @@ function routePriority(role) {
 // the app must build the multisig transaction).
 //
 // @param origin          the account that must be the transaction origin
-// @param structure       resolved by useAccountAuthority: { multisig, delegates }
+// @param authority       resolved by useAccountAuthority: { multisig, delegates }
 // @param userAddress     the address the current user can sign with
 //
 // @returns Role[], ordered by ROUTE_PRIORITY (roles[0] is the default). Each
@@ -81,8 +81,8 @@ function routePriority(role) {
 //   { kind: "multisig", multisig, viaProxy }
 //     - viaProxy=false: origin itself is the multisig
 //     - viaProxy=true:  origin is behind the delegate multisig
-export function resolveAccountRoles(origin, structure, userAddress) {
-  if (isNil(origin) || !structure) {
+export function resolveAccountRoles(origin, authority, userAddress) {
+  if (isNil(origin) || !authority) {
     return [];
   }
 
@@ -99,16 +99,16 @@ export function resolveAccountRoles(origin, structure, userAddress) {
   }
 
   // 2. User is a signatory of the origin multisig.
-  if (structure.multisig && isUserASignatory(structure.multisig)) {
+  if (authority.multisig && isUserASignatory(authority.multisig)) {
     roles.push({
       kind: "multisig",
-      multisig: structure.multisig,
+      multisig: authority.multisig,
       viaProxy: false,
     });
   }
 
   // 3. Routes through the origin's proxy delegate(s).
-  for (const delegate of structure.delegates || []) {
+  for (const delegate of authority.delegates || []) {
     //    - user is a signatory of a multisig delegate.
     if (delegate?.multisig && isUserASignatory(delegate.multisig)) {
       roles.push({
@@ -130,6 +130,6 @@ export function resolveAccountRoles(origin, structure, userAddress) {
 
 // Preferred role (roles[0]) for callers that only need a default. Use
 // resolveAccountRoles to get every valid route.
-export function resolveAccountRole(origin, structure, userAddress) {
-  return resolveAccountRoles(origin, structure, userAddress)[0] ?? null;
+export function resolveAccountRole(origin, authority, userAddress) {
+  return resolveAccountRoles(origin, authority, userAddress)[0] ?? null;
 }

@@ -16,7 +16,7 @@ import { findPendingMultisig } from "next-common/utils/sendTransaction/findPendi
 export default function usePendingAcceptCuratorMultisig(
   bountyIndex,
   curator,
-  structure,
+  authority,
 ) {
   const api = useContextApi();
   const [multisigAddresses, setMultisigAddresses] = useState([]);
@@ -40,7 +40,7 @@ export default function usePendingAcceptCuratorMultisig(
     }
 
     let cancelled = false;
-    findPendingMultisig(api, acceptCuratorTx, curator, structure)
+    findPendingMultisig(api, acceptCuratorTx, curator, authority)
       .then((found) => {
         if (!cancelled) {
           setMultisigAddresses(found || []);
@@ -51,7 +51,7 @@ export default function usePendingAcceptCuratorMultisig(
     return () => {
       cancelled = true;
     };
-  }, [api, bountyIndex, curator, structure]);
+  }, [api, bountyIndex, curator, authority]);
 
   return {
     pending: multisigAddresses.length > 0,
