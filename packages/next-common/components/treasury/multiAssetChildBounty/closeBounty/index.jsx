@@ -9,27 +9,86 @@ import { isSameAddress } from "next-common/utils/isSameAddress";
 import usePendingCloseBountyMultisig from "./usePendingCloseBountyMultisig";
 import useCloseBountyPopup from "./useCloseBountyPopup";
 
-// close_bounty(child) is callable when the child is Funded/Active (by the
-// child curator) or CuratorUnassigned (by the parent curator, since the child
-// has no curator). RejectOrigin can also close, but that is out of scope for a
-// user-facing button.
+// close_bounty(child) is callable while the child is Funded/Active
+// (CuratorUnassigned after the curator leaves). On chain the dispatch origin
+// can be the child curator (when one exists) or the parent curator;
+// RejectOrigin can also close, but that is out of scope for a user-facing
+// button.
+//
+// Whether the connected account can act as a curator is decided by its
+// account roles (direct / proxy delegate / multisig signatory) for that
+// curator address. Button rules:
+//  - if the account can act as the child curator  -> show only that route;
+//  - else if it can act as the parent curator     -> show only that route;
+//  - if it can act as both, the child curator route wins;
+//  - if it can act as neither, show a disabled button with a tooltip.
 const CLOSEABLE_STATES = ["Funded", "Active", "CuratorUnassigned"];
 
 export default function MultiAssetChildBountyCloseBounty() {
   const address = useRealAddress();
   const state = usePostState();
-  const { parentBountyId, childBountyId, curator } = useOnchainData();
+  const {
+    parentBountyId,
+    childBountyId,
+    curator: childCurator,
+  } = useOnchainData();
   const { parentBounty } = usePageProps();
   const parentCurator = parentBounty?.onchainData?.curator;
 
-  // Who must dispatch close_bounty depends on the state: the child curator
-  // when one exists (Funded/Active), otherwise the parent curator
-  // (CuratorUnassigned).
-  const isCuratorUnassigned = state === "CuratorUnassigned";
-  const origin = isCuratorUnassigned ? parentCurator : curator;
+  // useAccountRole(origin) resolves every route the current user has to
+  // dispatch with `origin`; it returns [] when the user is not that curator
+  // (nor one of its proxy delegates / multisig signatories).
+  const childCuratorRole = useAccountRole(childCurator);
+  const parentCuratorRole = useAccountRole(parentCurator);
 
-  // The authority also exposes multisig routes the user is NOT a member of.
-  const { loading: isRoleLoading, roles, authority } = useAccountRole(origin);
+  const childRolesLoading = !!childCurator && childCuratorRole.loading;
+  const parentRolesLoading = !!parentCurator && parentCuratorRole.loading;
+  const canActAsChildCurator =
+    !!childCurator && !childRolesLoading && childCuratorRole.roles.length > 0;
+  const canActAsParentCurator =
+    !!parentCurator &&
+    !parentRolesLoading &&
+    parentCuratorRole.roles.length > 0;
+
+  // Pick a single origin for the button. A child in Funded/Active still has a
+  // child curator, and the child curator route takes priority over the parent
+  // curator route. A child in CuratorUnassigned has no child curator, so only
+  // the parent curator can close it.
+  let origin = null;
+  let roles = [];
+  let authority = null;
+  let disabledTooltip = "";
+
+  if (childCurator) {
+    if (childRolesLoading) {
+      disabledTooltip = "Loading curator roles";
+    } else if (canActAsChildCurator) {
+      origin = childCurator;
+      roles = childCuratorRole.roles;
+      authority = childCuratorRole.authority;
+    } else if (parentRolesLoading) {
+      disabledTooltip = "Loading curator roles";
+    } else if (canActAsParentCurator) {
+      origin = parentCurator;
+      roles = parentCuratorRole.roles;
+      authority = parentCuratorRole.authority;
+    } else {
+      disabledTooltip =
+        "Only the child or parent bounty curator can close the child bounty";
+    }
+  } else if (parentCurator) {
+    if (parentRolesLoading) {
+      disabledTooltip = "Loading curator roles";
+    } else if (canActAsParentCurator) {
+      origin = parentCurator;
+      roles = parentCuratorRole.roles;
+      authority = parentCuratorRole.authority;
+    } else {
+      disabledTooltip =
+        "Only the parent bounty curator can close the child bounty";
+    }
+  }
+
   const { showPopup, popup } = useCloseBountyPopup(origin);
 
   // Whether an identical close bounty multisig is already in progress on-chain
@@ -54,17 +113,16 @@ export default function MultiAssetChildBountyCloseBounty() {
     ),
   );
 
-  if (!address || !CLOSEABLE_STATES.includes(state) || !origin) {
-    return null;
-  }
+  const isDisabled = !!disabledTooltip;
 
-  let disabledTooltip = "";
-  if (isRoleLoading) {
-    disabledTooltip = "Loading curator roles";
-  } else if (roles.length === 0) {
-    disabledTooltip = isCuratorUnassigned
-      ? "Only the parent bounty curator can close the child bounty"
-      : "Only the child bounty curator can close the child bounty";
+  // No curator is assigned to this child at all: only governance (RejectOrigin)
+  // could close it, which is out of scope for a user-facing button.
+  if (
+    !address ||
+    !CLOSEABLE_STATES.includes(state) ||
+    (!childCurator && !parentCurator)
+  ) {
+    return null;
   }
 
   return (
@@ -74,7 +132,7 @@ export default function MultiAssetChildBountyCloseBounty() {
           fullWidth
           action="Close Bounty"
           roles={roles}
-          disabled={!!disabledTooltip}
+          disabled={isDisabled}
           onClick={showPopup}
         />
       </Tooltip>
