@@ -3,6 +3,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupLabel from "next-common/components/popup/label";
 import Loading from "next-common/components/loading";
 import { InfoMessage } from "next-common/components/setting/styled";
+import Tooltip from "next-common/components/tooltip";
 import CurrencyInput from "next-common/components/currencyInput";
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
@@ -52,11 +53,34 @@ function PopupContent({ origin, role }) {
   const originTransferable = originBalanceInfo?.transferrable;
 
   const depositReady = !!deposit && !depositLoading && !unavailable;
+
+  // Balance pre-check must fail closed, not open: while the curator balance is
+  // still loading we cannot prove the deposit is covered, so submission stays
+  // disabled. A missing balance entry after load means the account holds no
+  // free balance (transferable 0), so it cannot cover the deposit either.
+  const balanceLoading = originBalanceLoading;
+  const originFreeBalance =
+    originTransferable == null
+      ? new BigNumber(0)
+      : new BigNumber(originTransferable);
   const insufficientBalance =
     depositReady &&
-    !originBalanceLoading &&
-    originTransferable != null &&
-    new BigNumber(deposit).gt(new BigNumber(originTransferable));
+    !balanceLoading &&
+    new BigNumber(deposit).gt(originFreeBalance);
+
+  // Single source of truth for why Confirm is disabled; submitReady is derived
+  // from it so the two never drift apart.
+  let tooltipContent = null;
+  if (!depositReady) {
+    tooltipContent = unavailable
+      ? "Unable to compute the curator deposit"
+      : "Curator deposit is loading";
+  } else if (balanceLoading) {
+    tooltipContent = "Checking curator balance";
+  } else if (insufficientBalance) {
+    tooltipContent = "Insufficient native balance for the curator deposit";
+  }
+  const submitReady = !tooltipContent;
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -66,6 +90,10 @@ function PopupContent({ origin, role }) {
             ? "Unable to compute the curator deposit"
             : "Curator deposit is loading",
         );
+        return null;
+      }
+      if (balanceLoading) {
+        toastError("Curator balance is loading");
         return null;
       }
       if (insufficientBalance) {
@@ -92,9 +120,8 @@ function PopupContent({ origin, role }) {
       depositReady,
       deposit,
       unavailable,
+      balanceLoading,
       insufficientBalance,
-      originTransferable,
-      originBalanceLoading,
     ],
   );
 
@@ -118,31 +145,28 @@ function PopupContent({ origin, role }) {
           symbol={nativeSymbol}
         />
       )}
-      {insufficientBalance && (
-        <InfoMessage className="min-h-9.5">
-          Insufficient native balance for the curator deposit
-        </InfoMessage>
-      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
-      <TxSubmissionButton
-        title="Confirm"
-        getTxFunc={getTxFuncForSubmit}
-        disabled={!depositReady || insufficientBalance}
-        onInBlock={({ events }) => {
-          if (
-            role?.kind === "multisig" &&
-            getEventData(events, "multisig", "NewMultisig")
-          ) {
-            dispatch(
-              newSuccessToast(
-                "Multisig transaction submitted. Waiting for other signatories.",
-              ),
-            );
-          }
-        }}
-      />
+      <Tooltip content={tooltipContent}>
+        <TxSubmissionButton
+          title="Confirm"
+          getTxFunc={getTxFuncForSubmit}
+          disabled={!submitReady}
+          onInBlock={({ events }) => {
+            if (
+              role?.kind === "multisig" &&
+              getEventData(events, "multisig", "NewMultisig")
+            ) {
+              dispatch(
+                newSuccessToast(
+                  "Multisig transaction submitted. Waiting for other signatories.",
+                ),
+              );
+            }
+          }}
+        />
+      </Tooltip>
     </>
   );
 }
