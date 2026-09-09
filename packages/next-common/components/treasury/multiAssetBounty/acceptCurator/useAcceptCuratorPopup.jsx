@@ -195,7 +195,7 @@ function useCuratorDeposit() {
 // creates the multisig transaction). Drop any leftover proxy / multisig
 // signer mode chosen elsewhere so the shared submission layer does not wrap
 // the already-complete tx again.
-function UseConnectedAccountSigner() {
+export function UseConnectedAccountSigner() {
   const { setSelectedProxyAddress, setMultisig } = useSignerContext();
 
   useMount(() => {

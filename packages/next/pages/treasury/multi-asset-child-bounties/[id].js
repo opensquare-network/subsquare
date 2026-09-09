@@ -84,10 +84,13 @@ export default function MultiAssetChildBountyPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-  const [{ result: detail }, tracksProps] = await Promise.all([
-    backendApi.fetch(`treasury/multi-asset-child-bounties/${id}`),
-    fetchOpenGovTracksProps(),
-  ]);
+  const [parentBountyId] = id.split("_");
+  const [{ result: detail }, { result: parentBounty }, tracksProps] =
+    await Promise.all([
+      backendApi.fetch(`treasury/multi-asset-child-bounties/${id}`),
+      backendApi.fetch(`treasury/multi-asset-bounties/${parentBountyId}`),
+      fetchOpenGovTracksProps(),
+    ]);
 
   if (!detail) {
     return getNullDetailProps(id, {});
@@ -101,6 +104,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
   return {
     props: {
       detail,
+      parentBounty: parentBounty ?? null,
       comments: comments ?? EmptyList,
       ...tracksProps,
     },

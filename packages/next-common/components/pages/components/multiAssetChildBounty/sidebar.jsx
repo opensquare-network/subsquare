@@ -1,6 +1,7 @@
 import { RightBarWrapper } from "next-common/components/layout/sidebar/rightBarWrapper";
 import { useOnchainData } from "next-common/context/post";
 import BountySidebarCurator from "next-common/components/treasury/bounty/curator";
+import { CuratorProvider } from "next-common/context/treasury/bounties";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { Value } from "next-common/components/referenda/tally/styled";
 import { InfoUser, SystemCoins } from "@osn/icons/subsquare";
@@ -16,6 +17,10 @@ import {
   CopyableAddress,
 } from "next-common/components/treasury/bounty/balance";
 import { useMemo } from "react";
+import MultiAssetChildBountyProposeCurator from "next-common/components/treasury/multiAssetChildBounty/proposeCurator";
+import MultiAssetChildBountyAcceptCurator from "next-common/components/treasury/multiAssetChildBounty/acceptCurator";
+import MultiAssetChildBountyAward from "next-common/components/treasury/multiAssetChildBounty/award";
+import MultiAssetChildBountyPaymentAction from "next-common/components/treasury/multiAssetChildBounty/paymentAction";
 
 function MultiAssetChildBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -69,7 +74,13 @@ function MultiAssetChildBountySidebar() {
   return (
     <RightBarWrapper>
       <MultiAssetChildBountySidebarBalance />
-      <BountySidebarCurator />
+      <MultiAssetChildBountyProposeCurator />
+      <MultiAssetChildBountyAcceptCurator />
+      <MultiAssetChildBountyAward />
+      <MultiAssetChildBountyPaymentAction />
+      <CuratorProvider curator={curator}>
+        <BountySidebarCurator />
+      </CuratorProvider>
       <MultiAssetChildBountyMeta />
     </RightBarWrapper>
   );
