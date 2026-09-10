@@ -14,7 +14,7 @@ import { getEventData } from "next-common/utils/sendTransaction";
 function PopupContent({ action }) {
   const dispatch = useDispatch();
   const api = useContextApi();
-  const { parentBountyId, childBountyId } = useOnchainData();
+  const { bountyIndex } = useOnchainData();
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
       const txApi = api?.tx?.multiAssetBounties;
@@ -23,9 +23,11 @@ function PopupContent({ action }) {
         return null;
       }
 
-      return txApi[action.method](parentBountyId, childBountyId);
+      // check_status / retry_payment (bounty_id, None)
+      // child_bounty_id is null for a parent bounty.
+      return txApi[action.method](bountyIndex, null);
     },
-    [api, action, parentBountyId, childBountyId],
+    [api, action, bountyIndex],
   );
 
   return (

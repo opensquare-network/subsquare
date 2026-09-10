@@ -4,7 +4,7 @@ import { useContextPapiApi } from "next-common/context/papi";
 import { fetchMultisigData } from "next-common/hooks/treasury/bounty/useCuratorMultisigAddress";
 import { classifyAccountAuthority } from "./resolveAccountRole";
 
-const EMPTY_STRUCTURE = { multisig: null, delegates: [] };
+const EMPTY_AUTHORITY = { multisig: null, delegates: [] };
 
 function toMultisig(multisigData, multisigAddress) {
   const signatories = multisigData?.signatories || [];
@@ -37,11 +37,11 @@ function toMultisig(multisigData, multisigAddress) {
 export default function useAccountAuthority(address) {
   const papi = useContextPapiApi();
   const [loading, setLoading] = useState(false);
-  const [structure, setStructure] = useState(EMPTY_STRUCTURE);
+  const [authority, setAuthority] = useState(EMPTY_AUTHORITY);
 
   useEffect(() => {
     if (isNil(address)) {
-      setStructure(EMPTY_STRUCTURE);
+      setAuthority(EMPTY_AUTHORITY);
       setLoading(false);
       return;
     }
@@ -76,7 +76,7 @@ export default function useAccountAuthority(address) {
         return;
       }
 
-      setStructure({
+      setAuthority({
         multisig: toMultisig(selfMultisigData, address),
         delegates,
       });
@@ -91,7 +91,7 @@ export default function useAccountAuthority(address) {
   }, [address, papi]);
 
   return useMemo(
-    () => ({ loading, ...structure, ...classifyAccountAuthority(structure) }),
-    [loading, structure],
+    () => ({ loading, ...authority, ...classifyAccountAuthority(authority) }),
+    [loading, authority],
   );
 }

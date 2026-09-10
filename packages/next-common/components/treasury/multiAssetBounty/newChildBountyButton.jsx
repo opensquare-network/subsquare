@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
-import { useCurator } from "next-common/context/treasury/bounties";
 import NewChildBountyPopup from "./newChildBountyPopup";
 import SplitRoleMenuButton from "next-common/components/splitRoleMenuButton";
 import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
 import { useContextPapi } from "next-common/context/papi";
 import Tooltip from "next-common/components/tooltip";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useMultiAssetBountyStatus from "./useMultiAssetBountyStatus";
 
 function useMultiAssetChildBountyLimit(bountyIndex) {
@@ -54,16 +54,26 @@ function useMultiAssetChildBountyLimit(bountyIndex) {
 }
 
 export default function NewChildBountyButton() {
+  const address = useRealAddress();
   const { bountyIndex } = useOnchainData();
   const [openRole, setOpenRole] = useState(null);
   const status = useMultiAssetBountyStatus(bountyIndex);
   const { childBountiesCount, maxActiveChildBountyCount } =
     useMultiAssetChildBountyLimit(bountyIndex);
 
-  const parentCurator = useCurator();
+  // The parent curator must be the origin of create_child_bounty. Read it
+  // from the live on-chain bounty status (`Active { curator, update_due }`)
+  // so the action reacts as soon as the curator changes on chain.
+  const parentCurator = status?.value?.curator;
   const { loading: isRoleLoading, roles } = useAccountRole(parentCurator);
 
-  if (bountyIndex == null || status?.type !== "Active") {
+  // Actions require a connected account; hide the button when logged out.
+  if (
+    !address ||
+    bountyIndex == null ||
+    status?.type !== "Active" ||
+    !parentCurator
+  ) {
     return null;
   }
 

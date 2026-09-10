@@ -1,10 +1,10 @@
 import PrimaryButton from "next-common/lib/button/primary";
 import { useOnchainData } from "next-common/context/post";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import useMultiAssetChildBountyStatus from "../useMultiAssetChildBountyStatus";
+import useMultiAssetBountyStatus from "../useMultiAssetBountyStatus";
 import usePaymentActionPopup from "./usePaymentActionPopup";
 
-// A child bounty with an in-flight payment attempt sits in one of the
+// A bounty that has an in-flight payment attempt sits in one of the
 // `*Attempted` on-chain states:
 //   FundingAttempted / RefundAttempted / PayoutAttempted
 // check_status resolves an initiated (Attempted/Pending) payment, while
@@ -32,10 +32,10 @@ function resolvePaymentAction(status) {
   return null;
 }
 
-export default function MultiAssetChildBountyPaymentAction() {
+export default function MultiAssetBountyPaymentAction() {
   const address = useRealAddress();
-  const { parentBountyId, childBountyId } = useOnchainData();
-  const status = useMultiAssetChildBountyStatus(parentBountyId, childBountyId);
+  const { bountyIndex } = useOnchainData();
+  const status = useMultiAssetBountyStatus(bountyIndex);
   const action = resolvePaymentAction(status);
   const { showPopup, popup } = usePaymentActionPopup(action);
 

@@ -3,6 +3,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupLabel from "next-common/components/popup/label";
 import Loading from "next-common/components/loading";
 import { InfoMessage } from "next-common/components/setting/styled";
+import Tooltip from "next-common/components/tooltip";
 import CurrencyInput from "next-common/components/currencyInput";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
@@ -21,6 +22,7 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import BigNumber from "bignumber.js";
 import { toPrecision } from "next-common/utils";
+import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import {
   ASSET_TYPE,
   getAssetInfoFromAssetKind,
@@ -70,7 +72,7 @@ export function useAcceptCuratorPopup(bountyIndex, curator) {
 //   2. native_amount = floor(bounty.value * conversionRateToNative / 10^18)
 //   3. deposit = clamp(floor(native_amount * CuratorDepositMultiplier), min, max)
 //   4. The deposit is held in the NATIVE token (e.g. DOT), not the bounty asset.
-function useCuratorDeposit() {
+export function useCuratorDeposit() {
   const { assetKind, value } = useOnchainData();
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
   const api = useContextApi();
@@ -216,7 +218,48 @@ function PopupContent({ bountyIndex, curator, role }) {
   const connectedAddress =
     signerAccount?.proxyAddress || signerAccount?.address;
 
+  // The deposit is held on the origin (curator) account, so pre-check that
+  // account's native transferable balance (for a multisig curator this is the
+  // multisig account itself).
+  const { value: curatorBalanceInfo, loading: curatorBalanceLoading } =
+    useSubBalanceInfo(curator, api);
+  const curatorTransferable = curatorBalanceInfo?.transferrable;
+
+  const depositReady = !!deposit && !isLoading && !unavailable;
+
+  // Balance pre-check must fail closed, not open: while the curator balance is
+  // still loading we cannot prove the deposit is covered, so submission stays
+  // disabled. A missing balance entry after load means the account holds no
+  // free balance (transferable 0), so it cannot cover the deposit either.
+  const balanceLoading = curatorBalanceLoading;
+  const curatorFreeBalance =
+    curatorTransferable == null
+      ? new BigNumber(0)
+      : new BigNumber(curatorTransferable);
+  const insufficientBalance =
+    depositReady &&
+    !balanceLoading &&
+    new BigNumber(deposit).gt(curatorFreeBalance);
+
+  // Single source of truth for why Confirm is disabled; submitReady is derived
+  // from it so the two never drift apart.
+  let tooltipContent = null;
+  if (!depositReady) {
+    tooltipContent = unavailable
+      ? "Unable to compute the curator deposit"
+      : "Curator deposit is loading";
+  } else if (balanceLoading) {
+    tooltipContent = "Checking curator balance";
+  } else if (insufficientBalance) {
+    tooltipContent = "Insufficient native balance for the curator deposit";
+  }
+  const submitReady = !tooltipContent;
+
   const getTxFunc = useCallback(() => {
+    if (!submitReady) {
+      return null;
+    }
+
     if (!api?.tx?.multiAssetBounties?.acceptCurator) {
       return null;
     }
@@ -231,9 +274,7 @@ function PopupContent({ bountyIndex, curator, role }) {
       connectedAddress,
       origin: curator,
     });
-  }, [api, bountyIndex, curator, role, connectedAddress]);
-
-  const depositReady = deposit && !isLoading && !unavailable;
+  }, [api, bountyIndex, curator, role, connectedAddress, submitReady]);
 
   return (
     <>
@@ -258,25 +299,27 @@ function PopupContent({ bountyIndex, curator, role }) {
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
-      <div className="flex justify-end">
-        <TxSubmissionButton
-          title="Confirm"
-          getTxFunc={getTxFunc}
-          disabled={!depositReady}
-          onInBlock={({ events }) => {
-            if (
-              role?.kind === "multisig" &&
-              getEventData(events, "multisig", "NewMultisig")
-            ) {
-              dispatch(
-                newSuccessToast(
-                  "Multisig transaction submitted. Waiting for other signatories.",
-                ),
-              );
-            }
-          }}
-        />
-      </div>
+      <Tooltip content={tooltipContent}>
+        <div className="flex justify-end">
+          <TxSubmissionButton
+            title="Confirm"
+            getTxFunc={getTxFunc}
+            disabled={!submitReady}
+            onInBlock={({ events }) => {
+              if (
+                role?.kind === "multisig" &&
+                getEventData(events, "multisig", "NewMultisig")
+              ) {
+                dispatch(
+                  newSuccessToast(
+                    "Multisig transaction submitted. Waiting for other signatories.",
+                  ),
+                );
+              }
+            }}
+          />
+        </div>
+      </Tooltip>
     </>
   );
 }

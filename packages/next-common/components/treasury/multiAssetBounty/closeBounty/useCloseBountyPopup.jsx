@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import { useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import { UseConnectedAccountSigner } from "next-common/components/treasury/multiAssetBounty/acceptCurator/useAcceptCuratorPopup";
@@ -11,34 +10,10 @@ import { useContextApi } from "next-common/context/api";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
-import { addressToPublicKey } from "next-common/utils/address";
+import { InfoMessage } from "next-common/components/setting/styled";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { getEventData } from "next-common/utils/sendTransaction";
-
-function getBeneficiaryParam(beneficiary) {
-  return {
-    V5: {
-      location: {
-        parents: 0,
-        interior: "Here",
-      },
-      accountId: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              AccountId32: {
-                network: null,
-                id: `0x${addressToPublicKey(beneficiary)}`,
-              },
-            },
-          ],
-        },
-      },
-    },
-  };
-}
 
 function PopupContent({ origin, role }) {
   const dispatch = useDispatch();
@@ -46,53 +21,30 @@ function PopupContent({ origin, role }) {
   const signerAccount = useSignerAccount();
   const connectedAddress =
     signerAccount?.proxyAddress || signerAccount?.address;
-  const { parentBountyId, childBountyId } = useOnchainData();
-  const { value: beneficiary, component: beneficiarySelect } =
-    useAddressComboField({ title: "Beneficiary" });
+  const { bountyIndex } = useOnchainData();
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
-      if (!beneficiary) {
-        toastError("Beneficiary address is required");
+      if (!api?.tx?.multiAssetBounties?.closeBounty) {
+        toastError("Close bounty transaction is unavailable");
         return null;
       }
 
-      if (!api?.tx?.multiAssetBounties?.awardBounty) {
-        toastError("Award bounty transaction is unavailable");
-        return null;
-      }
-
-      let beneficiaryParam;
-      try {
-        beneficiaryParam = getBeneficiaryParam(beneficiary);
-      } catch {
-        toastError("Beneficiary address is invalid");
-        return null;
-      }
-
-      const tx = api.tx.multiAssetBounties.awardBounty(
-        parentBountyId,
-        childBountyId,
-        beneficiaryParam,
-      );
+      // close_bounty(bounty_id, None)
+      // child_bounty_id is null for a parent bounty.
+      const tx = api.tx.multiAssetBounties.closeBounty(bountyIndex, null);
       return wrapTxByRole(api, { role, tx, connectedAddress, origin });
     },
-    [
-      api,
-      role,
-      connectedAddress,
-      origin,
-      parentBountyId,
-      childBountyId,
-      beneficiary,
-    ],
+    [api, role, connectedAddress, origin, bountyIndex],
   );
 
   return (
     <>
       <UseConnectedAccountSigner />
       <SignerWithBalance noSwitchSigner />
-      {beneficiarySelect}
+      <InfoMessage>
+        Closing this bounty will refund its funds to the treasury.
+      </InfoMessage>
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
@@ -116,21 +68,21 @@ function PopupContent({ origin, role }) {
   );
 }
 
-function AwardPopup({ origin, role, ...props }) {
+function CloseBountyPopup({ origin, role, ...props }) {
   return (
-    <PopupWithSigner title="Award Child Bounty" {...props}>
+    <PopupWithSigner title="Close Bounty" {...props}>
       <PopupContent origin={origin} role={role} />
     </PopupWithSigner>
   );
 }
 
-export default function useAwardPopup(origin) {
+export default function useCloseBountyPopup(origin) {
   const [openRole, setOpenRole] = useState(null);
 
   return {
     showPopup: setOpenRole,
     popup: openRole ? (
-      <AwardPopup
+      <CloseBountyPopup
         origin={origin}
         role={openRole}
         onClose={() => setOpenRole(null)}
