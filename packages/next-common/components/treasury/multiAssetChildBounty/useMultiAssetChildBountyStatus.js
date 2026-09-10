@@ -6,6 +6,12 @@ import { useEffect, useState } from "react";
 // display state. The scanner may mark a child as `Paid`/`Canceled` while the
 // pallet still holds it in a `*Attempted` state waiting for a
 // `check_status`/`retry_payment` call.
+//
+// Watch at `best` block (PAPI handles re-orgs) instead of the default
+// `finalized`: the runtime REMOVES the child from storage when `check_status`
+// succeeds (payout/refund branches), and a best-block subscription surfaces
+// that deletion within ~1 block, so the action button hides by itself without
+// waiting for finalization or a page refresh.
 export default function useMultiAssetChildBountyStatus(
   parentBountyId,
   childBountyId,
@@ -28,6 +34,7 @@ export default function useMultiAssetChildBountyStatus(
       papi.query.MultiAssetBounties.ChildBounties.watchValue(
         parentBountyId,
         childBountyId,
+        { at: "best" },
       ).subscribe({
         next: ({ value }) => setChildBounty(value ?? null),
         error: (error) => {
