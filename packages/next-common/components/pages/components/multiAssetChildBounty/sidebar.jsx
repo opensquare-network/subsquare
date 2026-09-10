@@ -76,13 +76,13 @@ function MultiAssetChildBountySidebar() {
     <RightBarWrapper>
       <MultiAssetChildBountySidebarBalance />
       <MultiAssetChildBountyProposeCurator />
+      <CuratorProvider curator={curator}>
+        <BountySidebarCurator />
+      </CuratorProvider>
       <MultiAssetChildBountyAcceptCurator />
       <MultiAssetChildBountyAward />
       <MultiAssetChildBountyCloseBounty />
       <MultiAssetChildBountyPaymentAction />
-      <CuratorProvider curator={curator}>
-        <BountySidebarCurator />
-      </CuratorProvider>
       <MultiAssetChildBountyMeta />
     </RightBarWrapper>
   );
