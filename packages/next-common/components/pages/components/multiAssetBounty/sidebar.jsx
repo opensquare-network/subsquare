@@ -82,10 +82,10 @@ function MultiAssetBountySidebar() {
       <MultiAssetBountySidebarBalance />
       <BountySidebarCurator />
       <MultiAssetBountyAcceptCuratorButton />
+      <NewChildBountyButton />
+      <MultiAssetBountyPaymentAction />
       <MultiAssetBountyAward />
       <MultiAssetBountyCloseBounty />
-      <MultiAssetBountyPaymentAction />
-      <NewChildBountyButton />
     </RightBarWrapper>
   );
 }

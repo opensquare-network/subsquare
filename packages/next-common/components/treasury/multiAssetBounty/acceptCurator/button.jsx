@@ -3,12 +3,14 @@ import Tooltip from "next-common/components/tooltip";
 import Link from "next-common/components/link";
 import { useOnchainData } from "next-common/context/post";
 import useAccountRole from "next-common/hooks/accountAuthority/useAccountRole";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { isSameAddress } from "next-common/utils/isSameAddress";
 import usePendingAcceptCuratorMultisig from "./usePendingAcceptCuratorMultisig";
 import useMultiAssetBountyStatus from "../useMultiAssetBountyStatus";
 import { useAcceptCuratorPopup } from "./useAcceptCuratorPopup";
 
 export default function MultiAssetBountyAcceptCuratorButton() {
+  const address = useRealAddress();
   const { bountyIndex } = useOnchainData();
 
   // Live on-chain status. Subscribes via watchValue so the button reacts as
@@ -45,8 +47,9 @@ export default function MultiAssetBountyAcceptCuratorButton() {
     ),
   );
 
-  // accept_curator requires the bounty to be in `Funded` state.
-  if (status?.type !== "Funded") {
+  // accept_curator requires the bounty to be in `Funded` state. Actions also
+  // require a connected account; hide the button when logged out.
+  if (!address || status?.type !== "Funded") {
     return null;
   }
 

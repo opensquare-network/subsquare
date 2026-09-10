@@ -1,5 +1,6 @@
 import PrimaryButton from "next-common/lib/button/primary";
 import { useOnchainData } from "next-common/context/post";
+import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useMultiAssetBountyStatus from "../useMultiAssetBountyStatus";
 import usePaymentActionPopup from "./usePaymentActionPopup";
 
@@ -32,12 +33,14 @@ function resolvePaymentAction(status) {
 }
 
 export default function MultiAssetBountyPaymentAction() {
+  const address = useRealAddress();
   const { bountyIndex } = useOnchainData();
   const status = useMultiAssetBountyStatus(bountyIndex);
   const action = resolvePaymentAction(status);
   const { showPopup, popup } = usePaymentActionPopup(action);
 
-  if (!action) {
+  // Actions require a connected account; hide the button when logged out.
+  if (!address || !action) {
     return null;
   }
 
