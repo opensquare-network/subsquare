@@ -40,9 +40,12 @@ export default function MultiAssetBountyAward() {
     disabledTooltip = "This bounty still has active child bounties";
   }
 
+  // The tooltip wraps the button in an `inline-block` div, so it must carry
+  // `w-full` as well: otherwise the wrapper shrinks to the content width and
+  // the `fullWidth` button inside has nothing to stretch to.
   return (
-    <>
-      <Tooltip content={disabledTooltip}>
+    <div className="w-full">
+      <Tooltip className="w-full" content={disabledTooltip}>
         <SplitRoleMenuButton
           fullWidth
           action="Award"
@@ -52,6 +55,6 @@ export default function MultiAssetBountyAward() {
         />
       </Tooltip>
       {popup}
-    </>
+    </div>
   );
 }

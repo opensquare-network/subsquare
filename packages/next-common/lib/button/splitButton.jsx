@@ -1,75 +1,78 @@
 import { ArrowDown } from "@osn/icons/subsquare";
 import PrimaryButton from "next-common/lib/button/primary";
-import { useRef, useState } from "react";
-import { useClickAway } from "react-use";
+import SecondaryButton from "next-common/lib/button/secondary";
 import { cn } from "next-common/utils";
+import { DropdownPanel, useSplitDropdown } from "./splitDropdown";
 
-function DropdownPanel({ onClick, children }) {
-  return (
-    <div
-      className={cn(
-        "z-[999999] absolute top-[calc(100%+4px)] right-0",
-        "min-w-[calc(100%+2px)] py-2 px-0",
-        "shadow-200 rounded dark:border dark:border-neutral300",
-        "whitespace-nowrap bg-neutral100 text-textPrimary",
-      )}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  );
-}
-
+// Color variant of the split button: "primary" (filled, default) or
+// "secondary" (outline). Both share the same structure, only the underlying
+// button component differs.
 export default function SplitButton({
   loading,
   disabled,
   dropdownContent,
   mainClickOpensMenu = false,
   fullWidth = false,
+  variant = "primary",
   children,
   onClick,
   ...props
 }) {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const ref = useRef();
-  useClickAway(ref, () => setShowDropdown(false));
+  const { showDropdown, anchorRef, closeDropdown, toggleDropdown } =
+    useSplitDropdown();
 
-  const toggleDropdown = () => setShowDropdown((show) => !show);
+  const isSecondary = variant === "secondary";
+  const ButtonComponent = isSecondary ? SecondaryButton : PrimaryButton;
 
   if (loading) {
     return (
-      <PrimaryButton
+      <ButtonComponent
         loading={loading}
         {...props}
         onClick={onClick}
         className={cn(props?.className, fullWidth && "w-full")}
       >
         {children}
-      </PrimaryButton>
+      </ButtonComponent>
     );
   }
 
   return (
-    <div className={cn("flex gap-[1px]", fullWidth && "w-full")}>
-      <PrimaryButton
+    <div
+      className={cn(
+        "flex",
+        // Secondary parts carry a 1px border each: overlapping them instead
+        // of leaving a gap keeps the middle divider a single line.
+        isSecondary ? "gap-0" : "gap-[1px]",
+        fullWidth && "w-full",
+      )}
+    >
+      <ButtonComponent
         disabled={disabled}
         {...props}
         onClick={mainClickOpensMenu ? toggleDropdown : onClick}
         className={cn("rounded-tr-none rounded-br-none", fullWidth && "flex-1")}
       >
         {children}
-      </PrimaryButton>
-      <div ref={ref} className={cn("relative", fullWidth && "shrink-0")}>
-        <PrimaryButton
+      </ButtonComponent>
+      <div
+        ref={anchorRef}
+        className={cn(
+          "relative",
+          isSecondary && "-ml-px",
+          fullWidth && "shrink-0",
+        )}
+      >
+        <ButtonComponent
           disabled={disabled}
           {...props}
           onClick={toggleDropdown}
           className="rounded-tl-none rounded-bl-none p-[8px]"
         >
           <ArrowDown width={24} height={24} />
-        </PrimaryButton>
+        </ButtonComponent>
         {showDropdown && (
-          <DropdownPanel onClick={() => setShowDropdown(false)}>
+          <DropdownPanel onClick={closeDropdown}>
             {dropdownContent}
           </DropdownPanel>
         )}

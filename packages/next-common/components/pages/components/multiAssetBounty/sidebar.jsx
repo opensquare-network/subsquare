@@ -21,6 +21,7 @@ import NewChildBountyButton from "next-common/components/treasury/multiAssetBoun
 import MultiAssetBountyAward from "next-common/components/treasury/multiAssetBounty/award";
 import MultiAssetBountyCloseBounty from "next-common/components/treasury/multiAssetBounty/closeBounty";
 import MultiAssetBountyPaymentAction from "next-common/components/treasury/multiAssetBounty/paymentAction";
+import SplitMoreContent from "next-common/components/splitMoreContent";
 
 function MultiAssetBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -81,11 +82,19 @@ function MultiAssetBountySidebar() {
     <RightBarWrapper>
       <MultiAssetBountySidebarBalance />
       <BountySidebarCurator />
-      <MultiAssetBountyAcceptCuratorButton />
-      <NewChildBountyButton />
-      <MultiAssetBountyPaymentAction />
-      <MultiAssetBountyAward />
-      <MultiAssetBountyCloseBounty />
+
+      <SplitMoreContent
+        more={
+          <>
+            <MultiAssetBountyAward />
+            <MultiAssetBountyCloseBounty />
+          </>
+        }
+      >
+        <MultiAssetBountyAcceptCuratorButton />
+        <NewChildBountyButton />
+        <MultiAssetBountyPaymentAction />
+      </SplitMoreContent>
     </RightBarWrapper>
   );
 }

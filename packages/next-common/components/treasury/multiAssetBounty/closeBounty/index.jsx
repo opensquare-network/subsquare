@@ -60,6 +60,9 @@ export default function MultiAssetBountyCloseBounty() {
     disabledTooltip = "This bounty still has active child bounties";
   }
 
+  // The tooltip wraps the button in an `inline-block` div, so it must carry
+  // `w-full` as well: otherwise the wrapper shrinks to the content width and
+  // the `fullWidth` button inside has nothing to stretch to.
   return (
     <div className="w-full">
       <Tooltip className="w-full" content={disabledTooltip}>
