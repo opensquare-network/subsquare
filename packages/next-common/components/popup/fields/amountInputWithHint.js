@@ -34,6 +34,7 @@ export default function AmountInputWithHint({
   isLoading,
   inputAmount,
   setInputAmount,
+  onHintClick,
 }) {
   const status = (
     <Tooltip content={hintTooltip}>
@@ -43,6 +44,10 @@ export default function AmountInputWithHint({
         isLoading={isLoading}
         decimals={decimals}
         onClick={() => {
+          if (onHintClick) {
+            onHintClick();
+            return;
+          }
           if (maxAmount) {
             setInputAmount(
               BigNumber(maxAmount).div(Math.pow(10, decimals)).toString(),

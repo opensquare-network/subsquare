@@ -5,6 +5,7 @@ import CoretimeSalePanelChart from "./chart";
 import CoretimeSaleSummary from "./summary";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { CHAIN } from "next-common/utils/constants";
+import CoretimePurchaseButton from "../purchase";
 
 const isKusama = isKusamaChain(CHAIN);
 
@@ -15,7 +16,10 @@ export default function CoretimeSalePanel() {
 
   return (
     <NeutralPanel className="p-6 text-textPrimary">
-      <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="text16Bold">Coretime Sale #{coretimeSale.id}</h3>
+        <CoretimePurchaseButton />
+      </div>
       <Divider className="my-4" />
       <CoretimeSaleSummary />
 
