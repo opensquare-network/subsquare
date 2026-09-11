@@ -41,7 +41,7 @@ export default function CoretimeRegionsAccountPrompt() {
         message: (
           <div>
             Currently there {pluralize("is", ownedRegionCount)}{" "}
-            {ownedRegionCount} {pluralize("region", ownedRegionCount)}, check{" "}
+            {ownedRegionCount} {pluralize("region", ownedRegionCount)},{" "}
             <Link className="underline" href="/coretime/regions">
               here
             </Link>
