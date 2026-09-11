@@ -24,7 +24,7 @@ import { RelayChainApiProvider } from "next-common/context/relayChain";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useChain } from "next-common/context/chain";
-import { isHydrationChain } from "next-common/utils/chain";
+import { isCoretimeChain, isHydrationChain } from "next-common/utils/chain";
 import { isNil } from "lodash-es";
 import Link from "next/link";
 import { IconButton } from "next-common/components/styled/iconButton";
@@ -36,6 +36,7 @@ import { AvatarImg } from "next-common/components/user/styled";
 import Gravatar from "next-common/components/gravatar";
 import AccountPanelJudgementScrollPrompt from "./components/accountPanelJudgementScrollPrompt";
 import { useChainSettings } from "next-common/context/chain";
+import CoretimeRegionsAccountPrompt from "next-common/components/coretime/regions/accountPrompt";
 
 const ParaChainTeleportPopup = dynamic(() =>
   import("next-common/components/paraChainTeleportPopup").then(
@@ -329,6 +330,7 @@ export function AccountHead({ width }) {
 
 export default function AccountInfoPanel() {
   const { hasIdentityVerification, modules } = useChainSettings();
+  const chain = useChain();
   const width = useWindowWidthContext();
 
   if (isNil(width)) {
@@ -344,6 +346,7 @@ export default function AccountInfoPanel() {
         <AccountBalances />
       </UserPapiAccountProvider>
       <ExtensionUpdatePrompt />
+      {isCoretimeChain(chain) && <CoretimeRegionsAccountPrompt />}
       {hasIdentityVerification && <AccountPanelJudgementScrollPrompt />}
       {modules?.recovery && (
         <RelayChainApiProvider>
