@@ -36,7 +36,7 @@ export function formatRegionShare(mask) {
 }
 
 export function formatRegionEntry(
-  { keyArgs: [regionId], value },
+  { args: [regionId], value },
   currentTimeslice,
   timeslicePeriod,
 ) {
