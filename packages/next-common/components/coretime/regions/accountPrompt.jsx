@@ -10,6 +10,7 @@ import { CACHE_KEY } from "next-common/utils/constants";
 import { useCookieValue } from "next-common/utils/hooks/useCookieValue";
 import { isSameAddress } from "next-common/utils";
 import useRegions from "./useRegions";
+import { RegionStatus } from "./utils";
 
 export default function CoretimeRegionsAccountPrompt() {
   const user = useUser();
@@ -21,8 +22,11 @@ export default function CoretimeRegionsAccountPrompt() {
 
   const ownedRegionCount = useMemo(
     () =>
-      regions.filter((region) => isSameAddress(region.owner, user?.address))
-        .length,
+      regions.filter(
+        (region) =>
+          region.status !== RegionStatus.Expired &&
+          isSameAddress(region.owner, user?.address),
+      ).length,
     [regions, user?.address],
   );
 
