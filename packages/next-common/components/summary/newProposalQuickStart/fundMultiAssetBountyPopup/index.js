@@ -1,13 +1,7 @@
-import { useState } from "react";
 import { usePageProps } from "next-common/context/page";
 import { useStepContainer } from "next-common/context/stepContainer";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
-import useUSDxBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useUSDxBalanceField";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
-import TextAreaField from "next-common/components/popup/fields/textAreaField";
-import PopupLabel from "next-common/components/popup/label";
-import Input from "next-common/lib/input";
-import Tab from "next-common/components/tab";
+import useFundBountyFields from "next-common/components/preImages/createPreimagePopup/fields/useFundBountyFields";
 import CircleStepper from "next-common/components/step";
 import { useNewReferendumMultiStepButton } from "next-common/hooks/useNewReferendumMultiStepButton";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
@@ -18,26 +12,13 @@ import useTrackField from "../common/useTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import SigningTip from "../common/signingTip";
-import useFundBountyPreimages from "./useFundBountyPreimages";
-
-const metadataTabs = [
-  { tabId: "text", tabTitle: "Text" },
-  { tabId: "metadata", tabTitle: "Metadata Hash" },
-];
+import useFundBountyPreimages from "next-common/components/preImages/createPreimagePopup/templates/fundMultiAssetBountyPopup/useFundBountyPreimages";
 
 export default function FundMultiAssetBountyReferendumInnerPopupContent() {
   const { goBack } = useStepContainer();
   const { tracks } = usePageProps();
-  const {
-    value: [inputBalance, symbol],
-    component: usdxBalanceField,
-  } = useUSDxBalanceField();
-  const [inputMode, setInputMode] = useState("text");
-  const [description, setDescription] = useState("");
-  const [inputMetadataHash, setInputMetadataHash] = useState("");
-  const { value: curator, component: curatorField } = useAddressComboField({
-    title: "Curator",
-  });
+  const { value: bountyParams, component: bountyFields } =
+    useFundBountyFields();
   const { value: trackId, component: trackField } = useTrackField(
     tracks.find((track) => track.name === "treasurer")?.id,
   );
@@ -49,16 +30,8 @@ export default function FundMultiAssetBountyReferendumInnerPopupContent() {
     notePreimageTx,
     preimageExists,
     proposalByteLength,
-    isPreparing,
     error,
-  } = useFundBountyPreimages({
-    symbol,
-    inputBalance,
-    curator,
-    inputMode,
-    description,
-    inputMetadataHash,
-  });
+  } = useFundBountyPreimages(bountyParams);
   const { isLoading, component: submitButton } =
     useNewReferendumMultiStepButton({
       trackId,
@@ -81,43 +54,12 @@ export default function FundMultiAssetBountyReferendumInnerPopupContent() {
         loading={isLoading}
       />
       <SignerWithBalance showTransferable supportedMultisig={false} />
-      {usdxBalanceField}
-      {curatorField}
-      <div className="flex flex-col gap-3">
-        <PopupLabel text="Metadata" />
-        <Tab
-          tabs={metadataTabs}
-          selectedTabId={inputMode}
-          setSelectedTabId={setInputMode}
-        />
-        {inputMode === "text" ? (
-          <TextAreaField
-            title="Description"
-            placeholder="Please fill the description about this bounty..."
-            text={description}
-            setText={setDescription}
-          />
-        ) : (
-          <div>
-            <Input
-              placeholder="0x..."
-              value={inputMetadataHash}
-              onChange={(event) => setInputMetadataHash(event.target.value)}
-            />
-            <p className="mt-2 text12Medium text-textTertiary">
-              The metadata preimage must already exist on chain.
-            </p>
-          </div>
-        )}
-      </div>
+      {bountyFields}
       {trackField}
       <AdvanceSettings>
         {enactmentField}
         <SubmissionDeposit />
       </AdvanceSettings>
-      {isPreparing && (
-        <p className="text12Medium text-textTertiary">Checking preimages...</p>
-      )}
       {error && <ErrorInfoPanel>{error}</ErrorInfoPanel>}
       <InsufficientBalanceTips byteLength={proposalByteLength} />
       <SigningTip />

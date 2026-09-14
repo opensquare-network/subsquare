@@ -6,7 +6,7 @@ import { checkInputValue, isValidPreimageHash } from "next-common/utils";
 import { chainApiHash } from "next-common/utils/chain";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { getAssetBySymbol } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
-import { getAssetKindParam } from "next-common/components/preImages/createPreimagePopup/templates/batchTreasurySpendPopup";
+import { getAssetKindParam } from "../batchTreasurySpendPopup";
 import preparePreimages from "./preparePreimages";
 
 export default function useFundBountyPreimages({
@@ -105,8 +105,8 @@ export default function useFundBountyPreimages({
   return {
     ...result,
     encodedHash: proposalState.encodedHash,
+    encodedProposal: proposalState.encodedProposal,
     encodedLength: proposalState.encodedLength,
     error: proposalState.error || result.error,
-    isPreparing: !!proposalState.notePreimageTx && !isPrepared,
   };
 }
