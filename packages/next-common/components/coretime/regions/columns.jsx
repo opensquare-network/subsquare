@@ -7,7 +7,6 @@ import { toPrecision } from "next-common/utils";
 import { isNil } from "lodash-es";
 import RegionActionColumn from "./actionColumn";
 import RegionStatusTag from "./statusTag";
-import { REGION_MASK_BITS } from "./utils";
 import RegionTimeColumn, { RegionTimeHeaderButton } from "./timeColumn";
 
 function PaidColumn({ paid }) {
@@ -25,7 +24,7 @@ function PaidColumn({ paid }) {
   );
 }
 
-export default function useRegionColumns() {
+export default function useRegionColumns(onAction) {
   return useMemo(
     () => [
       {
@@ -60,10 +59,10 @@ export default function useRegionColumns() {
         className: "w-[140px]",
         render: (region) => (
           <Tooltip
-            content={`Owned: ${region.parts} / Total: ${REGION_MASK_BITS}`}
+            content={`Owned: ${region.parts} / Total: ${region.totalParts}`}
           >
             <span>
-              {region.parts}/{REGION_MASK_BITS}
+              {region.parts}/{region.totalParts}
             </span>
           </Tooltip>
         ),
@@ -84,9 +83,11 @@ export default function useRegionColumns() {
         name: "",
         key: "action",
         className: "w-[80px] flex justify-end text-right",
-        render: (region) => <RegionActionColumn region={region} />,
+        render: (region) => (
+          <RegionActionColumn region={region} onAction={onAction} />
+        ),
       },
     ],
-    [],
+    [onAction],
   );
 }

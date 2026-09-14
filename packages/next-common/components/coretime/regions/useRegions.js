@@ -5,6 +5,12 @@ import { useContextPapiApi } from "next-common/context/papi";
 import useCoretimeStatus from "next-common/context/coretime/status";
 import { formatRegionEntry } from "./utils";
 
+const isSameEntry = (a, b) =>
+  a === b ||
+  (a.keyArgs.length === b.keyArgs.length &&
+    a.keyArgs.every((arg, i) => arg === b.keyArgs[i]) &&
+    a.value === b.value);
+
 export default function useRegions() {
   const api = useContextPapiApi();
   const contextApi = useContextApi();
@@ -23,9 +29,14 @@ export default function useRegions() {
     }
 
     const subscription = api.query.Broker.Regions.watchEntries().subscribe({
-      next: ({ entries }) => {
-        setEntries(entries);
+      next: ({ entries: newEntries }) => {
         setLoading(false);
+        setEntries((prev) =>
+          prev.length === newEntries.length &&
+          newEntries.every((entry, idx) => isSameEntry(entry, prev[idx]))
+            ? prev
+            : newEntries,
+        );
       },
       error: (error) => {
         console.error("Failed to watch coretime regions:", error);

@@ -27,5 +27,5 @@ export default function useRegionActionState({ begin, core, mask }, action) {
     error = `This region has no uncommitted coretime to ${action}`;
   }
 
-  return { api, regionId, error };
+  return { api, regionId, region, error };
 }

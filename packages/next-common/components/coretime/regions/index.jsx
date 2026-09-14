@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 import DataList from "next-common/components/dataList";
 import ListTitleBar from "next-common/components/listTitleBar";
 import { ListWrapper } from "next-common/components/postList/styled";
@@ -11,6 +13,15 @@ import { RegionTimeProvider } from "./context";
 import RegionFilter from "./filter";
 import { RegionStatus } from "./utils";
 
+const actionPopups = {
+  details: dynamicPopup(() => import("./detailPopup")),
+  assign: dynamicPopup(() => import("./assignPopup")),
+  pool: dynamicPopup(() => import("./poolPopup")),
+  transfer: dynamicPopup(() => import("./transferPopup")),
+  partition: dynamicPopup(() => import("./partitionPopup")),
+  interlace: dynamicPopup(() => import("./interlacePopup")),
+};
+
 export default function CoretimeRegions() {
   return (
     <RegionTimeProvider>
@@ -21,7 +32,9 @@ export default function CoretimeRegions() {
 
 function CoretimeRegionsContent() {
   const router = useRouter();
-  const columnsDef = useRegionColumns();
+  const [activeAction, setActiveAction] = useState(null);
+  const columnsDef = useRegionColumns(setActiveAction);
+  const ActionPopup = actionPopups[activeAction?.action];
   const { regions, loading } = useRegions();
   const realAddress = useRealAddress();
   const status =
@@ -84,6 +97,12 @@ function CoretimeRegionsContent() {
         loading={loading}
         noDataText="No regions"
       />
+      {ActionPopup && (
+        <ActionPopup
+          region={activeAction.region}
+          onClose={() => setActiveAction(null)}
+        />
+      )}
     </ListWrapper>
   );
 }
