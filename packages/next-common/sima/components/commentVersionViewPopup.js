@@ -14,21 +14,7 @@ import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/cor
 import { LinkIpfs } from "@osn/icons/subsquare";
 import ExternalLink from "next-common/components/externalLink";
 import getStorageLink from "next-common/utils/env/storageLink";
-import { getRankColor } from "next-common/utils/fellowship/getRankColor";
-
-function VersionBadge({ version }) {
-  return (
-    <span
-      className="inline-flex h-5 min-w-5 px-1 rounded text12Bold items-center justify-center"
-      style={{
-        color: getRankColor(0),
-        backgroundColor: getRankColor(0, 0.1),
-      }}
-    >
-      {version}
-    </span>
-  );
-}
+import HtmlVersionedDiffContent from "next-common/sima/components/htmlVersionedDiffContent";
 
 function MarkdownVersionedContent({ content, previousContent }) {
   const diffParts = useMemo(
@@ -82,47 +68,82 @@ function HtmlVersionedContent({ content }) {
   );
 }
 
+function PlainVersionedContent({ item }) {
+  if (item?.contentType === "html") {
+    return <HtmlVersionedContent content={item.content} />;
+  }
+
+  return <MarkdownVersionedContent content={item.content} />;
+}
+
+// Cross-format versions (markdown -> html / html -> markdown) are rendered as
+// a whole-text replacement: the previous content is all deleted, and the
+// current content is all inserted.
+function CrossFormatVersionedContent({ item, previousItem }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <del className="block bg-red100 text-textTertiary rounded-sm px-2 py-1 line-through">
+        <PlainVersionedContent item={previousItem} />
+      </del>
+      <ins className="block bg-green100 rounded-sm px-2 py-1 no-underline">
+        <PlainVersionedContent item={item} />
+      </ins>
+    </div>
+  );
+}
+
 /**
  * Renders one version content by (current contentType, previous contentType):
  *   1. markdown -> markdown : supported, embedded markdown diff
- *   2. markdown -> html     : not implemented yet, render markdown without diff
- *   3. html     -> markdown : not implemented yet, render html directly
- *   4. html     -> html     : not implemented yet, render html directly
+ *   2. markdown -> html     : cross-format, whole previous deleted + current inserted
+ *   3. html     -> markdown : cross-format, whole previous deleted + current inserted
+ *   4. html     -> html     : block aligned diff, word level inside modified blocks
  */
 function VersionedContent({ item, previousItem }) {
   const currentIsHtml = item?.contentType === "html";
   const previousIsHtml = previousItem?.contentType === "html";
 
-  // Cases 3 & 4: current version is html, always render html directly.
-  if (currentIsHtml) {
-    return <HtmlVersionedContent content={item.content} />;
-  }
-
-  // Case 2: current markdown but previous html, cross-format diff is not
-  // implemented yet, render current markdown without diff.
-  if (previousIsHtml) {
-    return <MarkdownVersionedContent content={item.content} />;
+  // No previous version, render current content directly.
+  if (!previousItem) {
+    return <PlainVersionedContent item={item} />;
   }
 
   // Case 1: markdown -> markdown, embedded markdown diff.
+  if (!currentIsHtml && !previousIsHtml) {
+    return (
+      <MarkdownVersionedContent
+        content={item.content}
+        previousContent={previousItem.content}
+      />
+    );
+  }
+
+  // Case 4: html -> html, block aligned diff.
+  if (currentIsHtml && previousIsHtml) {
+    return (
+      <HtmlVersionedDiffContent
+        content={item.content}
+        previousContent={previousItem.content}
+      />
+    );
+  }
+
+  // Cases 2 & 3: cross-format, whole-text replacement.
   return (
-    <MarkdownVersionedContent
-      content={item.content}
-      previousContent={previousItem?.content}
-    />
+    <CrossFormatVersionedContent item={item} previousItem={previousItem} />
   );
 }
 
 export function CommentVersionView({ item, version, previousItem }) {
   const time = dayjs(item.timestamp).format("YYYY-MM-DD HH:mm:ss");
+  const timeLabel = version === 1 ? "Created at" : "Edited at";
 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <VersionBadge version={version} />
-          <span className="text12Medium text-textTertiary">{time}</span>
-        </div>
+        <span className="text12Medium text-textTertiary">
+          {timeLabel} {time}
+        </span>
         <ExternalLink
           href={getStorageLink(item.cid)}
           externalIcon={false}
@@ -132,7 +153,7 @@ export function CommentVersionView({ item, version, previousItem }) {
           <LinkIpfs className="w-4 h-4" />
         </ExternalLink>
       </div>
-      <div className="pl-7">
+      <div>
         <VersionedContent item={item} previousItem={previousItem} />
       </div>
     </div>

@@ -7,6 +7,7 @@ import { useComment } from "./context";
 import VoteTag from "./voteTag";
 import { useChain } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
+import CommentEditedMarker from "next-common/sima/components/commentEditedMarker";
 
 const CommentItemTemplate = forwardRef(function Comp(
   {
@@ -66,9 +67,7 @@ const CommentItemTemplate = forwardRef(function Comp(
 
       <div className="!mt-2 !ml-7">
         {content}
-        {comment.createdAt !== comment.updatedAt && (
-          <p className="mt-2 text12Medium text-textTertiary">Edited</p>
-        )}
+        {comment.createdAt !== comment.updatedAt && <CommentEditedMarker />}
       </div>
 
       {actions && <div className="mt-4 ml-7">{actions}</div>}

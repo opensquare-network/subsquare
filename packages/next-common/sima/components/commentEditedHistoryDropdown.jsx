@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowDown } from "@osn/icons/subsquare";
 import { useClickAway } from "react-use";
 import { cn } from "next-common/utils";
@@ -6,9 +6,6 @@ import Divider from "next-common/components/styled/layout/divider";
 import Loading from "next-common/components/loading";
 import nextApi from "next-common/services/nextApi";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { Item } from "next-common/components/actions/styled";
-import { useComment } from "next-common/components/comment/context";
-import { useCommentActions } from "next-common/sima/context/commentActions";
 
 const CommentVersionViewPopup = dynamicPopup(() =>
   import("next-common/sima/components/commentVersionViewPopup"),
@@ -41,64 +38,65 @@ function formatEditedAgo(timestamp) {
   return `${parts.join(" ")} ago`;
 }
 
-export default function CommentEditedDropdown() {
-  const comment = useComment();
-  const { supportSima } = useCommentActions();
-
+export default function CommentEditedHistoryDropdown({ commentCid }) {
   const [show, setShow] = useState(false);
-  const [items, setItems] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [history, setHistory] = useState(null);
   const [selected, setSelected] = useState(null);
   const ref = useRef();
 
   useClickAway(ref, () => setShow(false));
 
-  const isEditedSimaComment =
-    supportSima &&
-    comment?.dataSource === "sima" &&
-    !!comment?.cid &&
-    !!comment?.edited;
-
   const loadHistory = useCallback(async () => {
-    if (items !== null) {
-      return;
-    }
     const { result, error } = await nextApi.fetch(
-      `sima/comments/${comment.cid}/history`,
+      `sima/comments/${commentCid}/history`,
     );
     if (error) {
-      setErrorMessage(error.message);
+      setHistory({ cid: commentCid, error: error.message });
       return;
     }
-    setItems(result?.items || []);
-  }, [comment.cid, items]);
+    setHistory({ cid: commentCid, items: result?.items || [] });
+  }, [commentCid]);
 
-  if (!isEditedSimaComment) {
-    return null;
-  }
+  // Fetch history when the dropdown opens, and refetch when the comment gets a
+  // new version (cid changes after an edit), so the list is always up to date.
+  useEffect(() => {
+    if (!show || history?.cid === commentCid) {
+      return;
+    }
+    loadHistory();
+  }, [show, commentCid, history?.cid, loadHistory]);
 
+  const isHistoryFresh = !!history && history.cid === commentCid;
+  const items = isHistoryFresh ? history.items : null;
+  const errorMessage = isHistoryFresh ? history.error : null;
   const editCount = items ? Math.max(0, items.length - 1) : 0;
 
   return (
     <>
-      <span ref={ref} className="relative inline-flex">
-        <Item
+      <div
+        ref={ref}
+        className="relative mt-2 inline-flex items-center text12Medium text-textTertiary"
+      >
+        <span
           role="button"
-          className="cursor-pointer"
-          onClick={() => {
-            setShow(!show);
-            if (!show) {
-              loadHistory();
-            }
-          }}
+          className={cn(
+            "group cursor-pointer inline-flex items-center gap-1",
+            "hover:text-textSecondary transition-colors",
+          )}
+          onClick={() => setShow(!show)}
         >
           <span>Edited</span>
           <ArrowDown
-            className={cn("w-4 h-4 transition-transform", show && "rotate-180")}
+            className={cn(
+              "w-4 h-4",
+              "[&_path]:fill-none! [&_path]:stroke-textTertiary",
+              "group-hover:[&_path]:stroke-textSecondary",
+              show && "rotate-180",
+            )}
           />
-        </Item>
+        </span>
         {show && (
-          <div className="absolute z-999 right-0 top-full mt-2 min-w-65 max-h-[50vh] overflow-y-auto bg-neutral100 border border-neutral300 rounded-lg shadow-100 p-2">
+          <div className="absolute z-999 left-0 top-full mt-1 min-w-65 max-h-[50vh] overflow-y-auto bg-neutral100 border border-neutral300 rounded-lg shadow-200 p-2">
             {items === null && !errorMessage && (
               <div className="flex justify-center py-6">
                 <Loading size={20} />
@@ -127,7 +125,7 @@ export default function CommentEditedDropdown() {
                     <button
                       key={item.cid}
                       type="button"
-                      className="block w-full text-left px-2 py-1.5 rounded-md text14Medium text-textPrimary hover:bg-neutral200"
+                      className="block w-full text-left px-2 py-1.5 rounded-md text12Medium text-textPrimary hover:bg-neutral200"
                       onClick={() => {
                         setShow(false);
                         setSelected({
@@ -145,7 +143,7 @@ export default function CommentEditedDropdown() {
             )}
           </div>
         )}
-      </span>
+      </div>
       {selected && (
         <CommentVersionViewPopup
           item={selected.item}
