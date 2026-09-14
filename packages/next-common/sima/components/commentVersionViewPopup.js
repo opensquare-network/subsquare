@@ -82,7 +82,7 @@ function PlainVersionedContent({ item }) {
 function CrossFormatVersionedContent({ item, previousItem }) {
   return (
     <div className="flex flex-col gap-3">
-      <del className="block bg-red100 text-textTertiary rounded-sm px-2 py-1 line-through">
+      <del className="block bg-red100 rounded-sm px-2 py-1 no-underline">
         <PlainVersionedContent item={previousItem} />
       </del>
       <ins className="block bg-green100 rounded-sm px-2 py-1 no-underline">
