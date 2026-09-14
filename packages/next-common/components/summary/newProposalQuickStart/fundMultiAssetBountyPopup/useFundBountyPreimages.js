@@ -84,15 +84,14 @@ export default function useFundBountyPreimages({
     }
     let isActive = true;
     async function prepare() {
+      let result;
       try {
-        const result = await preparePreimages(api, proposalState);
-        if (isActive) {
-          setPrepared({ proposalState, ...result });
-        }
+        result = await preparePreimages(api, proposalState);
       } catch (error) {
-        if (isActive) {
-          setPrepared({ proposalState, error: error.message });
-        }
+        result = { error: error.message };
+      }
+      if (isActive) {
+        setPrepared({ proposalState, result });
       }
     }
     void prepare();
@@ -102,11 +101,12 @@ export default function useFundBountyPreimages({
   }, [api, proposalState]);
 
   const isPrepared = prepared?.proposalState === proposalState;
+  const result = isPrepared ? prepared.result : {};
   return {
+    ...result,
     encodedHash: proposalState.encodedHash,
     encodedLength: proposalState.encodedLength,
-    error: proposalState.error || (isPrepared && prepared.error),
+    error: proposalState.error || result.error,
     isPreparing: !!proposalState.notePreimageTx && !isPrepared,
-    ...(isPrepared ? prepared : {}),
   };
 }

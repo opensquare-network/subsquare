@@ -67,8 +67,7 @@ export default function FundMultiAssetBountyReferendumInnerPopupContent() {
       encodedLength,
       notePreimageTx,
       preimageExists,
-      disabled: isPreparing || !!error || trackId == null,
-      buttonText: "Submit",
+      disabled: trackId == null,
     });
 
   return (

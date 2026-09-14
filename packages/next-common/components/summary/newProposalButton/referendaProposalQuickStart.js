@@ -97,8 +97,9 @@ const useQuickStartItems = () => {
     }
     if (fundMultiAssetBounty) {
       items.push({
-        name: "Fund a multi-asset bounty",
-        description: "Fund a bounty with an asset and appoint its curator",
+        name: "Multi-asset bounty proposal",
+        description:
+          "Fund a bounty with assets on AssetHub and nominate a curator",
         content: FundMultiAssetBountyReferendumInnerPopupContent,
       });
     }
