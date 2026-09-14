@@ -15,7 +15,7 @@ export default function CommentEditedMarker() {
     supportSima &&
     comment?.dataSource === "sima" &&
     !!comment?.cid &&
-    !!comment?.edited;
+    !!comment?.hasEditHistory;
 
   if (!hasHistory) {
     return <PlainCommentEditedMarker />;
