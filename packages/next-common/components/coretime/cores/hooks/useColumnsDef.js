@@ -51,8 +51,8 @@ export function useColumnsDef() {
         render: (item) => <CoretimeCoresTag state={item.occupancyType} />,
       },
       {
-        name: "Plans",
-        key: "plans",
+        name: "Actions",
+        key: "actions",
         className: "w-[120px] text-right",
         render: (item) => <ActionColumn item={item} />,
       },

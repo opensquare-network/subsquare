@@ -14,6 +14,7 @@ import CoretimeCommonProvider from "next-common/context/coretime/common";
 import RelayInfoProvider from "next-common/context/relayInfo";
 import generateLayoutRawTitle from "next-common/utils/generateLayoutRawTitle";
 import CoretimeCores from "next-common/components/coretime/cores";
+import { PapiProvider } from "next-common/context/papi";
 
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
@@ -64,7 +65,9 @@ function CoretimeCoresPageImpl() {
       description={description}
     >
       <div className="space-y-6">
-        <CoretimeCores />
+        <PapiProvider>
+          <CoretimeCores />
+        </PapiProvider>
       </div>
     </ListLayout>
   );
