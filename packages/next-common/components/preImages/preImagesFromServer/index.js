@@ -19,6 +19,7 @@ import { useChainSettings } from "next-common/context/chain";
 import { decodeCallTreeWithInfo } from "next-common/utils/callDecoder/decoder.mjs";
 import { getCachedMetadata as getPapiMetadata } from "next-common/utils/papi/getCachedMetadata";
 import { Binary } from "polkadot-api";
+import { getTextPreimage } from "./textPreimage";
 
 function addLengthWarning(item, proposal, callLength) {
   const storeLength = item.requested?.maybeLen || item.unrequested?.len;
@@ -115,8 +116,9 @@ function useServerPreimages() {
         return addNoPreimageBytes(item);
       }
 
+      const callBytes = Binary.fromHex(item.hex);
+
       try {
-        const callBytes = Binary.fromHex(item.hex);
         const { proposal, callData } = decodeCallTreeWithInfo(
           callBytes,
           metadata,
@@ -124,6 +126,17 @@ function useServerPreimages() {
 
         return addLengthWarning(item, proposal, callData.length);
       } catch {
+        const textPreimage = getTextPreimage(callBytes);
+        if (textPreimage !== null) {
+          return {
+            ...item,
+            proposal: null,
+            proposalError: null,
+            proposalWarning: null,
+            textPreimage,
+          };
+        }
+
         return addDecodeError(
           item,
           "Unable to decode preimage bytes into a valid Call",

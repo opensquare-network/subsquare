@@ -90,6 +90,7 @@ export function Proposal({
   proposal,
   proposalError,
   proposalWarning,
+  textPreimage,
   setShowArgumentsDetail,
 }) {
   if (proposalError) {
@@ -99,6 +100,19 @@ export function Proposal({
   if (proposalWarning) {
     return (
       <span className="text-orange500 font-medium">{proposalWarning}</span>
+    );
+  }
+
+  if (typeof textPreimage === "string") {
+    return (
+      <div className="flex min-w-0 max-w-[388px] flex-col overflow-hidden">
+        <span
+          className="text-textSecondary text-[12px] leading-[16px] truncate"
+          title={textPreimage}
+        >
+          {textPreimage}
+        </span>
+      </div>
     );
   }
 
