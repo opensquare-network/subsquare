@@ -27,7 +27,7 @@ export default function RegionDetailPopup({ region, onClose }) {
         <DetailItem label="End timeslice">#{region.end}</DetailItem>
         <DetailItem label="Workload mask">{region.mask}</DetailItem>
         <DetailItem label="Share">
-          {region.parts}/80 ({region.percentage}%)
+          {region.parts}/{region.totalParts} ({region.percentage}%)
         </DetailItem>
         <DetailItem label="Paid">
           {isNil(region.paid) ? (

@@ -34,7 +34,11 @@ export default function RegionTimeColumn({ height }) {
   }
 
   return (
-    <Tooltip content={`#${height.toLocaleString()}`}>
+    <Tooltip
+      content={`${dayjs(timestamp).format(
+        "YYYY-MM-DD HH:mm",
+      )} (#${height.toLocaleString()})`}
+    >
       <span className="text-textTertiary">
         {isTime
           ? dayjs(timestamp).format("YYYY-MM-DD")

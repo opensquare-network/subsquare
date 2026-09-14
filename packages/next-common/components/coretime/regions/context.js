@@ -4,7 +4,7 @@ import useRelayChainBlockTime from "next-common/context/coretime/hooks/useRelayC
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
 import useNow from "next-common/hooks/useNow";
 
-const DEFAULT_IS_TIME = false;
+const DEFAULT_IS_TIME = true;
 
 const RegionTimeContext = createContext({
   isTime: DEFAULT_IS_TIME,
