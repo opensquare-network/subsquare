@@ -1,4 +1,3 @@
-import { usePageProps } from "next-common/context/page";
 import { useStepContainer } from "next-common/context/stepContainer";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
 import useFundBountyFields from "next-common/components/preImages/createPreimagePopup/fields/useFundBountyFields";
@@ -8,20 +7,19 @@ import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import PreviousButton from "../../newProposalButton/previousButton";
 import ErrorInfoPanel from "../../styled/errorInfoPanel";
 import AdvanceSettings from "../common/advanceSettings";
-import useTrackField from "../common/useTrackField";
+import useAutoSelectTreasuryTrackField from "../common/useAutoSelectTreasuryTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import SigningTip from "../common/signingTip";
 import { useFundBountyPreimages } from "next-common/components/preImages/createPreimagePopup/templates/fundMultiAssetBountyPopup";
+import { getTokenAmount } from "../createUSDxTreasuryProposalPopup";
 
 export default function FundMultiAssetBountyReferendumInnerPopupContent() {
   const { goBack } = useStepContainer();
-  const { tracks } = usePageProps();
   const { value: bountyParams, component: bountyFields } =
     useFundBountyFields();
-  const { value: trackId, component: trackField } = useTrackField(
-    tracks.find((track) => track.name === "treasurer")?.id,
-  );
+  const { value: trackId, component: trackField } =
+    useAutoSelectTreasuryTrackField(getTokenAmount(bountyParams.inputBalance));
   const { value: enactment, component: enactmentField } =
     useEnactmentBlocksField(trackId);
   const {
