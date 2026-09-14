@@ -98,7 +98,6 @@ function PopupContent() {
         isLoading={price === null}
         inputAmount={inputPriceLimit}
         setInputAmount={setInputPriceLimit}
-        onHintClick={() => setInputPriceLimit(suggestedPriceLimit)}
       />
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
