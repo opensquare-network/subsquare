@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useRouter } from "next/router";
 import BigNumber from "bignumber.js";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
@@ -14,12 +13,10 @@ import { useChainSettings } from "next-common/context/chain";
 import useCoretimeSale from "next-common/context/coretime/sale/provider";
 import { useSubBalanceInfo } from "next-common/hooks/balance/useSubBalanceInfo";
 import { checkInputValue, fromPrecision, toPrecision } from "next-common/utils";
-import { getEventData } from "next-common/utils/sendTransaction";
 import usePurchaseState from "./usePurchaseState";
 
 function PopupContent() {
   const api = useContextApi();
-  const router = useRouter();
   const { decimals, symbol } = useChainSettings();
   const sale = useCoretimeSale();
   const [regionBegin] = useState(sale.info.regionBegin);
@@ -74,17 +71,6 @@ function PopupContent() {
     return api.tx.broker.purchase(limit.toFixed(0));
   }, [api, inputPriceLimit, decimals, saleError, price]);
 
-  const handleFinalized = useCallback(
-    ({ events }) => {
-      if (!getEventData(events, "broker", "Purchased")) {
-        return;
-      }
-
-      return router.replace(router.asPath, undefined, { scroll: false });
-    },
-    [router],
-  );
-
   return (
     <>
       <SignerWithBalance api={api} showTransferable />
@@ -108,7 +94,6 @@ function PopupContent() {
             title="Purchase"
             getTxFunc={getTxFunc}
             disabled={!!disabledReason}
-            onFinalized={handleFinalized}
           />
         </Tooltip>
       </div>

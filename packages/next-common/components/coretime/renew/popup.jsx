@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { useRouter } from "next/router";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -14,13 +13,11 @@ import { useChainSettings } from "next-common/context/chain";
 import useAccountTransferrable from "next-common/hooks/useAccountTransferrable";
 import { toPrecision } from "next-common/utils";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
-import { getEventData } from "next-common/utils/sendTransaction";
 import RenewalTasks from "./tasks";
 import RenewalTimeRange from "./timeRange";
 
 function PopupContent({ core, renewal }) {
   const api = useContextApi();
-  const router = useRouter();
   const { decimals, symbol } = useChainSettings();
   const signerAccount = useSignerAccount();
   const price = renewal?.price.toString();
@@ -46,15 +43,6 @@ function PopupContent({ core, renewal }) {
 
     return api.tx.broker.renew(core);
   }, [api, core, disabledReason, price, transferrable]);
-
-  const handleFinalized = useCallback(
-    ({ events }) => {
-      if (getEventData(events, "broker", "Renewed")) {
-        return router.replace(router.asPath, undefined, { scroll: false });
-      }
-    },
-    [router],
-  );
 
   return (
     <>
@@ -86,7 +74,6 @@ function PopupContent({ core, renewal }) {
             title="Renew"
             getTxFunc={getTxFunc}
             disabled={!!disabledReason}
-            onFinalized={handleFinalized}
           />
         </Tooltip>
       </div>
