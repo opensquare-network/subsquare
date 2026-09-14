@@ -26,7 +26,7 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 
-export const getAssetKindParam = (assetId) => {
+const getAssetKindParam = (assetId) => {
   return {
     V4: {
       location: {

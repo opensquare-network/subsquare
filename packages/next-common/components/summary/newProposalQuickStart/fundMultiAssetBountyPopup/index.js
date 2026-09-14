@@ -12,7 +12,7 @@ import useTrackField from "../common/useTrackField";
 import useEnactmentBlocksField from "../common/useEnactmentBlocksField";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import SigningTip from "../common/signingTip";
-import useFundBountyPreimages from "next-common/components/preImages/createPreimagePopup/templates/fundMultiAssetBountyPopup/useFundBountyPreimages";
+import { useFundBountyPreimages } from "next-common/components/preImages/createPreimagePopup/templates/fundMultiAssetBountyPopup";
 
 export default function FundMultiAssetBountyReferendumInnerPopupContent() {
   const { goBack } = useStepContainer();
