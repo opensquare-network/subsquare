@@ -22,6 +22,7 @@ import {
   BatchNativeTreasurySpendsReferendumInnerPopupContent,
 } from "../newProposalQuickStart/batchTreasurySpendsPopup";
 import { NewHOLLARTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createHOLLARTreasuryReferendumInnerPopupContent";
+import FundMultiAssetBountyReferendumInnerPopupContent from "../newProposalQuickStart/fundMultiAssetBountyPopup";
 
 const useQuickStartItems = () => {
   const {
@@ -34,6 +35,7 @@ const useQuickStartItems = () => {
       killReferendum,
       treasurySpendProposal,
       batchTreasurySpendsProposal,
+      fundMultiAssetBounty,
     } = {},
   } = useChainSettings();
 
@@ -93,6 +95,13 @@ const useQuickStartItems = () => {
         content: SpendDotOnAssetHubReferendumInnerPopupContent,
       });
     }
+    if (fundMultiAssetBounty) {
+      items.push({
+        name: "Fund a multi-asset bounty",
+        description: "Fund a bounty with an asset and appoint its curator",
+        content: FundMultiAssetBountyReferendumInnerPopupContent,
+      });
+    }
     items.push({
       name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
       description: "Create a remark proposal",
@@ -128,6 +137,7 @@ const useQuickStartItems = () => {
     treasurySpendProposal,
     usdxTreasuryProposal,
     batchUsdxTreasurySpendsProposal,
+    fundMultiAssetBounty,
   ]);
 };
 

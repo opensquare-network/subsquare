@@ -110,6 +110,7 @@ const polkadot = {
   },
   treasuryProposalTracks: polkadotTreasuryTracks,
   newProposalQuickStart: {
+    fundMultiAssetBounty: true,
     usdxTreasuryProposal: true,
     batchUsdxTreasurySpendsProposal: true,
     spendDotOnAssetHubProposal: false,
