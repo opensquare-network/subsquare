@@ -30,6 +30,18 @@ export function getPartitionOffset(begin, end, inputPercentage) {
   return offset.toFixed(0);
 }
 
+export function getPartitionDuration(begin, end, inputPivot) {
+  const pivot = new BigNumber(inputPivot);
+  const duration = new BigNumber(end).minus(begin);
+  if (!pivot.isFinite() || !pivot.isInteger()) {
+    return null;
+  }
+  if (pivot.lte(0) || pivot.gte(duration)) {
+    return null;
+  }
+  return pivot;
+}
+
 export function createInterlaceMask(mask, inputParts) {
   const parts = new BigNumber(inputParts);
   if (

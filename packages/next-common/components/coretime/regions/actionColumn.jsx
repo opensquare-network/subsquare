@@ -24,64 +24,71 @@ export default function RegionActionColumn({ region, onAction }) {
           <SystemMore className="w-4 h-4" />
         </SecondaryButton>
       </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content side="top" align="end" sideOffset={5} className="z-50">
-          <OptionWrapper className="static !shadow-200">
-            <OptionItem
-              as="button"
-              type="button"
-              className="w-full"
-              onClick={() => handleSelectAction("details")}
-            >
-              Details
-            </OptionItem>
-            <OptionItem
-              as="button"
-              type="button"
-              className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
-              disabled={isExpired}
-              onClick={() => handleSelectAction("assign")}
-            >
-              Assign
-            </OptionItem>
-            <OptionItem
-              as="button"
-              type="button"
-              className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
-              disabled={isExpired}
-              onClick={() => handleSelectAction("pool")}
-            >
-              Pool
-            </OptionItem>
-            <OptionItem
-              as="button"
-              type="button"
-              className="w-full"
-              onClick={() => handleSelectAction("transfer")}
-            >
-              Transfer
-            </OptionItem>
-            <OptionItem
-              as="button"
-              type="button"
-              className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
-              disabled={region.end - region.begin <= 1}
-              onClick={() => handleSelectAction("partition")}
-            >
-              Partition
-            </OptionItem>
-            <OptionItem
-              as="button"
-              type="button"
-              className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
-              disabled={region.parts <= 1}
-              onClick={() => handleSelectAction("interlace")}
-            >
-              Interlace
-            </OptionItem>
-          </OptionWrapper>
-        </Popover.Content>
-      </Popover.Portal>
+      {isMenuOpen && (
+        <Popover.Portal>
+          <Popover.Content
+            side="top"
+            align="end"
+            sideOffset={5}
+            className="z-50"
+          >
+            <OptionWrapper className="static !shadow-200">
+              <OptionItem
+                as="button"
+                type="button"
+                className="w-full"
+                onClick={() => handleSelectAction("details")}
+              >
+                Details
+              </OptionItem>
+              <OptionItem
+                as="button"
+                type="button"
+                className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
+                disabled={isExpired}
+                onClick={() => handleSelectAction("assign")}
+              >
+                Assign
+              </OptionItem>
+              <OptionItem
+                as="button"
+                type="button"
+                className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
+                disabled={isExpired}
+                onClick={() => handleSelectAction("pool")}
+              >
+                Pool
+              </OptionItem>
+              <OptionItem
+                as="button"
+                type="button"
+                className="w-full"
+                onClick={() => handleSelectAction("transfer")}
+              >
+                Transfer
+              </OptionItem>
+              <OptionItem
+                as="button"
+                type="button"
+                className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
+                disabled={region.end - region.begin <= 1}
+                onClick={() => handleSelectAction("partition")}
+              >
+                Partition
+              </OptionItem>
+              <OptionItem
+                as="button"
+                type="button"
+                className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
+                disabled={region.parts <= 1}
+                onClick={() => handleSelectAction("interlace")}
+              >
+                Interlace
+              </OptionItem>
+            </OptionWrapper>
+          </Popover.Content>
+        </Popover.Portal>
+      )}
     </Popover.Root>
   );
 }
