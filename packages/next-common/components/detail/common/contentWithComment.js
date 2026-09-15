@@ -76,7 +76,7 @@ export default function ContentWithComment({ children }) {
   // committed filter state of all visitors, the params in the url still have
   // the higher priority
   const referendaDefaultFilterValues = useMemo(() => {
-    const savedFilter = post?.commentFilterSetting?.filter;
+    const savedFilter = post?.commentFilterSetting;
     if (!savedFilter) {
       return defaultFilterValues;
     }
