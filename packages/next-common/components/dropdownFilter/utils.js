@@ -3,7 +3,7 @@ import { useCommittedFilterState, useStagedFilterState } from "./context";
 
 function normalizeBooleanValues(keys, filterState) {
   return Object.entries(filterState).reduce((acc, [key, value]) => {
-    if (key in keys) {
+    if (keys.includes(key)) {
       acc[key] = value.toString() === "true";
     } else {
       acc[key] = value;

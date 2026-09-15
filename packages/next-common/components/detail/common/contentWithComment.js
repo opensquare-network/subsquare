@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { pick } from "lodash-es";
 import {
   emptyFilterValues,
   defaultFilterValues,
@@ -70,11 +72,26 @@ export default function ContentWithComment({ children }) {
     detailType === detailPageCategory.GOV2_REFERENDUM ||
     detailType === detailPageCategory.DEMOCRACY_REFERENDUM;
 
+  // The default comment filter saved for the referenda is applied to the
+  // committed filter state of all visitors, the params in the url still have
+  // the higher priority
+  const referendaDefaultFilterValues = useMemo(() => {
+    const savedFilter = post?.commentFilterSetting?.filter;
+    if (!savedFilter) {
+      return defaultFilterValues;
+    }
+
+    return {
+      ...defaultFilterValues,
+      ...pick(savedFilter, Object.keys(defaultFilterValues)),
+    };
+  }, [post]);
+
   let content;
   if (isReferendum) {
     content = (
       <DropdownUrlFilterProvider
-        defaultFilterValues={defaultFilterValues}
+        defaultFilterValues={referendaDefaultFilterValues}
         emptyFilterValues={emptyFilterValues}
       >
         <CommentsWithFilterContent>{children}</CommentsWithFilterContent>

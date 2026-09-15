@@ -9,6 +9,7 @@ import {
   DiscussionCommentFilterOptions,
   ReferendaCommentFilterOptions,
 } from "./options";
+import SaveReferendaCommentFilterButton from "./saveButton";
 
 export const emptyFilterValues = {
   [sortByQueryName]: defaultSortBy,
@@ -37,6 +38,8 @@ function ReferendaCommentsFilter() {
   return (
     <div className="flex items-center gap-x-2">
       {!ready && <Loading size={16} />}
+
+      <SaveReferendaCommentFilterButton />
 
       <DropdownFilter>
         <CommentsSorter />
