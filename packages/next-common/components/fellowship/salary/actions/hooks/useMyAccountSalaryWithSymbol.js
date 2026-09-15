@@ -9,7 +9,7 @@ import useSubFellowshipCoreMember from "next-common/hooks/fellowship/core/useSub
 export function useMySalary() {
   const { members } = useFellowshipCollectiveMembers();
   const address = useRealAddress();
-  const member = members.find((m) => isSameAddress(m.address, address));
+  const member = members?.find((m) => isSameAddress(m.address, address));
   const params = useCoreFellowshipParams();
 
   const { member: coreMember, isLoading } = useSubFellowshipCoreMember(address);
