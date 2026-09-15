@@ -52,6 +52,16 @@ export function BatchSpendTreasuryButton({ onClick }) {
   );
 }
 
+export function FundMultiAssetBountyButton({ onClick }) {
+  return (
+    <ChoiceButton
+      name="Multi-asset bounty proposal"
+      description="Fund a bounty with assets on AssetHub and nominate a curator"
+      onClick={onClick}
+    />
+  );
+}
+
 export function SpendDotOnAssetHubButton({ onClick }) {
   return (
     <ChoiceButton

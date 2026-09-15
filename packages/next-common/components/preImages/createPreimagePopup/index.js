@@ -8,6 +8,7 @@ import NewFellowshipTreasuryProposalPopup from "./templates/newFellowshipTreasur
 import NewFellowshipUSDxTreasuryProposalPopup from "./templates/newFellowshipUSDxTreasuryProposalPopup";
 import SpendDotOnAssetHubPopup from "./templates/spendDotOnAssetHubPopup";
 import KillReferendumPopup from "./templates/killReferendumPopup";
+import FundMultiAssetBountyPopup from "./templates/fundMultiAssetBountyPopup";
 import {
   SpendLocalTreasuryButton,
   FellowshipTreasurySpendButton,
@@ -19,6 +20,7 @@ import {
   KillReferendumButton,
   BatchSpendTreasuryButton,
   HydrationTreasurySpendButton,
+  FundMultiAssetBountyButton,
 } from "./templateButtons";
 import {
   isCollectivesChain,
@@ -143,6 +145,22 @@ function NewRemark() {
   );
 }
 
+function FundMultiAssetBounty() {
+  const { setForwardPopup } = useForwardPopupContext();
+  const { newProposalQuickStart: { fundMultiAssetBounty } = {} } =
+    useChainSettings();
+
+  if (!fundMultiAssetBounty) {
+    return null;
+  }
+
+  return (
+    <FundMultiAssetBountyButton
+      onClick={() => setForwardPopup(<FundMultiAssetBountyPopup />)}
+    />
+  );
+}
+
 function CancelReferendum() {
   const { setForwardPopup } = useForwardPopupContext();
   const { newProposalQuickStart: { cancelReferendum } = {} } =
@@ -187,6 +205,7 @@ function ProposalTemplateQuickStart() {
       <SpendUSDxTreasury />
       <SpendDotOnAssetHub />
       <BatchTreasurySpend />
+      <FundMultiAssetBounty />
       <NewRemark />
       <CancelReferendum />
       <KillReferendum />
