@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { SystemSetting } from "@osn/icons/subsquare";
+import { SystemSave } from "@osn/icons/subsquare";
 import { useDetailType } from "next-common/context/page";
 import { usePost } from "next-common/context/post";
 import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
@@ -83,7 +83,7 @@ export default function SaveReferendaCommentFilterButton() {
         loading={saving}
         onClick={saveAsDefaultFilter}
       >
-        <SystemSetting className="w-4 h-4" />
+        <SystemSave className="w-4 h-4" />
       </SecondaryButton>
     </Tooltip>
   );

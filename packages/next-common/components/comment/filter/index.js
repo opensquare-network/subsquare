@@ -39,14 +39,14 @@ function ReferendaCommentsFilter() {
     <div className="flex items-center gap-x-2">
       {!ready && <Loading size={16} />}
 
-      <SaveReferendaCommentFilterButton />
-
       <DropdownFilter>
         <CommentsSorter />
         <div className="flex flex-col py-[10px] gap-[4px]">
           <ReferendaCommentFilterOptions />
         </div>
       </DropdownFilter>
+
+      <SaveReferendaCommentFilterButton />
     </div>
   );
 }
