@@ -37,6 +37,7 @@ function Item({ preimage, index }) {
               proposal={preimage.proposal}
               proposalError={preimage.proposalError}
               proposalWarning={preimage.proposalWarning}
+              textPreimage={preimage.textPreimage}
               setShowArgumentsDetail={setShowArgumentsDetail}
             />
           )
