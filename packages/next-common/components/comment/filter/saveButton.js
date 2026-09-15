@@ -17,6 +17,7 @@ import {
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { emptyFilterValues } from ".";
 import { useCommittedCommentFilterParams } from "./utils";
+import SaveCommentFilterConfirmPopup from "./saveConfirmPopup";
 import { isNil } from "lodash-es";
 
 // Save the current filter state as the default comment filter of the
@@ -31,6 +32,7 @@ export default function SaveReferendaCommentFilterButton() {
   const { ensureLogin } = useEnsureLogin();
   const [filterParams] = useCommittedCommentFilterParams();
   const [saving, setSaving] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   if (detailType !== detailPageCategory.GOV2_REFERENDUM) {
     return null;
@@ -69,22 +71,31 @@ export default function SaveReferendaCommentFilterButton() {
       dispatch(
         newSuccessToast("Saved as the default comment filter for all visitors"),
       );
+      setShowConfirm(false);
     } finally {
       setSaving(false);
     }
   }
 
   return (
-    <Tooltip content="Save the current filter settings as the default for all visitors of this proposal">
-      <SecondaryButton
-        size="small"
-        className="!px-[5px]"
-        aria-label="Save as default comment filter"
-        loading={saving}
-        onClick={saveAsDefaultFilter}
-      >
-        <SystemSave className="w-4 h-4" />
-      </SecondaryButton>
-    </Tooltip>
+    <>
+      <Tooltip content="Save the current filter settings as the default for all visitors of this proposal">
+        <SecondaryButton
+          size="small"
+          className="!px-[5px]"
+          aria-label="Save as default comment filter"
+          onClick={() => setShowConfirm(true)}
+        >
+          <SystemSave className="w-4 h-4" />
+        </SecondaryButton>
+      </Tooltip>
+      {showConfirm && (
+        <SaveCommentFilterConfirmPopup
+          setShow={setShowConfirm}
+          onConfirm={saveAsDefaultFilter}
+          isLoading={saving}
+        />
+      )}
+    </>
   );
 }
