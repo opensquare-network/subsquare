@@ -130,9 +130,6 @@ function useServerPreimages() {
         if (textPreimage !== null) {
           return {
             ...item,
-            proposal: null,
-            proposalError: null,
-            proposalWarning: null,
             textPreimage,
           };
         }
