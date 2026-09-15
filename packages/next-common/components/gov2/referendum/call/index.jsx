@@ -8,7 +8,6 @@ import extractRemarkMetaFields from "next-common/components/common/call/remarks"
 import extractWhitelistCallHash from "next-common/components/common/call/whitelist";
 import extractFellowshipPromote from "next-common/components/common/call/fellowshipPromote";
 import extractFellowshipApprove from "next-common/components/common/call/fellowshipApprove";
-import useMultiAssetBountiesMetadata from "next-common/components/common/call/multiAssetBountiesMetadata";
 import dynamic from "next/dynamic";
 import isHydradx from "next-common/utils/isHydradx";
 import { useChain } from "next-common/context/chain";
@@ -21,6 +20,7 @@ import {
 const EvmCall = dynamic(() => import("./evmCallDecode"), {
   ssr: false,
 });
+
 const RelayChainCall = dynamic(
   () => import("./parachain/relayChainCallDecode"),
   {
@@ -30,6 +30,13 @@ const RelayChainCall = dynamic(
 
 const RelayToParachainCall = dynamic(
   () => import("./parachain/relayToParachainDecodeCall"),
+  {
+    ssr: false,
+  },
+);
+
+const MultiAssetBountiesMetadata = dynamic(
+  () => import("./multiAssetBountiesMetadata"),
   {
     ssr: false,
   },
@@ -51,7 +58,6 @@ export default function Gov2ReferendumCall() {
   const data = [];
 
   const callData = proposal?.call || inlineCall?.call;
-  const multiAssetBountiesMetadata = useMultiAssetBountiesMetadata(callData);
 
   if (onchainData?.proposalHash) {
     data.push([
@@ -93,7 +99,6 @@ export default function Gov2ReferendumCall() {
       ...extractWhitelistCallHash(whitelistCallHashes),
       ...extractFellowshipPromote(proposal?.call || inlineCall?.call),
       ...extractFellowshipApprove(proposal?.call || inlineCall?.call),
-      ...multiAssetBountiesMetadata,
     ],
   );
 
@@ -107,6 +112,15 @@ export default function Gov2ReferendumCall() {
 
   if ((isPolkadotChain(chain) || isKusamaChain(chain)) && callData) {
     data.push(<RelayToParachainCall key="relay-to-parachain-call" />);
+  }
+
+  if (proposal?.call || inlineCall?.call) {
+    data.push(
+      <MultiAssetBountiesMetadata
+        key="multi-asset-bounties"
+        call={proposal?.call || inlineCall?.call}
+      />,
+    );
   }
 
   return <KvList data={data} />;

@@ -2,8 +2,9 @@ import { u8aToString } from "@polkadot/util";
 import { useAsync } from "react-use";
 import { useConditionalContextApi } from "next-common/context/migration/conditionalApi";
 import queryPreimageAtBlock from "next-common/hooks/preimages/query";
+import Row from "next-common/components/listInfo/row";
 
-export default function useMultiAssetBountiesMetadata(call = {}) {
+export default function MultiAssetBountiesMetadata({ call = {} }) {
   const api = useConditionalContextApi();
   const { section, method, args = [] } = call;
   const isFundBounty =
@@ -24,15 +25,17 @@ export default function useMultiAssetBountiesMetadata(call = {}) {
   }, [api, isFundBounty, metadataHash]);
 
   if (!metadata) {
-    return [];
+    return null;
   }
 
-  return [
-    [
-      "Bounty Description",
-      <span key="multi-asset-bounties-metadata" className="text14Medium">
-        {metadata}
-      </span>,
-    ],
-  ];
+  return (
+    <Row
+      row={[
+        "Bounty Description",
+        <span key="metadata" className="text14Medium">
+          {metadata}
+        </span>,
+      ]}
+    />
+  );
 }
