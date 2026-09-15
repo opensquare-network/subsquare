@@ -20,6 +20,7 @@ import {
 const EvmCall = dynamic(() => import("./evmCallDecode"), {
   ssr: false,
 });
+
 const RelayChainCall = dynamic(
   () => import("./parachain/relayChainCallDecode"),
   {
@@ -29,6 +30,13 @@ const RelayChainCall = dynamic(
 
 const RelayToParachainCall = dynamic(
   () => import("./parachain/relayToParachainDecodeCall"),
+  {
+    ssr: false,
+  },
+);
+
+const MultiAssetBountiesMetadata = dynamic(
+  () => import("./multiAssetBountiesMetadata"),
   {
     ssr: false,
   },
@@ -104,6 +112,15 @@ export default function Gov2ReferendumCall() {
 
   if ((isPolkadotChain(chain) || isKusamaChain(chain)) && callData) {
     data.push(<RelayToParachainCall key="relay-to-parachain-call" />);
+  }
+
+  if (proposal?.call || inlineCall?.call) {
+    data.push(
+      <MultiAssetBountiesMetadata
+        key="multi-asset-bounties"
+        call={proposal?.call || inlineCall?.call}
+      />,
+    );
   }
 
   return <KvList data={data} />;
