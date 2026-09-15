@@ -17,6 +17,7 @@ import {
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { emptyFilterValues } from ".";
 import { useCommittedCommentFilterParams } from "./utils";
+import { isNil } from "lodash-es";
 
 // Save the current filter state as the default comment filter of the
 // referenda, applied to all visitors. Only available to the referenda
@@ -40,7 +41,7 @@ export default function SaveReferendaCommentFilterButton() {
 
   const referendumIndex =
     post?.referendumIndex ?? post?.onchainData?.referendumIndex;
-  if (referendumIndex === undefined || referendumIndex === null) {
+  if (isNil(referendumIndex)) {
     return null;
   }
 
