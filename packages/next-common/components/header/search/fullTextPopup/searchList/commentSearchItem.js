@@ -6,6 +6,7 @@ function CommentSearchItem({ row, onClose }) {
     <CommonSearchItem
       IconComponent={CommentIcon}
       title={row.title}
+      titleHighlight={row.highlight?.title}
       content={row.content}
       contentHighlight={row.highlight?.content}
       href={row.path}

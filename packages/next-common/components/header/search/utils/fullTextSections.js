@@ -191,16 +191,22 @@ function toCommentRow(comment) {
 
   const index = meta.getIndex(comment);
   const displayIndex = (meta.getDisplayIndex ?? meta.getIndex)(comment);
+  const indexPrefix = meta.noDisplayIndex ? "" : `#${displayIndex} · `;
 
   return {
     proposalType: FULL_TEXT_COMMENTS_TYPE,
     type: ItemType.ITEM,
     path: `${meta.getPath(index)}#${comment.height}`,
-    title: `${meta.name} #${displayIndex}`,
+    title: `${indexPrefix}${comment.title || "-"}`,
     content: markdownToText(comment.content || "-"),
-    highlight: comment.highlight?.content
-      ? { content: markdownToText(comment.highlight.content) }
-      : null,
+    highlight: {
+      title: comment.highlight?.title
+        ? `${indexPrefix}${comment.highlight.title}`
+        : null,
+      content: comment.highlight?.content
+        ? markdownToText(comment.highlight.content)
+        : null,
+    },
   };
 }
 
