@@ -24,9 +24,6 @@ import CommonSearchItem, {
 } from "./commonSearchItem";
 import TreasuryFundedProjectSearchItem from "./projectSearchItem";
 
-// Every proposal type shares the same item layout, only the icon differs. The
-// projects (opened in a popup instead of a page) and the identities, the
-// members and the wiki docs have their own item components.
 const PROPOSAL_TYPE_ICONS = {
   [SearchType.REFERENDA]: MenuReferenda,
   [SearchType.DEMOCRACY_REFERENDA]: MenuDemocracy,

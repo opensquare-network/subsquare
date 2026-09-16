@@ -56,10 +56,6 @@ function FullTextSearchResultContent({
   return <SearchList data={totalList} onClose={onClose} isMobile={isMobile} />;
 }
 
-// The full text search dialog of the chains that have the full text search
-// enabled, see the `fullTextSearch` chain setting. It queries the full text
-// search (meilisearch) API of the backend, and shows the identities, the wiki
-// docs, the projects, the proposals and the comments matching the search text.
 function FullTextSearchPopup({ onClose, isMobile }) {
   const [searchValue, setSearchValue] = useState("");
   const { totalList, fetch, isLoading, clearResults } =

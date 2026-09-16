@@ -4,10 +4,6 @@ import useSearchIdentities from "next-common/components/header/hooks/useSearchId
 import { formatFullTextResults } from "next-common/components/header/search/utils/fullTextSections";
 import { isEmpty } from "lodash-es";
 
-// The hook of the full text search dialog. It is the full text search twin of
-// useSearchResults: the proposals, the comments, the projects and the wiki
-// docs come from the full text search (meilisearch) API of the backend, the
-// identities keep coming from the index based identities search.
 function useFullTextSearchResults() {
   const [results, setResults] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

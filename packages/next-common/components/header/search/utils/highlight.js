@@ -1,6 +1,4 @@
-// The search service (meilisearch) marks the matched words of the highlighted
-// fields with <em> tags. Parse a marked string into plain and highlighted
-// segments, so that the UI can render it without any unsafe HTML.
+// Meilisearch marks matched words with <em> tags.
 export function parseHighlightSegments(value) {
   if (!value) {
     return [];

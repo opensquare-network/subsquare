@@ -2,28 +2,15 @@ import markdownToText from "./markdownToText";
 import { ItemType, formatItems } from "./items";
 import { normalizeWikiResults, WIKI_SEARCH_TYPE } from "./wiki";
 
-// The `type` of a comment document of the full text search results
-// (meilisearch), see the sync-meilisearch script of the backend.
 export const FULL_TEXT_COMMENT_TYPE = "comment";
 
-// The proposal type of the comment rows of the full text search dialog. It is
-// only used to tell the comment rows apart when rendering the list, a comment
-// row links to the post the comment belongs to.
 export const FULL_TEXT_COMMENTS_TYPE = "Comments";
 
-// The search types and the paths of the rows of the full text search dialog
-// must be identical to the SearchType values and the getSearchItemPath
-// results of the index based search dialog (see common/commonList.js of the
-// header search), because the rows are rendered and linked by the very same
-// item components. The two are intentionally kept in sync by hand.
-const IDENTITIES_SEARCH_TYPE = "Identities"; // SearchType.IDENTITIES
-const PROJECTS_SEARCH_TYPE = "TreasuryFundedProjects"; // SearchType.TREASURY_FUNDED_PROJECTS
+// Keep in sync with SearchType / getSearchItemPath of common/commonList.js.
+const IDENTITIES_SEARCH_TYPE = "Identities";
+const PROJECTS_SEARCH_TYPE = "TreasuryFundedProjects";
 const PROJECTS_CATEGORY_PATH = "/treasury/projects";
 
-// Metadata of every kind of proposal of the full text search results
-// (meilisearch), see the sync-meilisearch script of the backend. The search
-// type decides how an item is rendered and linked, the index getters pick the
-// fields of the meilisearch document that locate the post on chain.
 export const FULL_TEXT_PROPOSAL_TYPES = {
   referendaReferendum: {
     searchType: "Referenda",
@@ -83,7 +70,6 @@ export const FULL_TEXT_PROPOSAL_TYPES = {
   },
 };
 
-// The order of the proposal sections of the full text search dialog.
 export const FULL_TEXT_PROPOSAL_TYPE_ORDER = [
   "referendaReferendum",
   "democracyReferendum",
@@ -96,8 +82,6 @@ export const FULL_TEXT_PROPOSAL_TYPE_ORDER = [
   "fellowshipTreasurySpend",
 ];
 
-// Builds the rows of the full text search dialog from the result of the full
-// text search API of the backend. A section without any item is hidden.
 export function formatFullTextResults(results) {
   if (!results) return null;
 
@@ -112,8 +96,6 @@ export function formatFullTextResults(results) {
   ];
 }
 
-// The identities and the wiki docs of the API result are rendered as they are,
-// see the identity and wiki search item renderers.
 function formatRawItems(proposalType, items) {
   if (!items?.length) {
     return [];
@@ -142,16 +124,12 @@ function formatProjectSection(projects) {
     true,
   );
 
-  // A project is opened in a popup on click, there is no detail page to
-  // navigate to, so the keyboard navigation only links the category.
   return rows.map((row) => ({
     ...row,
     path: row.type === ItemType.CATEGORY ? PROJECTS_CATEGORY_PATH : null,
   }));
 }
 
-// The proposals of the full text search are grouped into one section per
-// proposal type, the empty sections are hidden.
 function formatProposalSections(items) {
   return FULL_TEXT_PROPOSAL_TYPE_ORDER.flatMap((type) => {
     const meta = FULL_TEXT_PROPOSAL_TYPES[type];
@@ -169,8 +147,6 @@ function formatProposalSections(items) {
   });
 }
 
-// The content of a full text search item is a cropped snippet of markdown
-// text, and the highlight fields carry the matched words marked by <em> tags.
 function toDisplayItem(item) {
   return {
     ...item,
@@ -207,9 +183,6 @@ function formatCommentSection(items) {
   ];
 }
 
-// A comment row locates the post the comment belongs to in its title, and
-// jumps to the comment itself with its link. The `postType` of a comment
-// document is the proposal type of the post the comment belongs to.
 function toCommentRow(comment) {
   const meta = FULL_TEXT_PROPOSAL_TYPES[comment.postType];
   if (!meta) {

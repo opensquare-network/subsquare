@@ -4,9 +4,6 @@ import DataList from "next-common/components/dataList";
 import { getCategoryOrSearchItemPath } from "next-common/components/header/search/common/commonList";
 import SearchItem from "./searchItem";
 
-// The list of the full text search dialog. It works the same way as the list
-// of the index based search dialog, but the rows may carry their own path,
-// e.g. a comment links to the post it belongs to with the comment anchor.
 function FullTextSearchList({ data, isLoading, onClose, isMobile }) {
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -58,7 +55,7 @@ function FullTextSearchList({ data, isLoading, onClose, isMobile }) {
   }, [selectedIndex]);
 
   useEffect(() => {
-    setSelectedIndex(-1); // Reset selection when data changes
+    setSelectedIndex(-1);
   }, [data]);
 
   return (
