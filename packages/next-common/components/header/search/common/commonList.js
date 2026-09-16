@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import DataList from "next-common/components/dataList";
-import { ItemType } from "next-common/components/header/hooks/useSearchResults";
+import { ItemType } from "next-common/components/header/search/utils/items";
 import {
   WIKI_ORIGIN,
   WIKI_SEARCH_TYPE,

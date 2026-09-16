@@ -3,6 +3,7 @@ import IdentityIcon from "next-common/components/Identity/identityIcon";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { FellowshipTagByRank } from "next-common/components/profile/fellowshipTagInfo";
 import AddressAvatar from "next-common/components/user/addressAvatar";
+import HighlightedText from "./highlightedText";
 
 export function handleLinkClick(e, onClose) {
   e.stopPropagation();
@@ -16,7 +17,9 @@ export default function CommonSearchItem({
   IconComponent,
   href,
   title,
+  titleHighlight,
   content,
+  contentHighlight,
   onClose,
 }) {
   return (
@@ -30,13 +33,21 @@ export default function CommonSearchItem({
       <CommonSearchItemContent
         IconComponent={IconComponent}
         title={title}
+        titleHighlight={titleHighlight}
         content={content}
+        contentHighlight={contentHighlight}
       />
     </Link>
   );
 }
 
-export function CommonSearchItemContent({ IconComponent, title, content }) {
+export function CommonSearchItemContent({
+  IconComponent,
+  title,
+  titleHighlight,
+  content,
+  contentHighlight,
+}) {
   return (
     <div
       className={`border-0! flex  hover:bg-neutral200 px-2 py-2 rounded-[6px] ${
@@ -57,7 +68,7 @@ export function CommonSearchItemContent({ IconComponent, title, content }) {
             textOverflow: "ellipsis",
           }}
         >
-          {title}
+          <HighlightedText text={title} highlight={titleHighlight} />
         </span>
         {content !== "-" && (
           <span
@@ -70,7 +81,7 @@ export function CommonSearchItemContent({ IconComponent, title, content }) {
               textOverflow: "ellipsis",
             }}
           >
-            {content}
+            <HighlightedText text={content} highlight={contentHighlight} />
           </span>
         )}
       </div>

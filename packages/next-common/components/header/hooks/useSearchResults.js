@@ -1,6 +1,9 @@
 import { useState, useMemo, useRef, useCallback } from "react";
 import { backendApi } from "next-common/services/nextApi";
-import { markdownToText } from "next-common/components/header/search/utils";
+import {
+  ItemType,
+  formatItems,
+} from "next-common/components/header/search/utils/items";
 import useSearchIdentities from "next-common/components/header/hooks/useSearchIdentities";
 import useSearchFellowshipMembers from "next-common/components/header/hooks/useSearchFellowshipMembers";
 import {
@@ -12,58 +15,6 @@ import {
   getChildBountyIndex,
 } from "next-common/utils/viewfuncs/treasury/childBounty";
 import { isEmpty } from "lodash-es";
-
-export const ItemType = {
-  CATEGORY: "category",
-  ITEM: "item",
-};
-
-const formatItems = (
-  proposalType,
-  items,
-  indexKeyOrGetIndexFn,
-  displayIndexKeyOrGetIndexFn,
-  noDisplayIndex = false,
-  includeRaw = false,
-) => {
-  if (!items || (items || []).length <= 0) {
-    return [];
-  }
-
-  return [
-    {
-      index: null,
-      title: proposalType,
-      content: "-",
-      proposalType,
-      type: ItemType.CATEGORY,
-    },
-    ...items.map((item) => {
-      const index =
-        typeof indexKeyOrGetIndexFn === "string"
-          ? item[indexKeyOrGetIndexFn]
-          : indexKeyOrGetIndexFn(item);
-      const displayIndex =
-        typeof displayIndexKeyOrGetIndexFn === "string"
-          ? item[displayIndexKeyOrGetIndexFn]
-          : displayIndexKeyOrGetIndexFn?.(item);
-      return {
-        index: index ?? 0,
-        displayIndex: displayIndex ?? 0,
-        title: item.title ?? "-",
-        content: item.content
-          ? item.content
-          : item.contentSummary?.summary
-          ? markdownToText(item.contentSummary.summary)
-          : "-",
-        proposalType,
-        type: ItemType.ITEM,
-        noDisplayIndex,
-        raw: includeRaw ? item : null,
-      };
-    }),
-  ];
-};
 
 const formatSearchResult = (proposalType, value) => {
   if (!value?.length) {

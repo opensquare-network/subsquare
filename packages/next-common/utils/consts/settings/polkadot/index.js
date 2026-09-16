@@ -144,6 +144,9 @@ const polkadot = {
   },
   usePolkassemblyBackupData: true,
   hasIdentityVerification: true,
+  // Whether the header search queries the backend full text search API
+  // (meilisearch), see the search/full-text route of the backend.
+  fullTextSearch: true,
   enablePapi: true,
   enableAssetFee: true,
 };
