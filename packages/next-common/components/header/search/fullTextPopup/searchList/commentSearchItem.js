@@ -1,10 +1,10 @@
-import { SystemComment } from "@osn/icons/subsquare";
 import CommonSearchItem from "next-common/components/header/search/popup/searchList/commonSearchItem";
+import CommentIcon from "./commentIcon";
 
 function CommentSearchItem({ row, onClose }) {
   return (
     <CommonSearchItem
-      IconComponent={SystemComment}
+      IconComponent={CommentIcon}
       title={row.title}
       content={row.content}
       contentHighlight={row.highlight?.content}
