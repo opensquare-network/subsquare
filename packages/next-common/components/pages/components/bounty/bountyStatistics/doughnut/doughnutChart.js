@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import Outlabels from "@energiency/chartjs-plugin-piechart-outlabels";
 import "../../../../../charts/globalConfig";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function DoughnutChart({ data }) {
   const doughnutOptions = useDoughnutChartOptions();
@@ -13,7 +13,7 @@ export default function DoughnutChart({ data }) {
   }
   return (
     <div className="relative flex gap-x-2 w-[190px] h-[110px]">
-      <Doughnut data={data} options={doughnutOptions} />
+      <Doughnut data={data} options={doughnutOptions} plugins={[Outlabels]} />
     </div>
   );
 }

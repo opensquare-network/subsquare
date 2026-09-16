@@ -11,7 +11,7 @@ import { noop } from "lodash-es";
 import BarLabels from "./barLabels";
 import { FIXED_LABEL_WIDTH } from "../const";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Outlabels);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const PROJECT_CHART_TYPES = {
   BAR: "bar",
@@ -131,7 +131,7 @@ function ProjectDoughnutChart({ data, category, userOptions = {}, style }) {
       className="relative flex gap-x-2"
       style={{ ...defaultStyle, ...style }}
     >
-      <Doughnut data={data} options={doughnutOptions} />
+      <Doughnut data={data} options={doughnutOptions} plugins={[Outlabels]} />
     </div>
   );
 }
