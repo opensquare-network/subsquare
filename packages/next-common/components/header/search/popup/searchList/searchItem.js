@@ -15,7 +15,7 @@ import {
   InfoDocs,
 } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
-import { ItemType } from "next-common/components/header/hooks/useSearchResults";
+import { ItemType } from "next-common/components/header/search/utils/items";
 import CommonSearchItem, {
   CommonSearchItemContent,
   handleLinkClick,
@@ -23,6 +23,18 @@ import CommonSearchItem, {
   MemberSearchItem,
 } from "./commonSearchItem";
 import TreasuryFundedProjectSearchItem from "./projectSearchItem";
+
+const PROPOSAL_TYPE_ICONS = {
+  [SearchType.REFERENDA]: MenuReferenda,
+  [SearchType.DEMOCRACY_REFERENDA]: MenuDemocracy,
+  [SearchType.BOUNTIES]: MenuBounties,
+  [SearchType.CHILD_BOUNTIES]: MenuChildBounties,
+  [SearchType.TREASURY_PROPOSALS]: MenuTreasuryProposal,
+  [SearchType.TREASURY_SPENDS]: MenuTreasurySpend,
+  [SearchType.TREASURY_TIPS]: MenuTreasurySpend,
+  [SearchType.FELLOWSHIP_REFERENDA]: MenuReferenda,
+  [SearchType.FELLOWSHIP_TREASURY_SPENDS]: MenuTreasurySpend,
+};
 
 function SearchItemCategory({ href, category, onClose }) {
   return (
@@ -99,115 +111,29 @@ const SearchItem = memo(function ItemContent({ row, onClose }) {
     );
   }
 
-  const { index, displayIndex, title, content, noDisplayIndex } = row;
+  const { index, displayIndex, title, content, noDisplayIndex, highlight } =
+    row;
   const path = getSearchItemPath(proposalType, index);
   let searchItemTitle = title;
+  let searchItemTitleHighlight = highlight?.title;
   if (!noDisplayIndex) {
     searchItemTitle = `#${displayIndex || index} · ${title}`;
+    if (searchItemTitleHighlight) {
+      searchItemTitleHighlight = `#${
+        displayIndex || index
+      } · ${searchItemTitleHighlight}`;
+    }
   }
 
-  if (proposalType === SearchType.REFERENDA) {
+  const IconComponent = PROPOSAL_TYPE_ICONS[proposalType];
+  if (IconComponent) {
     return (
       <CommonSearchItem
-        IconComponent={MenuReferenda}
+        IconComponent={IconComponent}
         title={searchItemTitle}
+        titleHighlight={searchItemTitleHighlight}
         content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.DEMOCRACY_REFERENDA) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuDemocracy}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.BOUNTIES) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuBounties}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.CHILD_BOUNTIES) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuChildBounties}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.TREASURY_PROPOSALS) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuTreasuryProposal}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.TREASURY_SPENDS) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuTreasurySpend}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.TREASURY_TIPS) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuTreasurySpend}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.FELLOWSHIP_REFERENDA) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuReferenda}
-        title={searchItemTitle}
-        content={content}
-        href={path}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (proposalType === SearchType.FELLOWSHIP_TREASURY_SPENDS) {
-    return (
-      <CommonSearchItem
-        IconComponent={MenuTreasurySpend}
-        title={searchItemTitle}
-        content={content}
+        contentHighlight={highlight?.content}
         href={path}
         onClose={onClose}
       />

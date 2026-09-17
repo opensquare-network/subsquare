@@ -5,6 +5,8 @@ import { SystemSearch } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import useRefCallback from "next-common/hooks/useRefCallback";
 import SearchPopup from "next-common/components/header/search/popup";
+import FullTextSearchPopup from "next-common/components/header/search/fullTextPopup";
+import { useChainSettings } from "next-common/context/chain";
 import useInsideSearchSupportCategories from "next-common/components/header/hooks/useInsideSearchSupportCategories";
 
 function SearchInputWithPopup({ shortcut = true, type }) {
@@ -13,6 +15,7 @@ function SearchInputWithPopup({ shortcut = true, type }) {
   const inputRef = useRef();
   const [focus, setFocus] = useState(false);
   const { categoryString } = useInsideSearchSupportCategories();
+  const { fullTextSearch } = useChainSettings();
 
   const handleSearch = useRefCallback(() => {
     setShowSearchPopup(true);
@@ -65,12 +68,18 @@ function SearchInputWithPopup({ shortcut = true, type }) {
         type={type}
         enterKeyHint="Search"
       />
-      {showSearchPopup && (
-        <SearchPopup
-          isMobile={!shortcut}
-          onClose={() => setShowSearchPopup(false)}
-        />
-      )}
+      {showSearchPopup &&
+        (fullTextSearch ? (
+          <FullTextSearchPopup
+            isMobile={!shortcut}
+            onClose={() => setShowSearchPopup(false)}
+          />
+        ) : (
+          <SearchPopup
+            isMobile={!shortcut}
+            onClose={() => setShowSearchPopup(false)}
+          />
+        ))}
     </>
   );
 }

@@ -144,6 +144,7 @@ const polkadot = {
   },
   usePolkassemblyBackupData: true,
   hasIdentityVerification: true,
+  fullTextSearch: true,
   enablePapi: true,
   enableAssetFee: true,
 };
