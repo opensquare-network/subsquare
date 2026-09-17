@@ -88,11 +88,11 @@ export function formatFullTextResults(results) {
   const { items = [], projects = [], wiki = [], identities = [] } = results;
 
   return [
-    ...formatRawItems(IDENTITIES_SEARCH_TYPE, identities),
-    ...formatRawItems(WIKI_SEARCH_TYPE, normalizeWikiResults(wiki)),
     ...formatProjectSection(projects),
     ...formatProposalSections(items),
     ...formatCommentSection(items),
+    ...formatRawItems(WIKI_SEARCH_TYPE, normalizeWikiResults(wiki)),
+    ...formatRawItems(IDENTITIES_SEARCH_TYPE, identities),
   ];
 }
 
