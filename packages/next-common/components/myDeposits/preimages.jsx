@@ -480,12 +480,11 @@ function MobileListItem({
 function BalanceCell({ deposit }) {
   const { symbol, decimals } = useChainSettings();
   const { amount } = deposit ?? {};
-  const rawAmount = amount?.toJSON?.() ?? amount;
 
   return (
     <ValueDisplay
       className="whitespace-nowrap text-textPrimary"
-      value={toPrecision(rawAmount, decimals)}
+      value={toPrecision(amount, decimals)}
       symbol={symbol}
     />
   );

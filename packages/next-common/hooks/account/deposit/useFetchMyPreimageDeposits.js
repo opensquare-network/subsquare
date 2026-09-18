@@ -18,11 +18,13 @@ export default function useFetchMyPreimageDeposits() {
   const trigger = useSelector(preImagesTriggerSelector);
 
   useEffect(() => {
-    const canQueryPreimages = enablePapi
-      ? checkPallet("Preimage", "StatusFor") ||
-        checkPallet("Preimage", "RequestStatusFor")
-      : !!api?.query?.preimage;
-    if (!canQueryPreimages || !realAddress) {
+    if (!realAddress) {
+      return;
+    }
+    if (enablePapi && !checkPallet("Preimage")) {
+      return;
+    }
+    if (!enablePapi && !api?.query?.preimage) {
       return;
     }
 
