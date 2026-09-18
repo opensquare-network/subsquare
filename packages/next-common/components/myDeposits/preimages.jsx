@@ -7,6 +7,8 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import usePreimage from "next-common/hooks/usePreimage";
 import useOldPreimage from "next-common/hooks/useOldPreimage";
+import usePreimagePapi from "next-common/hooks/usePreimagePapiNew";
+import useOldPreimagePapi from "next-common/hooks/useOldPreimagePapiNew";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { isSameAddress, toPrecision } from "next-common/utils";
 import preImages from "next-common/utils/consts/menu/preImages";
@@ -93,6 +95,24 @@ function createPreimageRow(
 }
 
 function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  ) : (
+    <LegacyPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  );
+}
+
+function LegacyPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   const row = createPreimageRow(
     hash,
@@ -104,8 +124,50 @@ function PreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   return <DataListItem row={row} />;
 }
 
+function PapiPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimagePapi(hash);
+  const row = createPreimageRow(
+    hash,
+    preimage,
+    isStatusLoaded,
+    isBytesLoaded,
+    setShowArgumentsDetail,
+  );
+  return <DataListItem row={row} />;
+}
+
 function OldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiOldPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  ) : (
+    <LegacyOldPreimageRow
+      DataListItem={DataListItem}
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  );
+}
+
+function LegacyOldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
+  const row = createPreimageRow(
+    hash,
+    preimage,
+    isStatusLoaded,
+    isBytesLoaded,
+    setShowArgumentsDetail,
+  );
+  return <DataListItem row={row} />;
+}
+
+function PapiOldPreimageRow({ DataListItem, hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimagePapi(hash);
   const row = createPreimageRow(
     hash,
     preimage,
@@ -257,6 +319,22 @@ function MobileList({ data, setShowArgumentsDetail }) {
 }
 
 function MobilePreimageListItem({ hash, setShowArgumentsDetail }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiMobilePreimageListItem
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  ) : (
+    <LegacyMobilePreimageListItem
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  );
+}
+
+function LegacyMobilePreimageListItem({ hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = usePreimage(hash);
   return (
     <MobileListItem
@@ -269,8 +347,50 @@ function MobilePreimageListItem({ hash, setShowArgumentsDetail }) {
   );
 }
 
+function PapiMobilePreimageListItem({ hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = usePreimagePapi(hash);
+  return (
+    <MobileListItem
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+      preimage={preimage}
+      isStatusLoaded={isStatusLoaded}
+      isBytesLoaded={isBytesLoaded}
+    />
+  );
+}
+
 function MobileOldPreimageListItem({ hash, setShowArgumentsDetail }) {
+  const { enablePapi } = useChainSettings();
+
+  return enablePapi ? (
+    <PapiMobileOldPreimageListItem
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  ) : (
+    <LegacyMobileOldPreimageListItem
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+    />
+  );
+}
+
+function LegacyMobileOldPreimageListItem({ hash, setShowArgumentsDetail }) {
   const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimage(hash);
+  return (
+    <MobileListItem
+      hash={hash}
+      setShowArgumentsDetail={setShowArgumentsDetail}
+      preimage={preimage}
+      isStatusLoaded={isStatusLoaded}
+      isBytesLoaded={isBytesLoaded}
+    />
+  );
+}
+
+function PapiMobileOldPreimageListItem({ hash, setShowArgumentsDetail }) {
+  const [preimage, isStatusLoaded, isBytesLoaded] = useOldPreimagePapi(hash);
   return (
     <MobileListItem
       hash={hash}
@@ -364,7 +484,7 @@ function BalanceCell({ deposit }) {
   return (
     <ValueDisplay
       className="whitespace-nowrap text-textPrimary"
-      value={toPrecision(amount.toJSON(), decimals)}
+      value={toPrecision(amount, decimals)}
       symbol={symbol}
     />
   );
