@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import {
+  addNetwork,
   getConnector,
   getEthereum,
   isSameChainId,
@@ -32,24 +33,27 @@ export async function prepareEthereum({ ethereum, onError, signerAddress }) {
     ["walletConnect", "walletConnectUniversal"].includes(connector.id) &&
     process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx;
 
+  let chainAction = "check the current chain";
   try {
-    if (!isSameChainId(chainId)) {
+    if (isHydrationWalletConnect) {
+      chainAction = "add the Hydration network";
+      await addNetwork(ethereum, ethereumNetwork);
+      chainAction = "switch to Hydration";
+      await ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: ethereumNetwork.chainId }],
+      });
+    } else if (!isSameChainId(chainId)) {
       await switchNetwork(chainId);
     }
-
-    if (
-      isHydrationWalletConnect &&
-      Number(await ethereum.request({ method: "eth_chainId" })) !== chainId
-    ) {
-      throw new Error("Wallet did not switch to the requested chain");
-    }
   } catch (cause) {
-    onError(
-      new Error(
-        `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
-        { cause },
-      ),
-    );
+    console.error("Error switching network:", chainAction, cause);
+    const message = isHydrationWalletConnect
+      ? `Cannot ${chainAction}: ${
+          cause?.details || cause?.message || String(cause)
+        }`
+      : `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`;
+    onError(new Error(message, { cause }));
     return false;
   }
 
