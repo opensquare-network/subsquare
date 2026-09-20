@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
 import { resolveMetadataName } from "next-common/utils/nft/metadata";
 
@@ -108,6 +108,7 @@ export default function useAccountNftCollections(address) {
   const api = useAssetHubPapi();
   const [collections, setCollections] = useState(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const loadedAddressRef = useRef(null);
 
   useEffect(() => {
     const listener = () => setRefreshKey((key) => key + 1);
@@ -123,10 +124,15 @@ export default function useAccountNftCollections(address) {
     }
 
     let cancelled = false;
-    setCollections(null);
+    if (loadedAddressRef.current !== address) {
+      setCollections(null);
+      loadedAddressRef.current = address;
+    }
 
     (async () => {
-      const entries = await safeGetEntries(api.query.Nfts.Account, address);
+      const entries = await safeGetEntries(api.query.Nfts.Account, address, {
+        at: "best",
+      });
       const grouped = groupCollections(entries);
       if (!cancelled) {
         setCollections(grouped);

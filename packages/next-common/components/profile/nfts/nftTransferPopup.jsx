@@ -47,6 +47,10 @@ function PopupContent() {
     dispatch(newSuccessToast("Transfer successfully"));
   }, [dispatch]);
 
+  const onFinalized = useCallback(() => {
+    invalidateNftCollections();
+  }, []);
+
   return (
     <>
       <div className="text14Medium text-textSecondary">
@@ -62,6 +66,7 @@ function PopupContent() {
         title="Confirm"
         getTxFunc={getTxFunc}
         onInBlock={onInBlock}
+        onFinalized={onFinalized}
       />
     </>
   );
