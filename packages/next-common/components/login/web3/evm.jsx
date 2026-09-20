@@ -18,8 +18,8 @@ import { WalletConnectQrCode } from "./walletconnect";
 
 export default function LoginWeb3EVM() {
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { connector, isConnecting, isConnected } = useConnection();
-  const { mutate, isError } = useConnect();
+  const { connector, isConnected } = useConnection();
+  const { mutate, isError, isPending: isConnecting } = useConnect();
   const [selectedAccount, setSelectedAccount] = useState();
   const { accounts } = useEVMAccounts();
   const wallets = useEVMWallets();
