@@ -68,14 +68,31 @@ export function ConnectedAccountProvider({
   }, [userContext, dispatch]);
 
   useEffect(() => {
+    if (!walletConnect) {
+      return;
+    }
+
+    let active = true;
     function handleDisconnect() {
-      if (!isDisconnecting.current) {
+      if (active && !isDisconnecting.current) {
         clearAccount().catch(console.error);
       }
     }
-    walletConnect?.emitter.on("disconnect", handleDisconnect);
-    return () => walletConnect?.emitter.off("disconnect", handleDisconnect);
-  }, [walletConnect, clearAccount]);
+    walletConnect.emitter.on("disconnect", handleDisconnect);
+    walletConnect
+      .getProvider()
+      .then((provider) => {
+        if (!provider.session) {
+          handleDisconnect();
+        }
+      })
+      .catch(console.error);
+
+    return () => {
+      active = false;
+      walletConnect.emitter.off("disconnect", handleDisconnect);
+    };
+  }, [walletConnect, connectedAccount, clearAccount]);
 
   const disconnect = useCallback(async () => {
     isDisconnecting.current = true;

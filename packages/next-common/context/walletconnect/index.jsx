@@ -188,8 +188,9 @@ export default function WalletConnectProvider({ children }) {
         })
         .finally(() => {
           provider.removeListener("display_uri", onDisplayUri);
-          pendingConnection.current = null;
         });
+    }).finally(() => {
+      pendingConnection.current = null;
     });
     return await pendingConnection.current;
   }, [chainId, provider, setCachedSession, dispatch]);

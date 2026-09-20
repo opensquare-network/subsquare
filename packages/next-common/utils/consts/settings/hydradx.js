@@ -57,7 +57,7 @@ const links = [
 
 const ethereumNetwork = {
   chainId: "0x3640e",
-  chainName: "Hydration",
+  chainName: "HydraDX",
   // If MetaMask fails with "Missing revert data in call exception" when
   // submitting a transaction, try using the RPC URL below. Also make sure the
   // RPC URL in the MetaMask network configuration is not stale.

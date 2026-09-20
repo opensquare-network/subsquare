@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import {
-  addNetwork,
   getConnector,
   getEthereum,
   isSameChainId,
@@ -34,11 +33,6 @@ export async function prepareEthereum({ ethereum, onError, signerAddress }) {
     process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx;
 
   try {
-    // Hydration may need to be registered in the wallet after session approval.
-    if (isHydrationWalletConnect) {
-      await addNetwork(ethereum, ethereumNetwork);
-    }
-
     if (!isSameChainId(chainId)) {
       await switchNetwork(chainId);
     }
