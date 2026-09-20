@@ -9,11 +9,11 @@ export default function walletConnectEvm(config) {
       ? `https://${domain || CHAIN}.subsquare.io`
       : window.location.origin;
 
-  return walletConnect({
+  const connector = walletConnect({
     projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
     // Keep EVM sessions separate from the existing Polkadot provider.
     customStoragePrefix: "subsquare-evm",
-    showQrModal: true,
+    showQrModal: false,
     metadata: {
       name: "Subsquare",
       description,
@@ -21,4 +21,30 @@ export default function walletConnectEvm(config) {
       icons: [`${url}/favicon.ico`],
     },
   })(config);
+
+  let pendingConnection;
+  let uri;
+  return {
+    ...connector,
+    onDisplayUri(value) {
+      uri = value;
+      connector.onDisplayUri(value);
+    },
+    async connect(parameters) {
+      // Reopening our QR view must reuse the pending pairing request.
+      if (pendingConnection) {
+        if (uri) {
+          this.onDisplayUri(uri);
+        }
+        return await pendingConnection;
+      }
+      pendingConnection = connector.connect
+        .call(this, parameters)
+        .finally(() => {
+          pendingConnection = null;
+          uri = null;
+        });
+      return await pendingConnection;
+    },
+  };
 }

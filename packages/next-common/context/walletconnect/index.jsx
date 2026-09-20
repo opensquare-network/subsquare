@@ -6,7 +6,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -19,9 +18,7 @@ import {
   newWarningToast,
 } from "next-common/store/reducers/toastSlice";
 import getChainSettings from "next-common/utils/consts/settings";
-import { connect as connectWagmi, getAccount } from "@wagmi/core";
-import { injected } from "wagmi/connectors";
-import { wagmiConfig } from "next-common/context/wagmi";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -38,8 +35,6 @@ export const defaultWalletConnect = {
   fetchAddresses: () => Promise.resolve([]),
   signWcMessage: () => Promise.resolve({ signature: "0x" }),
   signWcTx: () => Promise.resolve({ signature: "0x" }),
-  isEvmSession: false,
-  connectEvm: () => Promise.resolve(),
 };
 
 const WalletConnectContext = createContext(defaultWalletConnect);
@@ -61,6 +56,16 @@ function useWalletConnectChainId() {
   return caip ? `polkadot:${caip}` : null;
 }
 
+function isSubstrateSession(session) {
+  const accounts = Object.values(session?.namespaces || {}).flatMap(
+    (namespace) => namespace.accounts || [],
+  );
+  return (
+    accounts.length > 0 &&
+    accounts.every((account) => account.startsWith("polkadot:"))
+  );
+}
+
 let providerPromise;
 
 async function initWalletConnectProvider() {
@@ -79,14 +84,20 @@ async function initWalletConnectProvider() {
       url,
       icons: [`${url}/favicon.ico`],
     },
-  });
+  })
+    .then(async (provider) => {
+      // Discard EVM sessions created by the former cross-namespace connection.
+      if (provider.session && !isSubstrateSession(provider.session)) {
+        await provider.disconnect();
+      }
+      return provider;
+    })
+    .catch((error) => {
+      providerPromise = null;
+      throw error;
+    });
 
-  try {
-    return await providerPromise;
-  } catch (error) {
-    providerPromise = null;
-    throw error;
-  }
+  return await providerPromise;
 }
 
 export default function WalletConnectProvider({ children }) {
@@ -99,76 +110,10 @@ export default function WalletConnectProvider({ children }) {
   const [provider, setProvider] = useState(defaultWalletConnect.provider);
   const [session, setSession] = useState(defaultWalletConnect.session);
   const pendingConnection = useRef(null);
-  const pendingEvmConnection = useRef(null);
-  const sessionAccounts = Object.values(session?.namespaces || {}).flatMap(
-    (namespace) => namespace.accounts || [],
-  );
-  const isEvmSession =
-    !sessionAccounts.some((account) => account.startsWith("polkadot:")) &&
-    sessionAccounts.some((account) => account.startsWith("eip155:"));
-  const evmConnector = useMemo(
-    () =>
-      injected({
-        shimDisconnect: false,
-        target: {
-          id: "walletConnectUniversal",
-          name: "WalletConnect",
-          provider: () => provider,
-        },
-      }),
-    [provider],
-  );
-  const connectEvm = useCallback(async () => {
-    if (
-      !provider ||
-      !isEvmSession ||
-      provider.session?.topic !== session?.topic
-    ) {
-      throw new Error("No EVM WalletConnect session");
-    }
-    const current = getAccount(wagmiConfig);
-    if (
-      current.isConnected &&
-      current.connector?.id === "walletConnectUniversal"
-    ) {
-      return;
-    }
-    pendingEvmConnection.current ??= connectWagmi(wagmiConfig, {
-      connector: evmConnector,
-    }).finally(() => {
-      pendingEvmConnection.current = null;
-    });
-    return await pendingEvmConnection.current;
-  }, [provider, isEvmSession, evmConnector, session?.topic]);
-
-  useEffect(() => {
-    if (
-      isEvmSession &&
-      provider &&
-      provider.session?.topic === session?.topic &&
-      connectedAccount?.connectorId === "walletConnectUniversal"
-    ) {
-      connectEvm().catch((error) => dispatch(newErrorToast(error.message)));
-    }
-  }, [
-    provider,
-    session?.topic,
-    isEvmSession,
-    connectedAccount?.connectorId,
-    connectEvm,
-    dispatch,
-  ]);
-
   const [cachedSession, setCachedSession] = useLocalStorage(
     CACHE_KEY.walletConnectSession,
     session,
   );
-  useEffect(() => {
-    if (cachedSession) {
-      setSession(cachedSession);
-    }
-  }, [cachedSession]);
-
   const clearSession = useCallback(() => {
     setSession(null);
     setCachedSession(null);
@@ -176,8 +121,24 @@ export default function WalletConnectProvider({ children }) {
 
   const disconnectCombination = useCallback(async () => {
     clearSession();
-    await disconnectAccount();
-  }, [clearSession, disconnectAccount]);
+    if (
+      connectedAccount?.wallet === WalletTypes.WALLETCONNECT ||
+      connectedAccount?.connectorId === "walletConnectUniversal"
+    ) {
+      await disconnectAccount();
+    }
+  }, [clearSession, connectedAccount, disconnectAccount]);
+
+  useEffect(() => {
+    if (!cachedSession) {
+      return;
+    }
+    if (!isSubstrateSession(cachedSession)) {
+      disconnectCombination();
+      return;
+    }
+    setSession(cachedSession);
+  }, [cachedSession, disconnectCombination]);
 
   useEffect(() => {
     if (provider) {
@@ -197,38 +158,26 @@ export default function WalletConnectProvider({ children }) {
       return await pendingConnection.current;
     }
 
-    const chains = wagmiConfig.chains;
     pendingConnection.current = new Promise((resolve) => {
       const onDisplayUri = (uri) => resolve({ uri });
       provider.once("display_uri", onDisplayUri);
       provider
         .connect({
-          optionalNamespaces: {
+          namespaces: {
             polkadot: {
               chains: [chainId],
               methods: ["polkadot_signTransaction", "polkadot_signMessage"],
               events: ["chainChanged", "accountsChanged"],
             },
-            eip155: {
-              chains: chains.map((chain) => `eip155:${chain.id}`),
-              methods: [
-                "personal_sign",
-                "eth_sendTransaction",
-                "eth_signTypedData_v4",
-                "wallet_addEthereumChain",
-                "wallet_switchEthereumChain",
-              ],
-              events: ["chainChanged", "accountsChanged"],
-              rpcMap: Object.fromEntries(
-                chains.map((chain) => [
-                  chain.id,
-                  chain.rpcUrls.default.http[0],
-                ]),
-              ),
-            },
           },
         })
-        .then((approvedSession) => {
+        .then(async (approvedSession) => {
+          if (!isSubstrateSession(approvedSession)) {
+            if (provider.session) {
+              await provider.disconnect();
+            }
+            throw new Error("Please connect a Substrate account");
+          }
           setSession(approvedSession);
           setCachedSession(approvedSession);
           resolve();
@@ -263,7 +212,7 @@ export default function WalletConnectProvider({ children }) {
   }, [provider, session, disconnectCombination]);
 
   const fetchAddresses = useCallback(async () => {
-    if (!provider || !session || !caip || isEvmSession) {
+    if (!provider || !session || !caip) {
       return [];
     }
 
@@ -286,7 +235,7 @@ export default function WalletConnectProvider({ children }) {
     }
 
     return filteredAccounts;
-  }, [provider, session, caip, isEvmSession, disconnectCombination]);
+  }, [provider, session, caip, disconnectCombination]);
 
   // Attempt to sign a message and receive a signature
   const signWcMessage = useCallback(
@@ -331,7 +280,9 @@ export default function WalletConnectProvider({ children }) {
 
   const onSessionExpire = useCallback(
     ({ topic }) => {
-      if (topic !== session?.topic) return;
+      if (topic !== session?.topic) {
+        return;
+      }
       dispatch(
         newErrorToast("Session expired, please connect to WalletConnect again"),
       );
@@ -342,7 +293,9 @@ export default function WalletConnectProvider({ children }) {
 
   const onSessionDelete = useCallback(
     ({ topic }) => {
-      if (topic !== session?.topic) return;
+      if (topic !== session?.topic) {
+        return;
+      }
       dispatch(newErrorToast("The connection has been disconnected"));
       disconnectCombination();
     },
@@ -394,8 +347,6 @@ export default function WalletConnectProvider({ children }) {
         signWcMessage,
         signWcTx,
         disconnectLoading,
-        isEvmSession,
-        connectEvm,
       }}
     >
       {children}

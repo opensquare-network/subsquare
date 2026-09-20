@@ -1,6 +1,14 @@
 import { CACHE_KEY } from "next-common/utils/constants";
 import { clearCookie, setCookie } from "next-common/utils/viewfuncs/cookies";
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useConnectors, useDisconnect } from "wagmi";
 import { fetchAndUpdateUser, logoutUser, useUserContext } from "../user";
 import { useLocalStorage } from "react-use";
 import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
@@ -27,6 +35,15 @@ export function ConnectedAccountProvider({
   );
   const dispatch = useDispatch();
   const { setPageLoading } = usePageLoading();
+  const connectors = useConnectors();
+  const { mutateAsync } = useDisconnect();
+  const isDisconnecting = useRef(false);
+  const [disconnectLoading, setDisconnectLoading] = useState(false);
+  const walletConnect = connectors.find(
+    (connector) =>
+      connector.id === "walletConnect" &&
+      connector.id === connectedAccount?.connectorId,
+  );
 
   const saveConnectedAccount = useCallback((account) => {
     savedConnectedAccount = account;
@@ -41,7 +58,7 @@ export function ConnectedAccountProvider({
     [setLastConnectedAccount],
   );
 
-  const disconnect = useCallback(async () => {
+  const clearAccount = useCallback(async () => {
     await logoutUser(userContext);
     ssrConnectedAccount = null;
     savedConnectedAccount = null;
@@ -50,11 +67,39 @@ export function ConnectedAccountProvider({
     dispatch(clearMyMultisigsData());
   }, [userContext, dispatch]);
 
+  useEffect(() => {
+    function handleDisconnect() {
+      if (!isDisconnecting.current) {
+        clearAccount().catch(console.error);
+      }
+    }
+    walletConnect?.emitter.on("disconnect", handleDisconnect);
+    return () => walletConnect?.emitter.off("disconnect", handleDisconnect);
+  }, [walletConnect, clearAccount]);
+
+  const disconnect = useCallback(async () => {
+    isDisconnecting.current = true;
+    setDisconnectLoading(!!walletConnect);
+    try {
+      try {
+        if (walletConnect) {
+          await mutateAsync({ connector: walletConnect });
+        }
+      } finally {
+        await clearAccount();
+      }
+    } finally {
+      isDisconnecting.current = false;
+      setDisconnectLoading(false);
+    }
+  }, [walletConnect, mutateAsync, clearAccount]);
+
   const connect = useCallback(
     async (account) => {
       try {
         setPageLoading(true);
-        await disconnect();
+        // Selecting an account must keep its wallet session available.
+        await clearAccount();
         const mockAddress = getMockAccountAddress();
         const effectiveAccount = mockAddress
           ? { ...account, address: mockAddress }
@@ -69,7 +114,7 @@ export function ConnectedAccountProvider({
       }
     },
     [
-      disconnect,
+      clearAccount,
       saveLastConnectedAccount,
       saveConnectedAccount,
       userContext,
@@ -84,6 +129,7 @@ export function ConnectedAccountProvider({
         lastConnectedAccount,
         connect,
         disconnect,
+        disconnectLoading,
         saveConnectedAccount,
         saveLastConnectedAccount,
       }}

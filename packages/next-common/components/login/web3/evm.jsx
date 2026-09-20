@@ -9,29 +9,33 @@ import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import PrimaryButton from "next-common/lib/button/primary";
 import { metamask } from "next-common/utils/consts/connect";
 import { useEffect, useState } from "react";
-import { useAccount, useConnect } from "wagmi";
+import { useConnection, useConnect } from "wagmi";
 import LoginAddressNotDetectedMessage from "../addressNotDetectedMessage";
 import { Label } from "../styled";
+import useEVMWalletConnect from "next-common/hooks/connect/useEVMWalletConnect";
+import { WalletConnectQrCode } from "./walletconnect";
+import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
 
 export default function LoginWeb3EVM() {
   const { lastConnectedAccount } = useConnectedAccountContext();
-  const { connector, isConnecting, isConnected } = useAccount();
-  const { connect, isError } = useConnect();
+  const { connector, isConnecting, isConnected } = useConnection();
+  const { mutate, isError } = useConnect();
   const [selectedAccount, setSelectedAccount] = useState();
   const { accounts } = useEVMAccounts();
   const wallets = useEVMWallets();
+  const walletConnect = useEVMWalletConnect(
+    find(wallets, ["connector.id", "walletConnect"])?.connector,
+  );
   const connectedWallet = find(wallets, ["connector.id", connector?.id]);
   const [web3Login, web3Loading] = useWeb3Login();
 
   const [selectedWallet, setSelectedWallet] = useState();
   useEffect(() => {
-    if (selectedWallet) {
+    if (selectedWallet?.connector?.id === connectedWallet?.connector?.id) {
       return;
     }
-
     setSelectedWallet(connectedWallet);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connectedWallet]);
+  }, [connectedWallet, selectedWallet]);
   useEffect(() => {
     setSelectedWallet(connectedWallet);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,23 +50,51 @@ export default function LoginWeb3EVM() {
       setSelectedAccount(lastUsedAddress);
     } else if (accounts?.length > 0) {
       setSelectedAccount(accounts?.[0]);
+    } else {
+      setSelectedAccount(undefined);
     }
   }, [accounts, lastConnectedAccount?.address]);
+
+  async function handleSelectWallet(wallet) {
+    if (wallet.connector.id === connector?.id && isConnected) {
+      setSelectedWallet(wallet);
+      return;
+    }
+    if (wallet.connector.id === "walletConnect") {
+      await walletConnect.open(async ({ accounts: addresses }) => {
+        const [account] = normalizedMetaMaskAccounts(
+          addresses,
+          wallet.connector.id,
+        );
+        await web3Login({ account, wallet: metamask.extensionName });
+      });
+      return;
+    }
+    mutate(
+      { connector: wallet.connector },
+      {
+        onSuccess() {
+          setSelectedWallet(wallet);
+        },
+      },
+    );
+  }
+
+  if (walletConnect.isOpen) {
+    return (
+      <WalletConnectQrCode
+        uri={walletConnect.uri}
+        backTitle="Back to EVM"
+        onBack={walletConnect.close}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
       <WalletEVMOptions
         selectedWallet={selectedWallet}
-        onSelect={(wallet) => {
-          connect(
-            { connector: wallet.connector },
-            {
-              onSuccess() {
-                setSelectedWallet(wallet);
-              },
-            },
-          );
-        }}
+        onSelect={handleSelectWallet}
       />
 
       {isConnecting && (

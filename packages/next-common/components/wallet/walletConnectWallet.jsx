@@ -5,7 +5,7 @@ import WalletOption from "./walletOption";
 
 export default function WalletConnectWallet({ wallet, selected, onClick }) {
   const { setView } = useWeb3WalletView();
-  const { provider, session, isEvmSession } = useWalletConnect();
+  const { provider, session } = useWalletConnect();
 
   return (
     <WalletOption
@@ -15,7 +15,7 @@ export default function WalletConnectWallet({ wallet, selected, onClick }) {
       logo={<wallet.logo className={wallet.title} alt={wallet.title} />}
       title={wallet.title}
       onClick={() => {
-        if (session && !isEvmSession && onClick) {
+        if (session && onClick) {
           onClick?.(wallet);
         } else {
           setView("walletconnect");
