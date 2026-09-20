@@ -1,5 +1,6 @@
 import useReferendumCurveData from "next-common/utils/hooks/referenda/detail/useReferendumCurveData";
 import { Line } from "react-chartjs-2";
+import "next-common/components/charts/globalConfig";
 import hoverLinePlugin from "next-common/components/charts/plugins/hoverLine";
 import { useWindowWidthContext } from "next-common/context/windowSize";
 import { useCallback, useRef, useState } from "react";

@@ -137,6 +137,7 @@ export default function ReferendumDetailMultiTabs() {
         ),
       },
       {
+        lazy: true,
         value: "statistics",
         label: "Statistics",
         content: (
