@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "next-common/utils";
 import Link from "next-common/components/link";
 import Caret from "next-common/components/icons/caret";
@@ -158,8 +158,22 @@ function NftCollection({ collection, expanded, onToggle }) {
   );
 }
 
+const COLLAPSED_MAX_HEIGHT = 320;
+
 export default function NftCollectionsTree({ collections }) {
   const [expandedKeys, setExpandedKeys] = useState(() => new Set());
+  const [showAll, setShowAll] = useState(false);
+  const [overflow, setOverflow] = useState(false);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (el) {
+      setOverflow(el.scrollHeight > COLLAPSED_MAX_HEIGHT);
+    }
+  }, [collections, expandedKeys]);
+
+  const collapsed = overflow && !showAll;
 
   const toggle = (key) => {
     setExpandedKeys((prev) => {
@@ -175,14 +189,29 @@ export default function NftCollectionsTree({ collections }) {
 
   return (
     <div className="flex flex-col">
-      {collections.map((collection) => (
-        <NftCollection
-          key={collection.collectionId}
-          collection={collection}
-          expanded={expandedKeys.has(collection.collectionId)}
-          onToggle={() => toggle(collection.collectionId)}
-        />
-      ))}
+      <div
+        ref={contentRef}
+        className={cn("flex flex-col", collapsed && "overflow-hidden")}
+        style={collapsed ? { maxHeight: COLLAPSED_MAX_HEIGHT } : undefined}
+      >
+        {collections.map((collection) => (
+          <NftCollection
+            key={collection.collectionId}
+            collection={collection}
+            expanded={expandedKeys.has(collection.collectionId)}
+            onToggle={() => toggle(collection.collectionId)}
+          />
+        ))}
+      </div>
+      {overflow && (
+        <button
+          type="button"
+          className="self-center mt-3 text14Medium text-theme500 cursor-pointer"
+          onClick={() => setShowAll((prev) => !prev)}
+        >
+          {showAll ? "Show less" : "Show all"}
+        </button>
+      )}
     </div>
   );
 }

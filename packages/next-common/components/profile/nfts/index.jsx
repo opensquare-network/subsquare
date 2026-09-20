@@ -29,7 +29,7 @@ export default function ProfileNfts() {
   return (
     <>
       <TitleContainer className="justify-start gap-x-1">
-        NFTs
+        NFT
         <span className="text16Medium text-textTertiary">{totalItems}</span>
       </TitleContainer>
       <SecondaryCard>

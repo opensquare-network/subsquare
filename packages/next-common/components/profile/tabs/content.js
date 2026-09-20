@@ -60,8 +60,8 @@ export default function useProfileTabContent() {
     return (
       <div className="flex flex-col gap-[16px]">
         <ProfileAssets />
-        <ProfileNfts />
         <ProfileForeignAssets />
+        <ProfileNfts />
         <ProfileHydrationAssets />
       </div>
     );
