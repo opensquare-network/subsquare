@@ -15,6 +15,13 @@ import { resolveMetadataName } from "next-common/utils/nft/metadata";
 
 const itemNamesCache = new Map();
 
+const refreshListeners = new Set();
+
+// Ask mounted lists to refetch, e.g. after an NFT transfer.
+export function invalidateNftCollections() {
+  refreshListeners.forEach((listener) => listener());
+}
+
 async function safeGetEntries(query, ...args) {
   try {
     return await query.getEntries(...args);
@@ -100,6 +107,15 @@ export function fetchCollectionItemNames(api, collection, onName) {
 export default function useAccountNftCollections(address) {
   const api = useAssetHubPapi();
   const [collections, setCollections] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    const listener = () => setRefreshKey((key) => key + 1);
+    refreshListeners.add(listener);
+    return () => {
+      refreshListeners.delete(listener);
+    };
+  }, []);
 
   useEffect(() => {
     if (!api || !address) {
@@ -150,7 +166,7 @@ export default function useAccountNftCollections(address) {
     return () => {
       cancelled = true;
     };
-  }, [api, address]);
+  }, [api, address, refreshKey]);
 
   const isLoading = api ? collections === null : true;
   const totalItems =

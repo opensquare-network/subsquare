@@ -6,6 +6,10 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useChainSettings } from "next-common/context/chain";
 import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
 import { fetchCollectionItemNames } from "./useAccountNftCollections";
+import { useNftItemActions } from "./nftItemActions";
+
+// Trailing cell of collection and item rows, sized for one 30px action button.
+const ITEM_ACTIONS_CELL_CLASS = "ml-3 w-[30px] shrink-0";
 
 function getSubscanCollectionLink(domain, collectionId) {
   return domain
@@ -57,7 +61,9 @@ function NftName({ name, link }) {
   );
 }
 
-function NftItemRow({ itemId, name, link }) {
+function NftItemRow({ collectionId, itemId, name, link }) {
+  const ItemActions = useNftItemActions();
+
   return (
     <div className="flex items-center w-full py-2 pl-9">
       <NftLink link={link} className="text14Medium text-textTertiary shrink-0">
@@ -67,6 +73,12 @@ function NftItemRow({ itemId, name, link }) {
         <NftName name={name} link={link} />
       </span>
       <span className="text14Medium text-textPrimary shrink-0">1</span>
+      {ItemActions && (
+        <span className={cn("flex justify-end", ITEM_ACTIONS_CELL_CLASS)}>
+          {/* eslint-disable-next-line react-hooks/static-components */}
+          <ItemActions collectionId={collectionId} itemId={itemId} />
+        </span>
+      )}
     </div>
   );
 }
@@ -104,6 +116,7 @@ function NftItems({ collection }) {
   return collection.itemIds.map((itemId) => (
     <NftItemRow
       key={itemId}
+      collectionId={collection.collectionId}
       itemId={itemId}
       name={names[itemId]}
       link={getSubscanItemLink(
@@ -117,6 +130,7 @@ function NftItems({ collection }) {
 
 function NftCollection({ collection, expanded, onToggle }) {
   const { assethubMigration } = useChainSettings();
+  const ItemActions = useNftItemActions();
   const { collectionId, name, itemIds } = collection;
   const collectionLink = getSubscanCollectionLink(
     assethubMigration?.subscanAssethubDomain,
@@ -151,6 +165,7 @@ function NftCollection({ collection, expanded, onToggle }) {
         <span className="text14Medium text-textTertiary shrink-0">
           {itemIds.length}
         </span>
+        {ItemActions && <span className={ITEM_ACTIONS_CELL_CLASS} />}
       </div>
 
       {expanded && <NftItems collection={collection} />}

@@ -51,6 +51,14 @@ import paseoPeople from "./paseoPeople";
 import westendPeople from "./westendPeople";
 import hyperBridge from "./hyperBridge";
 import acurast from "./acurast";
+import Chains from "../chains";
+
+const ASSET_HUB_OF = {
+  [Chains.polkadot]: Chains.polkadotAssetHub,
+  [Chains.kusama]: Chains.kusamaAssetHub,
+  [Chains.westend]: Chains.westendAssetHub,
+  [Chains.paseo]: Chains.paseoAssetHub,
+};
 
 const settingsMap = {
   polkadot,
@@ -131,7 +139,10 @@ export default function getChainSettings(chain, blockHeight = null) {
     }
   }
 
-  if (process.env.NEXT_PUBLIC_LOCAL_CHOPSTICKS === "true" && chain === CHAIN) {
+  if (
+    process.env.NEXT_PUBLIC_LOCAL_CHOPSTICKS === "true" &&
+    (chain === CHAIN || chain === ASSET_HUB_OF[CHAIN])
+  ) {
     settings = {
       ...settings,
       endpoints: [
