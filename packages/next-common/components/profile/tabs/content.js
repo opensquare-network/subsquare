@@ -15,6 +15,7 @@ import ProfileProxy from "../proxy";
 import ProfileTreasury from "../treasury";
 import CollectivesProvider from "next-common/context/collectives/collectives";
 import ProfileAssets from "next-common/components/profile/assets";
+import ProfileNfts from "next-common/components/profile/nfts";
 import ProfileForeignAssets from "next-common/components/profile/foreignAssets";
 import ProfileVesting from "next-common/components/profile/vesting";
 import ProfileStaking from "next-common/components/profile/staking";
@@ -59,6 +60,7 @@ export default function useProfileTabContent() {
     return (
       <div className="flex flex-col gap-[16px]">
         <ProfileAssets />
+        <ProfileNfts />
         <ProfileForeignAssets />
         <ProfileHydrationAssets />
       </div>
