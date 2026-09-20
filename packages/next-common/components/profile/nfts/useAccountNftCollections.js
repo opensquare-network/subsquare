@@ -43,7 +43,13 @@ function groupCollections(entries) {
     map.get(collectionId).itemIds.push(itemId);
   });
 
-  return [...map.values()].sort((a, b) => a.collectionId - b.collectionId);
+  // Item ids are little-endian in storage keys, so storage order is not numeric.
+  return [...map.values()]
+    .sort((a, b) => a.collectionId - b.collectionId)
+    .map((collection) => ({
+      ...collection,
+      itemIds: collection.itemIds.sort((a, b) => a - b),
+    }));
 }
 
 // Collection metadata may be unreachable (unpinned IPFS content); then fall back
