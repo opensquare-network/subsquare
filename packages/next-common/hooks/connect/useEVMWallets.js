@@ -9,7 +9,7 @@ import {
   subWallet,
   talisman,
 } from "next-common/utils/consts/connect";
-import { useConnectors } from "wagmi";
+import { useAccount, useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
 import { useHasCoinbaseWallet } from "./useHasCoinbaseWallet";
 
@@ -25,7 +25,13 @@ const fixedWallets = [
 ];
 
 export function useEVMWallets() {
-  const connectors = useConnectors();
+  const { connector: activeConnector } = useAccount();
+  const connectors = useConnectors().map((connector) =>
+    connector.id === "walletConnect" &&
+    activeConnector?.id === "walletConnectUniversal"
+      ? activeConnector
+      : connector,
+  );
   const ethereum = useDetectEthereum();
 
   /**

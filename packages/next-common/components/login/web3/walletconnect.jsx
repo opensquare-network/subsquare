@@ -12,18 +12,37 @@ import { toDataURL as QrcodeToDataURL } from "qrcode";
 import { useEffect, useState } from "react";
 import { useInterval, useUnmount } from "react-use";
 import { Skeleton } from "next-common/components/skeleton";
+import { useDispatch } from "react-redux";
+import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
 const SIZE = 200;
 const REFRESH_QRCODE_INTERVAL = 4 * 60 * 1000; // 4 minutes
 
 export default function LoginWeb3WalletConnect() {
   const { setView } = useWeb3WalletView();
-  const { connect, session, provider } = useWalletConnect();
+  const { connect, session, provider, isEvmSession, connectEvm } =
+    useWalletConnect();
+  const dispatch = useDispatch();
   const [qrCode, setQrCode] = useState(null);
   const [uri, setUri] = useState(null);
   const [web3Login] = useWeb3Login();
   const accounts = useWalletConnectAccounts();
   const [refreshCount, setRefreshCount] = useState(0);
+
+  useEffect(() => {
+    if (!isEvmSession || !provider) {
+      return;
+    }
+    let active = true;
+    connectEvm()
+      .then(() => {
+        if (active) setView("evm");
+      })
+      .catch((error) => dispatch(newErrorToast(error.message)));
+    return () => {
+      active = false;
+    };
+  }, [isEvmSession, provider, connectEvm, setView, dispatch]);
 
   useEffect(() => {
     if (session) {
@@ -57,7 +76,7 @@ export default function LoginWeb3WalletConnect() {
   }, [uri]);
 
   useEffect(() => {
-    if (accounts?.length) {
+    if (!isEvmSession && accounts?.length) {
       const account = accounts[0];
 
       if (account) {
@@ -67,7 +86,7 @@ export default function LoginWeb3WalletConnect() {
         });
       }
     }
-  }, [accounts, web3Login]);
+  }, [accounts, web3Login, isEvmSession]);
 
   useUnmount(() => {
     if (provider) {

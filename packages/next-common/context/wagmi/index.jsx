@@ -8,6 +8,7 @@ import { WagmiProvider as Provider } from "wagmi";
 import { http, createConfig } from "wagmi";
 import { mainnet, base, darwinia, moonbeam, moonriver } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
+import walletConnectEvm from "./walletConnectEvm";
 
 const hydradx = compatWagmiChainConfig(hydradxSettings.ethereumNetwork);
 const centrifuge = compatWagmiChainConfig(centrifugeSettings.ethereumNetwork);
@@ -31,6 +32,9 @@ export const wagmiConfig = createConfig({
   ssr: true,
   connectors: [
     injected(),
+    ...(process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
+      ? [walletConnectEvm]
+      : []),
     coinbaseWallet({
       appName: "subsquare",
       preference: {

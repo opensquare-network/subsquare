@@ -28,6 +28,7 @@ export function useWeb3Login() {
         const accountInfo = {
           address,
           evmAddress: account.evmAddress,
+          connectorId: account.meta?.connectorId,
           wallet,
         };
         await connectAccount(accountInfo);

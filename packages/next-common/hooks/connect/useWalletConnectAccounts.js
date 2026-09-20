@@ -8,9 +8,11 @@ export function useWalletConnectAccounts() {
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
+    let active = true;
+    setAccounts([]);
     if (session) {
       fetchAddresses().then((addresses) => {
-        if (addresses && addresses.length > 0) {
+        if (active && addresses && addresses.length > 0) {
           setAccounts(
             normalizedSubstrateAccounts(
               addresses.map((address) => ({ address })),
@@ -20,6 +22,9 @@ export function useWalletConnectAccounts() {
         }
       });
     }
+    return () => {
+      active = false;
+    };
   }, [session, fetchAddresses]);
 
   return accounts;
