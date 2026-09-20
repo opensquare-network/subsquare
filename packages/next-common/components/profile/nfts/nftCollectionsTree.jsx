@@ -8,9 +8,6 @@ import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
 import { fetchCollectionItemNames } from "./useAccountNftCollections";
 import { useNftItemActions } from "./nftItemActions";
 
-// Trailing cell of collection and item rows, sized for one 30px action button.
-const ITEM_ACTIONS_CELL_CLASS = "ml-3 w-[30px] shrink-0";
-
 function getSubscanCollectionLink(domain, collectionId) {
   return domain
     ? `https://${domain}.subscan.io/nft_collection/${collectionId}?tab=tokens`
@@ -72,12 +69,13 @@ function NftItemRow({ collectionId, itemId, name, link }) {
       <span className="flex-1 min-w-0 mx-3 truncate text14Medium text-textPrimary">
         <NftName name={name} link={link} />
       </span>
-      <span className="text14Medium text-textPrimary shrink-0">1</span>
-      {ItemActions && (
-        <span className={cn("flex justify-end", ITEM_ACTIONS_CELL_CLASS)}>
+      {ItemActions ? (
+        <>
           {/* eslint-disable-next-line react-hooks/static-components */}
           <ItemActions collectionId={collectionId} itemId={itemId} />
-        </span>
+        </>
+      ) : (
+        <span className="text14Medium text-textPrimary shrink-0">1</span>
       )}
     </div>
   );
@@ -130,7 +128,6 @@ function NftItems({ collection }) {
 
 function NftCollection({ collection, expanded, onToggle }) {
   const { assethubMigration } = useChainSettings();
-  const ItemActions = useNftItemActions();
   const { collectionId, name, itemIds } = collection;
   const collectionLink = getSubscanCollectionLink(
     assethubMigration?.subscanAssethubDomain,
@@ -165,7 +162,6 @@ function NftCollection({ collection, expanded, onToggle }) {
         <span className="text14Medium text-textTertiary shrink-0">
           {itemIds.length}
         </span>
-        {ItemActions && <span className={ITEM_ACTIONS_CELL_CLASS} />}
       </div>
 
       {expanded && <NftItems collection={collection} />}
