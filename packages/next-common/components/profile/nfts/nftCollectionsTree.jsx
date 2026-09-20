@@ -6,6 +6,7 @@ import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useChainSettings } from "next-common/context/chain";
 import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
 import { fetchCollectionItemNames } from "./useAccountNftCollections";
+import { useNftItemActions } from "./nftItemActions";
 
 function getSubscanCollectionLink(domain, collectionId) {
   return domain
@@ -57,7 +58,9 @@ function NftName({ name, link }) {
   );
 }
 
-function NftItemRow({ itemId, name, link }) {
+function NftItemRow({ collectionId, itemId, name, link }) {
+  const ItemActions = useNftItemActions();
+
   return (
     <div className="flex items-center w-full py-2 pl-9">
       <NftLink link={link} className="text14Medium text-textTertiary shrink-0">
@@ -66,7 +69,14 @@ function NftItemRow({ itemId, name, link }) {
       <span className="flex-1 min-w-0 mx-3 truncate text14Medium text-textPrimary">
         <NftName name={name} link={link} />
       </span>
-      <span className="text14Medium text-textPrimary shrink-0">1</span>
+      {ItemActions ? (
+        <>
+          {/* eslint-disable-next-line react-hooks/static-components */}
+          <ItemActions collectionId={collectionId} itemId={itemId} />
+        </>
+      ) : (
+        <span className="text14Medium text-textPrimary shrink-0">1</span>
+      )}
     </div>
   );
 }
@@ -104,6 +114,7 @@ function NftItems({ collection }) {
   return collection.itemIds.map((itemId) => (
     <NftItemRow
       key={itemId}
+      collectionId={collection.collectionId}
       itemId={itemId}
       name={names[itemId]}
       link={getSubscanItemLink(

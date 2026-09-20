@@ -22,9 +22,9 @@ function NftCollectionsContent({ isLoading, collections }) {
   return <NftCollectionsTree collections={collections} />;
 }
 
-export default function ProfileNfts() {
-  const { id } = usePageProps();
-  const { collections, isLoading, totalItems } = useAccountNftCollections(id);
+export function AccountNftsSection({ address }) {
+  const { collections, isLoading, totalItems } =
+    useAccountNftCollections(address);
 
   return (
     <>
@@ -40,4 +40,9 @@ export default function ProfileNfts() {
       </SecondaryCard>
     </>
   );
+}
+
+export default function ProfileNfts() {
+  const { id } = usePageProps();
+  return <AccountNftsSection address={id} />;
 }
