@@ -32,9 +32,7 @@ export const wagmiConfig = createConfig({
   ssr: true,
   connectors: [
     injected(),
-    ...(process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID
-      ? [walletConnectEvm]
-      : []),
+    walletConnectEvm,
     coinbaseWallet({
       appName: "subsquare",
       preference: {

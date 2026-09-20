@@ -4,17 +4,17 @@ import AddressSelect from "next-common/components/addressSelect";
 import WalletEVMOptions from "next-common/components/wallet/options/evm";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
 import { useEVMAccounts } from "next-common/hooks/connect/useEVMAccounts";
+import useEVMWalletConnect from "next-common/hooks/connect/useEVMWalletConnect";
 import { useEVMWallets } from "next-common/hooks/connect/useEVMWallets";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import PrimaryButton from "next-common/lib/button/primary";
 import { metamask } from "next-common/utils/consts/connect";
+import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
 import { useEffect, useState } from "react";
 import { useConnection, useConnect } from "wagmi";
 import LoginAddressNotDetectedMessage from "../addressNotDetectedMessage";
 import { Label } from "../styled";
-import useEVMWalletConnect from "next-common/hooks/connect/useEVMWalletConnect";
 import { WalletConnectQrCode } from "./walletconnect";
-import { normalizedMetaMaskAccounts } from "next-common/utils/metamask";
 
 export default function LoginWeb3EVM() {
   const { lastConnectedAccount } = useConnectedAccountContext();
@@ -51,7 +51,7 @@ export default function LoginWeb3EVM() {
     } else if (accounts?.length > 0) {
       setSelectedAccount(accounts?.[0]);
     } else {
-      setSelectedAccount(undefined);
+      setSelectedAccount();
     }
   }, [accounts, lastConnectedAccount?.address]);
 
@@ -60,6 +60,7 @@ export default function LoginWeb3EVM() {
       setSelectedWallet(wallet);
       return;
     }
+
     if (wallet.connector.id === "walletConnect") {
       await walletConnect.open(async ({ accounts: addresses }) => {
         const [account] = normalizedMetaMaskAccounts(
@@ -70,6 +71,7 @@ export default function LoginWeb3EVM() {
       });
       return;
     }
+
     mutate(
       { connector: wallet.connector },
       {

@@ -12,7 +12,7 @@ export function useWalletConnectAccounts() {
     setAccounts([]);
     if (session) {
       fetchAddresses().then((addresses) => {
-        if (active && addresses && addresses.length > 0) {
+        if (active && addresses?.length) {
           setAccounts(
             normalizedSubstrateAccounts(
               addresses.map((address) => ({ address })),

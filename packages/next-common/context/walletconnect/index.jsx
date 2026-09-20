@@ -56,48 +56,23 @@ function useWalletConnectChainId() {
   return caip ? `polkadot:${caip}` : null;
 }
 
-function isSubstrateSession(session) {
-  const accounts = Object.values(session?.namespaces || {}).flatMap(
-    (namespace) => namespace.accounts || [],
-  );
-  return (
-    accounts.length > 0 &&
-    accounts.every((account) => account.startsWith("polkadot:"))
-  );
-}
-
-let providerPromise;
-
 async function initWalletConnectProvider() {
-  const { description, wallets, domain } = getChainSettings(CHAIN);
+  const { description, wallets } = getChainSettings(CHAIN);
   if (wallets?.walletconnect === false) {
     return defaultWalletConnect.provider;
   }
-  const url =
-    window.location.origin || `https://${domain || CHAIN}.subsquare.io`;
-  providerPromise ??= UniversalProvider.init({
+  const provider = await UniversalProvider.init({
     projectId,
     relayUrl,
     metadata: {
       name: "Subsquare",
       description,
-      url,
-      icons: [`${url}/favicon.ico`],
+      url: `https://${CHAIN}.subsquare.io`,
+      icons: [`https://${CHAIN}.subsquare.io/favicon.ico`],
     },
-  })
-    .then(async (provider) => {
-      // Discard EVM sessions created by the former cross-namespace connection.
-      if (provider.session && !isSubstrateSession(provider.session)) {
-        await provider.disconnect();
-      }
-      return provider;
-    })
-    .catch((error) => {
-      providerPromise = null;
-      throw error;
-    });
+  });
 
-  return await providerPromise;
+  return provider;
 }
 
 export default function WalletConnectProvider({ children }) {
@@ -131,10 +106,6 @@ export default function WalletConnectProvider({ children }) {
 
   useEffect(() => {
     if (!cachedSession) {
-      return;
-    }
-    if (!isSubstrateSession(cachedSession)) {
-      disconnectCombination();
       return;
     }
     setSession(cachedSession);
@@ -171,13 +142,7 @@ export default function WalletConnectProvider({ children }) {
             },
           },
         })
-        .then(async (approvedSession) => {
-          if (!isSubstrateSession(approvedSession)) {
-            if (provider.session) {
-              await provider.disconnect();
-            }
-            throw new Error("Please connect a Substrate account");
-          }
+        .then((approvedSession) => {
           setSession(approvedSession);
           setCachedSession(approvedSession);
           resolve();
