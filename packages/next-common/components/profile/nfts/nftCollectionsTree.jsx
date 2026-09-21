@@ -1,26 +1,25 @@
+import useNftItemNames from "./useNftItemNames";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "next-common/utils";
 import Link from "next-common/components/link";
 import Caret from "next-common/components/icons/caret";
 import FieldLoading from "next-common/components/icons/fieldLoading";
 import { useChainSettings } from "next-common/context/chain";
-import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
-import { fetchCollectionItemNames } from "./useAccountNftCollections";
 import { useNftItemActions } from "./nftItemActions";
 
-function getSubscanCollectionLink(domain, collectionId) {
+export function getSubscanCollectionLink(domain, collectionId) {
   return domain
     ? `https://${domain}.subscan.io/nft_collection/${collectionId}?tab=tokens`
     : null;
 }
 
-function getSubscanItemLink(domain, collectionId, itemId) {
+export function getSubscanNftItemLink(domain, collectionId, itemId) {
   return domain
     ? `https://${domain}.subscan.io/nft_item/${collectionId}-${itemId}`
     : null;
 }
 
-function NftLink({ link, title, className, children }) {
+export function NftLink({ link, title, className, children }) {
   if (!link) {
     return (
       <span title={title} className={className}>
@@ -42,7 +41,7 @@ function NftLink({ link, title, className, children }) {
   );
 }
 
-function NftName({ name, link }) {
+export function NftName({ name, link }) {
   if (name === undefined) {
     return <FieldLoading size={16} />;
   }
@@ -82,34 +81,8 @@ function NftItemRow({ collectionId, itemId, name, link }) {
 }
 
 function NftItems({ collection }) {
-  const api = useAssetHubPapi();
   const { assethubMigration } = useChainSettings();
-  const [names, setNames] = useState({});
-
-  // Item ids are already known from the account query, so rows render at once
-  // and only their names are loaded (cached per collection).
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    let cancelled = false;
-    const applyName = (itemId, name) => {
-      if (!cancelled) {
-        setNames((prev) => ({ ...prev, [itemId]: name }));
-      }
-    };
-
-    fetchCollectionItemNames(api, collection, applyName).then((namesMap) => {
-      if (!cancelled) {
-        setNames(Object.fromEntries(namesMap));
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [api, collection]);
+  const names = useNftItemNames(collection.collectionId, collection.itemIds);
 
   return collection.itemIds.map((itemId) => (
     <NftItemRow
@@ -117,7 +90,7 @@ function NftItems({ collection }) {
       collectionId={collection.collectionId}
       itemId={itemId}
       name={names[itemId]}
-      link={getSubscanItemLink(
+      link={getSubscanNftItemLink(
         assethubMigration?.subscanAssethubDomain,
         collection.collectionId,
         itemId,
