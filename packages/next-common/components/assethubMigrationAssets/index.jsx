@@ -4,6 +4,7 @@ import AssetsAccount from "./account";
 import AllAssetsList from "./allAssetsList";
 import ForeignAssetsList from "./allForeignAssetsList";
 import LiquidPools from "./liquidPools";
+import AllNftsList from "./allNftsList";
 import Swap from "./swap";
 import { AssetsTabProvider, useAssetsTab } from "./context/assetsTab";
 import { AssetMetadataProvider } from "next-common/components/assethubMigrationAssets/context/assetMetadata";
@@ -30,6 +31,10 @@ const TABS = Object.freeze([
     value: "foreign_assets",
     label: "Foreign Assets",
   },
+  {
+    value: "nft",
+    label: "NFT",
+  },
 ]);
 
 const TITLE_MAPS = Object.freeze({
@@ -38,6 +43,7 @@ const TITLE_MAPS = Object.freeze({
   assets: "Assets",
   ["foreign_assets"]: "Foreign Assets",
   liquidity_pools: "Liquidity Pools",
+  nft: "NFT",
 });
 
 const DESCRIPTION_MAPS = Object.freeze({
@@ -46,6 +52,7 @@ const DESCRIPTION_MAPS = Object.freeze({
   assets: "All no fungible assets info",
   ["foreign_assets"]: "All foreign assets info",
   liquidity_pools: "All liquidity pools info",
+  nft: "All NFT info",
 });
 
 function HeaderTabs() {
@@ -74,6 +81,8 @@ function AssetsContent() {
     return <Swap />;
   } else if (activeValue === "assets") {
     return <AllAssetsList />;
+  } else if (activeValue === "nft") {
+    return <AllNftsList />;
   } else if (activeValue === "foreign_assets") {
     return <ForeignAssetsList />;
   } else if (activeValue === "liquidity_pools") {

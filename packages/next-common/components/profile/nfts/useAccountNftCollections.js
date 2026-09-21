@@ -17,6 +17,10 @@ const itemNamesCache = new Map();
 
 const refreshListeners = new Set();
 
+function getItemNamesCacheKey(collection) {
+  return `${collection.collectionId}:${collection.itemIds.join(",")}`;
+}
+
 // Ask mounted lists to refetch, e.g. after an NFT transfer.
 export function invalidateNftCollections() {
   refreshListeners.forEach((listener) => listener());
@@ -79,8 +83,9 @@ async function resolveCollectionDisplayName(api, collection, metadata) {
 // `onName` fires as each name resolves, the returned promise resolves with all of them.
 export function fetchCollectionItemNames(api, collection, onName) {
   const { collectionId, itemIds } = collection;
+  const cacheKey = getItemNamesCacheKey(collection);
 
-  if (!itemNamesCache.has(collectionId)) {
+  if (!itemNamesCache.has(cacheKey)) {
     const promise = (async () => {
       const metadatas = await safeGetValues(
         api.query.Nfts.ItemMetadataOf,
@@ -98,10 +103,10 @@ export function fetchCollectionItemNames(api, collection, onName) {
       return names;
     })().catch(() => new Map());
 
-    itemNamesCache.set(collectionId, promise);
+    itemNamesCache.set(cacheKey, promise);
   }
 
-  return itemNamesCache.get(collectionId);
+  return itemNamesCache.get(cacheKey);
 }
 
 export default function useAccountNftCollections(address) {
