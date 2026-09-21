@@ -23,6 +23,7 @@ import AyeNaySplitTab from "./ayeNaySplitTab";
 import useStandardVote from "./voteHooks/useStandardVote";
 import useSplitVote from "./voteHooks/useSplitVote";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 
 export function LoadingPanel() {
   return (
@@ -118,9 +119,9 @@ function VotePanel({
       {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
         <div style={{ textAlign: "right" }}>
-          <PrimaryButton loading={isLoading} onClick={doSubmit}>
+          <SubmitButton loading={isLoading} onClick={doSubmit}>
             Confirm
-          </PrimaryButton>
+          </SubmitButton>
         </div>
       )}
     </>

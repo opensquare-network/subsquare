@@ -5,6 +5,8 @@ import { PopupButtonWrapper } from "../popup/wrapper";
 import { useSignerAccount } from "../popupWithSigner/context";
 import SignerWithBalance from "./signerWithBalance";
 import { noop } from "lodash-es";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 function PopupContent({
   children,
@@ -14,6 +16,7 @@ function PopupContent({
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const signerAccount = useSignerAccount();
+  const isWatchOnly = useIsWatchOnly();
 
   const onConfirm = useCallback(async () => {
     setIsLoading(true);
@@ -29,9 +32,15 @@ function PopupContent({
       <SignerWithBalance noSwitchSigner={noSwitchSigner} />
       {children}
       <PopupButtonWrapper>
-        <PrimaryButton loading={isLoading} onClick={onConfirm}>
-          {confirmText}
-        </PrimaryButton>
+        <WatchOnlyTooltip>
+          <PrimaryButton
+            loading={isLoading}
+            disabled={isWatchOnly}
+            onClick={onConfirm}
+          >
+            {confirmText}
+          </PrimaryButton>
+        </WatchOnlyTooltip>
       </PopupButtonWrapper>
     </>
   );

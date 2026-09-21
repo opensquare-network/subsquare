@@ -13,6 +13,8 @@ import { useConnectedAccountContext } from "next-common/context/connectedAccount
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
 import NoData from "next-common/components/noData";
 import { useIsMobile } from "next-common/components/overview/accountInfo/components/accountBalances";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import WatchOnlyAddressForm from "next-common/components/watchOnly/addressForm";
 
 function PopupTitle() {
   return (
@@ -23,11 +25,9 @@ function PopupTitle() {
   );
 }
 
-function SubTitle() {
+function SubTitle({ text = "Select Account" }) {
   return (
-    <TitleContainer className="text14Bold px-0 pb-0">
-      Select Account
-    </TitleContainer>
+    <TitleContainer className="text14Bold px-0 pb-0">{text}</TitleContainer>
   );
 }
 
@@ -139,15 +139,34 @@ function PopupContent({ onClose }) {
 }
 
 export default function SwitchAccount({ onClose, onOpenLogin }) {
+  const isWatchOnly = useIsWatchOnly();
+
+  const popupProps = {
+    title: <PopupTitle />,
+    showCloseIcon: false,
+    onClose,
+    className: "flex flex-col space-y-6 p-12 !mb-0 max-sm:!p-6 max-h-[76vh]",
+    style: { maxWidth: "76vh" },
+  };
+
+  // A watch-only account is not owned by any wallet, so there is no account
+  // list to pick from. Ask for the address to watch instead.
+  if (isWatchOnly) {
+    return (
+      <Popup {...popupProps}>
+        <div className="space-y-3 flex-1">
+          <SubTitle text="Watch-only Account" />
+          <WatchOnlyAddressForm onConnected={onClose} />
+        </div>
+        <TextDivider />
+        <ChangeWallet onClick={onOpenLogin} />
+      </Popup>
+    );
+  }
+
   return (
     <SignerPopupWrapper>
-      <Popup
-        title={<PopupTitle />}
-        showCloseIcon={false}
-        onClose={onClose}
-        className="flex flex-col space-y-6 p-12 !mb-0 max-sm:!p-6 max-h-[76vh]"
-        style={{ maxWidth: "76vh" }}
-      >
+      <Popup {...popupProps}>
         <PopupContent onClose={onClose} />
         <TextDivider />
         <ChangeWallet onClick={onOpenLogin} />

@@ -14,6 +14,10 @@ import {
 import { useChain } from "next-common/context/chain";
 import { useLoginPopup } from "./useLoginPopup";
 import { getCookieConnectedAccount } from "next-common/utils/getCookieConnectedAccount";
+import {
+  isWatchOnlyAccount,
+  WATCH_ONLY_LOGIN_REJECTED_TEXT,
+} from "next-common/utils/watchOnly";
 import { useSignMessage } from "./useSignMessage";
 import isShibuya from "next-common/utils/isShibuya";
 
@@ -30,6 +34,11 @@ export function useEnsureLogin() {
 
   const login = useCallback(async () => {
     const connectedAccount = getCookieConnectedAccount();
+
+    if (isWatchOnlyAccount(connectedAccount)) {
+      dispatch(newErrorToast(WATCH_ONLY_LOGIN_REJECTED_TEXT));
+      return false;
+    }
 
     setLoading(true);
     try {

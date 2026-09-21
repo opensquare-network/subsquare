@@ -10,6 +10,7 @@ import {
   signet,
   walletConnect,
   polkadotVaultWallet,
+  watchOnlyWallet,
 } from "next-common/utils/consts/connect";
 import isEvmChain, {
   isSupportSubstrateThroughEthereumAddress,
@@ -29,6 +30,7 @@ export function useSubstrateWallets() {
     !isSubstrateThroughEvm && nova,
     chainSettings?.supportWalletconnect && walletConnect,
     chainSettings?.supportPolkadotVault && polkadotVaultWallet,
+    chainSettings?.supportWatchOnly && watchOnlyWallet,
   ].filter(Boolean);
   let multiSigWallets = [];
 

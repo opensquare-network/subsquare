@@ -6,7 +6,8 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useUser } from "next-common/context/user";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import {
   newErrorToast,
   newSuccessToast,
@@ -46,6 +47,7 @@ function PopupContent() {
     destinationChain,
   });
   const { sendTxFunc, isSubmitting } = useSendTransaction();
+  const isWatchOnly = useIsWatchOnly();
 
   const user = useUser();
   const address = user?.address;
@@ -109,14 +111,14 @@ function PopupContent() {
         <ExistentialDeposit destApi={destinationApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TooltipDisabledGuard disabled={submitDisabled}>
-          <PrimaryButton
+        <TooltipDisabledGuard disabled={submitDisabled && !isWatchOnly}>
+          <SubmitButton
             loading={isSubmitting}
             onClick={doSubmit}
             disabled={submitDisabled}
           >
             Submit
-          </PrimaryButton>
+          </SubmitButton>
         </TooltipDisabledGuard>
       </div>
     </>

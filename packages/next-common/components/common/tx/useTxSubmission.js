@@ -7,6 +7,8 @@ import { wrapTransaction } from "next-common/utils/sendTransaction";
 import { useContextApi } from "next-common/context/api";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { useMaybeMultisigCallback } from "./useMaybeMultisigCallback";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 export default function useTxSubmission({
   api,
@@ -22,6 +24,7 @@ export default function useTxSubmission({
   const defaultApi = useContextApi();
   const apiToUse = api || defaultApi;
   const signerAccount = useSignerAccount();
+  const isWatchOnly = useIsWatchOnly();
   const { sendTxFunc, isSubmitting } = useSendTransaction();
   const {
     onInBlock: maybeMultisigOnInBlock,
@@ -51,6 +54,11 @@ export default function useTxSubmission({
 
   const doSubmit = useCallback(
     async (...args) => {
+      if (isWatchOnly) {
+        dispatch(newErrorToast(WATCH_ONLY_TOOLTIP_TEXT));
+        return;
+      }
+
       if (!apiToUse) {
         dispatch(newErrorToast("Chain RPC is not connected yet"));
         return;
@@ -87,6 +95,7 @@ export default function useTxSubmission({
     [
       apiToUse,
       dispatch,
+      isWatchOnly,
       signerAccount,
       getTx,
       sendTxFunc,

@@ -4,14 +4,18 @@ import { isSameAddress } from "../../utils";
 import { SignerContextProvider, usePopupParams } from "./context";
 import LoginPopup from "next-common/components/login/popup";
 import { isMockAccountAddress } from "next-common/utils/mockAccount";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { isWatchOnlyAccount } from "next-common/utils/watchOnly";
 
 export default function MaybeSignerConnected({ children, extensionAccounts }) {
   const user = useUser();
+  const connectedAccount = useConnectedAccount();
   const { onClose } = usePopupParams();
 
   if (
     !user?.address ||
     (!isMockAccountAddress(user?.address) &&
+      !isWatchOnlyAccount(connectedAccount) &&
       !extensionAccounts?.find((acc) =>
         isSameAddress(acc.address, user?.address),
       ))

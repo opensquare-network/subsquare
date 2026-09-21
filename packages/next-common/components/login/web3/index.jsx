@@ -5,6 +5,7 @@ import LoginWeb3Substrate from "./substrate";
 import { useUnmount } from "react-use";
 import LoginWeb3WalletConnect from "./walletconnect";
 import LoginWeb3PolkadotVault from "./polkadotVault";
+import LoginWeb3WatchOnly from "./watchOnly";
 import { useChainSettings } from "next-common/context/chain";
 
 export default function LoginWeb3({ setIsWeb3 = noop }) {
@@ -14,6 +15,7 @@ export default function LoginWeb3({ setIsWeb3 = noop }) {
     isEVMView,
     isWalletConnectView,
     isPolkadotVaultView,
+    isWatchOnlyView,
     resetView,
   } = useWeb3WalletView();
 
@@ -27,6 +29,9 @@ export default function LoginWeb3({ setIsWeb3 = noop }) {
 
       {isWalletConnectView && <LoginWeb3WalletConnect />}
       {isPolkadotVaultView && <LoginWeb3PolkadotVault />}
+      {isWatchOnlyView && chainSettings?.supportWatchOnly && (
+        <LoginWeb3WatchOnly />
+      )}
 
       {chainSettings?.allowWeb2Login && (
         <div className="text-center text14Medium text-textSecondary">

@@ -14,6 +14,7 @@ import {
   WalletCoinbase,
   WalletWalletconnect,
   WalletPolkadotVaultLight,
+  SystemEye,
 } from "@osn/icons/subsquare";
 
 export const polkadotJs = {
@@ -119,6 +120,12 @@ export const polkadotVaultWallet = {
   logo: WalletPolkadotVaultLight,
 };
 
+export const watchOnlyWallet = {
+  extensionName: WalletTypes.WATCH_ONLY,
+  title: "Watch-only",
+  logo: SystemEye,
+};
+
 export const allWallets = [
   polkadotJs,
   subWallet,
@@ -134,4 +141,5 @@ export const allWallets = [
   coinbaseWallet,
   walletConnect,
   polkadotVaultWallet,
+  watchOnlyWallet,
 ];

@@ -10,6 +10,8 @@ import useInjectedWeb3 from "next-common/hooks/connect/useInjectedWeb3";
 import { useUser } from "next-common/context/user";
 import { isSameAddress } from "next-common/utils";
 import { findInjectedExtension } from "next-common/hooks/connect/useInjectedWeb3Extension";
+import { useConnectedAccount } from "next-common/context/connectedAccount";
+import { isWatchOnlyAccount } from "next-common/utils/watchOnly";
 
 export const SignerContext = createContext();
 
@@ -51,6 +53,7 @@ export function useSetSigner() {
 
 export function SignerContextProvider({ children, extensionAccounts }) {
   const user = useUser();
+  const connectedAccount = useConnectedAccount();
   const userAddress = user?.address;
   const proxyAddress = user?.proxyAddress;
   const [selectedProxyAddress, setSelectedProxyAddress] = useState();
@@ -73,23 +76,34 @@ export function SignerContextProvider({ children, extensionAccounts }) {
     if (!userAddress) {
       return;
     }
+
+    const isWatchOnly = isWatchOnlyAccount(connectedAccount);
     const account = extensionAccounts?.find((item) =>
       isSameAddress(item.address, userAddress),
     );
-    if (!account) {
-      return;
-    }
+    // The connected address may not be owned by any loaded wallet, e.g. a
+    // watch-only address, a mock account, or an account of a wallet that is no
+    // longer available. It is still the origin of the transaction.
+    const connectedAccountInfo = account
+      ? account
+      : {
+          address: userAddress,
+          meta: { source: connectedAccount?.wallet },
+        };
+
     return {
-      ...account,
-      name: account.meta?.name,
+      ...connectedAccountInfo,
+      name: connectedAccountInfo.meta?.name,
       proxyAddress,
       selectedProxyAddress,
       multisig,
       realAddress,
+      isWatchOnly,
     };
   }, [
     userAddress,
     extensionAccounts,
+    connectedAccount,
     proxyAddress,
     selectedProxyAddress,
     multisig,

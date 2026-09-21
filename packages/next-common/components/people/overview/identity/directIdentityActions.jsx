@@ -14,6 +14,8 @@ import getChainSettings from "next-common/utils/consts/settings";
 import { useCallback, useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import CheckJudgement from "./checkJudgement";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 const SetIdentityPopup = dynamicPopup(
   () => import("next-common/components/setIdentityPopup"),
@@ -26,6 +28,7 @@ export function DirectIdentityActions() {
   const chain = useChain();
   const { identity: identityChain } = getChainSettings(chain);
   const [showSetIdentityPopup, setShowSetIdentityPopup] = useState(false);
+  const isWatchOnly = useIsWatchOnly();
   const extensionAccounts = useExtensionAccounts();
 
   const api = useContextApi();
@@ -79,8 +82,13 @@ export function DirectIdentityActions() {
             <SystemEdit2 className="w-[16px] h-[16px]" />
           </Tooltip>
         </div>
-        <Tooltip content="Clear Identity">
-          <RemoveButton disabled={isSubmitting} onClick={clearIdentity} />
+        <Tooltip
+          content={isWatchOnly ? WATCH_ONLY_TOOLTIP_TEXT : "Clear Identity"}
+        >
+          <RemoveButton
+            disabled={isSubmitting || isWatchOnly}
+            onClick={clearIdentity}
+          />
         </Tooltip>
       </div>
       {showSetIdentityPopup && (

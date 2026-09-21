@@ -10,6 +10,8 @@ import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFell
 import Tooltip from "next-common/components/tooltip";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 import { isNil, noop } from "lodash-es";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 function VoteButtonImpl({
   referendumIndex,
@@ -27,6 +29,7 @@ function VoteButtonImpl({
   );
   const { result: referendumInfo, loading: isReferendumInfoLoading } =
     useSubFellowshipReferendum(referendumIndex);
+  const isWatchOnly = useIsWatchOnly();
 
   const { onInBlock = noop, onFinalized = noop } = callbacks || {};
 
@@ -59,6 +62,11 @@ function VoteButtonImpl({
     } catch (e) {
       console.error(e);
     }
+  }
+
+  if (isWatchOnly) {
+    disabled = true;
+    tooltipContent = WATCH_ONLY_TOOLTIP_TEXT;
   }
 
   return (

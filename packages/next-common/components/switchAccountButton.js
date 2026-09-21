@@ -5,6 +5,7 @@ import { MultisigAccountsProvider } from "./multisigs/context/multisigAccountsCo
 import SwitchSignerPopup from "./switchSignerPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useContextApi } from "next-common/context/api";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 function SwitchButton() {
   const user = useUser();
@@ -40,8 +41,10 @@ function SwitchButtonContent({ supportedMultisig }) {
 export default function SwitchButtonWrapper({ supportedMultisig = true }) {
   const realAddress = useRealAddress();
   const api = useContextApi();
+  const isWatchOnly = useIsWatchOnly();
 
-  if (!api) {
+  // A watch-only account has no signer to switch between.
+  if (isWatchOnly || !api) {
     return null;
   }
 

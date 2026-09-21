@@ -11,6 +11,8 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 function CreateReferendumAndVoteButtonImpl({
   who,
@@ -24,6 +26,7 @@ function CreateReferendumAndVoteButtonImpl({
   const { rank: evidenceOwnerRank } = useMemberRank(who);
   const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, evidenceOwnerRank);
+  const isWatchOnly = useIsWatchOnly();
 
   const [enactment] = useState({ after: 100 });
   const { fetch: fetchActiveReferenda } = useActiveReferendaContext();
@@ -50,8 +53,11 @@ function CreateReferendumAndVoteButtonImpl({
   });
 
   return (
-    <Tooltip content={tooltip}>
-      <ButtonComponent disabled={disabled} onClick={doSubmitCreateAndVote}>
+    <Tooltip content={isWatchOnly ? WATCH_ONLY_TOOLTIP_TEXT : tooltip}>
+      <ButtonComponent
+        disabled={disabled || isWatchOnly}
+        onClick={doSubmitCreateAndVote}
+      >
         {children}
       </ButtonComponent>
     </Tooltip>

@@ -10,7 +10,7 @@ import { WarningMessage } from "next-common/components/popup/styled";
 import SplitAbstainVoteStatus from "./splitAbstainVoteStatus";
 import VStack from "next-common/components/styled/vStack";
 import VoteTypeTab, { Aye, Nay, Split, SplitAbstain } from "./tab";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import useSubAddressReferendaVote, {
   getReferendaDirectVote,
 } from "next-common/hooks/referenda/useSubMyReferendaVote";
@@ -139,9 +139,9 @@ function VotePanel({
       {!isDelegated && (
         // Address is not allow to vote directly when it is in delegate mode
         <div className="flex flex-col gap-y-2 items-end">
-          <PrimaryButton loading={isLoading} onClick={doSubmit}>
+          <SubmitButton loading={isLoading} onClick={doSubmit}>
             Submit
-          </PrimaryButton>
+          </SubmitButton>
         </div>
       )}
     </>
