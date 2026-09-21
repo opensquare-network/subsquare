@@ -64,6 +64,7 @@ const ethereumNetwork = {
   rpcUrls: ["https://hydration-rpc.n.dwellir.com"],
   blockExplorerUrls: ["https://explorer.evm.hydration.cloud"],
   nativeCurrency: {
+    name: "Wrapped Ether",
     symbol: "WETH",
     decimals: 18,
   },

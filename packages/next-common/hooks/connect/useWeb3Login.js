@@ -7,7 +7,7 @@ import {
   setLoginResult,
 } from "next-common/store/reducers/userSlice";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount";
-import { useAsyncFn } from "react-use";
+import { useAsyncFn, useMountedState } from "react-use";
 import { useChain } from "next-common/context/chain";
 
 export function useWeb3Login() {
@@ -15,6 +15,7 @@ export function useWeb3Login() {
   const dispatch = useDispatch();
   const { closeLoginPopup } = useLoginPopup();
   const { connect: connectAccount } = useConnectedAccountContext();
+  const isMounted = useMountedState();
 
   const [state, web3Login] = useAsyncFn(
     async ({ account, wallet }) => {
@@ -28,9 +29,13 @@ export function useWeb3Login() {
         const accountInfo = {
           address,
           evmAddress: account.evmAddress,
+          connectorId: account.meta?.connectorId,
           wallet,
         };
         await connectAccount(accountInfo);
+        if (!isMounted()) {
+          return;
+        }
         dispatch(setLoginResult(LoginResult.Connected));
 
         closeLoginPopup();

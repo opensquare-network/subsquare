@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import {
+  addNetwork,
   getConnector,
   getEthereum,
   isSameChainId,
@@ -10,6 +11,7 @@ import getChainSettings from "../consts/settings";
 import { getEvmSignerAddress } from "../mixedChainUtil";
 import { hexToNumber } from "viem";
 import { noop } from "lodash-es";
+import Chains from "../consts/chains";
 
 export const DISPATCH_PRECOMPILE_ADDRESS =
   "0x0000000000000000000000000000000000000401";
@@ -27,17 +29,32 @@ export async function prepareEthereum({ ethereum, onError, signerAddress }) {
 
   const chainId = hexToNumber(ethereumNetwork.chainId);
 
-  if (!isSameChainId(chainId)) {
-    try {
+  const isHydrationWalletConnect =
+    ["walletConnect", "walletConnectUniversal"].includes(connector.id) &&
+    process.env.NEXT_PUBLIC_CHAIN === Chains.hydradx;
+
+  let chainAction = "check the current chain";
+  try {
+    if (isHydrationWalletConnect) {
+      chainAction = "add the Hydration network";
+      await addNetwork(ethereum, ethereumNetwork);
+      chainAction = "switch to Hydration";
+      await ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: ethereumNetwork.chainId }],
+      });
+    } else if (!isSameChainId(chainId)) {
       await switchNetwork(chainId);
-    } catch {
-      onError(
-        new Error(
-          `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`,
-        ),
-      );
-      return false;
     }
+  } catch (cause) {
+    console.error("Error switching network:", chainAction, cause);
+    const message = isHydrationWalletConnect
+      ? `Cannot ${chainAction}: ${
+          cause?.details || cause?.message || String(cause)
+        }`
+      : `Cannot switch to chain ${ethereumNetwork.chainName}, please add the network configuration to ${walletName} wallet.`;
+    onError(new Error(message, { cause }));
+    return false;
   }
 
   const accounts = await requestAccounts();

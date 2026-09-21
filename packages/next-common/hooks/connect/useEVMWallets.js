@@ -1,4 +1,5 @@
 import { filter, find, sortBy, uniqBy } from "lodash-es";
+import { useChainSettings } from "next-common/context/chain";
 import {
   allWallets,
   coinbaseWallet,
@@ -9,6 +10,7 @@ import {
   subWallet,
   talisman,
 } from "next-common/utils/consts/connect";
+import shouldEnableEvmWallets from "next-common/utils/shouldEnableEvmWallets";
 import { useConnectors } from "wagmi";
 import { useDetectEthereum } from "./useDetectEthereum";
 import { useHasCoinbaseWallet } from "./useHasCoinbaseWallet";
@@ -27,6 +29,9 @@ const fixedWallets = [
 export function useEVMWallets() {
   const connectors = useConnectors();
   const ethereum = useDetectEthereum();
+  const chainSettings = useChainSettings();
+  const isWalletConnectEnabled =
+    chainSettings?.supportWalletconnect && shouldEnableEvmWallets();
 
   /**
    * nova
@@ -62,6 +67,10 @@ export function useEVMWallets() {
   };
 
   const filteredConnectors = filter(connectors, (c) => {
+    if (c.id === "walletConnect" && !isWalletConnectEnabled) {
+      return false;
+    }
+
     // ignore injected connector
     if (c.id === "injected") {
       return false;

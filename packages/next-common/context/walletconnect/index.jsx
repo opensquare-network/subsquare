@@ -6,6 +6,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { useConnectedAccountContext } from "../connectedAccount";
@@ -17,6 +18,7 @@ import {
   newWarningToast,
 } from "next-common/store/reducers/toastSlice";
 import getChainSettings from "next-common/utils/consts/settings";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
@@ -75,23 +77,18 @@ async function initWalletConnectProvider() {
 
 export default function WalletConnectProvider({ children }) {
   const dispatch = useDispatch();
-  const { disconnect: disconnectAccount } = useConnectedAccountContext();
+  const { disconnect: disconnectAccount, connectedAccount } =
+    useConnectedAccountContext();
 
   const caip = useWalletConnectCaip();
   const chainId = useWalletConnectChainId();
   const [provider, setProvider] = useState(defaultWalletConnect.provider);
   const [session, setSession] = useState(defaultWalletConnect.session);
-
+  const pendingConnection = useRef(null);
   const [cachedSession, setCachedSession] = useLocalStorage(
     CACHE_KEY.walletConnectSession,
     session,
   );
-  useEffect(() => {
-    if (cachedSession) {
-      setSession(cachedSession);
-    }
-  }, [cachedSession]);
-
   const clearSession = useCallback(() => {
     setSession(null);
     setCachedSession(null);
@@ -99,49 +96,68 @@ export default function WalletConnectProvider({ children }) {
 
   const disconnectCombination = useCallback(async () => {
     clearSession();
-    await disconnectAccount();
-  }, [clearSession, disconnectAccount]);
+    if (
+      connectedAccount?.wallet === WalletTypes.WALLETCONNECT ||
+      connectedAccount?.connectorId === "walletConnectUniversal"
+    ) {
+      await disconnectAccount();
+    }
+  }, [clearSession, connectedAccount, disconnectAccount]);
+
+  useEffect(() => {
+    if (!cachedSession) {
+      return;
+    }
+    setSession(cachedSession);
+  }, [cachedSession, disconnectCombination]);
 
   useEffect(() => {
     if (provider) {
       return;
     }
-    initWalletConnectProvider().then(setProvider);
-  }, [provider]);
+    initWalletConnectProvider()
+      .then(setProvider)
+      .catch((error) => dispatch(newErrorToast(error.message)));
+  }, [provider, dispatch]);
 
   const connect = useCallback(async () => {
     if (!provider || !chainId) {
       return;
     }
 
-    return await provider.client
-      .connect({
-        optionalNamespaces: {
-          polkadot: {
-            chains: [chainId],
-            methods: ["polkadot_signTransaction", "polkadot_signMessage"],
-            events: ["chainChanged", "accountsChanged"],
-          },
-        },
-      })
-      .then((result) => {
-        result
-          .approval()
-          .then((session) => {
-            setSession(session);
-            setCachedSession(session);
-          })
-          .catch((error) => {
-            const isUserRefused = error.code === 5000;
-            const isUnsupportedChains = error.code === 5100;
-            if ((isUserRefused || isUnsupportedChains) && error.message) {
-              dispatch(newWarningToast(error.message));
-            }
-            console.error(error);
-          });
+    if (pendingConnection.current) {
+      return await pendingConnection.current;
+    }
 
-        return result;
-      });
+    pendingConnection.current = new Promise((resolve) => {
+      const onDisplayUri = (uri) => resolve({ uri });
+      provider.once("display_uri", onDisplayUri);
+      provider
+        .connect({
+          namespaces: {
+            polkadot: {
+              chains: [chainId],
+              methods: ["polkadot_signTransaction", "polkadot_signMessage"],
+              events: ["chainChanged", "accountsChanged"],
+            },
+          },
+        })
+        .then((approvedSession) => {
+          setSession(approvedSession);
+          setCachedSession(approvedSession);
+          resolve();
+        })
+        .catch((error) => {
+          dispatch(newWarningToast(error.message));
+          resolve();
+        })
+        .finally(() => {
+          provider.removeListener("display_uri", onDisplayUri);
+        });
+    }).finally(() => {
+      pendingConnection.current = null;
+    });
+    return await pendingConnection.current;
   }, [chainId, provider, setCachedSession, dispatch]);
 
   const [{ loading: disconnectLoading }, disconnect] = useAsyncFn(async () => {
@@ -162,7 +178,7 @@ export default function WalletConnectProvider({ children }) {
   }, [provider, session, disconnectCombination]);
 
   const fetchAddresses = useCallback(async () => {
-    if (!provider || !session) {
+    if (!provider || !session || !caip) {
       return [];
     }
 
@@ -172,8 +188,8 @@ export default function WalletConnectProvider({ children }) {
 
     const filteredAccounts = walletConnectAccounts
       .filter((wcAccount) => {
-        const prefix = wcAccount.split(":")[1];
-        return prefix === caip;
+        const [namespace, prefix] = wcAccount.split(":");
+        return namespace === "polkadot" && prefix === caip;
       })
       .map((wcAccount) => {
         const address = wcAccount.split(":")[2];
@@ -228,17 +244,29 @@ export default function WalletConnectProvider({ children }) {
     [chainId, provider, session],
   );
 
-  const onSessionExpire = useCallback(() => {
-    dispatch(
-      newErrorToast("Session expired, please connect to WalletConnect again"),
-    );
-    disconnectCombination();
-  }, [disconnectCombination, dispatch]);
+  const onSessionExpire = useCallback(
+    ({ topic }) => {
+      if (topic !== session?.topic) {
+        return;
+      }
+      dispatch(
+        newErrorToast("Session expired, please connect to WalletConnect again"),
+      );
+      disconnectCombination();
+    },
+    [session?.topic, disconnectCombination, dispatch],
+  );
 
-  const onSessionDelete = useCallback(() => {
-    dispatch(newErrorToast("The connection has been disconnected"));
-    disconnectCombination();
-  }, [disconnectCombination, dispatch]);
+  const onSessionDelete = useCallback(
+    ({ topic }) => {
+      if (topic !== session?.topic) {
+        return;
+      }
+      dispatch(newErrorToast("The connection has been disconnected"));
+      disconnectCombination();
+    },
+    [session?.topic, disconnectCombination, dispatch],
+  );
 
   useEffect(() => {
     if (provider) {
@@ -255,7 +283,6 @@ export default function WalletConnectProvider({ children }) {
         provider.off("disconnect", disconnectCombination);
         provider.client.off("session_expire", onSessionExpire);
         provider.client.off("session_delete", onSessionDelete);
-        provider.client.removeAllListeners();
       }
     };
   }, [disconnectCombination, onSessionExpire, onSessionDelete, provider]);

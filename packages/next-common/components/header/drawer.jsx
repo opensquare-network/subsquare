@@ -163,7 +163,9 @@ export default function SidebarAccount() {
 
 export function WalletConnectDisconnectLoading({ type }) {
   const { disconnectLoading } = useWalletConnect();
-  if (!disconnectLoading || type !== "logout") {
+  const { disconnectLoading: evmDisconnectLoading } =
+    useConnectedAccountContext();
+  if (!(disconnectLoading || evmDisconnectLoading) || type !== "logout") {
     return null;
   }
   return <Loading size={16} />;
