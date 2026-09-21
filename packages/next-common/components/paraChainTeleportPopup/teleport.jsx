@@ -7,7 +7,6 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import { useUser } from "next-common/context/user";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import SubmitButton from "next-common/components/common/tx/submitButton";
-import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import {
   newErrorToast,
   newSuccessToast,
@@ -20,17 +19,6 @@ import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
-import Tooltip from "next-common/components/tooltip";
-
-function TooltipDisabledGuard({ disabled, children }) {
-  return disabled ? (
-    <Tooltip content="Source and destination should be different chains">
-      {children}
-    </Tooltip>
-  ) : (
-    children
-  );
-}
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -47,7 +35,6 @@ function PopupContent() {
     destinationChain,
   });
   const { sendTxFunc, isSubmitting } = useSendTransaction();
-  const isWatchOnly = useIsWatchOnly();
 
   const user = useUser();
   const address = user?.address;
@@ -111,15 +98,18 @@ function PopupContent() {
         <ExistentialDeposit destApi={destinationApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TooltipDisabledGuard disabled={submitDisabled && !isWatchOnly}>
-          <SubmitButton
-            loading={isSubmitting}
-            onClick={doSubmit}
-            disabled={submitDisabled}
-          >
-            Submit
-          </SubmitButton>
-        </TooltipDisabledGuard>
+        <SubmitButton
+          tooltip={
+            submitDisabled
+              ? "Source and destination should be different chains"
+              : undefined
+          }
+          loading={isSubmitting}
+          onClick={doSubmit}
+          disabled={submitDisabled}
+        >
+          Submit
+        </SubmitButton>
       </div>
     </>
   );

@@ -6,14 +6,12 @@ import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellows
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
 import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
-import { useIsWatchOnly } from "next-common/context/connectedAccount";
-import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
@@ -31,7 +29,6 @@ function CreateReferendumAndVoteButtonImpl({
     useState(false);
   const dispatch = useDispatch();
   const { rank: evidenceOwnerRank } = useMemberRank(who);
-  const isWatchOnly = useIsWatchOnly();
 
   const chain = useChain();
   const trackName = getPromoteTrackNameFromRank(chain, evidenceOwnerRank + 1);
@@ -70,14 +67,14 @@ function CreateReferendumAndVoteButtonImpl({
 
   return (
     <>
-      <Tooltip content={isWatchOnly ? WATCH_ONLY_TOOLTIP_TEXT : tooltip}>
-        <ButtonComponent
-          disabled={disabled || isWatchOnly}
-          onClick={createReferendaAndVote}
-        >
-          {children}
-        </ButtonComponent>
-      </Tooltip>
+      <SubmitButton
+        button={ButtonComponent}
+        tooltip={tooltip}
+        disabled={disabled}
+        onClick={createReferendaAndVote}
+      >
+        {children}
+      </SubmitButton>
       {showMaybeFastPromotePopup && (
         <CreatePromotionReferendaAndVotePopup
           who={who}

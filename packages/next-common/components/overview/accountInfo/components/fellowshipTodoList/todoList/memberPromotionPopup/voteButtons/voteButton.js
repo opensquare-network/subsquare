@@ -7,11 +7,9 @@ import { useRankedCollectivePallet } from "next-common/context/collectives/colle
 import { useFellowshipMemberRank } from "next-common/hooks/fellowship/useFellowshipMemberRank";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
-import Tooltip from "next-common/components/tooltip";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 import { isNil, noop } from "lodash-es";
-import { useIsWatchOnly } from "next-common/context/connectedAccount";
-import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 
 function VoteButtonImpl({
   referendumIndex,
@@ -29,7 +27,6 @@ function VoteButtonImpl({
   );
   const { result: referendumInfo, loading: isReferendumInfoLoading } =
     useSubFellowshipReferendum(referendumIndex);
-  const isWatchOnly = useIsWatchOnly();
 
   const { onInBlock = noop, onFinalized = noop } = callbacks || {};
 
@@ -64,17 +61,15 @@ function VoteButtonImpl({
     }
   }
 
-  if (isWatchOnly) {
-    disabled = true;
-    tooltipContent = WATCH_ONLY_TOOLTIP_TEXT;
-  }
-
   return (
-    <Tooltip content={tooltipContent}>
-      <ButtonComponent disabled={disabled} onClick={doSubmitVote}>
-        {children}
-      </ButtonComponent>
-    </Tooltip>
+    <SubmitButton
+      button={ButtonComponent}
+      tooltip={tooltipContent}
+      disabled={disabled}
+      onClick={doSubmitVote}
+    >
+      {children}
+    </SubmitButton>
   );
 }
 

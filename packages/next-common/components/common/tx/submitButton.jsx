@@ -2,13 +2,18 @@ import PrimaryButton from "next-common/lib/button/primary";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
-// Primary button for tx submissions: disabled, with a hint tooltip, when the
-// connected account is watch-only.
-export default function SubmitButton({ disabled = false, children, ...props }) {
+// Tx submit button. Watch-only accounts are handled here: the button is
+// disabled and its tooltip becomes the watch-only hint.
+export default function SubmitButton({
+  tooltip,
+  disabled = false,
+  children,
+  ...props
+}) {
   const isWatchOnly = useIsWatchOnly();
 
   return (
-    <WatchOnlyTooltip>
+    <WatchOnlyTooltip content={tooltip}>
       <PrimaryButton {...props} disabled={disabled || isWatchOnly}>
         {children}
       </PrimaryButton>

@@ -1,34 +1,30 @@
 import { SystemClose } from "@osn/icons/subsquare";
 import { noop } from "lodash-es";
-import styled, { css } from "styled-components";
+import { cn } from "next-common/utils";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 
-const Wrapper = styled.div`
-  display: inline-flex;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid var(--neutral400);
-  ${(p) =>
-    p.disabled &&
-    css`
-      pointer-events: none;
-    `}
-  svg path {
-    ${(p) =>
-      p.disabled
-        ? css`
-            fill: var(--textDisabled);
-          `
-        : css`
-            fill: var(--textPrimary);
-          `}
-  }
-`;
-
-export default function RemoveButton({ disabled, onClick = noop }) {
+// Compact square submit button, built on SubmitButton so it inherits the
+// watch-only handling.
+export default function RemoveButton({
+  tooltip,
+  disabled = false,
+  onClick = noop,
+  className,
+}) {
   return (
-    <Wrapper disabled={disabled} onClick={onClick}>
+    <SubmitButton
+      tooltip={tooltip}
+      disabled={disabled}
+      onClick={onClick}
+      className={cn(
+        "!h-auto !p-1.5 !rounded",
+        "!bg-transparent !border-neutral400",
+        "!text-textPrimary disabled:!text-textDisabled",
+        "cursor-pointer disabled:!cursor-not-allowed",
+        className,
+      )}
+    >
       <SystemClose width={16} height={16} />
-    </Wrapper>
+    </SubmitButton>
   );
 }
