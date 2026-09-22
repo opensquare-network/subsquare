@@ -15,6 +15,7 @@ import DvReferendaDataProvider from "next-common/context/referenda/dv/dvReferend
 import NotFound from "next-common/components/notFound";
 import Influence from "next-common/components/referenda/dv/influence";
 import CohortInfoPanel from "next-common/components/referenda/dv/cohort/cohortInfoPanel";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 function NilCohortPage() {
   const seoInfo = {
@@ -44,26 +45,28 @@ export default function CohortPage() {
 
   return (
     <SectionLayout seoInfo={seoInfo}>
-      <DvDataTypeProvider>
-        <DvReferendaDataProvider>
-          <CountBySelect
-            className="mx-0 mb-4"
-            selectClassName="max-sm:ml-12 mr-6"
-          >
-            <Breadcrumbs
-              className="mb-0 flex-1"
-              breadcrumbs={<CohortBreadcrumb />}
-            />
-          </CountBySelect>
-          <div className="flex flex-col gap-y-4">
-            <CohortInfoPanel />
-            <Overview />
-            <DelegatesSection />
-            <DvReferendaVotes />
-            <Influence />
-          </div>
-        </DvReferendaDataProvider>
-      </DvDataTypeProvider>
+      <ReferendaPalletProvider pallet="referenda">
+        <DvDataTypeProvider>
+          <DvReferendaDataProvider>
+            <CountBySelect
+              className="mx-0 mb-4"
+              selectClassName="max-sm:ml-12 mr-6"
+            >
+              <Breadcrumbs
+                className="mb-0 flex-1"
+                breadcrumbs={<CohortBreadcrumb />}
+              />
+            </CountBySelect>
+            <div className="flex flex-col gap-y-4">
+              <CohortInfoPanel />
+              <Overview />
+              <DelegatesSection />
+              <DvReferendaVotes />
+              <Influence />
+            </div>
+          </DvReferendaDataProvider>
+        </DvDataTypeProvider>
+      </ReferendaPalletProvider>
     </SectionLayout>
   );
 }
