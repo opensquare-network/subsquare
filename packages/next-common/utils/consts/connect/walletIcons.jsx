@@ -3,6 +3,12 @@ import { cn } from "next-common/utils";
 
 export function WalletWatchOnly({ className, ...props }) {
   return (
-    <SystemEye {...props} className={cn("text-textSecondary", className)} />
+    <SystemEye
+      {...props}
+      className={cn(
+        "text-textSecondary p-px rounded-full bg-neutral100",
+        className,
+      )}
+    />
   );
 }
