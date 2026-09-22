@@ -11,7 +11,8 @@ import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/c
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
-import SubmitButton from "next-common/components/common/tx/submitButton";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 const CreatePromotionReferendaAndVotePopup = dynamicPopup(() =>
   import("../../createPromotionReferendaAndVotePopup"),
@@ -29,6 +30,7 @@ function CreateReferendumAndVoteButtonImpl({
     useState(false);
   const dispatch = useDispatch();
   const { rank: evidenceOwnerRank } = useMemberRank(who);
+  const isWatchOnly = useIsWatchOnly();
 
   const chain = useChain();
   const trackName = getPromoteTrackNameFromRank(chain, evidenceOwnerRank + 1);
@@ -67,14 +69,14 @@ function CreateReferendumAndVoteButtonImpl({
 
   return (
     <>
-      <SubmitButton
-        button={ButtonComponent}
-        tooltip={tooltip}
-        disabled={disabled}
-        onClick={createReferendaAndVote}
-      >
-        {children}
-      </SubmitButton>
+      <WatchOnlyTooltip content={tooltip}>
+        <ButtonComponent
+          disabled={disabled || isWatchOnly}
+          onClick={createReferendaAndVote}
+        >
+          {children}
+        </ButtonComponent>
+      </WatchOnlyTooltip>
       {showMaybeFastPromotePopup && (
         <CreatePromotionReferendaAndVotePopup
           who={who}

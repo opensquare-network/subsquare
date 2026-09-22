@@ -10,7 +10,8 @@ import { getRetainTrackNameFromRank } from "next-common/components/fellowship/co
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
-import SubmitButton from "next-common/components/common/tx/submitButton";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 function CreateReferendumAndVoteButtonImpl({
   who,
@@ -22,6 +23,7 @@ function CreateReferendumAndVoteButtonImpl({
 }) {
   const dispatch = useDispatch();
   const { rank: evidenceOwnerRank } = useMemberRank(who);
+  const isWatchOnly = useIsWatchOnly();
   const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, evidenceOwnerRank);
 
@@ -50,14 +52,14 @@ function CreateReferendumAndVoteButtonImpl({
   });
 
   return (
-    <SubmitButton
-      button={ButtonComponent}
-      tooltip={tooltip}
-      disabled={disabled}
-      onClick={doSubmitCreateAndVote}
-    >
-      {children}
-    </SubmitButton>
+    <WatchOnlyTooltip content={tooltip}>
+      <ButtonComponent
+        disabled={disabled || isWatchOnly}
+        onClick={doSubmitCreateAndVote}
+      >
+        {children}
+      </ButtonComponent>
+    </WatchOnlyTooltip>
   );
 }
 

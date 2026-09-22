@@ -9,7 +9,8 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubFellowshipReferendum from "next-common/hooks/collectives/useSubFellowshipReferendum";
 import { getMinRankOfClass } from "next-common/context/post/fellowship/useMaxVoters";
 import { isNil, noop } from "lodash-es";
-import SubmitButton from "next-common/components/common/tx/submitButton";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 function VoteButtonImpl({
   referendumIndex,
@@ -21,6 +22,7 @@ function VoteButtonImpl({
   const api = useContextApi();
   const collectivePallet = useRankedCollectivePallet();
   const realAddress = useRealAddress();
+  const isWatchOnly = useIsWatchOnly();
   const { rank: myRank, isLoading: isMyRankLoading } = useFellowshipMemberRank(
     realAddress,
     collectivePallet,
@@ -62,14 +64,14 @@ function VoteButtonImpl({
   }
 
   return (
-    <SubmitButton
-      button={ButtonComponent}
-      tooltip={tooltipContent}
-      disabled={disabled}
-      onClick={doSubmitVote}
-    >
-      {children}
-    </SubmitButton>
+    <WatchOnlyTooltip content={tooltipContent}>
+      <ButtonComponent
+        disabled={disabled || isWatchOnly}
+        onClick={doSubmitVote}
+      >
+        {children}
+      </ButtonComponent>
+    </WatchOnlyTooltip>
   );
 }
 
