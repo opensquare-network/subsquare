@@ -4,9 +4,10 @@ import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 // Disabled buttons do not emit pointer events, so the wrapper is the hover
-// target of the tooltip.
+// target of the tooltip. `display: grid` keeps the wrapper block-wide with its
+// child stretched, so it does not shrink buttons inside flex layouts.
 const TriggerWrapper = styled.div`
-  display: inline-block;
+  display: grid;
 
   button:disabled,
   [disabled] {
