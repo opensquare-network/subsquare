@@ -14,10 +14,12 @@ import { usePost } from "next-common/context/post";
 import { useCommentActions } from "next-common/sima/context/commentActions";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import Tooltip from "../tooltip";
 import { useDetailType } from "next-common/context/page";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { getRealField } from "next-common/sima/actions/common";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_COMMENT_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -91,6 +93,7 @@ function CommentEditor(
   const { createPostComment, createCommentReply } = useCommentActions();
 
   const shouldUseSima = useShouldUseSima(replyToComment);
+  const isWatchOnly = useIsWatchOnly();
 
   const createComment = async (realAddress) => {
     if (!isMounted()) {
@@ -191,18 +194,21 @@ function CommentEditor(
             Cancel
           </SecondaryButton>
         )}
-        <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
+        <WatchOnlyTooltip
+          content={isEmpty ? "Cannot submit empty content" : ""}
+          watchOnlyContent={WATCH_ONLY_COMMENT_TOOLTIP_TEXT}
+        >
           <MaybeSplitCommentButton
             isSima={shouldUseSima}
             isReply={isReply}
             loading={loading}
-            disabled={isEmpty}
+            disabled={isEmpty || isWatchOnly}
             onClickComment={() => createComment()}
             onClickCommentAsProxy={(realAddress) => {
               createComment(realAddress);
             }}
           />
-        </Tooltip>
+        </WatchOnlyTooltip>
       </ButtonWrapper>
     </Wrapper>
   );

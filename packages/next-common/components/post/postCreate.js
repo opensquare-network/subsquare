@@ -20,7 +20,7 @@ import Editor, { useEditorUploading } from "../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
-import { WATCH_ONLY_CREATE_POST_LOGIN_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import { WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -198,7 +198,7 @@ export default function PostCreate() {
 
       <ButtonWrapper>
         <WatchOnlyTooltip
-          watchOnlyContent={WATCH_ONLY_CREATE_POST_LOGIN_TOOLTIP_TEXT}
+          watchOnlyContent={WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT}
         >
           <PrimaryButton
             loading={creating}

@@ -13,7 +13,7 @@ import AddressCombo from "next-common/components/addressCombo";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
-import { WATCH_ONLY_CREATE_APPLICATION_LOGIN_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import { WATCH_ONLY_CREATE_APPLICATION_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 function PageTitle() {
   return (
@@ -159,7 +159,7 @@ function CreateFellowshipApplicationImpl() {
       />
       <div className="flex justify-end">
         <WatchOnlyTooltip
-          watchOnlyContent={WATCH_ONLY_CREATE_APPLICATION_LOGIN_TOOLTIP_TEXT}
+          watchOnlyContent={WATCH_ONLY_CREATE_APPLICATION_TOOLTIP_TEXT}
         >
           <PrimaryButton
             loading={loading}
