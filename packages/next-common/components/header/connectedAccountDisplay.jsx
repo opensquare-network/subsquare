@@ -1,30 +1,23 @@
-import { SystemEye } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 import { AddressUser } from "next-common/components/user";
 import Tooltip from "next-common/components/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WalletWatchOnly } from "next-common/utils/consts/connect/walletIcons";
 
-// Connected account shown in the header. A watch-only account gets an eye badge
-// on its avatar: it is absolutely positioned, so the display size is unchanged.
+// Connected account shown in the header. A watch-only account hides the avatar
+// and shows an eye icon in its place.
 export default function ConnectedAccountDisplay({ address, className }) {
   const isWatchOnly = useIsWatchOnly();
-  const account = <AddressUser add={address} noEvent />;
 
   if (!isWatchOnly) {
-    return account;
+    return <AddressUser add={address} noEvent />;
   }
 
   return (
     <Tooltip content="Watch-only account">
-      <div className={cn("relative flex items-center", className)}>
-        {account}
-        <SystemEye
-          className={cn(
-            "absolute left-1.5 bottom-0",
-            "w-3.5 h-3.5 p-px",
-            "rounded-full bg-neutral100 text-textSecondary",
-          )}
-        />
+      <div className={cn("flex items-center", className)}>
+        <WalletWatchOnly className="mr-2 w-4 h-4 shrink-0 text-textTertiary" />
+        <AddressUser add={address} noEvent showAvatar={false} />
       </div>
     </Tooltip>
   );
