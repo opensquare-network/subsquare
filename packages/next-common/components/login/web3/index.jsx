@@ -29,9 +29,7 @@ export default function LoginWeb3({ setIsWeb3 = noop }) {
 
       {isWalletConnectView && <LoginWeb3WalletConnect />}
       {isPolkadotVaultView && <LoginWeb3PolkadotVault />}
-      {isWatchOnlyView && chainSettings?.supportWatchOnly && (
-        <LoginWeb3WatchOnly />
-      )}
+      {isWatchOnlyView && <LoginWeb3WatchOnly />}
 
       {chainSettings?.allowWeb2Login && (
         <div className="text-center text14Medium text-textSecondary">

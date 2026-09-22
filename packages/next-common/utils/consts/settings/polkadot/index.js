@@ -128,7 +128,6 @@ const polkadot = {
   },
   supportWalletconnect: true,
   supportPolkadotVault: true,
-  supportWatchOnly: true,
   openSquare: {
     voting: "polkadot",
   },
