@@ -51,12 +51,6 @@ const useQuickStartItems = () => {
         content: NewTreasurySpendReferendumInnerPopupContent,
       });
     }
-    items.push({
-      name: "Treasury proposal",
-      description:
-        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
-      content: NewTreasuryReferendumInnerPopupContent,
-    });
     if (isHydrationChain(chain)) {
       items.push({
         name: "Stable treasury spend proposal",
@@ -103,6 +97,12 @@ const useQuickStartItems = () => {
         content: FundMultiAssetBountyReferendumInnerPopupContent,
       });
     }
+    items.push({
+      name: "Treasury proposal",
+      description:
+        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
+      content: NewTreasuryReferendumInnerPopupContent,
+    });
     items.push({
       name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
       description: "Create a remark proposal",

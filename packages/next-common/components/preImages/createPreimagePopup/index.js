@@ -198,14 +198,14 @@ function ProposalTemplateQuickStart() {
     <QuickStart>
       {isCollectivesChain(chain) && <FellowshipTreasurySpend />}
       {isCollectivesChain(chain) && <FellowshipUSDxTreasurySpend />}
-      {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
-        <SpendLocalTreasury />
-      )}
       {isHydrationChain(chain) && <HydrationTreasurySpend />}
       <SpendUSDxTreasury />
       <SpendDotOnAssetHub />
       <BatchTreasurySpend />
       <FundMultiAssetBounty />
+      {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
+        <SpendLocalTreasury />
+      )}
       <NewRemark />
       <CancelReferendum />
       <KillReferendum />
