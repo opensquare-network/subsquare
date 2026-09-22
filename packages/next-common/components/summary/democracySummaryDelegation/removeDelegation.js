@@ -16,10 +16,8 @@ export default function DemocracyRemoveDelegation({ ButtonComponent }) {
   const [isLoading, setIsLoading] = useState(false);
   const [showUndelegatePopup, setShowUndelegatePopup] = useState(false);
 
-  // A passed button handles its own tooltip, see RemoveButton.
   const button = ButtonComponent ? (
     <ButtonComponent
-      tooltip="Remove"
       disabled={isLoading}
       onClick={() => setShowUndelegatePopup(true)}
     />
@@ -34,13 +32,9 @@ export default function DemocracyRemoveDelegation({ ButtonComponent }) {
 
   return (
     <>
-      {ButtonComponent ? (
-        button
-      ) : (
-        <Tooltip content="Remove">
-          <div>{button}</div>
-        </Tooltip>
-      )}
+      <Tooltip content="Remove">
+        <div>{button}</div>
+      </Tooltip>
       {showUndelegatePopup && (
         <UndelegatePopup
           onClose={() => setShowUndelegatePopup(false)}

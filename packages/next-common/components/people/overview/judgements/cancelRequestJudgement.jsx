@@ -1,4 +1,4 @@
-import RemoveButton from "next-common/components/removeButton";
+import SubmitRemoveButton from "next-common/components/common/tx/submitRemoveButton";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useContextApi } from "next-common/context/api";
@@ -29,6 +29,10 @@ export default function CancelRequestJudgement({ registrarIndex }) {
   });
 
   return (
-    <RemoveButton tooltip="Cancel" disabled={isSubmitting} onClick={doSubmit} />
+    <SubmitRemoveButton
+      tooltip="Cancel"
+      disabled={isSubmitting}
+      onClick={doSubmit}
+    />
   );
 }

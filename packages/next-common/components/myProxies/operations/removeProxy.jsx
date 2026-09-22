@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from "react";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
-import RemoveButton from "next-common/components/removeButton";
+import SubmitRemoveButton from "next-common/components/common/tx/submitRemoveButton";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { noop } from "lodash-es";
@@ -41,6 +41,10 @@ export default function RemoveProxy({ data, onSubmitted = noop }) {
   }, [isSubmitting]);
 
   return (
-    <RemoveButton tooltip="Remove" disabled={isDisabled} onClick={doSubmit} />
+    <SubmitRemoveButton
+      tooltip="Remove"
+      disabled={isDisabled}
+      onClick={doSubmit}
+    />
   );
 }
