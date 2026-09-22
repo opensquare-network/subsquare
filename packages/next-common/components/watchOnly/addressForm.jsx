@@ -2,7 +2,6 @@ import { isAddress } from "@polkadot/util-crypto";
 import { useState } from "react";
 import Input from "next-common/lib/input";
 import PrimaryButton from "next-common/lib/button/primary";
-import { Label } from "next-common/components/login/styled";
 import { useChain } from "next-common/context/chain";
 import { encodeAddressToChain } from "next-common/services/address";
 import { useWeb3Login } from "next-common/hooks/connect/useWeb3Login";
@@ -41,7 +40,6 @@ export default function WatchOnlyAddressForm({
   return (
     <div className="space-y-3">
       <div>
-        <Label>Address</Label>
         <Input
           placeholder="Please fill the address to watch"
           value={address}
