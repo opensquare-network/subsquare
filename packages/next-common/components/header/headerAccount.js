@@ -11,7 +11,8 @@ import { useLoginPopup } from "next-common/hooks/useLoginPopup.js";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { SystemProfile } from "@osn/icons/subsquare";
 import { useConnectedAccountContext } from "next-common/context/connectedAccount/index.js";
-import { AddressUser, SystemUser } from "../user";
+import { SystemUser } from "../user";
+import ConnectedAccountDisplay from "./connectedAccountDisplay.jsx";
 import { useAccountMenu } from "./useAccountMenu.js";
 import { walletConnect } from "next-common/utils/consts/connect/index.js";
 import { useWalletConnect } from "next-common/context/walletconnect/index.jsx";
@@ -121,7 +122,7 @@ export default function HeaderAccount() {
     } else {
       connectBtn = (
         <SecondaryButton onClick={() => setShow(!show)}>
-          <AddressUser add={user?.address} noEvent />
+          <ConnectedAccountDisplay address={user?.address} />
         </SecondaryButton>
       );
     }

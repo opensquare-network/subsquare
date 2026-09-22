@@ -6,7 +6,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useUser } from "next-common/context/user";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import {
   newErrorToast,
   newSuccessToast,
@@ -153,9 +153,9 @@ function PopupContent() {
         />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <PrimaryButton loading={isSubmitting} onClick={doSubmit}>
+        <SubmitButton loading={isSubmitting} onClick={doSubmit}>
           Submit
-        </PrimaryButton>
+        </SubmitButton>
       </div>
     </>
   );

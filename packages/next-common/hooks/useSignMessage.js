@@ -12,6 +12,10 @@ import { useWalletConnect } from "next-common/context/walletconnect";
 import WalletTypes from "next-common/utils/consts/walletTypes";
 import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
 import { isMockAccountAddress } from "next-common/utils/mockAccount";
+import {
+  isWatchOnlyAccount,
+  WATCH_ONLY_MESSAGE_SIGN_REJECTED_TEXT,
+} from "next-common/utils/watchOnly";
 
 // Fixed fake signature returned for mock accounts (bypass real wallet signing)
 const MOCK_SIGNATURE = "0x" + "00".repeat(64);
@@ -26,6 +30,10 @@ export function useSignMessage() {
     async (message, address, walletName) => {
       if (isMockAccountAddress(address)) {
         return MOCK_SIGNATURE;
+      }
+
+      if (isWatchOnlyAccount({ wallet: walletName })) {
+        throw new Error(WATCH_ONLY_MESSAGE_SIGN_REJECTED_TEXT);
       }
 
       const shouldUseEVMSign = walletName === metamask.extensionName;

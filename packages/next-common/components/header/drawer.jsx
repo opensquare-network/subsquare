@@ -15,7 +15,8 @@ import { walletConnect } from "next-common/utils/consts/connect/index.js";
 import { useAccountMenu } from "./useAccountMenu";
 import Divider from "next-common/components/styled/layout/divider";
 import SwitchAccount from "next-common/components/switchAccount";
-import AddressUser from "next-common/components/user/addressUser";
+import ConnectedAccountDisplay from "./connectedAccountDisplay.jsx";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import SearchInputWithPopup from "./searchInputWithPopup";
 import { useWalletConnect } from "next-common/context/walletconnect";
 import Loading from "next-common/components/loading";
@@ -66,14 +67,18 @@ function ProfileMenuItem({ onClick }) {
 }
 
 function ConnectedAccount({ user }) {
+  const isWatchOnly = useIsWatchOnly();
+
   if (!user?.address) {
     return null;
   }
 
   return (
     <div className="flex items-center justify-between rounded-lg bg-neutral200 border-none h-10 mb-2 pl-2 pr-4">
-      <AddressUser add={user?.address} key={user?.address} />
-      <span className="text12Medium text-textTertiary">Connected</span>
+      <ConnectedAccountDisplay address={user?.address} />
+      <span className="text12Medium text-textTertiary">
+        {isWatchOnly ? "Watch-only" : "Connected"}
+      </span>
     </div>
   );
 }

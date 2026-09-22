@@ -5,7 +5,7 @@ import {
   newSuccessToast,
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import { useMultisigAccounts } from "../context/multisigAccountsContext";
@@ -106,13 +106,13 @@ export default function RemovePopup({ onClose, multisig }) {
         <MultisigErrorMessage>{ERROR_MESSAGE.NAME_EXIST}</MultisigErrorMessage>
       )}
       <div className="flex justify-end">
-        <PrimaryButton
+        <SubmitButton
           loading={isLoading}
           disabled={isLoading || !name || isNameEqual}
           onClick={doSubmit}
         >
           Save Changes
-        </PrimaryButton>
+        </SubmitButton>
       </div>
     </Popup>
   );

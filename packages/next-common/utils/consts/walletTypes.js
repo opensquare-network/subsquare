@@ -13,6 +13,7 @@ const WalletTypes = {
   COINBASE_WALLET: "coinbase wallet",
   WALLETCONNECT: "walletconnect",
   POLKADOT_VAULT: "polkadot-vault",
+  WATCH_ONLY: "watch-only",
 };
 
 export default WalletTypes;

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
-import RemoveButton from "next-common/components/removeButton";
+import SubmitRemoveButton from "next-common/components/common/tx/submitRemoveButton";
 import Tooltip from "next-common/components/tooltip";
 import { clearCachedIdentitys } from "next-common/services/identity";
 import { useChain } from "next-common/context/chain";
@@ -79,9 +79,11 @@ export function DirectIdentityActions() {
             <SystemEdit2 className="w-[16px] h-[16px]" />
           </Tooltip>
         </div>
-        <Tooltip content="Clear Identity">
-          <RemoveButton disabled={isSubmitting} onClick={clearIdentity} />
-        </Tooltip>
+        <SubmitRemoveButton
+          tooltip="Clear Identity"
+          disabled={isSubmitting}
+          onClick={clearIdentity}
+        />
       </div>
       {showSetIdentityPopup && (
         <SetIdentityPopup onClose={() => setShowSetIdentityPopup(false)} />

@@ -6,8 +6,7 @@ import useTxSubmission from "next-common/components/common/tx/useTxSubmission";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
-import PrimaryButton from "next-common/lib/button/primary";
-import Tooltip from "next-common/components/tooltip";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import useMyRank from "../memberPromotionPopup/voteButtons/useMyRank";
 import { useChain } from "next-common/context/chain";
 import { getPromoteTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/promote/popup";
@@ -85,15 +84,14 @@ export default function CreatePromotionReferendaAndVotePopup({
         setSelectedRank={setToRank}
       />
       <div className="flex justify-end">
-        <Tooltip content={tooltipContent}>
-          <PrimaryButton
-            disabled={disabled}
-            loading={isSubmitting}
-            onClick={doSubmitCreateAndVote}
-          >
-            Create & Vote
-          </PrimaryButton>
-        </Tooltip>
+        <SubmitButton
+          tooltip={tooltipContent}
+          disabled={disabled}
+          loading={isSubmitting}
+          onClick={doSubmitCreateAndVote}
+        >
+          Create &amp; Vote
+        </SubmitButton>
       </div>
     </PopupWithSigner>
   );

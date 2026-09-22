@@ -15,6 +15,7 @@ import { clearMyMultisigsData } from "next-common/store/reducers/multisigSlice";
 import { useDispatch } from "react-redux";
 import { usePageLoading } from "next-common/context/pageLoading";
 import { getMockAccountAddress } from "next-common/utils/mockAccount";
+import { isWatchOnlyAccount } from "next-common/utils/watchOnly";
 
 const ConnectedAccountContext = createContext(null);
 
@@ -169,6 +170,11 @@ export function useConnectedAccountContext() {
 export function useConnectedAccount() {
   const { connectedAccount } = useConnectedAccountContext();
   return connectedAccount;
+}
+
+export function useIsWatchOnly() {
+  const connectedAccount = useConnectedAccount();
+  return isWatchOnlyAccount(connectedAccount);
 }
 
 export function getContextConnectedAccount() {

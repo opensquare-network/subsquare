@@ -6,7 +6,7 @@ import useAddressComboField from "next-common/components/preImages/createPreimag
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useUser } from "next-common/context/user";
 import { useSendTransaction } from "next-common/hooks/useSendTransaction";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import {
   newErrorToast,
   newSuccessToast,
@@ -19,17 +19,6 @@ import useNativeTransferAmount from "./useNativeTransferAmount";
 import PeopleApiProvider from "next-common/context/people/api";
 import CoretimeApiProvider from "next-common/context/coretime/api";
 import { CollectivesApiProvider } from "next-common/context/collectives/api";
-import Tooltip from "next-common/components/tooltip";
-
-function TooltipDisabledGuard({ disabled, children }) {
-  return disabled ? (
-    <Tooltip content="Source and destination should be different chains">
-      {children}
-    </Tooltip>
-  ) : (
-    children
-  );
-}
 
 function PopupContent() {
   const { onClose } = usePopupParams();
@@ -109,15 +98,18 @@ function PopupContent() {
         <ExistentialDeposit destApi={destinationApi} />
       </AdvanceSettings>
       <div className="flex justify-end">
-        <TooltipDisabledGuard disabled={submitDisabled}>
-          <PrimaryButton
-            loading={isSubmitting}
-            onClick={doSubmit}
-            disabled={submitDisabled}
-          >
-            Submit
-          </PrimaryButton>
-        </TooltipDisabledGuard>
+        <SubmitButton
+          tooltip={
+            submitDisabled
+              ? "Source and destination should be different chains"
+              : undefined
+          }
+          loading={isSubmitting}
+          onClick={doSubmit}
+          disabled={submitDisabled}
+        >
+          Submit
+        </SubmitButton>
       </div>
     </>
   );

@@ -19,7 +19,7 @@ import { SystemTransfer } from "@osn/icons/subsquare";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import { isNumber } from "lodash-es";
 import Signer from "next-common/components/popup/fields/signerField";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 
 function UnbondingPopupContent() {
   const { unbondingEras = {}, activeEra } = usePopupParams();
@@ -118,7 +118,7 @@ function WithdrawButtonImpl({ era }) {
   });
   return (
     <div className="flex justify-end">
-      <PrimaryButton
+      <SubmitButton
         onClick={doSubmit}
         disabled={isSubmitting || isWrapping}
         loading={isSubmitting || isWrapping}
@@ -126,7 +126,7 @@ function WithdrawButtonImpl({ era }) {
         className="w-6 h-6 p-0"
       >
         <SystemTransfer className="w-4 h-4" />
-      </PrimaryButton>
+      </SubmitButton>
     </div>
   );
 }

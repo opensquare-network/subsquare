@@ -16,6 +16,9 @@ import { getContentField } from "next-common/utils/sima/utils";
 import useSignSimaMessage from "next-common/utils/sima/useSignSimaMessage";
 import AdvancedForm from "next-common/components/post/advanced/form";
 import { getRealField } from "next-common/sima/actions/common";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -68,6 +71,7 @@ export default function SimaPostCreate() {
   const advancedForm = useRef();
   const [isAdvanced, setIsAdvanced] = useState(false);
   const [formValue, setFormValue] = useState({});
+  const isWatchOnly = useIsWatchOnly();
 
   const createPost = async (proxyAddress) => {
     setCreating(true);
@@ -164,13 +168,17 @@ export default function SimaPostCreate() {
       />
 
       <ButtonWrapper>
-        <SplitProxyMenuButton
-          action="Create"
-          loading={creating}
-          disabled={isDisableCreate}
-          onClick={createPost}
-          onClickAsProxy={createPost}
-        />
+        <WatchOnlyTooltip
+          watchOnlyContent={WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT}
+        >
+          <SplitProxyMenuButton
+            action="Create"
+            loading={creating}
+            disabled={isDisableCreate || isWatchOnly}
+            onClick={createPost}
+            onClickAsProxy={createPost}
+          />
+        </WatchOnlyTooltip>
       </ButtonWrapper>
     </Wrapper>
   );

@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import { useCoreFellowshipPallet } from "next-common/context/collectives/collectives";
 import Tooltip from "next-common/components/tooltip";
 import { useFellowshipCanInductMember } from "next-common/hooks/fellowship/useFellowshipCanInductMember";
@@ -48,13 +49,13 @@ function InductButton({ address }) {
       <Tooltip
         content={!canInductMember && "Only available to members with rank >= 3"}
       >
-        <PrimaryButton
+        <SubmitButton
           size="small"
           disabled={!canInductMember}
           onClick={doSubmit}
         >
           Induct
-        </PrimaryButton>
+        </SubmitButton>
       </Tooltip>
     </>
   );

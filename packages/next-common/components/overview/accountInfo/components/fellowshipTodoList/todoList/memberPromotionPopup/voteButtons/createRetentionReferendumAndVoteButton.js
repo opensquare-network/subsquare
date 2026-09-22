@@ -5,12 +5,13 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import { useFellowshipProposalSubmissionTxFunc } from "next-common/hooks/fellowship/core/useFellowshipCoreMemberProposalSubmitTx";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useActiveReferendaContext } from "next-common/context/activeReferenda";
-import Tooltip from "next-common/components/tooltip";
 import { useChain } from "next-common/context/chain";
 import { getRetainTrackNameFromRank } from "next-common/components/fellowship/core/members/actions/approve/popup";
 import useMemberRank from "./useMemberRank";
 import { useMyVotesChangedContext } from "../../../context/myVotesChanged";
 import SecondaryButton from "next-common/lib/button/secondary";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 function CreateReferendumAndVoteButtonImpl({
   who,
@@ -22,6 +23,7 @@ function CreateReferendumAndVoteButtonImpl({
 }) {
   const dispatch = useDispatch();
   const { rank: evidenceOwnerRank } = useMemberRank(who);
+  const isWatchOnly = useIsWatchOnly();
   const chain = useChain();
   const trackName = getRetainTrackNameFromRank(chain, evidenceOwnerRank);
 
@@ -50,11 +52,14 @@ function CreateReferendumAndVoteButtonImpl({
   });
 
   return (
-    <Tooltip content={tooltip}>
-      <ButtonComponent disabled={disabled} onClick={doSubmitCreateAndVote}>
+    <WatchOnlyTooltip content={tooltip}>
+      <ButtonComponent
+        disabled={disabled || isWatchOnly}
+        onClick={doSubmitCreateAndVote}
+      >
         {children}
       </ButtonComponent>
-    </Tooltip>
+    </WatchOnlyTooltip>
   );
 }
 

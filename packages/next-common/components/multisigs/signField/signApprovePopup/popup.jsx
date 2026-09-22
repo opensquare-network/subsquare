@@ -2,7 +2,7 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import ProposeTree from "next-common/components/multisigs/signField/signSubmitPopup/proposeTree";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useSignApprove } from "../signApprove";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 
 function SignApproveInnerPopup({ onClose, multisig }) {
   const { doSubmit, isDisabled } = useSignApprove(multisig);
@@ -12,9 +12,9 @@ function SignApproveInnerPopup({ onClose, multisig }) {
       <SignerWithBalance noSwitchSigner />
       <ProposeTree callHex={multisig?.callHex} />
       <div className="flex justify-end">
-        <PrimaryButton onClick={doSubmit} loading={isDisabled}>
+        <SubmitButton onClick={doSubmit} loading={isDisabled}>
           Submit
-        </PrimaryButton>
+        </SubmitButton>
       </div>
     </Popup>
   );

@@ -14,6 +14,8 @@ import useOnChainProxyInfo from "next-common/hooks/useOnChainProxy";
 import Tooltip from "./tooltip";
 import { MultisigAccount } from "./multisigs/styled";
 import SwitchButtonWrapper from "./switchAccountButton";
+import WatchOnlyHint from "next-common/components/watchOnly/hint";
+import useAccountByAddress from "next-common/hooks/useAccountByAddress";
 
 const Wrapper = styled(GreyPanel)`
   padding: 12px 16px;
@@ -106,6 +108,14 @@ function ProxyHintForAddress({ address }) {
   return <ProxyHint proxyType={proxyType} />;
 }
 
+function WatchOnlyHintRow() {
+  return (
+    <div className="flex items-center mt-[12px] pt-[12px] pl-[52px] border-neutral300 border-t">
+      <WatchOnlyHint />
+    </div>
+  );
+}
+
 function MaybeMultisigAccount({ signerAccount }) {
   const originAccount = useOriginAccount();
 
@@ -145,7 +155,9 @@ export default function MaybeProxySigner({
             <SwitchButtonWrapper supportedMultisig={supportedMultisig} />
           )}
         </div>
-        {signerAccount?.multisig && supportedMultisig ? (
+        {signerAccount?.isWatchOnly ? (
+          <WatchOnlyHintRow />
+        ) : signerAccount?.multisig && supportedMultisig ? (
           <MultisigHint multisig={signerAccount?.multisig} />
         ) : signerAccount?.selectedProxyAddress ? (
           <ProxyHintForAddress address={signerAccount?.selectedProxyAddress} />
@@ -159,10 +171,9 @@ export default function MaybeProxySigner({
 
 export function ConnectedAccountSigner({ extra = null }) {
   const user = useUser();
-  const extensionAccounts = useExtensionAccounts();
-  const originAccount = extensionAccounts.find((item) =>
-    isSameAddress(item.address, user?.address),
-  );
+  const signerAccount = useSignerAccount();
+  const address = signerAccount?.address || user?.address;
+  const originAccount = useAccountByAddress(address);
 
   return (
     <Wrapper>

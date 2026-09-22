@@ -32,6 +32,8 @@ import { sendWalletConnectTx } from "next-common/utils/sendTransaction/sendWalle
 import { useWalletConnectBuildPayload } from "next-common/hooks/useWalletConnectBuildPayload";
 import { useVaultSigner } from "next-common/context/polkadotVault/vaultSignerProvider";
 import { useWalletConnect } from "next-common/context/walletconnect";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 function shouldSendSignetTx(signerAccount) {
   return signerAccount?.meta?.source === WalletTypes.SIGNET;
@@ -76,6 +78,7 @@ export function useSendTransaction() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const signerAccount = useSignerAccount();
+  const isWatchOnly = useIsWatchOnly();
   const setSigner = useSetSigner();
   const { sdk: signetSdk } = useSignetSdk();
   const { sendVaultTx } = useVaultSigner();
@@ -102,6 +105,11 @@ export function useSendTransaction() {
 
       if (!signerAccount) {
         dispatch(newErrorToast("Signer account not found"));
+        return;
+      }
+
+      if (isWatchOnly) {
+        dispatch(newErrorToast(WATCH_ONLY_TOOLTIP_TEXT));
         return;
       }
 
@@ -295,6 +303,7 @@ export function useSendTransaction() {
     [
       buildPayload,
       dispatch,
+      isWatchOnly,
       signerAccount,
       signetSdk,
       setSigner,

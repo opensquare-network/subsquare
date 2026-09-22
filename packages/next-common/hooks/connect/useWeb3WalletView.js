@@ -6,6 +6,7 @@ const VIEWS = {
   EVM: "evm",
   WALLETCONNECT: "walletconnect",
   POLKADOT_VAULT: "polkadot-vault",
+  WATCH_ONLY: "watch-only",
 };
 const DEFAULT_VIEW = shouldEnableSubstrateWallets()
   ? VIEWS.SUBSTRATE
@@ -20,6 +21,7 @@ export function useWeb3WalletView() {
   const isEVMView = view === VIEWS.EVM;
   const isWalletConnectView = view === VIEWS.WALLETCONNECT;
   const isPolkadotVaultView = view === VIEWS.POLKADOT_VAULT;
+  const isWatchOnlyView = view === VIEWS.WATCH_ONLY;
 
   function resetView() {
     setView(DEFAULT_VIEW);
@@ -30,6 +32,7 @@ export function useWeb3WalletView() {
     isEVMView,
     isWalletConnectView,
     isPolkadotVaultView,
+    isWatchOnlyView,
     setView,
     resetView,
   };

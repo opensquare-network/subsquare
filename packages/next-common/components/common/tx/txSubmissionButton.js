@@ -4,6 +4,8 @@ import PrimaryButton from "next-common/lib/button/primary";
 import LoadingButton from "next-common/lib/button/loading";
 import useTxSubmission from "./useTxSubmission";
 import { usePopupOnClose } from "next-common/context/popup";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 export default function TxSubmissionButton({
   api,
@@ -21,6 +23,7 @@ export default function TxSubmissionButton({
   autoClose = true,
 }) {
   const onClose = usePopupOnClose();
+  const isWatchOnly = useIsWatchOnly();
   const { isSubmitting, isWrapping, doSubmit } = useTxSubmission({
     api,
     getTxFunc,
@@ -44,13 +47,15 @@ export default function TxSubmissionButton({
       {isLoading && loadingText ? (
         <LoadingButton>{loadingText}</LoadingButton>
       ) : (
-        <PrimaryButton
-          loading={isLoading}
-          onClick={doSubmit}
-          disabled={disabled}
-        >
-          {title}
-        </PrimaryButton>
+        <WatchOnlyTooltip>
+          <PrimaryButton
+            loading={isLoading}
+            onClick={doSubmit}
+            disabled={disabled || isWatchOnly}
+          >
+            {title}
+          </PrimaryButton>
+        </WatchOnlyTooltip>
       )}
     </div>
   );
@@ -68,6 +73,7 @@ export function useTxSubmissionButton({
   onTxError = noop,
   onTxStart = noop,
 }) {
+  const isWatchOnly = useIsWatchOnly();
   const { isSubmitting, isWrapping, doSubmit } = useTxSubmission({
     getTxFunc,
     onFinalized,
@@ -86,13 +92,15 @@ export function useTxSubmissionButton({
         {isSubmitting && loadingText ? (
           <LoadingButton>{loadingText}</LoadingButton>
         ) : (
-          <PrimaryButton
-            loading={isSubmitting || isWrapping}
-            onClick={doSubmit}
-            disabled={disabled}
-          >
-            {title}
-          </PrimaryButton>
+          <WatchOnlyTooltip>
+            <PrimaryButton
+              loading={isSubmitting || isWrapping}
+              onClick={doSubmit}
+              disabled={disabled || isWatchOnly}
+            >
+              {title}
+            </PrimaryButton>
+          </WatchOnlyTooltip>
         )}
       </div>
     ),

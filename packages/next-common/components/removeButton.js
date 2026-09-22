@@ -25,6 +25,8 @@ const Wrapper = styled.div`
   }
 `;
 
+// Plain ✕ button, for buttons that only trigger a dialog. Use SubmitRemoveButton
+// instead when it submits a tx, so watch-only accounts are handled for you.
 export default function RemoveButton({ disabled, onClick = noop }) {
   return (
     <Wrapper disabled={disabled} onClick={onClick}>

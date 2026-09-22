@@ -1,9 +1,5 @@
 import Popup from "../popup/wrapper/Popup";
-import {
-  useCallerAddress,
-  useExtensionAccounts,
-  useSignerContext,
-} from "../popupWithSigner/context";
+import { useCallerAddress, useSignerContext } from "../popupWithSigner/context";
 import Account from "../account";
 import { ArrowRight } from "@osn/icons/subsquare";
 import { usePopupOnClose } from "next-common/context/popup";
@@ -11,11 +7,13 @@ import { useMyProxied } from "next-common/context/proxy";
 import Tooltip from "../tooltip";
 import tw from "tailwind-styled-components";
 import Loading from "../loading";
-import { addressEllipsis, cn, isSameAddress } from "next-common/utils";
-import { useMemo } from "react";
+import { cn, isSameAddress } from "next-common/utils";
 import { noop } from "lodash-es";
 import MultiSignerAccounts from "./multiSignerAccounts";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
+import useAccountByAddress from "next-common/hooks/useAccountByAddress";
+import WatchOnlyHint from "next-common/components/watchOnly/hint";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
 
 const DisabledAccountItemWrapper = tw.div`
   flex flex-col gap-[12px] p-[12px] pr-[16px]
@@ -101,14 +99,8 @@ function AccountItem({ disabled, account, onClick }) {
 export function OriginAddress({ selected, onSelect = noop }) {
   const onClose = usePopupOnClose();
   const realAddress = useRealAddress();
-  const extensionAccounts = useExtensionAccounts();
-  const account = useMemo(
-    () =>
-      extensionAccounts.find((item) =>
-        isSameAddress(item.address, realAddress),
-      ),
-    [extensionAccounts, realAddress],
-  );
+  const account = useAccountByAddress(realAddress);
+  const isWatchOnly = useIsWatchOnly();
 
   const disabled = isSameAddress(selected, realAddress);
 
@@ -123,27 +115,13 @@ export function OriginAddress({ selected, onSelect = noop }) {
           onClose();
         }}
       />
+      {isWatchOnly && <WatchOnlyHint />}
     </div>
   );
 }
 
 function ProxyAddress({ disabled, proxyInfo, onClick = noop }) {
-  const { signerAccount } = useSignerContext();
-  const extensionAccounts = useExtensionAccounts();
-
-  const account = useMemo(() => {
-    const extensionAccount = extensionAccounts.find((item) =>
-      isSameAddress(item.address, proxyInfo.delegator),
-    );
-    if (extensionAccount) {
-      return extensionAccount;
-    }
-    return {
-      address: proxyInfo.delegator,
-      name: addressEllipsis(proxyInfo.delegator),
-      meta: signerAccount.meta,
-    };
-  }, [proxyInfo, extensionAccounts, signerAccount]);
+  const account = useAccountByAddress(proxyInfo.delegator);
 
   return (
     <ProxyAccountItem

@@ -11,6 +11,9 @@ import { useRouter } from "next/router";
 import { useExtensionAccounts } from "next-common/components/popupWithSigner/context";
 import AddressCombo from "next-common/components/addressCombo";
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_CREATE_APPLICATION_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 function PageTitle() {
   return (
@@ -109,6 +112,7 @@ function CreateFellowshipApplicationImpl() {
   const [contentType, setContentType] = useState("markdown");
   const [loading, setLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
+  const isWatchOnly = useIsWatchOnly();
 
   const createApplication = async () => {
     setLoading(true);
@@ -154,9 +158,17 @@ function CreateFellowshipApplicationImpl() {
         setContentType={setContentType}
       />
       <div className="flex justify-end">
-        <PrimaryButton loading={loading} onClick={createApplication}>
-          Create
-        </PrimaryButton>
+        <WatchOnlyTooltip
+          watchOnlyContent={WATCH_ONLY_CREATE_APPLICATION_TOOLTIP_TEXT}
+        >
+          <PrimaryButton
+            loading={loading}
+            onClick={createApplication}
+            disabled={isWatchOnly}
+          >
+            Create
+          </PrimaryButton>
+        </WatchOnlyTooltip>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { useMultisigAccounts } from "../context/multisigAccountsContext";
 import { getRealField } from "next-common/sima/actions/common";
@@ -88,14 +88,14 @@ export default function RemovePopup({ onClose, multisigAddress }) {
       </div>
       <div className="flex gap-[8px] justify-end">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <PrimaryButton
+        <SubmitButton
           loading={isLoading}
           disabled={isLoading}
           className="!bg-red500"
           onClick={doSubmit}
         >
           Confirm
-        </PrimaryButton>
+        </SubmitButton>
       </div>
     </Popup>
   );

@@ -6,7 +6,7 @@ import {
 } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
 import SecondaryButton from "next-common/lib/button/secondary";
-import PrimaryButton from "next-common/lib/button/primary";
+import SubmitButton from "next-common/components/common/tx/submitButton";
 import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import Popup from "./popup/wrapper/Popup";
@@ -66,13 +66,13 @@ export default function TerminateApplicationPopup({ onClose, finalState }) {
       </div>
       <div className="flex gap-[8px] justify-end">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <PrimaryButton
+        <SubmitButton
           loading={isLoading}
           className="!bg-red500"
           onClick={doSubmit}
         >
           Confirm
-        </PrimaryButton>
+        </SubmitButton>
       </div>
     </Popup>
   );
