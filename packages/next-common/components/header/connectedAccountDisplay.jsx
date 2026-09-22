@@ -18,7 +18,7 @@ export default function ConnectedAccountDisplay({ address, className }) {
     <Tooltip content="Watch-only account">
       <div className={cn("relative flex items-center", className)}>
         {account}
-        <WalletWatchOnly className="absolute left-1.5 bottom-0 w-3.5 h-3.5" />
+        <WalletWatchOnly className="absolute left-2 bottom-0 w-3 h-3" />
       </div>
     </Tooltip>
   );
