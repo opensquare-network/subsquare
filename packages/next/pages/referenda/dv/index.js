@@ -3,6 +3,7 @@ import { withReferendaCommonProps } from "next-common/services/serverSide/refere
 import { backendApi } from "next-common/services/nextApi";
 import { isNil } from "lodash-es";
 import DecentralizedVoices from "next-common/components/referenda/dv/decentralizedVoices";
+import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
 
 export default function ReferendaDvPage({ gov2ReferendaSummary }) {
   const seoInfo = {
@@ -17,7 +18,9 @@ export default function ReferendaDvPage({ gov2ReferendaSummary }) {
       seoInfo={seoInfo}
       summaryData={gov2ReferendaSummary}
     >
-      <DecentralizedVoices />
+      <ReferendaPalletProvider pallet="referenda">
+        <DecentralizedVoices />
+      </ReferendaPalletProvider>
     </ReferendaLayout>
   );
 }
