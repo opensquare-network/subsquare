@@ -22,13 +22,17 @@ const TriggerWrapper = styled.div`
 `;
 
 // Shows `content`, or the watch-only hint when the connected account is
-// watch-only.
-export default function WatchOnlyTooltip({ children, content }) {
+// watch-only; `watchOnlyContent` replaces the hint for non-tx buttons.
+export default function WatchOnlyTooltip({
+  children,
+  content,
+  watchOnlyContent = WATCH_ONLY_TOOLTIP_TEXT,
+}) {
   const isWatchOnly = useIsWatchOnly();
 
   if (isWatchOnly) {
     return (
-      <Tooltip content={WATCH_ONLY_TOOLTIP_TEXT}>
+      <Tooltip content={watchOnlyContent}>
         <TriggerWrapper watchOnly>{children}</TriggerWrapper>
       </Tooltip>
     );

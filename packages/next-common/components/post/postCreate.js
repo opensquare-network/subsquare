@@ -18,6 +18,9 @@ import { NeutralPanel } from "../styled/containers/neutralPanel";
 import PostLabel from "./postLabel";
 import Editor, { useEditorUploading } from "../editor";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
+import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_CREATE_POST_LOGIN_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -77,6 +80,7 @@ export default function PostCreate() {
   const [selectedLabels, setSelectedLabels] = useState([]);
   const { ensureLogin } = useEnsureLogin();
   const [editorUploading] = useEditorUploading();
+  const isWatchOnly = useIsWatchOnly();
 
   const createPost = async () => {
     setCreating(true);
@@ -193,13 +197,17 @@ export default function PostCreate() {
       />
 
       <ButtonWrapper>
-        <PrimaryButton
-          loading={creating}
-          onClick={createPost}
-          disabled={isDisableCreate}
+        <WatchOnlyTooltip
+          watchOnlyContent={WATCH_ONLY_CREATE_POST_LOGIN_TOOLTIP_TEXT}
         >
-          Create
-        </PrimaryButton>
+          <PrimaryButton
+            loading={creating}
+            onClick={createPost}
+            disabled={isDisableCreate || isWatchOnly}
+          >
+            Create
+          </PrimaryButton>
+        </WatchOnlyTooltip>
       </ButtonWrapper>
     </Wrapper>
   );
