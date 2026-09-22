@@ -73,6 +73,9 @@ const polkadot = {
     treasury: {
       status: true,
       spends: true,
+      proposals: {
+        archived: true,
+      },
       childBounties: true,
       multiAssetBounties: true,
       tips: {
