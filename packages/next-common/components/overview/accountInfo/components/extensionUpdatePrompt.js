@@ -1,6 +1,9 @@
 import Prompt from "./prompt";
 import { PromptTypes } from "next-common/components/scrollPrompt";
-import { useConnectedAccount } from "next-common/context/connectedAccount";
+import {
+  useConnectedAccount,
+  useIsWatchOnly,
+} from "next-common/context/connectedAccount";
 import { useInjectedWeb3Extension } from "next-common/hooks/connect/useInjectedWeb3Extension";
 import { CACHE_KEY } from "next-common/utils/constants";
 import { useCallback, useEffect, useState } from "react";
@@ -81,6 +84,7 @@ function PromptContent({ onUpdateMeta }) {
 
 export default function ExtensionUpdatePrompt({ isWithCache = true }) {
   const api = useContextApi();
+  const isWatchOnly = useIsWatchOnly();
   const connectedAccount = useConnectedAccount();
   const [isNeedUpdate, setIsNeedUpdate] = useIsNeedUpdate();
   const { injectedWeb3Extension, loading: isLoadingInjectedWeb3Extension } =
@@ -145,7 +149,7 @@ export default function ExtensionUpdatePrompt({ isWithCache = true }) {
     [api, injectedWeb3Extension, connectedAccountWallet],
   );
 
-  if (!isNeedUpdate) {
+  if (isWatchOnly || !isNeedUpdate) {
     return null;
   }
 
