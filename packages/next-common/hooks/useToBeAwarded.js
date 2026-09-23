@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useTreasuryPallet } from "next-common/context/treasury";
 import { useContextApi } from "next-common/context/api";
 
-function isValidApi(api) {
-  return api?.approvals && api?.proposals;
+function hasLegacyProposalStorage(palletQuery) {
+  return palletQuery?.approvals && palletQuery?.proposals;
 }
 
 export default function useToBeAwarded() {
@@ -11,16 +11,19 @@ export default function useToBeAwarded() {
   const pallet = useTreasuryPallet();
   const [toBeAwarded, setToBeAwarded] = useState();
 
-  const toBeAwardedAPI = api?.query?.[pallet];
+  const palletQuery = api?.query?.[pallet];
   const fetchToBeAwarded = useCallback(async () => {
-    if (!isValidApi(toBeAwardedAPI)) {
+    // `Proposals`/`Approvals` were removed from the treasury pallet, so when the
+    // metadata no longer contains them, nothing can be pending award.
+    if (!hasLegacyProposalStorage(palletQuery)) {
+      setToBeAwarded(0n);
       return;
     }
 
     try {
       const [approvals, proposals] = await Promise.all([
-        toBeAwardedAPI.approvals(),
-        toBeAwardedAPI.proposals.entries(),
+        palletQuery.approvals(),
+        palletQuery.proposals.entries(),
       ]);
 
       const toBeAwardedProposalIds = approvals.toJSON();
@@ -41,13 +44,15 @@ export default function useToBeAwarded() {
     } catch (error) {
       console.error("Error fetching to be awarded proposals:", error);
     }
-  }, [toBeAwardedAPI]);
+  }, [palletQuery]);
 
   useEffect(() => {
-    if (toBeAwardedAPI) {
-      fetchToBeAwarded();
+    if (!api) {
+      return;
     }
-  }, [fetchToBeAwarded, toBeAwardedAPI]);
+
+    fetchToBeAwarded();
+  }, [api, fetchToBeAwarded]);
 
   return toBeAwarded;
 }

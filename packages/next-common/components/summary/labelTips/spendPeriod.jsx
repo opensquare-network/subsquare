@@ -18,7 +18,7 @@ export default function SpendPeriodLabelTip() {
       <Tooltip
         content={
           <>
-            Approved proposals will be awarded at the end of each spend period.
+            Approved bounties are funded at the end of each spend period.
             {wikiLink}
           </>
         }

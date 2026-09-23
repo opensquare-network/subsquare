@@ -8,10 +8,17 @@ export default function useToBeAwardedWithPapi() {
   const [toBeAwarded, setToBeAwarded] = useState();
 
   const fetchToBeAwarded = useCallback(async () => {
+    if (!papi || !pallet) {
+      return;
+    }
+
+    // Legacy `Approvals`/`Proposals` storage was removed from the treasury
+    // pallet, nothing can be pending award anymore.
     if (
       !checkPallet(pallet, "Approvals") ||
       !checkPallet(pallet, "Proposals")
     ) {
+      setToBeAwarded(0n);
       return;
     }
 
