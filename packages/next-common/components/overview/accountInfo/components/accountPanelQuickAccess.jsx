@@ -18,6 +18,10 @@ const MenuIdentity = dynamic(
   import("@osn/icons/subsquare").then((mod) => mod.MenuIdentity),
 );
 
+const MenuAsset = dynamic(
+  import("@osn/icons/subsquare").then((mod) => mod.MenuAsset),
+);
+
 function ProxyButton() {
   const {
     modules: { proxy },
@@ -81,6 +85,26 @@ function IdentityButton() {
   );
 }
 
+function AllMyAssetsButton() {
+  const chainSettings = useChainSettings();
+
+  if (!chainSettings.modules?.assethub || !chainSettings.assethubMigration) {
+    return null;
+  }
+
+  return (
+    <Link href="/assets">
+      <SecondaryButton
+        size="small"
+        iconLeft={<MenuAsset className="w-4 h-4 text-textTertiary" />}
+        iconRight={<ArrowRight className="w-4 h-4 text-textTertiary" />}
+      >
+        Assets
+      </SecondaryButton>
+    </Link>
+  );
+}
+
 export default function AccountPanelQuickAccess() {
   const router = useRouter();
 
@@ -89,10 +113,11 @@ export default function AccountPanelQuickAccess() {
   }
 
   return (
-    <div className="flex items-center space-x-2 ml-[52px]">
+    <div className="flex flex-wrap items-center space-x-2 space-y-1 ml-[52px]">
       <IdentityButton />
       <ProxyButton />
       <MultisigButton />
+      <AllMyAssetsButton />
     </div>
   );
 }
