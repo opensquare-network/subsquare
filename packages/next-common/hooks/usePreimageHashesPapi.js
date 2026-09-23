@@ -24,6 +24,10 @@ function normalizePrimitiveValue(value) {
     return value;
   }
 
+  if (Array.isArray(value)) {
+    return value;
+  }
+
   if (typeof value === "bigint") {
     return value.toString();
   }
