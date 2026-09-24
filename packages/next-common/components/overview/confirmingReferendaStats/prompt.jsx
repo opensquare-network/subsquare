@@ -16,12 +16,18 @@ export default function Prompt({
       <div className="inline-flex flex-wrap">
         <span className="mr-2">OpenGov:</span>
         There&nbsp;<span>{confirmingCount > 1 ? "are" : "is"}</span>
-        <span className="text14Bold">&nbsp;{confirmingCount}&nbsp;</span>
-        {confirmingCount === 1 ? "referendum" : "referenda"} confirming
-        {requesting}. &nbsp;
+        <span className="text14Bold">{`\u00a0${confirmingCount}\u00a0`}</span>
+        {requesting ? (
+          <>
+            {`${confirmingCount === 1 ? "referendum" : "referenda"} confirming`}
+            {requesting}
+            {". \u00a0"}
+          </>
+        ) : (
+          `${confirmingCount === 1 ? "referendum" : "referenda"} confirming. \u00a0`
+        )}
         <span>
-          Check {confirmingCount > 1 ? "them" : "it"}
-          &nbsp;
+          {`Check ${confirmingCount > 1 ? "them" : "it"}\u00a0`}
           <Link className="inline-block underline text14Bold" href="/referenda">
             here
           </Link>

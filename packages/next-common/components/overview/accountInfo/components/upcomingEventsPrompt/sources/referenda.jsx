@@ -68,7 +68,7 @@ function ReferendumEventContent({ index, type, estimatedTime }) {
         </Link>
       </Tooltip>
       <span>
-        &nbsp;will {getReferendumActionText(type)} in {estimatedTime}
+        {`\u00a0will ${getReferendumActionText(type)} in ${estimatedTime ?? ""}`}
       </span>
     </>
   );

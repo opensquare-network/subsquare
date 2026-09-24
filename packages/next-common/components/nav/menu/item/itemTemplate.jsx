@@ -76,7 +76,7 @@ export function NavMenuItemTemplateContent({
         )}
       >
         <span className="w-full text14Medium">
-          {name}{" "}
+          {typeof name === "string" ? `${name} ` : name}
           {!!activeCount && (
             <span className="ml-1 text-navigationTextTertiary">
               {activeCount}

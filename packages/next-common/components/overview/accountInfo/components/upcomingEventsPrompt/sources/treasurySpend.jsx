@@ -35,8 +35,9 @@ function TreasurySpendEventContent({ spend }) {
         </Link>
       </Tooltip>
       <span>
-        &nbsp;will be {getSpendActionText(spend.type)} in{" "}
-        {spend.estimatedBlocksTime}
+        {`\u00a0will be ${getSpendActionText(spend.type)} in ${
+          spend.estimatedBlocksTime ?? ""
+        }`}
       </span>
     </>
   );

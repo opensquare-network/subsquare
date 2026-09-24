@@ -24,8 +24,8 @@ export function SubscribeTip() {
         <SystemTip className="[&_path]:fill-theme500" width={20} height={20} />
       </div>
       <span className="text-[14px] leading-[20px] whitespace-nowrap text-theme500">
-        <span className="underline text-theme500 font-medium">Subscribe</span>{" "}
-        on-chain events
+        <span className="underline text-theme500 font-medium">Subscribe</span>
+        {" on-chain events"}
       </span>
     </div>
   );
