@@ -7,7 +7,12 @@ import { useContextApi } from "next-common/context/api";
 import { isSameAddress } from "next-common/utils";
 
 export async function queryAddressDeposits(api, address) {
-  const entries = await api.query.treasury.proposals.entries();
+  const proposalsQuery = api?.query?.treasury?.proposals;
+  if (!proposalsQuery) {
+    return [];
+  }
+
+  const entries = await proposalsQuery.entries();
   return entries.reduce((result, [storageKey, optionalStorage]) => {
     if (!optionalStorage.isSome) {
       return result;
@@ -38,7 +43,7 @@ export default function useFetchMyTreasuryProposalDeposits() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!api || !realAddress || !api.query?.treasury) {
+    if (!api || !realAddress) {
       return;
     }
 

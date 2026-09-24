@@ -27,6 +27,7 @@ import FundMultiAssetBountyReferendumInnerPopupContent from "../newProposalQuick
 const useQuickStartItems = () => {
   const {
     treasuryProposalTracks,
+    symbol,
     newProposalQuickStart: {
       usdxTreasuryProposal,
       batchUsdxTreasurySpendsProposal,
@@ -84,8 +85,8 @@ const useQuickStartItems = () => {
     }
     if (treasuryProposalTracks && spendDotOnAssetHubProposal) {
       items.push({
-        name: "Spend DOT on AssetHub",
-        description: "Create a treasury spend with DOT asset on AssetHub",
+        name: `${symbol} treasury proposal`,
+        description: `Create a treasury spend of ${symbol}`,
         content: SpendDotOnAssetHubReferendumInnerPopupContent,
       });
     }
@@ -97,12 +98,14 @@ const useQuickStartItems = () => {
         content: FundMultiAssetBountyReferendumInnerPopupContent,
       });
     }
-    items.push({
-      name: "Treasury proposal",
-      description:
-        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
-      content: NewTreasuryReferendumInnerPopupContent,
-    });
+    if (!spendDotOnAssetHubProposal) {
+      items.push({
+        name: "Treasury proposal",
+        description:
+          "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
+        content: NewTreasuryReferendumInnerPopupContent,
+      });
+    }
     items.push({
       name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
       description: "Create a remark proposal",
@@ -131,6 +134,7 @@ const useQuickStartItems = () => {
   }, [
     cancelReferendum,
     chain,
+    symbol,
     batchTreasurySpendsProposal,
     killReferendum,
     spendDotOnAssetHubProposal,
