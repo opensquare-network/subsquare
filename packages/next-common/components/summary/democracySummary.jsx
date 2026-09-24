@@ -38,19 +38,13 @@ export default function DemocracySummary({ summary = {} }) {
       <SummaryItem title="Referenda">
         <span>
           {summaryData.referenda?.active || 0}
-          <SummaryGreyText>
-            {" "}
-            / {summaryData.referenda?.all || 0}
-          </SummaryGreyText>
+          <SummaryGreyText>{` / ${summaryData.referenda?.all || 0}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       <SummaryItem title="Proposals">
         <span>
           {summaryData.publicProposals?.active || 0}
-          <SummaryGreyText>
-            {" "}
-            / {summaryData.publicProposals?.all || 0}
-          </SummaryGreyText>
+          <SummaryGreyText>{` / ${summaryData.publicProposals?.all || 0}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       {showLaunchPeriod && (

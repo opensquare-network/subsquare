@@ -45,8 +45,14 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html>
+      <Html translate="no">
         <Head>
+          {/*
+            Machine translation rewrites text nodes into <font> elements, which
+            invalidates the references React keeps to them and makes it throw
+            "Failed to execute 'removeChild' on 'Node'" on re-render. Opt out.
+          */}
+          <meta name="google" content="notranslate" />
           <style
             dangerouslySetInnerHTML={{
               __html: `

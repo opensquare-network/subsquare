@@ -16,7 +16,7 @@ export default function Gov2Summary({ summary }) {
       <SummaryItem title="Active">
         <span>
           {summary.activeCount || 0}
-          <SummaryGreyText> / {summary.total || 0}</SummaryGreyText>
+          <SummaryGreyText>{` / ${summary.total || 0}`}</SummaryGreyText>
         </span>
       </SummaryItem>
     </SummaryLayout>
