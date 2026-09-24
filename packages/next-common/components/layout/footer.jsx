@@ -43,7 +43,7 @@ export default function Footer() {
           <FooterLogoDark className="hidden dark:inline" />
         </div>
         <p className={cn("text14Medium text-textTertiary", "max-sm:mt-2")}>
-          @{new Date().getFullYear()} SubSquare. Powered by OpenSquare
+          {`@${new Date().getFullYear()} SubSquare. Powered by OpenSquare`}
         </p>
       </div>
 

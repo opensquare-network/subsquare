@@ -44,31 +44,31 @@ function SummaryItems({ summary, period }) {
       <SummaryItem title="Capacity">
         <span>
           {(summary.decidingCount || 0) + (summary.confirmingCount || 0)}
-          <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
+          <SummaryGreyText>{` / ${maxDeciding ?? ""}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       <SummaryItem title="Confirm Period">
         <span>
           {confirmPeriodBlockTime[0] || 0}
-          <SummaryGreyText> {confirmPeriodBlockTime[1]}</SummaryGreyText>
+          <SummaryGreyText>{` ${confirmPeriodBlockTime[1] ?? ""}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       <SummaryItem title="Prepare Period">
         <span>
           {preparePeriodBlockTime[0] || 0}
-          <SummaryGreyText> {preparePeriodBlockTime[1]}</SummaryGreyText>
+          <SummaryGreyText>{` ${preparePeriodBlockTime[1] ?? ""}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       <SummaryItem title="Decision Period">
         <span>
           {decisionPeriodBlockTime[0] || 0}
-          <SummaryGreyText> {decisionPeriodBlockTime[1]}</SummaryGreyText>
+          <SummaryGreyText>{` ${decisionPeriodBlockTime[1] ?? ""}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       <SummaryItem title="Min Enact Period">
         <span>
           {minEnactPeriodBlockTime[0] || 0}
-          <SummaryGreyText> {minEnactPeriodBlockTime[1]}</SummaryGreyText>
+          <SummaryGreyText>{` ${minEnactPeriodBlockTime[1] ?? ""}`}</SummaryGreyText>
         </span>
       </SummaryItem>
       <SummaryItem title="Decision Deposit">
