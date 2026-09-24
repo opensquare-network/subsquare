@@ -113,7 +113,7 @@ const polkadot = {
     fundMultiAssetBounty: true,
     usdxTreasuryProposal: true,
     batchUsdxTreasurySpendsProposal: true,
-    spendDotOnAssetHubProposal: false,
+    spendDotOnAssetHubProposal: true,
     cancelReferendum: true,
     killReferendum: true,
   },

@@ -106,6 +106,7 @@ const kusama = {
   treasuryProposalTracks: kusamaTreasuryTracks,
   newProposalQuickStart: {
     batchTreasurySpendsProposal: true,
+    spendDotOnAssetHubProposal: true,
     cancelReferendum: true,
     killReferendum: true,
   },

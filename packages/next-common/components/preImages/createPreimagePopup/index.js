@@ -45,6 +45,13 @@ export function QuickStart({ children }) {
 
 function SpendLocalTreasury() {
   const { setForwardPopup } = useForwardPopupContext();
+  const { newProposalQuickStart: { spendDotOnAssetHubProposal } = {} } =
+    useChainSettings();
+
+  if (spendDotOnAssetHubProposal) {
+    return null;
+  }
+
   return (
     <SpendLocalTreasuryButton
       onClick={() => setForwardPopup(<NewLocalTreasuryProposalPopup />)}

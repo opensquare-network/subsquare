@@ -12,6 +12,7 @@ import {
   paseoAssetHubNodes,
 } from "./common/paseo";
 import polkadotPreimageSettings from "next-common/utils/consts/settings/common/preimage/polkadot";
+import paseoTreasuryTracks from "./paseoTracks";
 
 const ProjectIconPaseoDark = dynamic(() =>
   import("@osn/icons/subsquare/ProjectIconPaseoDark"),
@@ -60,6 +61,10 @@ const paseo = {
   integrations: {
     statescan: true,
     subscan: true,
+  },
+  treasuryProposalTracks: paseoTreasuryTracks,
+  newProposalQuickStart: {
+    spendDotOnAssetHubProposal: true,
   },
   sima: true,
   ...paseoThemeVars,
