@@ -1,5 +1,6 @@
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import SignerWithBalance from "next-common/components/signerPopup/signerWithBalance";
+import { useChainSettings } from "next-common/context/chain";
 import SubmissionDeposit from "../../newProposalPopup/submissionDeposit";
 import CreateProposalSubmitButton, {
   useCreateProposalSubmitButton,
@@ -113,8 +114,9 @@ function PopupContent() {
 
 export function SpendDotOnAssetHubReferendumInnerPopup() {
   const { onClose } = usePopupParams();
+  const { symbol } = useChainSettings();
   return (
-    <Popup title="Spend DOT on Asset Hub" onClose={onClose}>
+    <Popup title={`${symbol} treasury proposal`} onClose={onClose}>
       <PopupContent />
     </Popup>
   );

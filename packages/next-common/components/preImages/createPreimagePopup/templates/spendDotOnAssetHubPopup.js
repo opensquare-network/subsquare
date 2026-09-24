@@ -3,9 +3,12 @@ import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
-import { addressToPublicKey } from "next-common/utils/address";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
+import {
+  getBeneficiaryParam,
+  getNativeAssetKindParam,
+} from "./batchTreasurySpendPopup";
 import useAssetHubDotBalanceField from "../fields/useAssetHubDotBalanceField";
 import useAddressComboField from "../fields/useAddressComboField";
 import useValidFromField from "../fields/useValidFromField";
@@ -15,57 +18,6 @@ import InsufficientBalanceTips from "next-common/components/summary/newProposalQ
 import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-
-const getAssetKindParam = () => {
-  return {
-    V4: {
-      location: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
-      },
-      assetId: {
-        parents: 1,
-        interior: "Here",
-      },
-    },
-  };
-};
-
-const getBeneficiaryParam = (beneficiary) => {
-  return {
-    V4: {
-      location: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
-      },
-      accountId: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              AccountId32: {
-                network: null,
-                id: "0x" + addressToPublicKey(beneficiary),
-              },
-            },
-          ],
-        },
-      },
-    },
-  };
-};
 
 export function useSpendDotOnAssetHubPreimageTx(
   inputBalance,
@@ -89,7 +41,7 @@ export function useSpendDotOnAssetHubPreimageTx(
 
     try {
       const proposal = api.tx.treasury.spend(
-        getAssetKindParam(),
+        getNativeAssetKindParam(),
         bnValue.toFixed(),
         getBeneficiaryParam(beneficiary),
         validFrom ? parseInt(validFrom) : null,
@@ -139,8 +91,9 @@ function PopupContent() {
 
 export default function SpendDotOnAssetHubPopup() {
   const { onClose } = usePopupParams();
+  const { symbol } = useChainSettings();
   return (
-    <Popup title="Spend DOT on AssetHub" onClose={onClose}>
+    <Popup title={`${symbol} treasury proposal`} onClose={onClose}>
       <PopupContent />
     </Popup>
   );

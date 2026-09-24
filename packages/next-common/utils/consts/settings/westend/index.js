@@ -5,6 +5,7 @@ import polkadotLinks from "next-common/utils/consts/settings/polkadot/links";
 import capitalize from "../../../capitalize";
 import Chains from "../../chains";
 import { westendRelayChainNodes, westendAssetHubNodes } from "./nodes";
+import westendTreasuryTracks from "./tracks";
 import { mergeChainModules } from "../common/modules";
 import westendCommonCfg, {
   westendAssethubMigration,
@@ -61,7 +62,9 @@ const westend = {
     statescan: true,
     subscan: true,
   },
+  treasuryProposalTracks: westendTreasuryTracks,
   newProposalQuickStart: {
+    spendDotOnAssetHubProposal: true,
     cancelReferendum: true,
     killReferendum: true,
   },
