@@ -20,6 +20,7 @@ import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { getPeopleMenu } from "./people";
 import { stakingMenu } from "./staking";
+import dapMenu from "./dap";
 import whitelist from "./whitelist";
 import getDataMenu from "./data";
 import vesting from "./vesting";
@@ -62,6 +63,7 @@ export function getHomeMenu({
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.staking && stakingMenu,
+    modules?.dap && dapMenu,
     modules?.people && getPeopleMenu({ isAdmin, hasActiveJudgementRequest }),
     modules?.coretime && coretimeMenu,
     ...integrationsMenu,
