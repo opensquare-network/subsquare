@@ -2,7 +2,11 @@ import { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import { Binary } from "polkadot-api";
-import { decodeCallTreeWithFallback } from "next-common/utils/callDecoder/decoder.mjs";
+import {
+  decodeCallTree,
+  getBlockMetadata,
+  getMetadata,
+} from "next-common/utils/callDecoder/decoder.mjs";
 import { useConditionalContextPapi } from "../migration/conditionalPapi";
 
 async function fetchPreimage(papi, preimageHash) {
@@ -30,6 +34,30 @@ async function fetchPreimage(papi, preimageHash) {
     console.error("Error fetching preimage:", e);
     return null;
   }
+}
+
+async function decodeCallTreeWithFallback(client, bytes, blockHash) {
+  if (blockHash) {
+    try {
+      const blockMetadata = await getBlockMetadata(client, blockHash);
+      if (blockMetadata) {
+        return decodeCallTree(bytes, blockMetadata);
+      }
+    } catch (e) {
+      console.warn("Failed to decode call with block metadata:", e);
+    }
+  }
+
+  try {
+    const metadata = await getMetadata(client);
+    if (metadata) {
+      return decodeCallTree(bytes, metadata);
+    }
+  } catch (e) {
+    console.warn("Failed to decode call with latest metadata:", e);
+  }
+
+  return null;
 }
 
 async function getPreimageCall(client, papi, preimageHash, blockHash) {

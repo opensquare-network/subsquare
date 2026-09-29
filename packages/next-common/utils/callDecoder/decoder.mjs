@@ -203,29 +203,3 @@ export function decodeCallTreeWithInfo(bytes, metadata) {
 export function decodeCallTree(bytes, metadata) {
   return decodeCallTreeWithInfo(bytes, metadata).proposal;
 }
-
-// A call targeting a later runtime than the block metadata cannot be decoded
-// with the block metadata; fall back to the latest runtime metadata.
-export async function decodeCallTreeWithFallback(client, bytes, blockHash) {
-  if (blockHash) {
-    try {
-      const blockMetadata = await getBlockMetadata(client, blockHash);
-      if (blockMetadata) {
-        return decodeCallTree(bytes, blockMetadata);
-      }
-    } catch (e) {
-      console.warn("Failed to decode call with block metadata:", e);
-    }
-  }
-
-  try {
-    const metadata = await getMetadata(client);
-    if (metadata) {
-      return decodeCallTree(bytes, metadata);
-    }
-  } catch (e) {
-    console.warn("Failed to decode call with latest metadata:", e);
-  }
-
-  return null;
-}
