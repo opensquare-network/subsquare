@@ -14,7 +14,7 @@ import {
 } from "next-common/components/tags/state/styled";
 import PrimaryButton from "next-common/lib/button/primary";
 import { leasePeriodMs } from "./demoData";
-import { formatCountdown, remainingMs } from "./demoClock";
+import { formatCountdown, remainingMs, useDemoClock } from "./demoClock";
 
 const statusConfig = {
   Pending: {
@@ -64,7 +64,8 @@ function PayoutActionButton({ status }) {
   );
 }
 
-function NextPayoutRow({ spend, symbol, clock }) {
+function NextPayoutRow({ spend, symbol }) {
+  const clock = useDemoClock();
   const leaseRemaining = remainingMs(clock, spend.queueExpiresInMs);
   const maturityRemaining = remainingMs(clock, spend.maturesInMs);
   const isMature = spend.maturesInMs == null;
@@ -119,14 +120,16 @@ function NextPayoutRow({ spend, symbol, clock }) {
             #{spend.index}
           </Link>
           <span className="shrink-0 text-textTertiary">·</span>
-          <Tooltip className="block min-w-0 flex-1" content={spend.title}>
-            <Link
-              href={`/treasury/spends/${spend.index}`}
-              className="block truncate text14Bold text-textPrimary hover:underline"
-            >
-              {spend.title}
-            </Link>
-          </Tooltip>
+          <div className="min-w-0 flex-1">
+            <Tooltip className="block w-fit max-w-full" content={spend.title}>
+              <Link
+                href={`/treasury/spends/${spend.index}`}
+                className="block truncate text14Bold text-textPrimary hover:underline"
+              >
+                {spend.title}
+              </Link>
+            </Tooltip>
+          </div>
           <span className="shrink-0 text14Medium">
             <ValueDisplay value={spend.amount} symbol={symbol} />
           </span>
@@ -148,7 +151,7 @@ const waitingColumns = [
   },
 ];
 
-function WaitingQueue({ queue, clock }) {
+function WaitingQueue({ queue }) {
   const waitingRows = queue.queue.map((spend) => {
     const row = [
       <Link
@@ -160,7 +163,7 @@ function WaitingQueue({ queue, clock }) {
       </Link>,
       <Tooltip
         key="title"
-        className="block w-full min-w-0"
+        className="block w-fit max-w-full"
         content={spend.title}
       >
         <Link
@@ -188,7 +191,6 @@ function WaitingQueue({ queue, clock }) {
             key="next-payout"
             spend={queue.nextPayout}
             symbol={queue.symbol}
-            clock={clock}
           />
         ) : (
           <Item key={idx} row={rowList[idx]} />
@@ -198,7 +200,7 @@ function WaitingQueue({ queue, clock }) {
   );
 }
 
-export default function PayoutQueueCard({ queue, clock }) {
+export default function PayoutQueueCard({ queue }) {
   const toBePaid = [queue.nextPayout, ...queue.queue].reduce(
     (total, spend) => total + spend.amount,
     0,
@@ -213,11 +215,7 @@ export default function PayoutQueueCard({ queue, clock }) {
               <span className="flex items-center gap-1">
                 Queued
                 <Tooltip
-                  content={`Max queued spends for this asset kind is ${
-                    queue.capacity
-                  }. The waiting queue excludes the current Next Payout, so up to ${
-                    queue.capacity + 1
-                  } spends can be held per asset kind in total`}
+                  content={`Max queued spends for this asset kind is ${queue.capacity}. The waiting queue excludes the current Next Payout`}
                 />
               </span>
             }
@@ -234,9 +232,14 @@ export default function PayoutQueueCard({ queue, clock }) {
         </SummaryLayout>
       </SecondaryCard>
 
-      <TitleContainer className="justify-start">Queue</TitleContainer>
+      <TitleContainer className="justify-start">
+        <span className="flex items-center gap-1">
+          Queue
+          <Tooltip content="Spends are paid in order, one at a time." />
+        </span>
+      </TitleContainer>
       <SecondaryCard>
-        <WaitingQueue queue={queue} clock={clock} />
+        <WaitingQueue queue={queue} />
       </SecondaryCard>
     </div>
   );

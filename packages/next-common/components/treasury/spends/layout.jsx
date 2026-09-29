@@ -14,9 +14,9 @@ const tabs = [
     url: "/treasury/spends",
   },
   {
-    value: "payout",
+    value: "queues",
     label: "Payout Queues",
-    url: "/treasury/spends/payout",
+    url: "/treasury/spends/queues",
   },
 ];
 

@@ -55,7 +55,7 @@ export function getTreasuryMenu(summary) {
         pathname: "/treasury/spends",
         extraMatchNavMenuActivePathnames: [
           "/treasury/spends/[id]",
-          "/treasury/spends/payout",
+          "/treasury/spends/queues",
         ],
         activeCount: activeTreasurySpends,
       },

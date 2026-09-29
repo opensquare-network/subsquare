@@ -5,7 +5,7 @@ import PendingSpendsProvider from "next-common/components/treasury/spends/pendin
 import TreasurySpendsLayout from "next-common/components/treasury/spends/layout";
 import PayoutQueues from "next-common/components/treasury/spends/payout";
 
-export default function TreasurySpendsPayoutPage() {
+export default function TreasurySpendsQueuesPage() {
   return (
     <TreasuryProvider>
       <PendingSpendsProvider>

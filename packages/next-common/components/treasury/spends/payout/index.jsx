@@ -1,19 +1,37 @@
 import { useState } from "react";
 import Tabs from "next-common/components/tabs";
+import Tooltip from "next-common/components/tooltip";
+import { cn } from "next-common/utils";
 import PayoutQueueCard from "./queueCard";
 import { payoutQueues } from "./demoData";
-import { useDemoClock } from "./demoClock";
+
+function TabTitle({ active, tooltip, children }) {
+  return (
+    <Tooltip className="flex items-center" content={tooltip}>
+      <div
+        className={cn(
+          "cursor-pointer text16Bold whitespace-nowrap",
+          active ? "text-textPrimary" : "text-textTertiary",
+        )}
+      >
+        {children}
+      </div>
+    </Tooltip>
+  );
+}
 
 export default function PayoutQueues() {
-  const clock = useDemoClock();
   const [activeTabValue, setActiveTabValue] = useState(payoutQueues[0].symbol);
 
   const tabs = payoutQueues.map((queue) => ({
     value: queue.symbol,
-    label: queue.symbol,
-    tooltip: queue.assetKind,
+    label: ({ active }) => (
+      <TabTitle active={active} tooltip={queue.assetKind}>
+        {queue.symbol}
+      </TabTitle>
+    ),
     activeCount: queue.queue.length,
-    content: <PayoutQueueCard queue={queue} clock={clock} />,
+    content: <PayoutQueueCard queue={queue} />,
   }));
 
   return (
@@ -22,6 +40,8 @@ export default function PayoutQueues() {
         tabs={tabs}
         activeTabValue={activeTabValue}
         onTabClick={(tab) => setActiveTabValue(tab.value)}
+        tabsListDivider={false}
+        tabsListClassName="mx-6"
       />
     </div>
   );
