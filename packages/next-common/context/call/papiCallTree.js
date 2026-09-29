@@ -2,10 +2,7 @@ import { createContext, useContext } from "react";
 import { useEffect, useState } from "react";
 import { useOnchainData } from "next-common/context/post";
 import { Binary } from "polkadot-api";
-import {
-  decodeCallTree,
-  getBlockMetadata,
-} from "next-common/utils/callDecoder/decoder.mjs";
+import { decodeCallTreeWithFallback } from "next-common/utils/callDecoder/decoder.mjs";
 import { useConditionalContextPapi } from "../migration/conditionalPapi";
 
 async function fetchPreimage(papi, preimageHash) {
@@ -40,21 +37,16 @@ async function getPreimageCall(client, papi, preimageHash, blockHash) {
   if (!preimage) {
     return null;
   }
-  const bytes = preimage;
-  const metadata = await getBlockMetadata(client, blockHash);
-  if (!metadata) {
-    return null;
-  }
-  return decodeCallTree(bytes, metadata);
+  return decodeCallTreeWithFallback(client, preimage, blockHash);
 }
 
 async function decodeInlineCallHex(client, blockHash, inlineCallHex) {
   const bytes = Binary.fromHex(inlineCallHex);
-  const metadata = await getBlockMetadata(client, blockHash);
-  if (!metadata) {
-    throw new Error("Cannot get block metadata");
+  const callTree = await decodeCallTreeWithFallback(client, bytes, blockHash);
+  if (!callTree) {
+    throw new Error("Cannot decode inline call");
   }
-  return decodeCallTree(bytes, metadata);
+  return callTree;
 }
 
 function useReferendumCall() {
