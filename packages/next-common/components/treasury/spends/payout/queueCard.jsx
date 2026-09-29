@@ -1,0 +1,243 @@
+import Link from "next-common/components/link";
+import Tooltip from "next-common/components/tooltip";
+import ValueDisplay from "next-common/components/valueDisplay";
+import CountDown from "next-common/components/_CountDown";
+import DataList from "next-common/components/dataList";
+import SummaryLayout from "next-common/components/summary/layout/layout";
+import SummaryItem from "next-common/components/summary/layout/item";
+import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
+import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
+import {
+  ActiveTag,
+  NegativeTag,
+  WarningTag,
+} from "next-common/components/tags/state/styled";
+import PrimaryButton from "next-common/lib/button/primary";
+import { leasePeriodMs } from "./demoData";
+import { formatCountdown, remainingMs } from "./demoClock";
+
+const statusConfig = {
+  Pending: {
+    Tag: ActiveTag,
+    tooltip: "Eligible for payout, waiting to be submitted",
+  },
+  Attempted: {
+    Tag: WarningTag,
+    tooltip:
+      "A payout has been submitted and is waiting to be confirmed by check_status",
+  },
+  Failed: {
+    Tag: NegativeTag,
+    tooltip: "The last payout attempt failed, the spend can be paid again",
+  },
+};
+
+function PayoutStatusTag({ status }) {
+  const { Tag, tooltip } = statusConfig[status] ?? {};
+  if (!Tag) {
+    return null;
+  }
+
+  return (
+    <Tooltip className="flex items-center" content={tooltip}>
+      <Tag>{status}</Tag>
+    </Tooltip>
+  );
+}
+
+const payoutActionLabels = {
+  Pending: "Payout",
+  Attempted: "Check Status",
+  Failed: "Retry Payment",
+};
+
+function PayoutActionButton({ status }) {
+  const label = payoutActionLabels[status];
+  if (!label) {
+    return null;
+  }
+
+  return (
+    <PrimaryButton type="button" size="small">
+      {label}
+    </PrimaryButton>
+  );
+}
+
+function NextPayoutRow({ spend, symbol, clock }) {
+  const leaseRemaining = remainingMs(clock, spend.queueExpiresInMs);
+  const maturityRemaining = remainingMs(clock, spend.maturesInMs);
+  const isMature = spend.maturesInMs == null;
+
+  const countdown = isMature
+    ? {
+        value: leaseRemaining,
+        elapsed: leaseRemaining == null ? 0 : leasePeriodMs - leaseRemaining,
+        total: leasePeriodMs,
+      }
+    : {
+        value: maturityRemaining,
+        elapsed:
+          maturityRemaining == null ? 0 : spend.maturesInMs - maturityRemaining,
+        total: spend.maturesInMs,
+      };
+
+  const countdownText = `${
+    isMature ? "Sort lease expires in" : "Payable in"
+  } ${formatCountdown(countdown.value)}`;
+
+  return (
+    <div role="listitem" className="py-4">
+      <div className="flex flex-col gap-3 rounded-xl border border-theme500 bg-theme100 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text12Bold tracking-wide text-theme500">
+              NEXT PAYOUT
+            </span>
+            <PayoutStatusTag status={spend.status} />
+          </div>
+          <div className="flex items-center gap-2">
+            <Tooltip className="flex items-center" content={countdownText}>
+              <CountDown
+                size={20}
+                width={5}
+                numerator={Math.max(0, countdown.elapsed)}
+                denominator={Math.max(1, countdown.total)}
+                backgroundColor="var(--neutral300)"
+                foregroundColor="var(--theme500)"
+              />
+            </Tooltip>
+            <PayoutActionButton status={spend.status} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/treasury/spends/${spend.index}`}
+            className="shrink-0 cursor-pointer text14Bold text-textPrimary hover:underline"
+          >
+            #{spend.index}
+          </Link>
+          <span className="shrink-0 text-textTertiary">·</span>
+          <Tooltip className="block min-w-0 flex-1" content={spend.title}>
+            <Link
+              href={`/treasury/spends/${spend.index}`}
+              className="block truncate text14Bold text-textPrimary hover:underline"
+            >
+              {spend.title}
+            </Link>
+          </Tooltip>
+          <span className="shrink-0 text14Medium">
+            <ValueDisplay value={spend.amount} symbol={symbol} />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const waitingColumns = [
+  {
+    name: "#",
+    style: { textAlign: "left", width: "80px", minWidth: "80px" },
+  },
+  { name: "Title", className: "min-w-0 pr-4" },
+  {
+    name: "Amount",
+    style: { textAlign: "right", width: "140px", minWidth: "140px" },
+  },
+];
+
+function WaitingQueue({ queue, clock }) {
+  const waitingRows = queue.queue.map((spend) => {
+    const row = [
+      <Link
+        key="index"
+        href={`/treasury/spends/${spend.index}`}
+        className="cursor-pointer text14Medium text-textPrimary hover:underline"
+      >
+        #{spend.index}
+      </Link>,
+      <Tooltip
+        key="title"
+        className="block w-full min-w-0"
+        content={spend.title}
+      >
+        <Link
+          href={`/treasury/spends/${spend.index}`}
+          className="block truncate text14Medium text-textPrimary hover:underline"
+        >
+          {spend.title}
+        </Link>
+      </Tooltip>,
+      <ValueDisplay key="amount" value={spend.amount} symbol={queue.symbol} />,
+    ];
+    row.key = spend.index;
+    return row;
+  });
+  const rows = [queue.nextPayout, ...waitingRows];
+
+  return (
+    <DataList
+      columns={waitingColumns}
+      rows={rows}
+      noDataText="No spends waiting in this queue"
+      renderItem={(Item, idx, rowList) =>
+        idx === 0 ? (
+          <NextPayoutRow
+            key="next-payout"
+            spend={queue.nextPayout}
+            symbol={queue.symbol}
+            clock={clock}
+          />
+        ) : (
+          <Item key={idx} row={rowList[idx]} />
+        )
+      }
+    />
+  );
+}
+
+export default function PayoutQueueCard({ queue, clock }) {
+  const toBePaid = [queue.nextPayout, ...queue.queue].reduce(
+    (total, spend) => total + spend.amount,
+    0,
+  );
+
+  return (
+    <div className="flex flex-col gap-4">
+      <SecondaryCard>
+        <SummaryLayout>
+          <SummaryItem
+            title={
+              <span className="flex items-center gap-1">
+                Queued
+                <Tooltip
+                  content={`Max queued spends for this asset kind is ${
+                    queue.capacity
+                  }. The waiting queue excludes the current Next Payout, so up to ${
+                    queue.capacity + 1
+                  } spends can be held per asset kind in total`}
+                />
+              </span>
+            }
+          >
+            {queue.queue.length}
+            <span className="total">/ {queue.capacity}</span>
+          </SummaryItem>
+          <SummaryItem title="Treasury Balance">
+            <ValueDisplay value={queue.treasuryBalance} symbol={queue.symbol} />
+          </SummaryItem>
+          <SummaryItem title="To Be Paid">
+            <ValueDisplay value={toBePaid} symbol={queue.symbol} />
+          </SummaryItem>
+        </SummaryLayout>
+      </SecondaryCard>
+
+      <TitleContainer className="justify-start">Queue</TitleContainer>
+      <SecondaryCard>
+        <WaitingQueue queue={queue} clock={clock} />
+      </SecondaryCard>
+    </div>
+  );
+}

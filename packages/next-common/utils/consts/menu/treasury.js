@@ -53,7 +53,10 @@ export function getTreasuryMenu(summary) {
         value: "spends",
         name: Names.spends,
         pathname: "/treasury/spends",
-        extraMatchNavMenuActivePathnames: ["/treasury/spends/[id]"],
+        extraMatchNavMenuActivePathnames: [
+          "/treasury/spends/[id]",
+          "/treasury/spends/payout",
+        ],
         activeCount: activeTreasurySpends,
       },
       treasury?.proposals && {
