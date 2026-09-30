@@ -22,7 +22,67 @@ import useSupplyHistory from "./useSupplyHistory";
 
 dayjs.extend(utc);
 
-export default function DapSupply() {
+function NextPeriodSummary({ nextPeriod }) {
+  if (!nextPeriod) {
+    return null;
+  }
+
+  return (
+    <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-1 mb-8">
+      <SummaryItem title="Next issuance rate">
+        <ValueDisplay value={nextPeriod.annualIssuance} symbol="DOT / year" />
+      </SummaryItem>
+      <SummaryItem title="Expected period">
+        {dayjs.utc(nextPeriod.start).format("YYYY-MM-DD")}
+        {" - "}
+        {dayjs.utc(nextPeriod.end).format("YYYY-MM-DD")}
+      </SummaryItem>
+      <SummaryItem title="Reduction">
+        {Math.abs(nextPeriod.changePercent)}%
+      </SummaryItem>
+    </SummaryLayout>
+  );
+}
+
+function SupplyLegend({ datasets }) {
+  return (
+    <div className="flex flex-wrap gap-y-2 items-center justify-center mt-4">
+      {datasets.map(({ label, backgroundColor, borderDash }) => (
+        <LegendItem
+          key={label}
+          color={backgroundColor}
+          dashed={!!borderDash?.length}
+        >
+          {label}
+        </LegendItem>
+      ))}
+    </div>
+  );
+}
+
+function SupplyChartContent({ data, options, datasets, nextPeriod }) {
+  if (datasets.length === 0) {
+    return <NoData showIcon={false} text="No supply data available." />;
+  }
+
+  return (
+    <>
+      <NextPeriodSummary nextPeriod={nextPeriod} />
+      <div className="h-[300px]">
+        <Line
+          data={data}
+          options={options}
+          plugins={[hoverLinePlugin, supplyTooltipPlugin]}
+          role="img"
+          aria-label="Actual annual DOT issuance, planned annual issuance, actual monthly supply and projected monthly supply through 2050"
+        />
+      </div>
+      <SupplyLegend datasets={datasets} />
+    </>
+  );
+}
+
+function SupplyChart() {
   const { supplyData, isSupplyLoading, supplyError } = useDapContext();
   const { supply } = useSupplyHistory();
   const projection = supplyData && calcSupplyProjection(supplyData);
@@ -35,10 +95,37 @@ export default function DapSupply() {
   const datasets = data.datasets.filter(({ data }) =>
     data.some(({ y }) => Number.isFinite(y)),
   );
-  const hasData = datasets.length > 0;
   const isLoading = isSupplyLoading || supply.loading;
   const hasError = !!(supplyError || supply.error);
 
+  return (
+    <div
+      className={
+        isLoading ? "flex h-[300px] items-center justify-center" : undefined
+      }
+    >
+      <LoadableContent
+        isLoading={isLoading}
+        style={LoadStyles.CIRCLE}
+        size={24}
+      >
+        <SupplyChartContent
+          data={data}
+          options={options}
+          datasets={datasets}
+          nextPeriod={nextPeriod}
+        />
+        {hasError && (
+          <SummaryDescription className="mt-4 text12Medium">
+            Some chart data could not be loaded.
+          </SummaryDescription>
+        )}
+      </LoadableContent>
+    </div>
+  );
+}
+
+export default function DapSupply() {
   return (
     <ChartCard
       className="mt-4"
@@ -48,69 +135,7 @@ export default function DapSupply() {
           Wiki
         </ExternalLink>
       }
-      chart={
-        <div
-          className={
-            isLoading ? "flex h-[300px] items-center justify-center" : undefined
-          }
-        >
-          <LoadableContent
-            isLoading={isLoading}
-            style={LoadStyles.CIRCLE}
-            size={24}
-          >
-            {hasData ? (
-              <>
-                {nextPeriod && (
-                  <SummaryLayout className="grid-cols-3 max-sm:grid-cols-1 max-md:grid-cols-1 mb-8">
-                    <SummaryItem title="Next issuance rate">
-                      <ValueDisplay
-                        value={nextPeriod.annualIssuance}
-                        symbol="DOT / year"
-                      />
-                    </SummaryItem>
-                    <SummaryItem title="Expected period">
-                      {dayjs.utc(nextPeriod.start).format("YYYY-MM-DD")}
-                      {" - "}
-                      {dayjs.utc(nextPeriod.end).format("YYYY-MM-DD")}
-                    </SummaryItem>
-                    <SummaryItem title="Reduction">
-                      {Math.abs(nextPeriod.changePercent)}%
-                    </SummaryItem>
-                  </SummaryLayout>
-                )}
-                <div className="h-[300px]">
-                  <Line
-                    data={data}
-                    options={options}
-                    plugins={[hoverLinePlugin, supplyTooltipPlugin]}
-                    role="img"
-                    aria-label="Actual annual DOT issuance, planned annual issuance, actual monthly supply and projected monthly supply through 2050"
-                  />
-                </div>
-                <div className="flex flex-wrap gap-y-2 items-center justify-center mt-4">
-                  {datasets.map(({ label, backgroundColor, borderDash }) => (
-                    <LegendItem
-                      key={label}
-                      color={backgroundColor}
-                      dashed={!!borderDash?.length}
-                    >
-                      {label}
-                    </LegendItem>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <NoData showIcon={false} text="No supply data available." />
-            )}
-            {hasError && (
-              <SummaryDescription className="mt-4 text12Medium">
-                Some chart data could not be loaded.
-              </SummaryDescription>
-            )}
-          </LoadableContent>
-        </div>
-      }
+      chart={<SupplyChart />}
     />
   );
 }
