@@ -15,7 +15,7 @@ function Content() {
 
   if (isLoading && !dapData) {
     return (
-      <div className="flex justify-center py-12">
+      <div className="flex h-[200px] items-center justify-center">
         <Loading size={24} />
       </div>
     );

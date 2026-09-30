@@ -6,7 +6,7 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next-common/components/link";
+import ExternalLink from "next-common/components/externalLink";
 import { useDapContext } from "./context";
 
 function TotalSupplyTooltip() {
@@ -15,14 +15,12 @@ function TotalSupplyTooltip() {
       content={
         <>
           Total issued DOT, including active and inactive supply.
-          <Link
+          <ExternalLink
             className="underline ml-1"
             href="https://wiki.polkadot.com/learn/learn-dot/#total-supply"
-            target="_blank"
-            rel="noreferrer"
           >
-            wiki↗
-          </Link>
+            wiki
+          </ExternalLink>
         </>
       }
       contentClassName="max-w-[280px]"

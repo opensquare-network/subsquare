@@ -84,3 +84,16 @@ export async function fetchDapData(api, total, options) {
     allocations,
   };
 }
+
+export async function fetchDapSupplyData(api, total, options) {
+  const [timestamp, validation] = await Promise.all([
+    api.query.Timestamp.Now.getValue(options),
+    api.query.ParachainSystem.ValidationData.getValue(options),
+  ]);
+
+  return {
+    totalSupply: total.toString(),
+    timestamp: Number(timestamp),
+    relayBlockNumber: validation?.relay_parent_number,
+  };
+}

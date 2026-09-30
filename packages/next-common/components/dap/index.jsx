@@ -2,6 +2,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import DapSummary from "./summary";
 import DapAllocation from "./allocation";
 import DapProvider from "./context";
+import DapSupply from "./supply";
 
 export default function DapPageContent() {
   return (
@@ -12,6 +13,7 @@ export default function DapPageContent() {
         summary={<DapSummary />}
       >
         <DapAllocation />
+        <DapSupply />
       </ListLayout>
     </DapProvider>
   );
