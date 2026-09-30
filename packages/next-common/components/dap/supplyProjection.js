@@ -68,7 +68,7 @@ function calcHistoricalIssuancePoints(timestamp, relayBlockNumber) {
 // Estimate future dates with 6-second relay blocks, then accumulate issuance
 // at month starts and two-year rate changes. These are projected supply values.
 function calcFutureSupplyProjection(
-  { supply, timestamp, relayBlockNumber, annualIssuance },
+  { supplyDot, timestamp, relayBlockNumber, annualIssuance },
   endTimestamp,
 ) {
   const period = Math.floor((relayBlockNumber - startBlock) / periodBlocks);
@@ -80,9 +80,12 @@ function calcFutureSupplyProjection(
     annualIssuance: calcAnnualIssuance(nextBlock),
     changePercent: reduction.times(-100).toNumber(),
   };
-  const points = [{ timestamp, annualIssuance, totalSupply: supply.toFixed() }];
+  const points = [
+    { timestamp, annualIssuance, totalSupply: supplyDot.toFixed() },
+  ];
+  let projectedSupply = supplyDot;
   let previousTimestamp = timestamp;
-  let currentIssuance = new BigNumber(annualIssuance);
+  let currentAnnualIssuance = new BigNumber(annualIssuance);
   let nextPeriodTimestamp = nextTimestamp;
   let nextPeriodBlock = nextBlock;
   let nextMonthTimestamp = dayjs
@@ -97,13 +100,15 @@ function calcFutureSupplyProjection(
       nextPeriodTimestamp,
       endTimestamp,
     );
-    supply = supply.plus(
-      currentIssuance
+    projectedSupply = projectedSupply.plus(
+      currentAnnualIssuance
         .times(pointTimestamp - previousTimestamp)
         .div(yearDuration),
     );
     if (pointTimestamp === nextPeriodTimestamp) {
-      currentIssuance = new BigNumber(calcAnnualIssuance(nextPeriodBlock));
+      currentAnnualIssuance = new BigNumber(
+        calcAnnualIssuance(nextPeriodBlock),
+      );
       nextPeriodTimestamp += 2 * yearDuration;
       nextPeriodBlock += periodBlocks;
     }
@@ -115,8 +120,8 @@ function calcFutureSupplyProjection(
     }
     points.push({
       timestamp: pointTimestamp,
-      annualIssuance: currentIssuance.toFixed(),
-      totalSupply: supply.toFixed(10, BigNumber.ROUND_DOWN),
+      annualIssuance: currentAnnualIssuance.toFixed(),
+      totalSupply: projectedSupply.toFixed(10, BigNumber.ROUND_DOWN),
     });
     previousTimestamp = pointTimestamp;
   }
@@ -139,13 +144,13 @@ export function calcSupplyProjection(
     return null;
   }
 
-  const supply = new BigNumber(totalSupply).shiftedBy(-SYMBOL_DECIMALS.DOT);
+  const supplyDot = new BigNumber(totalSupply).shiftedBy(-SYMBOL_DECIMALS.DOT);
   const historicalPoints = calcHistoricalIssuancePoints(
     timestamp,
     relayBlockNumber,
   );
   const { points: futurePoints, nextPeriod } = calcFutureSupplyProjection(
-    { supply, timestamp, relayBlockNumber, annualIssuance },
+    { supplyDot, timestamp, relayBlockNumber, annualIssuance },
     endTimestamp,
   );
   return { points: [...historicalPoints, ...futurePoints], nextPeriod };

@@ -11,7 +11,5 @@ async function fetchSupplyHistory() {
 }
 
 export default function useSupplyHistory() {
-  const supply = useAsync(fetchSupplyHistory, []);
-
-  return { supply };
+  return useAsync(fetchSupplyHistory, []);
 }

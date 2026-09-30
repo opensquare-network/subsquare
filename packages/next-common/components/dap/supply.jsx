@@ -17,7 +17,8 @@ import ExternalLink from "next-common/components/externalLink";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useDapContext } from "./context";
 import { calcSupplyProjection } from "./supplyProjection";
-import useSupplyChart, { supplyTooltipPlugin } from "./useSupplyChart";
+import useSupplyChart from "./useSupplyChart";
+import { supplyTooltipPlugin } from "./supplyChartTooltip";
 import useSupplyHistory from "./useSupplyHistory";
 
 dayjs.extend(utc);
@@ -85,16 +86,20 @@ function SupplyChartContent({ data, options, nextPeriod }) {
 
 function SupplyChart() {
   const { supplyData, isSupplyLoading, supplyError } = useDapContext();
-  const { supply } = useSupplyHistory();
+  const {
+    value: supplyHistory,
+    loading: isHistoryLoading,
+    error: historyError,
+  } = useSupplyHistory();
   const projection = supplyData && calcSupplyProjection(supplyData);
   const { data, options } = useSupplyChart(
     projection?.points ?? [],
     supplyData?.timestamp,
-    supply.value,
+    supplyHistory,
   );
   const nextPeriod = projection?.nextPeriod;
-  const isLoading = isSupplyLoading || supply.loading;
-  const hasError = !!(supplyError || supply.error);
+  const isLoading = isSupplyLoading || isHistoryLoading;
+  const hasError = !!(supplyError || historyError);
 
   return (
     <div

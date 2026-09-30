@@ -6,21 +6,6 @@ import getSupplyTooltipLines from "./supplyChartTooltip";
 
 dayjs.extend(utc);
 
-export const supplyTooltipPlugin = {
-  id: "dapSupplyTooltip",
-  beforeTooltipDraw(chart, { tooltip }) {
-    const { top, bottom } = chart.chartArea;
-    tooltip.caretY = (top + bottom) / 2;
-    tooltip.y = Math.max(
-      0,
-      Math.min(
-        tooltip.caretY - tooltip.height / 2,
-        chart.height - tooltip.height,
-      ),
-    );
-  },
-};
-
 export default function useSupplyChart(
   points = [],
   currentTimestamp,
