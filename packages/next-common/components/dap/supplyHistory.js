@@ -1,10 +1,10 @@
 import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import { initialSupply, startTimestamp } from "./supplyProjection";
 
 dayjs.extend(utc);
-
-const dotUnit = new BigNumber(10).pow(10);
 
 export function calcSupplyHistory(records, isMinted) {
   if (!Array.isArray(records)) {
@@ -32,9 +32,17 @@ export function calcSupplyHistory(records, isMinted) {
       annualTotals.set(year, amount.plus(annualTotals.get(year) ?? 0));
     }
     history = [...annualTotals].map(([x, amount]) => ({ x, amount }));
+  } else if (history.length) {
+    history = history.filter(({ x }) => x >= startTimestamp);
+    if (!history.some(({ x }) => x === startTimestamp)) {
+      history.push({ x: startTimestamp, amount: initialSupply });
+    }
   }
 
   return history
-    .map(({ x, amount }) => ({ x, y: amount.div(dotUnit).toNumber() }))
+    .map(({ x, amount }) => ({
+      x,
+      y: amount.shiftedBy(-SYMBOL_DECIMALS.DOT).toNumber(),
+    }))
     .sort((a, b) => a.x - b.x);
 }

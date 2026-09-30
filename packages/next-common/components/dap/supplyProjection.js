@@ -1,22 +1,22 @@
 import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
 
 dayjs.extend(utc);
 
 // Parameters from Asset Hub Polkadot's EraPayout (MARCH_2026_TI,
 // HARD_CAP_TARGET, HARD_CAP_START, BI_ANNUAL_RATE and MILLISECONDS_PER_YEAR):
 // https://github.com/polkadot-fellows/runtimes/blob/ef651a6fe6dd50d98b41dbd8194f135e7cbfbe03/system-parachains/asset-hubs/asset-hub-polkadot/src/staking/mod.rs#L314-L341
-const initialSupply = new BigNumber("16743421533310057487");
+export const initialSupply = new BigNumber("16743421533310057487");
 const supplyCap = new BigNumber("21000000000000000000");
 const startBlock = 30_349_908;
-const startTimestamp = dayjs.utc("2026-03-14").valueOf();
+export const startTimestamp = dayjs.utc("2026-03-14").valueOf();
 const blockTime = 6_000;
 const yearDuration = 365.25 * 24 * 60 * 60 * 1_000;
 const periodBlocks = (2 * yearDuration) / blockTime;
 const reduction = new BigNumber("0.2628");
 const remaining = new BigNumber(1).minus(reduction);
-const dotUnit = new BigNumber(10).pow(10);
 
 // Adapted from EraPayout::yearly_after_hard_cap and SteppedCurve::last_step_size:
 // https://github.com/polkadot-fellows/runtimes/blob/ef651a6fe6dd50d98b41dbd8194f135e7cbfbe03/system-parachains/asset-hubs/asset-hub-polkadot/src/staking/mod.rs#L343-L375
@@ -37,7 +37,7 @@ export function calcAnnualIssuance(relayBlockNumber) {
     .times(reduction)
     .times(remaining.pow(period))
     .div(2)
-    .div(dotUnit)
+    .shiftedBy(-SYMBOL_DECIMALS.DOT)
     .toFixed(10, BigNumber.ROUND_DOWN);
 }
 
@@ -139,7 +139,7 @@ export function calcSupplyProjection(
     return null;
   }
 
-  const supply = new BigNumber(totalSupply).div(dotUnit);
+  const supply = new BigNumber(totalSupply).shiftedBy(-SYMBOL_DECIMALS.DOT);
   const historicalPoints = calcHistoricalIssuancePoints(
     timestamp,
     relayBlockNumber,
