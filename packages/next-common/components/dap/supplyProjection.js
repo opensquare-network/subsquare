@@ -62,7 +62,23 @@ function calcHistoricalIssuancePoints(timestamp, relayBlockNumber) {
     });
   }
   points.sort((a, b) => a.timestamp - b.timestamp);
-  return points;
+
+  const monthlyPoints = [];
+  for (
+    let month = dayjs.utc(startTimestamp).add(1, "month").startOf("month");
+    month.valueOf() < timestamp;
+    month = month.add(1, "month")
+  ) {
+    const monthTimestamp = month.valueOf();
+    const issuancePoint = points.findLast(
+      (point) => point.timestamp <= monthTimestamp,
+    );
+    if (issuancePoint.timestamp !== monthTimestamp) {
+      monthlyPoints.push({ ...issuancePoint, timestamp: monthTimestamp });
+    }
+  }
+
+  return [...points, ...monthlyPoints].sort((a, b) => a.timestamp - b.timestamp);
 }
 
 // Estimate future dates with 6-second relay blocks, then accumulate issuance

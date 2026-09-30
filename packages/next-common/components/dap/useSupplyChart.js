@@ -24,13 +24,37 @@ export default function useSupplyChart(
     x: timestamp,
     y: annualIssuance === null ? null : Number(annualIssuance),
   }));
-  const historicalIssuance = issuance.filter(({ x }) => x <= currentTimestamp);
+  const currentPoint = points.find(
+    ({ timestamp }) => timestamp === currentTimestamp,
+  );
+  let historicalSupply = supplyHistory;
+  if (currentPoint?.totalSupply != null) {
+    historicalSupply = [
+      ...supplyHistory.filter(({ x }) => x < currentTimestamp),
+      { x: currentTimestamp, y: Number(currentPoint.totalSupply) },
+    ];
+  }
+  const historicalRateChanges = issuance.filter(
+    ({ x, y }, index) =>
+      x <= currentTimestamp &&
+      (index === 0 || y !== issuance[index - 1].y || x === currentTimestamp),
+  );
+  const historicalTimestamps = [
+    ...new Set([
+      ...historicalRateChanges.map(({ x }) => x),
+      ...historicalSupply.map(({ x }) => x),
+    ]),
+  ].sort((a, b) => a - b);
+  const historicalIssuance = historicalTimestamps.map((x) => ({
+    x,
+    y: issuance.findLast((point) => point.x <= x)?.y ?? null,
+  }));
   const scheduledIssuance = issuance.filter(({ x }) => x >= currentTimestamp);
   const timestamps = [
     points[0]?.timestamp,
     points.at(-1)?.timestamp,
-    supplyHistory[0]?.x,
-    supplyHistory.at(-1)?.x,
+    historicalSupply[0]?.x,
+    historicalSupply.at(-1)?.x,
     historicalIssuance[0]?.x,
     historicalIssuance.at(-1)?.x,
   ].filter(Number.isFinite);
@@ -51,8 +75,8 @@ export default function useSupplyChart(
       },
       {
         label: "Actual supply",
-        data: supplyHistory,
-        pointRadius: supplyHistory.length === 1 ? 3 : 0,
+        data: historicalSupply,
+        pointRadius: historicalSupply.length === 1 ? 3 : 0,
         yAxisID: "supply",
         borderColor: green500,
         backgroundColor: green500,
@@ -186,7 +210,7 @@ export default function useSupplyChart(
               parsed.x,
               currentTimestamp,
               points,
-              supplyHistory,
+              historicalSupply,
             ),
         },
       },

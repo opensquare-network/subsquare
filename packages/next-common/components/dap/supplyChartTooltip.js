@@ -1,8 +1,4 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
-
-dayjs.extend(utc);
 
 export const supplyTooltipPlugin = {
   id: "dapSupplyTooltip",
@@ -36,7 +32,6 @@ export default function getSupplyTooltipLines(
   points,
   supplyHistory,
 ) {
-  const date = dayjs.utc(timestamp);
   const isHistorical =
     !Number.isFinite(currentTimestamp) || timestamp <= currentTimestamp;
   const projectionPoint = points.find((point) => point.timestamp === timestamp);
@@ -53,8 +48,7 @@ export default function getSupplyTooltipLines(
   const actualSupply =
     timestamp === currentTimestamp
       ? projectionPoint?.totalSupply
-      : supplyHistory.find((point) => dayjs.utc(point.x).isSame(date, "day"))
-          ?.y;
+      : supplyHistory.find((point) => point.x === timestamp)?.y;
   return [
     `Actual issuance: ${formatAmount(annualIssuance, "DOT / year")}`,
     `Actual supply: ${formatAmount(actualSupply)}`,

@@ -4,62 +4,52 @@ import { fetchDapData, fetchDapSupplyData } from "next-common/services/dap";
 
 export default function useDapData() {
   const { api, checkPallet } = useContextPapi();
-  const [dapData, setDapData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [supplyData, setSupplyData] = useState();
-  const [isSupplyLoading, setIsSupplyLoading] = useState(true);
-  const [supplyError, setSupplyError] = useState();
+  const [dapState, setDapState] = useState({ isLoading: true });
+  const [supplyState, setSupplyState] = useState({ isLoading: true });
 
   useEffect(() => {
-    setDapData(undefined);
-    setIsLoading(true);
-    setSupplyData(undefined);
-    setIsSupplyLoading(true);
-    setSupplyError(undefined);
+    setDapState({ isLoading: true });
+    setSupplyState({ isLoading: true });
 
     if (!api) {
       return;
     }
 
     if (!checkPallet("Balances", "TotalIssuance")) {
-      setIsLoading(false);
-      setIsSupplyLoading(false);
+      setDapState({ isLoading: false });
+      setSupplyState({ isLoading: false });
       return;
     }
 
     async function updateDapData(total, options) {
       try {
         const dapData = await fetchDapData(api, total, options);
-        if (!options.signal.aborted) {
-          setDapData(dapData);
+        if (options.signal.aborted) {
+          return;
         }
+        setDapState({ data: dapData, isLoading: false });
       } catch (error) {
-        if (!options.signal.aborted) {
-          console.error("Failed to fetch DAP data", error);
+        if (options.signal.aborted) {
+          return;
         }
-      } finally {
-        if (!options.signal.aborted) {
-          setIsLoading(false);
-        }
+        console.error("Failed to fetch DAP data", error);
+        setDapState((state) => ({ ...state, isLoading: false }));
       }
     }
 
     async function updateSupplyData(total, options) {
       try {
         const supplyData = await fetchDapSupplyData(api, total, options);
-        if (!options.signal.aborted) {
-          setSupplyData(supplyData);
-          setSupplyError(undefined);
+        if (options.signal.aborted) {
+          return;
         }
+        setSupplyState({ data: supplyData, isLoading: false });
       } catch (error) {
-        if (!options.signal.aborted) {
-          console.error("Failed to fetch DAP supply data", error);
-          setSupplyError(error);
+        if (options.signal.aborted) {
+          return;
         }
-      } finally {
-        if (!options.signal.aborted) {
-          setIsSupplyLoading(false);
-        }
+        console.error("Failed to fetch DAP supply data", error);
+        setSupplyState((state) => ({ ...state, isLoading: false, error }));
       }
     }
 
@@ -77,9 +67,8 @@ export default function useDapData() {
       error: (error) => {
         requestController?.abort();
         console.error("Failed to watch DAP total issuance", error);
-        setSupplyError(error);
-        setIsLoading(false);
-        setIsSupplyLoading(false);
+        setDapState((state) => ({ ...state, isLoading: false }));
+        setSupplyState((state) => ({ ...state, isLoading: false, error }));
       },
     });
 
@@ -89,5 +78,11 @@ export default function useDapData() {
     };
   }, [api, checkPallet]);
 
-  return { dapData, isLoading, supplyData, isSupplyLoading, supplyError };
+  return {
+    dapData: dapState.data,
+    isLoading: dapState.isLoading,
+    supplyData: supplyState.data,
+    isSupplyLoading: supplyState.isLoading,
+    supplyError: supplyState.error,
+  };
 }
