@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { isNil } from "lodash-es";
 import Link from "next-common/components/link";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
@@ -13,8 +15,15 @@ import {
   WarningTag,
 } from "next-common/components/tags/state/styled";
 import PrimaryButton from "next-common/lib/button/primary";
-import { leasePeriodMs } from "./demoData";
-import { formatCountdown, remainingMs, useDemoClock } from "./demoClock";
+import dynamicPopup from "next-common/lib/dynamic/popup";
+import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
+import { useChainSettings } from "next-common/context/chain";
+import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import { getNextPayoutCountdown, getPayoutActionLabel } from "./chainData";
+import useDemoLatestHeight from "./demoHeight";
+import { usePayoutQueueIsDemo } from "./sourceContext";
+
+const PayoutActionPopup = dynamicPopup(() => import("./actionPopup"));
 
 const statusConfig = {
   Pending: {
@@ -45,48 +54,34 @@ function PayoutStatusTag({ status }) {
   );
 }
 
-const payoutActionLabels = {
-  Pending: "Payout",
-  Attempted: "Check Status",
-  Failed: "Retry Payment",
-};
-
-function PayoutActionButton({ status }) {
-  const label = payoutActionLabels[status];
+function PayoutActionButton({ spend, symbol }) {
+  const [showPopup, setShowPopup] = useState(false);
+  const label = getPayoutActionLabel(spend?.status);
   if (!label) {
     return null;
   }
 
   return (
-    <PrimaryButton type="button" size="small">
-      {label}
-    </PrimaryButton>
+    <>
+      <PrimaryButton
+        type="button"
+        size="small"
+        onClick={() => setShowPopup(true)}
+      >
+        {label}
+      </PrimaryButton>
+      {showPopup && (
+        <PayoutActionPopup
+          spend={spend}
+          symbol={symbol}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
+    </>
   );
 }
 
-function NextPayoutRow({ spend, symbol }) {
-  const clock = useDemoClock();
-  const leaseRemaining = remainingMs(clock, spend.queueExpiresInMs);
-  const maturityRemaining = remainingMs(clock, spend.maturesInMs);
-  const isMature = spend.maturesInMs == null;
-
-  const countdown = isMature
-    ? {
-        value: leaseRemaining,
-        elapsed: leaseRemaining == null ? 0 : leasePeriodMs - leaseRemaining,
-        total: leasePeriodMs,
-      }
-    : {
-        value: maturityRemaining,
-        elapsed:
-          maturityRemaining == null ? 0 : spend.maturesInMs - maturityRemaining,
-        total: spend.maturesInMs,
-      };
-
-  const countdownText = `${
-    isMature ? "Sort lease expires in" : "Payable in"
-  } ${formatCountdown(countdown.value)}`;
-
+function NextPayoutBox({ spend, symbol, countdown, countdownText }) {
   return (
     <div role="listitem" className="py-4">
       <div className="flex flex-col gap-3 rounded-xl border border-theme500 bg-theme100 p-4">
@@ -98,17 +93,19 @@ function NextPayoutRow({ spend, symbol }) {
             <PayoutStatusTag status={spend.status} />
           </div>
           <div className="flex items-center gap-2">
-            <Tooltip className="flex items-center" content={countdownText}>
-              <CountDown
-                size={20}
-                width={5}
-                numerator={Math.max(0, countdown.elapsed)}
-                denominator={Math.max(1, countdown.total)}
-                backgroundColor="var(--neutral300)"
-                foregroundColor="var(--theme500)"
-              />
-            </Tooltip>
-            <PayoutActionButton status={spend.status} />
+            {countdown && countdownText && (
+              <Tooltip className="flex items-center" content={countdownText}>
+                <CountDown
+                  size={20}
+                  width={5}
+                  numerator={Math.max(0, countdown.elapsed ?? 0)}
+                  denominator={Math.max(1, countdown.total ?? 1)}
+                  backgroundColor="var(--neutral300)"
+                  foregroundColor="var(--theme500)"
+                />
+              </Tooltip>
+            )}
+            <PayoutActionButton spend={spend} symbol={symbol} />
           </div>
         </div>
 
@@ -131,11 +128,53 @@ function NextPayoutRow({ spend, symbol }) {
             </Tooltip>
           </div>
           <span className="shrink-0 text14Medium">
-            <ValueDisplay value={spend.amount} symbol={symbol} />
+            {isNil(spend.amount) ? (
+              <span>-</span>
+            ) : (
+              <ValueDisplay value={spend.amount} symbol={symbol} />
+            )}
           </span>
         </div>
       </div>
     </div>
+  );
+}
+
+function NextPayoutRow({ spend, symbol }) {
+  // The clock lives in this row only, so its ticks never remount the table rows
+  const isDemo = usePayoutQueueIsDemo();
+  const demoHeight = useDemoLatestHeight(isDemo);
+  const chainHeight = useAhmLatestHeight();
+  const { blockTime } = useChainSettings();
+
+  const countdown = getNextPayoutCountdown({
+    validFrom: spend.validFrom,
+    orderKey: spend.orderKey,
+    expireAt: spend.expireAt,
+    orderExpirationPeriod: spend.orderExpirationPeriod,
+    latestHeight: isDemo ? demoHeight : chainHeight,
+    blockTime,
+  });
+
+  if (!countdown) {
+    return <NextPayoutBox spend={spend} symbol={symbol} />;
+  }
+
+  const isMature = countdown.mode !== "maturity";
+  const remaining = Math.max(0, countdown.remainingMs ?? 0);
+  const total = Math.max(1, countdown.totalMs ?? 1);
+
+  const countdownText = `${
+    isMature ? "Sort lease expires in" : "Payable in"
+  } ${formatTimeDuration(remaining)}`;
+
+  return (
+    <NextPayoutBox
+      spend={spend}
+      symbol={symbol}
+      countdown={{ elapsed: total - remaining, total }}
+      countdownText={countdownText}
+    />
   );
 }
 
@@ -173,12 +212,18 @@ function WaitingQueue({ queue }) {
           {spend.title}
         </Link>
       </Tooltip>,
-      <ValueDisplay key="amount" value={spend.amount} symbol={queue.symbol} />,
+      isNil(spend.amount) ? (
+        <span key="amount">-</span>
+      ) : (
+        <ValueDisplay key="amount" value={spend.amount} symbol={queue.symbol} />
+      ),
     ];
     row.key = spend.index;
     return row;
   });
-  const rows = [queue.nextPayout, ...waitingRows];
+  const rows = queue.nextPayout
+    ? [queue.nextPayout, ...waitingRows]
+    : waitingRows;
 
   return (
     <DataList
@@ -186,7 +231,7 @@ function WaitingQueue({ queue }) {
       rows={rows}
       noDataText="No spends waiting in this queue"
       renderItem={(Item, idx, rowList) =>
-        idx === 0 ? (
+        queue.nextPayout && idx === 0 ? (
           <NextPayoutRow
             key="next-payout"
             spend={queue.nextPayout}
@@ -201,11 +246,6 @@ function WaitingQueue({ queue }) {
 }
 
 export default function PayoutQueueCard({ queue }) {
-  const toBePaid = [queue.nextPayout, ...queue.queue].reduce(
-    (total, spend) => total + spend.amount,
-    0,
-  );
-
   return (
     <div className="flex flex-col gap-4">
       <SecondaryCard>
@@ -214,20 +254,35 @@ export default function PayoutQueueCard({ queue }) {
             title={
               <span className="flex items-center gap-1">
                 Queued
-                <Tooltip
-                  content={`Max queued spends for this asset kind is ${queue.capacity}. The waiting queue excludes the current Next Payout`}
-                />
+                {!isNil(queue.capacity) && (
+                  <Tooltip
+                    content={`Max queued spends for this asset kind is ${queue.capacity}. The waiting queue excludes the current Next Payout`}
+                  />
+                )}
               </span>
             }
           >
             {queue.queue.length}
-            <span className="total">/ {queue.capacity}</span>
+            {!isNil(queue.capacity) && (
+              <span className="total">/ {queue.capacity}</span>
+            )}
           </SummaryItem>
           <SummaryItem title="Treasury Balance">
-            <ValueDisplay value={queue.treasuryBalance} symbol={queue.symbol} />
+            {isNil(queue.treasuryBalance) ? (
+              <span>-</span>
+            ) : (
+              <ValueDisplay
+                value={queue.treasuryBalance}
+                symbol={queue.symbol}
+              />
+            )}
           </SummaryItem>
           <SummaryItem title="To Be Paid">
-            <ValueDisplay value={toBePaid} symbol={queue.symbol} />
+            {isNil(queue.toBePaid) ? (
+              <span>-</span>
+            ) : (
+              <ValueDisplay value={queue.toBePaid} symbol={queue.symbol} />
+            )}
           </SummaryItem>
         </SummaryLayout>
       </SecondaryCard>

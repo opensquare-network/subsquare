@@ -25,6 +25,8 @@ const base = {
     bounties: true,
     childBounties: false,
     tips: true,
+    // polkadot-sdk#11603 ordered treasury spends payout queue
+    payoutQueue: false,
   },
   council: {
     archived: false,
