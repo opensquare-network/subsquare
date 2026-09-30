@@ -60,7 +60,8 @@ function SupplyLegend({ datasets }) {
   );
 }
 
-function SupplyChartContent({ data, options, datasets, nextPeriod }) {
+function SupplyChartContent({ data, options, nextPeriod }) {
+  const { datasets } = data;
   if (datasets.length === 0) {
     return <NoData showIcon={false} text="No supply data available." />;
   }
@@ -92,9 +93,6 @@ function SupplyChart() {
     supply.value,
   );
   const nextPeriod = projection?.nextPeriod;
-  const datasets = data.datasets.filter(({ data }) =>
-    data.some(({ y }) => Number.isFinite(y)),
-  );
   const isLoading = isSupplyLoading || supply.loading;
   const hasError = !!(supplyError || supply.error);
 
@@ -112,7 +110,6 @@ function SupplyChart() {
         <SupplyChartContent
           data={data}
           options={options}
-          datasets={datasets}
           nextPeriod={nextPeriod}
         />
         {hasError && (

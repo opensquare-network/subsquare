@@ -95,7 +95,7 @@ export default function useSupplyChart(
         backgroundColor: green500,
         borderDash: [6, 4],
       },
-    ],
+    ].filter(({ data }) => data.some(({ y }) => Number.isFinite(y))),
   };
   const options = {
     clip: false,

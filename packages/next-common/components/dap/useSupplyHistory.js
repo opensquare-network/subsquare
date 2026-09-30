@@ -7,7 +7,7 @@ async function fetchSupplyHistory() {
   if (error) {
     throw new Error(error.message || "Failed to fetch supply history");
   }
-  return calcSupplyHistory(result, false);
+  return calcSupplyHistory(result);
 }
 
 export default function useSupplyHistory() {
