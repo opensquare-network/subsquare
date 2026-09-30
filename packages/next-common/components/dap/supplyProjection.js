@@ -64,10 +64,40 @@ export function calcSupplyProjection(
   if (startTimestamp < timestamp) {
     points.push({
       timestamp: startTimestamp,
-      annualIssuance: null,
+      annualIssuance: calcAnnualIssuance(startBlock),
       totalSupply: null,
     });
   }
+  for (
+    let historicalBlock = startBlock + periodBlocks;
+    historicalBlock < relayBlockNumber;
+    historicalBlock += periodBlocks
+  ) {
+    points.push({
+      timestamp: timestamp + (historicalBlock - relayBlockNumber) * blockTime,
+      annualIssuance: calcAnnualIssuance(historicalBlock),
+      totalSupply: null,
+    });
+  }
+  for (
+    let month = dayjs.utc(startTimestamp).add(1, "month").startOf("month");
+    month.valueOf() < timestamp;
+    month = month.add(1, "month")
+  ) {
+    const monthlyTimestamp = month.valueOf();
+    const monthlyBlock = Math.floor(
+      relayBlockNumber - (timestamp - monthlyTimestamp) / blockTime,
+    );
+    if (points.some((point) => point.timestamp === monthlyTimestamp)) {
+      continue;
+    }
+    points.push({
+      timestamp: monthlyTimestamp,
+      annualIssuance: calcAnnualIssuance(monthlyBlock),
+      totalSupply: null,
+    });
+  }
+  points.sort((a, b) => a.timestamp - b.timestamp);
   points.push({ timestamp, annualIssuance, totalSupply: supply.toFixed() });
   let previousTimestamp = timestamp;
   let currentIssuance = new BigNumber(annualIssuance);

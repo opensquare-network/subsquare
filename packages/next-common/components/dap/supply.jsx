@@ -24,21 +24,20 @@ dayjs.extend(utc);
 
 export default function DapSupply() {
   const { supplyData, isSupplyLoading, supplyError } = useDapContext();
-  const { supply, issuance } = useSupplyHistory();
+  const { supply } = useSupplyHistory();
   const projection = supplyData && calcSupplyProjection(supplyData);
   const { data, options } = useSupplyChart(
     projection?.points ?? [],
     supplyData?.timestamp,
     supply.value,
-    issuance.value,
   );
   const nextPeriod = projection?.nextPeriod;
   const datasets = data.datasets.filter(({ data }) =>
     data.some(({ y }) => Number.isFinite(y)),
   );
   const hasData = datasets.length > 0;
-  const isLoading = isSupplyLoading || supply.loading || issuance.loading;
-  const hasError = !!(supplyError || supply.error || issuance.error);
+  const isLoading = isSupplyLoading || supply.loading;
+  const hasError = !!(supplyError || supply.error);
 
   return (
     <ChartCard

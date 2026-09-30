@@ -25,7 +25,6 @@ export default function useSupplyChart(
   points = [],
   currentTimestamp,
   supplyHistory = [],
-  issuanceHistory = [],
 ) {
   const {
     purple500,
@@ -36,43 +35,12 @@ export default function useSupplyChart(
     neutral300,
     neutral400,
   } = useThemeSetting();
-  const currentDate = dayjs.utc(currentTimestamp ?? NaN);
-  const historicalIssuance = [...issuanceHistory];
-  const lastIssuance = historicalIssuance.at(-1);
-  if (
-    lastIssuance &&
-    currentTimestamp > lastIssuance.x &&
-    currentDate.isSame(dayjs.utc(lastIssuance.x), "year")
-  ) {
-    historicalIssuance.push({ x: currentTimestamp, y: lastIssuance.y });
-  }
-  const scheduledIssuance = points
-    .filter(({ timestamp, annualIssuance }, index) => {
-      if (timestamp < currentTimestamp) {
-        return false;
-      }
-      const date = dayjs.utc(timestamp);
-      return (
-        timestamp === currentTimestamp ||
-        index === points.length - 1 ||
-        (date.month() === 0 && date.date() === 1) ||
-        annualIssuance !== points[index - 1]?.annualIssuance
-      );
-    })
-    .map(({ timestamp, annualIssuance }) => ({
-      x: timestamp,
-      y: annualIssuance === null ? null : Number(annualIssuance),
-    }));
-  if (
-    historicalIssuance.length &&
-    scheduledIssuance.length &&
-    historicalIssuance.at(-1).x === scheduledIssuance[0].x
-  ) {
-    scheduledIssuance.unshift({
-      ...historicalIssuance.at(-1),
-      isHistoricalEndpoint: true,
-    });
-  }
+  const issuance = points.map(({ timestamp, annualIssuance }) => ({
+    x: timestamp,
+    y: annualIssuance === null ? null : Number(annualIssuance),
+  }));
+  const historicalIssuance = issuance.filter(({ x }) => x <= currentTimestamp);
+  const scheduledIssuance = issuance.filter(({ x }) => x >= currentTimestamp);
   const timestamps = [
     points[0]?.timestamp,
     points.at(-1)?.timestamp,
@@ -225,7 +193,6 @@ export default function useSupplyChart(
         backgroundColor: tooltipBg,
         titleColor: neutral100,
         bodyColor: neutral100,
-        filter: ({ raw }) => !raw.isHistoricalEndpoint,
         callbacks: {
           title: ([{ parsed }]) => dayjs.utc(parsed.x).format("MMM YYYY"),
           label: () => null,
@@ -235,7 +202,6 @@ export default function useSupplyChart(
               currentTimestamp,
               points,
               supplyHistory,
-              issuanceHistory,
             ),
         },
       },

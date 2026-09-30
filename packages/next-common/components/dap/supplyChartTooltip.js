@@ -20,18 +20,17 @@ export default function getSupplyTooltipLines(
   currentTimestamp,
   points,
   supplyHistory,
-  issuanceHistory,
 ) {
   const date = dayjs.utc(timestamp);
   const isHistorical =
     !Number.isFinite(currentTimestamp) || timestamp <= currentTimestamp;
   const projectionPoint = points.find((point) => point.timestamp === timestamp);
+  const annualIssuance = points.findLast(
+    (point) => point.timestamp <= timestamp && point.annualIssuance !== null,
+  )?.annualIssuance;
   if (!isHistorical) {
-    const plannedIssuance = points.findLast(
-      (point) => point.timestamp <= timestamp && point.annualIssuance !== null,
-    )?.annualIssuance;
     return [
-      `Planned issuance: ${formatAmount(plannedIssuance, "DOT / year")}`,
+      `Planned issuance: ${formatAmount(annualIssuance, "DOT / year")}`,
       `Projected supply: ${formatAmount(projectionPoint?.totalSupply)}`,
     ];
   }
@@ -39,16 +38,10 @@ export default function getSupplyTooltipLines(
   const actualSupply =
     timestamp === currentTimestamp
       ? projectionPoint?.totalSupply
-      : supplyHistory.find((point) => point.x === timestamp)?.y;
-  const actualIssuance = issuanceHistory.find((point) =>
-    dayjs.utc(point.x).isSame(date, "year"),
-  )?.y;
-  const issuancePeriod = dayjs.utc(currentTimestamp ?? NaN).isSame(date, "year")
-    ? `${date.year()} YTD`
-    : date.year();
-
+      : supplyHistory.find((point) => dayjs.utc(point.x).isSame(date, "day"))
+          ?.y;
   return [
-    `Actual issuance (${issuancePeriod}): ${formatAmount(actualIssuance)}`,
+    `Actual issuance: ${formatAmount(annualIssuance, "DOT / year")}`,
     `Actual supply: ${formatAmount(actualSupply)}`,
   ];
 }
