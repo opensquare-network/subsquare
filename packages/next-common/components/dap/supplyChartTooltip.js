@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 
 export const supplyTooltipPlugin = {
@@ -16,11 +17,7 @@ export const supplyTooltipPlugin = {
 };
 
 function formatAmount(value, unit = "DOT") {
-  if (
-    value === null ||
-    value === undefined ||
-    !Number.isFinite(Number(value))
-  ) {
+  if (isNil(value) || !Number.isFinite(Number(value))) {
     return "--";
   }
   return `${abbreviateBigNumber(value, 2)} ${unit}`;

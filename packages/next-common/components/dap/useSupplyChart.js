@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { isNil } from "lodash-es";
 import { useThemeSetting } from "next-common/context/theme";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import getSupplyTooltipLines from "./supplyChartTooltip";
@@ -28,7 +29,7 @@ export default function useSupplyChart(
     ({ timestamp }) => timestamp === currentTimestamp,
   );
   let historicalSupply = supplyHistory;
-  if (currentPoint?.totalSupply != null) {
+  if (!isNil(currentPoint?.totalSupply)) {
     historicalSupply = [
       ...supplyHistory.filter(({ x }) => x < currentTimestamp),
       { x: currentTimestamp, y: Number(currentPoint.totalSupply) },
