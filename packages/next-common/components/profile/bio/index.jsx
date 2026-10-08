@@ -49,12 +49,18 @@ const Tertiary = styled.span`
   color: var(--textTertiary);
 `;
 
-export const DisplayUserAvatar = ({ address, user, size = 48 }) => (
+export const DisplayUserAvatar = ({
+  address,
+  user,
+  size = 48,
+  toggleable = true,
+}) => (
   <AvatarDisplay
     avatarCid={user?.avatarCid}
     address={address}
     emailMd5={user?.emailMd5}
     size={size}
+    toggleable={toggleable}
   />
 );
 
