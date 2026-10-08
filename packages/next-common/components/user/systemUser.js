@@ -22,6 +22,7 @@ function SystemUserImpl({
   noTooltip = false,
   link = "",
   ellipsis = true,
+  toggleable = true,
 }) {
   const address = user?.address;
   const displayAddress = tryConvertToEvmAddress(address);
@@ -56,6 +57,7 @@ function SystemUserImpl({
             emailMd5={user?.emailMd5}
             avatarCid={avatar}
             size={`${20 / 14}em`}
+            toggleable={toggleable}
           />
         </AvatarWrapper>
       )}
