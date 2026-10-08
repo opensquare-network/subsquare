@@ -3,10 +3,10 @@ import { UnStyledIdentity } from "../Identity";
 import DeletedAccount from "./deletedAccount";
 import UserDisplay from "./userDisplay";
 import { AvatarWrapper, UserWrapper } from "./styled";
-import Avatar from "../avatar";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import { useWidth } from "./util";
 import Gravatar from "../gravatar";
+import { AvatarDisplay } from "./avatarDisplay";
 import Link from "next-common/components/link";
 import ExternalLink from "../externalLink";
 import { cn } from "next-common/utils";
@@ -43,7 +43,7 @@ function PolkassemblyUser({
 
   const avatarSize = `${20 / 14}em`;
   const avatar = address ? (
-    <Avatar address={address} size={avatarSize} />
+    <AvatarDisplay address={address} size={avatarSize} toggleable />
   ) : (
     <Gravatar email={user?.username} size={avatarSize} />
   );

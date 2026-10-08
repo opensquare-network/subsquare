@@ -23,7 +23,7 @@ export default function MultisigAddress(props = {}) {
       <AddressUserWrapper
         className={className}
         address={address}
-        avata={avatar}
+        avatar={avatar}
         showAvatar={showAvatar}
         avatarSize={avatarSize}
         noEvent={noEvent}
