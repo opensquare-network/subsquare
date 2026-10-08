@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
-    "@next/env": "^16.3.4",
+    "@next/env": "16.3.8",
     "@osn/icons": "^1.235.9",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
