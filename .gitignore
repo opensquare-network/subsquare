@@ -1,10 +1,14 @@
 node_modules
 .env
+.env.backup
 log
 .DS_Store
 .idea
 
+# next 构建产物，以及部署脚本产生的备份/暂存目录
+# （.next.bak.<时间戳> / .next.new / .next.failed.<时间戳> 等）
 .next
+.next.*
 
 *.deploy.sh
 
