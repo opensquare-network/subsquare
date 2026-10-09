@@ -20,6 +20,7 @@ import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { getPeopleMenu } from "./people";
 import { stakingMenu } from "./staking";
+import dapMenu from "./dap";
 import whitelist from "./whitelist";
 import getDataMenu from "./data";
 import vesting from "./vesting";
@@ -72,6 +73,7 @@ export function getHomeMenu({
         modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
         (modules?.proxy || hasMultisig) && getDataMenu(),
+        modules?.dap && dapMenu,
         calendarMenu,
         isPolkadotChain(CHAIN) && polkadotFellowshipMenu,
         votingSpace && votingMenu,
