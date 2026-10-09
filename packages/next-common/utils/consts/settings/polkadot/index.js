@@ -92,6 +92,7 @@ const polkadot = {
     vesting: true,
     whitelist: true,
     staking: true,
+    dap: true,
   }),
   integrations: {
     doTreasury: true,
