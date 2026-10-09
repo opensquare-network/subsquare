@@ -1,22 +1,41 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useContextPapiApi } from "next-common/context/papi";
 import useAhmLatestHeightSnapshot from "next-common/hooks/ahm/useAhmLatestHeightSnapshot";
-import { hexToString } from "@polkadot/util";
+import { u8aToString, u8aToU8a } from "@polkadot/util";
 import { isNil } from "lodash-es";
 
 function positiveOr0(v = 0n) {
   return v > 0n ? v : 0n;
 }
 
+// PAPI decodes storage values into raw types (hex string lock id, snake_case
+// schedule fields), while @polkadot/api returns codec objects (U8aFixed lock
+// id, camelCase schedule fields). Normalize both data shapes here.
+function lockIdToString(lockId) {
+  if (!lockId) {
+    return "";
+  }
+
+  return u8aToString(u8aToU8a(lockId)).trim();
+}
+
+function getScheduleValues(schedule) {
+  return {
+    startingBlock: BigInt(schedule.starting_block ?? schedule.startingBlock),
+    perBlock: BigInt(schedule.per_block ?? schedule.perBlock),
+    locked: BigInt(schedule.locked),
+  };
+}
+
 export function getCurrencyLockedByVesting(locks) {
   const vestingLock = locks.find(
-    (item) => hexToString(item.id).trim() === "vesting",
+    (item) => lockIdToString(item.id) === "vesting",
   );
   if (!vestingLock) {
     return 0n;
   }
 
-  return vestingLock.amount;
+  return BigInt(vestingLock.amount);
 }
 
 export function calculateVestingInfo(
@@ -32,9 +51,7 @@ export function calculateVestingInfo(
   let totalVesting = 0n;
 
   const schedulesWithDetails = schedules.map((schedule) => {
-    const startingBlock = BigInt(schedule.starting_block);
-    const perBlock = schedule.per_block;
-    const locked = schedule.locked;
+    const { startingBlock, perBlock, locked } = getScheduleValues(schedule);
 
     const vestedBlockCount = positiveOr0(nowHeightBigInt - startingBlock);
     const unlockableNow = vestedBlockCount * perBlock;
