@@ -1,7 +1,16 @@
-import VaultSignTxPopup from "next-common/components/polkadotVault/vaultSignTxPopup";
-import VaultSignMessagePopup from "next-common/components/polkadotVault/vaultSignMessagePopup";
+import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useState, createContext, useContext } from "react";
 import { useVaultSignMessage } from "./useVaultSignMessage";
+
+// Both popups import @polkadot/react-qr, which brings in a 600KB+ QR decoding
+// library. This provider is mounted globally, so they have to be lazy loaded,
+// otherwise every page pays for them on first load.
+const VaultSignTxPopup = dynamicPopup(() =>
+  import("next-common/components/polkadotVault/vaultSignTxPopup"),
+);
+const VaultSignMessagePopup = dynamicPopup(() =>
+  import("next-common/components/polkadotVault/vaultSignMessagePopup"),
+);
 
 const VaultScanContext = createContext();
 let qrId = 0;

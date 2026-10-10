@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { checksumAddress } from "./evm/checksumAddress";
 import { isEthereumAddress } from "@polkadot/util-crypto";
 import {
   checkIfShouldConvertToEvmAddress as hydradxCheckIfShouldConvertToEvmAddress,
@@ -56,7 +56,7 @@ export function tryConvertToSubstrateAddress(address) {
     if (isShibuya()) {
       return shibuyaEvmToSubstrateAddress(address);
     }
-    return ethers.getAddress(address);
+    return checksumAddress(address);
   }
   return address;
 }
