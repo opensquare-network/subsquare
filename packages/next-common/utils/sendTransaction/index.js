@@ -8,10 +8,28 @@ export {
   signAndSendSubstrateTx,
   sendSubstrateTx,
 } from "./sendSubstrateTx";
-export { sendEvmTx } from "./sendEvmTx";
-export { maybeSendMimirTx } from "./sendMimirTx";
 export { maybeSendSignetTx } from "./sendSignetTx";
-export { sendHydraDXMultiFeeEvmTx } from "./sendHydraDXMultiFeeEvmTx";
+
+// sendEvmTx and sendHydraDXMultiFeeEvmTx import ethers, and maybeSendMimirTx
+// imports the mimir inject sdk. This module is imported on the first-load path
+// by common code (e.g. useTxSubmission), so re-exporting them statically would
+// drag those packages into every page bundle. Load them on demand instead.
+export async function sendEvmTx(options) {
+  const { sendEvmTx: send } = await import("./sendEvmTx");
+  return send(options);
+}
+
+export async function sendHydraDXMultiFeeEvmTx(options) {
+  const { sendHydraDXMultiFeeEvmTx: send } = await import(
+    "./sendHydraDXMultiFeeEvmTx"
+  );
+  return send(options);
+}
+
+export async function maybeSendMimirTx(options) {
+  const { maybeSendMimirTx: send } = await import("./sendMimirTx");
+  return send(options);
+}
 
 export async function getSigner(signerAddress) {
   const { web3Enable, web3FromAddress } = await import(
