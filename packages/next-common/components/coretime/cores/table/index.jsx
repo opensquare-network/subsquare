@@ -6,12 +6,14 @@ import { isNil } from "lodash-es";
 import { usePageProps } from "next-common/context/page";
 import { useContextApi } from "next-common/context/api";
 import { useColumnsDef } from "../hooks/useColumnsDef";
+import useCoretimeRenewalInfo from "../hooks/useCoretimeRenewalInfo";
 import { SwitchTimeProvider } from "../context/switchTimeContext";
 
 export default function CoretimeCoresTable() {
   const contextApi = useContextApi();
   const { coretimeSale } = usePageProps();
   const { cores = [], loading } = useAllCoreBrokers();
+  const { autoRenewByCore, renewalByCore } = useCoretimeRenewalInfo();
 
   const blocksPerTimesliceRelayChain = useMemo(() => {
     return contextApi?.consts.broker?.timeslicePeriod?.toNumber() ?? 0;
@@ -21,6 +23,8 @@ export default function CoretimeCoresTable() {
     return formartCores(cores, coretimeSale, blocksPerTimesliceRelayChain)
       .map((core) => ({
         ...core,
+        autoRenew: autoRenewByCore[core.coreIndex] ?? null,
+        renewal: renewalByCore[core.coreIndex] ?? null,
         workplans: formatWorkplans(
           core.workplans,
           coretimeSale,
@@ -28,7 +32,13 @@ export default function CoretimeCoresTable() {
         ),
       }))
       .sort((a, b) => a.coreIndex - b.coreIndex);
-  }, [cores, coretimeSale, blocksPerTimesliceRelayChain]);
+  }, [
+    cores,
+    coretimeSale,
+    blocksPerTimesliceRelayChain,
+    autoRenewByCore,
+    renewalByCore,
+  ]);
 
   const columnsDef = useColumnsDef();
 
