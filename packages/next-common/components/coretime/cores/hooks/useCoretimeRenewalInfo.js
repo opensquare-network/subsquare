@@ -9,6 +9,9 @@ export default function useCoretimeRenewalInfo() {
   const renewalWhen = sale?.info?.regionBegin;
   const [autoRenewals, setAutoRenewals] = useState([]);
   const [potentialRenewals, setPotentialRenewals] = useState([]);
+  const [isAutoRenewalsLoaded, setAutoRenewalsLoaded] = useState(false);
+  const [isPotentialRenewalsLoaded, setPotentialRenewalsLoaded] =
+    useState(false);
 
   useEffect(() => {
     if (!api) {
@@ -16,10 +19,14 @@ export default function useCoretimeRenewalInfo() {
     }
 
     const subscription = api.query.Broker.AutoRenewals.watchValue().subscribe({
-      next: ({ value }) => setAutoRenewals(value ?? []),
+      next: ({ value }) => {
+        setAutoRenewals(value ?? []);
+        setAutoRenewalsLoaded(true);
+      },
       error: (error) => {
         console.error("Failed to watch coretime auto renewals:", error);
         setAutoRenewals([]);
+        setAutoRenewalsLoaded(true);
       },
     });
 
@@ -33,10 +40,14 @@ export default function useCoretimeRenewalInfo() {
 
     const subscription =
       api.query.Broker.PotentialRenewals.watchEntries().subscribe({
-        next: ({ entries }) => setPotentialRenewals(entries ?? []),
+        next: ({ entries }) => {
+          setPotentialRenewals(entries ?? []);
+          setPotentialRenewalsLoaded(true);
+        },
         error: (error) => {
           console.error("Failed to watch coretime potential renewals:", error);
           setPotentialRenewals([]);
+          setPotentialRenewalsLoaded(true);
         },
       });
 
@@ -47,7 +58,14 @@ export default function useCoretimeRenewalInfo() {
     () => ({
       autoRenewByCore: buildAutoRenewalIndex(autoRenewals),
       renewalByCore: buildRenewalIndex(potentialRenewals, renewalWhen),
+      loading: !isAutoRenewalsLoaded || !isPotentialRenewalsLoaded,
     }),
-    [autoRenewals, potentialRenewals, renewalWhen],
+    [
+      autoRenewals,
+      potentialRenewals,
+      renewalWhen,
+      isAutoRenewalsLoaded,
+      isPotentialRenewalsLoaded,
+    ],
   );
 }
