@@ -7,6 +7,7 @@ import HydrationTreasurySummary from "next-common/components/summary/hydrationTr
 import { TreasuryProvider } from "next-common/context/treasury";
 import useHydrationTreasuryAssets from "next-common/hooks/useHydrationTreasuryAssets";
 import { HydrationSDKProvider } from "next-common/hooks/ecoAssets/hydration/context/hydrationSDKContext";
+import ErrorBoundary from "next-common/components/errorBoundary";
 import { cn } from "next-common/utils";
 import HydrationAssetBalance from "./assetBalance";
 
@@ -44,15 +45,20 @@ function HydrationTreasuryStatsContent() {
 
 export default function HydrationTreasuryStats() {
   return (
-    <div>
-      <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
-      <SecondaryCard className="flex flex-col gap-y-6">
-        <TreasuryProvider>
-          <HydrationSDKProvider>
-            <HydrationTreasuryStatsContent />
-          </HydrationSDKProvider>
-        </TreasuryProvider>
-      </SecondaryCard>
-    </div>
+    // The hydradx sdk/math .wasm files are fetched and compiled while rendering this
+    // widget. When that fails (blocked asset, offline, ...) only this widget should
+    // break, not the whole home page, so it gets its own boundary.
+    <ErrorBoundary isPartialComponent>
+      <div>
+        <TitleContainer className="mb-4">Treasury Stats</TitleContainer>
+        <SecondaryCard className="flex flex-col gap-y-6">
+          <TreasuryProvider>
+            <HydrationSDKProvider>
+              <HydrationTreasuryStatsContent />
+            </HydrationSDKProvider>
+          </TreasuryProvider>
+        </SecondaryCard>
+      </div>
+    </ErrorBoundary>
   );
 }
