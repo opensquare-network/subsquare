@@ -1,10 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   assetIndexFromLocation,
+  buildPsmData,
+  computeEffectiveCaps,
+  formatPercent,
   permillRange,
   permillToPercent,
   parsePalletsOrigin,
   sumValues,
+  utilizationPercent,
   symbolOf,
   toJsonSafe,
 } from "./psmUtils";
@@ -130,5 +134,140 @@ describe("parsePalletsOrigin", () => {
   it("returns null without an origin", () => {
     expect(parsePalletsOrigin(null)).toBeNull();
     expect(parsePalletsOrigin({})).toBeNull();
+  });
+});
+
+describe("formats and caps", () => {
+  // dotUSD instance on Polkadot Asset Hub: max debt 10,000,000 (6 decimals), one external
+  // asset holding the full ceiling weight, with 2,996,624.883933 dotUSD minted against it.
+  const maxDebt = "10000000000000";
+  const debt = "2996624883933";
+
+  it("gives a sole external asset the whole ceiling", () => {
+    const [cap] = computeEffectiveCaps(maxDebt, [1000000]);
+    expect(cap.toFixed(0)).toBe(maxDebt);
+    expect(utilizationPercent(debt, cap).toFixed(2)).toBe("29.97");
+  });
+
+  it("splits the ceiling by weight", () => {
+    const [first, second] = computeEffectiveCaps(maxDebt, [500000, 500000]);
+    expect(first.toFixed(0)).toBe("5000000000000");
+    expect(second.toFixed(0)).toBe("5000000000000");
+  });
+
+  it("normalises against the weights that are set, and blocks a zero weight", () => {
+    // A zero weight cannot mint, so the remaining weight takes the whole ceiling.
+    const [onlyAsset, blocked] = computeEffectiveCaps(maxDebt, [500000, 0]);
+    expect(onlyAsset.toFixed(0)).toBe(maxDebt);
+    expect(blocked.toFixed(0)).toBe("0");
+    expect(computeEffectiveCaps(maxDebt, [0, 0])).toEqual([null, null]);
+  });
+
+  it("formats percents", () => {
+    expect(formatPercent(29.96624883933, 2)).toBe("29.97%");
+    expect(formatPercent(0.01)).toBe("0.01%");
+    expect(formatPercent(0)).toBe("0%");
+    expect(formatPercent(100)).toBe("100%");
+    expect(formatPercent(null)).toBeNull();
+  });
+
+  it("returns no utilization without a cap", () => {
+    expect(utilizationPercent(debt, null)).toBeNull();
+    expect(utilizationPercent(debt, 0)).toBeNull();
+  });
+});
+
+describe("buildPsmData", () => {
+  // Entry shapes follow the Polkadot Asset Hub reads.
+  const internal = {
+    parents: 0,
+    interior: {
+      type: "X2",
+      value: [
+        { type: "PalletInstance", value: 50 },
+        { type: "GeneralIndex", value: 7873n },
+      ],
+    },
+  };
+  const external = {
+    parents: 0,
+    interior: {
+      type: "X2",
+      value: [
+        { type: "PalletInstance", value: 50 },
+        { type: "GeneralIndex", value: 1984n },
+      ],
+    },
+  };
+  const entries = {
+    psmEntries: [
+      {
+        keyArgs: [internal],
+        value: {
+          fee_destination: "13UVJyLkBsKdkhA6hcHAA9jmz4hJe7iRJ6r9ZUwQheobW7cL",
+          max_debt: 10000000000000n,
+          min_swap_amount: 1000000n,
+          internal_decimals: 6,
+          external_count: 1,
+        },
+      },
+    ],
+    externalEntries: [
+      { keyArgs: [internal, external], value: { status: { type: "AllEnabled" }, decimals: 6 } },
+    ],
+    weightEntries: [{ keyArgs: [internal, external], value: 1000000 }],
+    debtEntries: [{ keyArgs: [internal, external], value: 2996624883933n }],
+    feeEntries: [{ keyArgs: [internal, external], value: 0 }],
+    redemptionEntries: [{ keyArgs: [internal, external], value: 100 }],
+    adminEntries: [
+      {
+        keyArgs: [internal],
+        value: {
+          full_admin: { type: "system", value: { type: "Root" } },
+          emergency_admin: { type: "Origins", value: { type: "ProsperityEmergency" } },
+        },
+      },
+    ],
+    assetMetadata: new Map([
+      [7873, { symbol: [100, 111, 116, 85, 83, 68], decimals: 6 }],
+      [1984, { symbol: [85, 83, 68, 116], decimals: 6 }],
+    ]),
+  };
+
+  it("assembles the instance, its externals and the totals", () => {
+    const data = buildPsmData(entries);
+
+    expect(data.internalAsset).toMatchObject({ index: 7873, symbol: "dotUSD" });
+    expect(data.maxDebt).toBe("10000000000000");
+    expect(data.minSwapAmount).toBe("1000000");
+    expect(data.externalCount).toBe(1);
+    expect(data.feeDestination).toBe(
+      "13UVJyLkBsKdkhA6hcHAA9jmz4hJe7iRJ6r9ZUwQheobW7cL",
+    );
+    // The debt total comes from the pair entries, not from the index map.
+    expect(data.totalDebt).toBe("2996624883933");
+    expect(data.fullAdmin).toEqual({ type: "origin", label: "system · Root" });
+    expect(data.emergencyAdmin).toEqual({
+      type: "origin",
+      label: "Origins · ProsperityEmergency",
+    });
+
+    expect(data.externals).toHaveLength(1);
+    expect(data.externals[0]).toMatchObject({
+      index: 1984,
+      // The on-chain symbol on Asset Hub is "USDt", the icon is matched by assetId.
+      status: "AllEnabled",
+      cap: "10000000000000",
+      utilization: "29.97",
+      debt: "2996624883933",
+    });
+    expect(data.externals[0].mintingFee.toFixed()).toBe("0");
+    expect(data.externals[0].redemptionFee.toFixed()).toBe("0.01");
+    // The location passed to the popup must stay JSON serialisable.
+    expect(JSON.stringify(data.externals[0].location)).toContain("\"1984\"");
+  });
+
+  it("returns null without a PSM instance", () => {
+    expect(buildPsmData({})).toBeNull();
   });
 });

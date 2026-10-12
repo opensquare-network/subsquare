@@ -5,6 +5,7 @@ import NoData from "next-common/components/noData";
 import DotUsdProvider from "./context";
 import DotUsdSummary from "./summary";
 import DotUsdInstance from "./instance";
+import DotUsdExternalAssets from "./externalAssets";
 
 function Section({ title, hint, children }) {
   return (
@@ -42,7 +43,7 @@ export default function DotUsdPageContent() {
             hint="Approved external assets with their circuit breaker status, weight, effective cap and fees"
           >
             <SecondaryCard>
-              <NoData text="Approved external assets will be listed here" />
+              <DotUsdExternalAssets />
             </SecondaryCard>
           </Section>
 
