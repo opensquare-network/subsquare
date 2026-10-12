@@ -3,6 +3,7 @@ import { isNil } from "lodash-es";
 import { getAssetHubPapi } from "next-common/utils/assetHub";
 import {
   assetIndexFromLocation,
+  parsePalletsOrigin,
   permillRange,
   sumValues,
   symbolOf,
@@ -29,7 +30,13 @@ export async function fetchPsmData(api) {
     ? null
     : await api.query.Assets.Metadata.getValue(internalIndex).catch(() => null);
 
+  const adminEntry = (await api.query.Psm.PsmAdmin.getEntries()).find(
+    (entry) => assetIndexFromLocation(entry.keyArgs?.[0]) === internalIndex,
+  );
+
   return {
+    fullAdmin: parsePalletsOrigin(adminEntry?.value?.full_admin),
+    emergencyAdmin: parsePalletsOrigin(adminEntry?.value?.emergency_admin),
     internalAsset: {
       index: internalIndex,
       location: internalLocation,

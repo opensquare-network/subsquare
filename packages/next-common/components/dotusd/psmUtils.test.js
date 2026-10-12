@@ -3,6 +3,7 @@ import {
   assetIndexFromLocation,
   permillRange,
   permillToPercent,
+  parsePalletsOrigin,
   sumValues,
   symbolOf,
   toJsonSafe,
@@ -98,5 +99,36 @@ describe("toJsonSafe", () => {
     const safe = toJsonSafe(location);
     expect(JSON.stringify(safe)).toContain("\"7873\"");
     expect(assetIndexFromLocation(safe)).toBe(7873);
+  });
+});
+
+describe("parsePalletsOrigin", () => {
+  // Both values are read from the dotUSD PSM instance on Polkadot Asset Hub.
+  it("names a governance origin", () => {
+    expect(
+      parsePalletsOrigin({ type: "system", value: { type: "Root" } }),
+    ).toEqual({ type: "origin", label: "system · Root" });
+    expect(
+      parsePalletsOrigin({ type: "Origins", value: { type: "ProsperityEmergency" } }),
+    ).toEqual({ type: "origin", label: "Origins · ProsperityEmergency" });
+  });
+
+  it("returns the account of a signed origin", () => {
+    const account = "13UVJyLkBsKdkhA6hcHAA9jmz4hJe7iRJ6r9ZUwQheobW7cL";
+
+    expect(
+      parsePalletsOrigin({ type: "system", value: { type: "Signed", value: account } }),
+    ).toEqual({ type: "account", account });
+    expect(
+      parsePalletsOrigin({
+        type: "system",
+        value: { type: "Signed", value: { value: account } },
+      }),
+    ).toEqual({ type: "account", account });
+  });
+
+  it("returns null without an origin", () => {
+    expect(parsePalletsOrigin(null)).toBeNull();
+    expect(parsePalletsOrigin({})).toBeNull();
   });
 });

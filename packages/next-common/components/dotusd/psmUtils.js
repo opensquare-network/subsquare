@@ -72,3 +72,28 @@ export function sumValues(entries) {
     new BigNumber(0),
   );
 }
+
+// `PsmAdminInfo.full_admin` / `emergency_admin` hold a `PalletsOrigin`, decoded by PAPI as
+// a nested enum: `{ type, value }`, e.g. `system::RawOrigin::Root` (Root) or a custom one
+// such as `Origins::ProsperityEmergency`. Governance origins have no account, signed ones do.
+export function parsePalletsOrigin(origin) {
+  if (!origin?.type) {
+    return null;
+  }
+
+  const inner = origin.value;
+
+  if (inner?.type === "Signed") {
+    const account =
+      typeof inner.value === "string" ? inner.value : inner.value?.value;
+
+    if (typeof account === "string") {
+      return { type: "account", account };
+    }
+  }
+
+  return {
+    type: "origin",
+    label: [origin.type, inner?.type].filter(Boolean).join(" · "),
+  };
+}

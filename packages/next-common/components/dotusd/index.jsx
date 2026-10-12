@@ -11,7 +11,10 @@ function Section({ title, hint, children }) {
     <div>
       <div className="mb-4">
         <TitleContainer>{title}</TitleContainer>
-        {hint && <p className="mt-2 text12Medium text-textTertiary">{hint}</p>}
+        {/* TitleContainer carries px-6, the hint needs the same inset to line up. */}
+        {hint && (
+          <p className="mt-2 px-6 text12Medium text-textTertiary">{hint}</p>
+        )}
       </div>
       {children}
     </div>

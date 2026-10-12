@@ -19,6 +19,19 @@ function Field({ label, children }) {
   );
 }
 
+function AdminOrigin({ origin }) {
+  if (!origin) {
+    return <span className="text-textTertiary">—</span>;
+  }
+
+  // A signed origin carries an account, governance origins only have a name.
+  if (origin.type === "account") {
+    return <AddressUser add={origin.account} />;
+  }
+
+  return <span>{origin.label}</span>;
+}
+
 function Amount({ value, symbol, decimals }) {
   if (isNil(value)) {
     return <span className="text-textTertiary">—</span>;
@@ -67,6 +80,14 @@ export default function DotUsdInstance() {
             {isNil(data?.externalCount)
               ? "—"
               : String(data.externalCount)}
+          </Field>
+
+          <Field label="Full admin">
+            <AdminOrigin origin={data?.fullAdmin} />
+          </Field>
+
+          <Field label="Emergency admin">
+            <AdminOrigin origin={data?.emergencyAdmin} />
           </Field>
         </div>
       </LoadableContent>
