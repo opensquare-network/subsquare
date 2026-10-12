@@ -60,10 +60,15 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
     code: statusCode,
     source: isServerError ? "server" : "client",
     userAgent: isServerError ? "" : window?.navigator?.userAgent,
-    error: err.message,
-    stack: err.stack,
+    error: err?.message,
+    stack: err?.stack,
   };
-  IS_PRODUCTION && reportClientError(errorData);
+
+  // A missing page is not an application error: crawlers and users guess urls all the
+  // time, and reporting those would only add noise to the error reports.
+  if (IS_PRODUCTION && statusCode !== 404) {
+    reportClientError(errorData);
+  }
 
   return {
     err,
