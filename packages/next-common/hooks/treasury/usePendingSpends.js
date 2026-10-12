@@ -13,6 +13,8 @@ export const defaultPendingSpends = {
   expiringSoonCount: 0,
   validSoonCount: 0,
   claimableCount: 0,
+  expiringSoon: [],
+  validSoon: [],
   claimable: [],
   loading: false,
 };
@@ -29,20 +31,16 @@ export default function usePendingSpends() {
   );
 
   const {
-    expiringSoonCount,
-    validSoonCount,
+    expiringSoon = [],
+    validSoon = [],
     claimable = [],
   } = useMemo(() => {
     if (!spendsEntries?.length || !blockTime || !chainHeight) {
       return defaultPendingSpends;
     }
 
-    const now = Date.now();
-    const sevenDaysLaterMs = now + SEVEN_DAYS_MS;
-    const threeDaysLaterMs = now + THREE_DAYS_MS;
-
-    let expiring = 0;
-    let validating = 0;
+    const expiringSoon = [];
+    const validSoon = [];
     const claimable = [];
 
     spendsEntries.forEach(([storageKey, spendOption]) => {
@@ -55,6 +53,7 @@ export default function usePendingSpends() {
         return;
       }
 
+      const spendId = storageKey.args[0].toNumber?.();
       const validFrom = spend.validFrom?.toNumber?.();
       const expireAt = spend.expireAt?.toNumber?.();
       const isCanClaimable = !isNil(validFrom) && chainHeight >= validFrom;
@@ -65,10 +64,9 @@ export default function usePendingSpends() {
         const timeLeftMs = BigNumber(heightDiff)
           .multipliedBy(blockTime)
           .toNumber();
-        const expireTimeMs = now + timeLeftMs;
 
-        if (expireTimeMs > now && expireTimeMs <= sevenDaysLaterMs) {
-          expiring++;
+        if (timeLeftMs <= SEVEN_DAYS_MS) {
+          expiringSoon.push(spendId);
         }
       }
 
@@ -77,30 +75,26 @@ export default function usePendingSpends() {
         const timeLeftMs = BigNumber(heightDiff)
           .multipliedBy(blockTime)
           .toNumber();
-        const validTimeMs = now + timeLeftMs;
 
-        if (validTimeMs > now && validTimeMs <= threeDaysLaterMs) {
-          validating++;
+        if (timeLeftMs <= THREE_DAYS_MS) {
+          validSoon.push(spendId);
         }
       }
 
       if (isCanClaimable && isNotExpired && spend.status.isPending) {
-        const spendId = storageKey.args[0].toNumber?.();
         claimable.push(spendId);
       }
     });
 
-    return {
-      expiringSoonCount: expiring,
-      validSoonCount: validating,
-      claimable,
-    };
+    return { expiringSoon, validSoon, claimable };
   }, [spendsEntries, blockTime, chainHeight]);
 
   return {
-    expiringSoonCount,
-    validSoonCount,
+    expiringSoonCount: expiringSoon?.length,
+    validSoonCount: validSoon?.length,
     claimableCount: claimable?.length,
+    expiringSoon,
+    validSoon,
     claimable,
     loading,
   };
