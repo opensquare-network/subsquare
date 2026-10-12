@@ -103,6 +103,15 @@ export default function SpendPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+
+  // Spend ids are numeric. Any other value is not one of our pages: e.g.
+  // /treasury/spends/summary is a backend stats endpoint, and treating its response as
+  // spend detail threw "No on chain data when call `useOnchainData`" (a 500 page plus a
+  // server error report). Render it as a missing post instead, like other unknown ids.
+  if (!/^\d+$/.test(id)) {
+    return getNullDetailProps(id);
+  }
+
   const { result: detail } = await backendApi.fetch(`treasury/spends/${id}`);
 
   if (!detail) {
