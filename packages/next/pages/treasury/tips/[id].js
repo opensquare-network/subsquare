@@ -95,6 +95,13 @@ export default function TipPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
+  // Tip ids are hashes (0x...). /treasury/tips/summary is a backend stats endpoint, and
+  // treating its response as a detail threw "No on chain data when call
+  // `useOnchainData`", i.e. a 500 page plus a server error report.
+  if (!/^0x[0-9a-fA-F]+$/.test(id)) {
+    return getNullDetailProps(id);
+  }
+
   const { result: detail } = await backendApi.fetch(`treasury/tips/${id}`);
 
   if (!detail) {
