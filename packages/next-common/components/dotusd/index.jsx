@@ -1,11 +1,11 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
-import NoData from "next-common/components/noData";
 import DotUsdProvider from "./context";
 import DotUsdSummary from "./summary";
 import DotUsdInstance from "./instance";
 import DotUsdExternalAssets from "./externalAssets";
+import DotUsdHolders from "./holders";
 
 function Section({ title, hint, children }) {
   return (
@@ -47,9 +47,12 @@ export default function DotUsdPageContent() {
             </SecondaryCard>
           </Section>
 
-          <Section title="Holders" hint="dotUSD holders ordered by balance">
+          <Section
+            title="Holders"
+            hint="dotUSD holders ordered by balance, as indexed by statescan"
+          >
             <SecondaryCard>
-              <NoData text="Holder distribution will be listed here" />
+              <DotUsdHolders />
             </SecondaryCard>
           </Section>
         </div>
