@@ -51,6 +51,10 @@ export default function usePendingSpends() {
       }
 
       const spend = spendOption.unwrap();
+      if (spend.status.isAttempted) {
+        return;
+      }
+
       const validFrom = spend.validFrom?.toNumber?.();
       const expireAt = spend.expireAt?.toNumber?.();
       const isCanClaimable = !isNil(validFrom) && chainHeight >= validFrom;
