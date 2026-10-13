@@ -1,5 +1,4 @@
 import ListLayout from "next-common/components/layout/ListLayout";
-import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import DotUsdProvider from "./context";
 import DotUsdSummary from "./summary";
@@ -42,18 +41,14 @@ export default function DotUsdPageContent() {
             title="External assets"
             hint="Approved external assets with their circuit breaker status, weight, effective cap and fees"
           >
-            <SecondaryCard>
-              <DotUsdExternalAssets />
-            </SecondaryCard>
+            <DotUsdExternalAssets />
           </Section>
 
           <Section
             title="Holders"
             hint="dotUSD holders ordered by balance, as indexed by statescan"
           >
-            <SecondaryCard>
-              <DotUsdHolders />
-            </SecondaryCard>
+            <DotUsdHolders />
           </Section>
         </div>
       </ListLayout>
