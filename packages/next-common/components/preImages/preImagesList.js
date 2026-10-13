@@ -10,6 +10,9 @@ import { isSameAddress } from "next-common/utils";
 import { useCombinedPreimageHashesLegacy } from "next-common/hooks/usePreimageHashes";
 import { useCombinedPreimageHashesPapi } from "next-common/hooks/usePreimageHashesPapi";
 import { useChainSettings } from "next-common/context/chain";
+import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
+
+const PAGE_SIZE = 50;
 
 function parseStatus(status, method) {
   const statusName = Object.keys(status || {})[0];
@@ -55,6 +58,11 @@ function PreImagesListContent({ data, loading }) {
     [data, searchValue, isMyDepositOn, realAddress],
   );
 
+  const { pagedItems, component: pagination } = useListPagination(
+    filteredData,
+    PAGE_SIZE,
+  );
+
   return (
     <div className="flex flex-col gap-[16px]">
       <div className="flex max-md:flex-col items-center gap-[24px] max-md:px-[24px] max-md:gap-[8px] mr-6 max-md:mr-0">
@@ -76,11 +84,12 @@ function PreImagesListContent({ data, loading }) {
         />
       </div>
       <div className="max-md:hidden">
-        <DesktopList data={filteredData} loading={loading} />
+        <DesktopList data={pagedItems} loading={loading} />
       </div>
       <div className="hidden max-md:block">
-        <MobileList data={filteredData} loading={loading} />
+        <MobileList data={pagedItems} loading={loading} />
       </div>
+      {pagination}
     </div>
   );
 }

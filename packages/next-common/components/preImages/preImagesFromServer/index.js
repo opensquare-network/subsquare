@@ -20,6 +20,9 @@ import { decodeCallTreeWithInfo } from "next-common/utils/callDecoder/decoder.mj
 import { getCachedMetadata as getPapiMetadata } from "next-common/utils/papi/getCachedMetadata";
 import { Binary } from "polkadot-api";
 import { getTextPreimage } from "./textPreimage";
+import { useListPagination } from "next-common/components/pagination/usePaginationComponent";
+
+const PAGE_SIZE = 50;
 
 function addLengthWarning(item, proposal, callLength) {
   const storeLength = item.requested?.maybeLen || item.unrequested?.len;
@@ -151,7 +154,7 @@ export default function PreImagesList() {
   const [isMyDepositOn, setIsMyDepositOn] = useState(false);
   const realAddress = useRealAddress();
 
-  let filteredData = useMemo(
+  const filteredData = useMemo(
     () =>
       data?.filter((preimage) => {
         if (!preimage.hash.includes(searchValue.toLowerCase())) {
@@ -165,6 +168,13 @@ export default function PreImagesList() {
       }),
     [data, searchValue, isMyDepositOn, realAddress],
   );
+
+  const { pagedItems, component: pagination } = useListPagination(
+    filteredData,
+    PAGE_SIZE,
+  );
+  // Keep undefined while loading, so the lists can still show the loading state
+  const pagedData = filteredData === undefined ? filteredData : pagedItems;
 
   return (
     <div className="flex flex-col gap-[16px]">
@@ -187,11 +197,12 @@ export default function PreImagesList() {
         />
       </div>
       <div className="max-md:hidden">
-        <DesktopList data={filteredData} loading={loading} />
+        <DesktopList data={pagedData} loading={loading} />
       </div>
       <div className="hidden max-md:block">
-        <MobileList data={filteredData} loading={loading} />
+        <MobileList data={pagedData} loading={loading} />
       </div>
+      {pagination}
     </div>
   );
 }
