@@ -2,6 +2,7 @@ import { isNil } from "lodash-es";
 import { toTypedCallTree } from "./treeBuilder.mjs";
 import { normalizeCallTree } from "./treeNormalize.mjs";
 import { isPrintableTextPayload } from "./payloadText.mjs";
+import { withBoundedArrayLength } from "./boundedArray.mjs";
 import {
   getDynamicBuilder,
   getLookupCodecBuilder,
@@ -144,14 +145,16 @@ function getWrappedCallCandidates(bytes) {
 }
 
 function decodeExact(codec, bytes) {
-  const decodedValue = codec.dec(bytes);
-  const encodedBytes = codec.enc(decodedValue);
+  return withBoundedArrayLength(bytes.length, () => {
+    const decodedValue = codec.dec(bytes);
+    const encodedBytes = codec.enc(decodedValue);
 
-  if (!isSameBytes(encodedBytes, bytes)) {
-    throw new Error("Codec decoded only part of the input bytes");
-  }
+    if (!isSameBytes(encodedBytes, bytes)) {
+      throw new Error("Codec decoded only part of the input bytes");
+    }
 
-  return decodedValue;
+    return decodedValue;
+  });
 }
 
 function decodeCallData(bytes, metadata) {
