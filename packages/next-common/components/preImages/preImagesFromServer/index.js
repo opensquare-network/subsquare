@@ -45,13 +45,6 @@ function addDecodeError(item, proposalError) {
   };
 }
 
-function addApiLoading(item) {
-  return {
-    ...item,
-    isApiLoading: true,
-  };
-}
-
 function addNoPreimageBytes(item) {
   return {
     ...item,
@@ -63,10 +56,6 @@ function addNoPreimageBytes(item) {
 }
 
 function decodeWithLegacyApi(item, api) {
-  if (!api) {
-    return addApiLoading(item);
-  }
-
   if (!api.registry) {
     return addDecodeError(item, "Legacy decode is not available");
   }
@@ -160,7 +149,16 @@ function useServerPreimages() {
     ? [trigger, enablePapi, client, relayChainMetadata]
     : [trigger, enablePapi, api];
 
+  // Nothing can be decoded before the api of the chain is ready. Waiting for
+  // it keeps the list from being fetched, rendered and decoded twice: once
+  // while the api connects, and once more when it is there.
+  const waitingForApi = enablePapi ? !client : !api;
+
   const { value: parsedPreimages, loading } = useAsync(async () => {
+    if (waitingForApi) {
+      return null;
+    }
+
     const preimages = await queryPreimages();
     if (!preimages) {
       return null;
@@ -170,10 +168,6 @@ function useServerPreimages() {
       return decodeInSlices(preimages, (item) =>
         decodeWithLegacyApi(item, api),
       );
-    }
-
-    if (!client) {
-      return preimages.map((item) => addApiLoading(item));
     }
 
     const metadata = await getPapiMetadata(client);
@@ -191,7 +185,7 @@ function useServerPreimages() {
     );
   }, dependencies);
 
-  return { value: parsedPreimages, loading };
+  return { value: parsedPreimages, loading: loading || waitingForApi };
 }
 
 export default function PreImagesList() {
