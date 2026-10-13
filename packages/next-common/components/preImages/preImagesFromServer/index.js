@@ -122,6 +122,31 @@ function decodeWithPapi(item, metadataList) {
   );
 }
 
+// Decoding every preimage of the list in one go keeps the main thread busy
+// for as long as it takes, which is noticeable on a list of hundreds of
+// preimages. Decoding in slices keeps the page responsive while it loads.
+const DECODE_TIME_SLICE = 8;
+
+function yieldToMainThread() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+async function decodeInSlices(preimages, decode) {
+  const decoded = [];
+  let sliceEnd = performance.now() + DECODE_TIME_SLICE;
+
+  for (const preimage of preimages) {
+    decoded.push(decode(preimage));
+
+    if (performance.now() >= sliceEnd) {
+      await yieldToMainThread();
+      sliceEnd = performance.now() + DECODE_TIME_SLICE;
+    }
+  }
+
+  return decoded;
+}
+
 function useServerPreimages() {
   const trigger = useSelector(preImagesTriggerSelector);
   const { enablePapi } = useChainSettings();
@@ -142,7 +167,9 @@ function useServerPreimages() {
     }
 
     if (!enablePapi) {
-      return preimages.map((item) => decodeWithLegacyApi(item, api));
+      return decodeInSlices(preimages, (item) =>
+        decodeWithLegacyApi(item, api),
+      );
     }
 
     if (!client) {
@@ -159,7 +186,9 @@ function useServerPreimages() {
     const relayMetadata = relayChainMetadata ? await relayChainMetadata : null;
     const metadataList = relayMetadata ? [metadata, relayMetadata] : [metadata];
 
-    return preimages.map((item) => decodeWithPapi(item, metadataList));
+    return decodeInSlices(preimages, (item) =>
+      decodeWithPapi(item, metadataList),
+    );
   }, dependencies);
 
   return { value: parsedPreimages, loading };
