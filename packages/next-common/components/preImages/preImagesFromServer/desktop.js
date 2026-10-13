@@ -3,19 +3,28 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import useColumns from "next-common/components/styledList/useColumns";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import ScrollerX from "next-common/components/styled/containers/scrollerX";
-import DataList from "next-common/components/dataList";
+import VirtualList from "next-common/components/dataList/virtualList";
 import { Deposit, Hash, Proposal, Status } from "../fields";
 import { useDispatch } from "react-redux";
 import { incPreImagesTrigger } from "next-common/store/reducers/preImagesSlice";
 import { getPreimageTicket, getPreimageLen, getPreimageStatus } from "./common";
+import { useWindowHeightContext } from "next-common/context/windowSize";
 
 const PreimageDetailPopup = dynamicPopup(() =>
   import("../preImageDetailPopup"),
 );
 
+// The list holds every preimage of the chain, and the height of a row is fixed
+// by the fields above it taking a single line each.
+const ROW_HEIGHT = 73;
+const DEFAULT_WINDOW_HEIGHT = 760;
+const LIST_TOP_OFFSET = 340;
+
 export default function DesktopList({ data, loading }) {
   const dispatch = useDispatch();
   const [showArgumentsDetail, setShowArgumentsDetail] = useState(null);
+  const windowHeight = useWindowHeightContext() || DEFAULT_WINDOW_HEIGHT;
+  const listHeight = Math.max(420, windowHeight - LIST_TOP_OFFSET);
 
   const { columns } = useColumns([
     {
@@ -82,11 +91,14 @@ export default function DesktopList({ data, loading }) {
   return (
     <SecondaryCard>
       <ScrollerX>
-        <DataList
+        <VirtualList
           columns={columns}
           rows={rows}
           noDataText="No current preimages"
           loading={loading && !data}
+          itemHeight={ROW_HEIGHT}
+          listHeight={listHeight}
+          overscanCount={5}
         />
       </ScrollerX>
       {showArgumentsDetail && (
