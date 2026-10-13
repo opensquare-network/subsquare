@@ -20,6 +20,7 @@ import { decodeCallTreeWithInfo } from "next-common/utils/callDecoder/decoder.mj
 import { getCachedMetadata as getPapiMetadata } from "next-common/utils/papi/getCachedMetadata";
 import { Binary } from "polkadot-api";
 import { getTextPreimage } from "./textPreimage";
+import useRelayChainMetadata from "next-common/hooks/preimages/useRelayChainMetadata";
 
 function addLengthWarning(item, proposal, callLength) {
   const storeLength = item.requested?.maybeLen || item.unrequested?.len;
@@ -44,13 +45,6 @@ function addDecodeError(item, proposalError) {
   };
 }
 
-function addApiLoading(item) {
-  return {
-    ...item,
-    isApiLoading: true,
-  };
-}
-
 function addNoPreimageBytes(item) {
   return {
     ...item,
@@ -62,10 +56,6 @@ function addNoPreimageBytes(item) {
 }
 
 function decodeWithLegacyApi(item, api) {
-  if (!api) {
-    return addApiLoading(item);
-  }
-
   if (!api.registry) {
     return addDecodeError(item, "Legacy decode is not available");
   }
@@ -85,23 +75,99 @@ function decodeWithLegacyApi(item, api) {
   return addLengthWarning(item, proposal, proposal.encodedLength);
 }
 
+function decodeWithPapi(item, metadataList) {
+  if (!item.hex) {
+    return addNoPreimageBytes(item);
+  }
+
+  const callBytes = Binary.fromHex(item.hex);
+
+  // A preimage can be a call of any of the chains involved in the asset hub
+  // migration, and metadata only decodes the calls of its own chain.
+  for (const metadata of metadataList) {
+    try {
+      const { proposal, callData } = decodeCallTreeWithInfo(
+        callBytes,
+        metadata,
+      );
+
+      return addLengthWarning(item, proposal, callData.length);
+    } catch {
+      // Try the next metadata.
+    }
+  }
+
+  const textPreimage = getTextPreimage(callBytes);
+  if (textPreimage !== null) {
+    return {
+      ...item,
+      textPreimage,
+    };
+  }
+
+  return addDecodeError(
+    item,
+    "Unable to decode preimage bytes into a valid Call",
+  );
+}
+
+// Decoding every preimage of the list in one go keeps the main thread busy
+// for as long as it takes, which is noticeable on a list of hundreds of
+// preimages. Decoding in slices keeps the page responsive while it loads.
+const DECODE_TIME_SLICE = 8;
+
+function yieldToMainThread() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+async function decodeInSlices(preimages, decode) {
+  const decoded = [];
+  let sliceEnd = performance.now() + DECODE_TIME_SLICE;
+
+  for (const preimage of preimages) {
+    decoded.push(decode(preimage));
+
+    if (performance.now() >= sliceEnd) {
+      await yieldToMainThread();
+      sliceEnd = performance.now() + DECODE_TIME_SLICE;
+    }
+  }
+
+  return decoded;
+}
+
 function useServerPreimages() {
   const trigger = useSelector(preImagesTriggerSelector);
   const { enablePapi } = useChainSettings();
   const api = useContextApi();
   const { client } = useContextPapi();
+  const relayChainMetadata = useRelayChainMetadata(enablePapi);
+
+  // The legacy api is not used while papi is enabled, and leaving it out of
+  // the dependencies avoids decoding every preimage again when it connects.
+  const dependencies = enablePapi
+    ? [trigger, enablePapi, client, relayChainMetadata]
+    : [trigger, enablePapi, api];
+
+  // Nothing can be decoded before the api of the chain is ready. Waiting for
+  // it keeps the list from being fetched, rendered and decoded twice: once
+  // while the api connects, and once more when it is there.
+  const waitingForApi = enablePapi ? !client : !api;
+
   const { value: parsedPreimages, loading } = useAsync(async () => {
+    if (waitingForApi) {
+      return null;
+    }
+
     const preimages = await queryPreimages();
     if (!preimages) {
       return null;
     }
 
     if (!enablePapi) {
-      return preimages.map((item) => decodeWithLegacyApi(item, api));
-    }
-
-    if (!client) {
-      return preimages.map((item) => addApiLoading(item));
+      return decodeInSlices(preimages, (item) =>
+        decodeWithLegacyApi(item, api),
+      );
     }
 
     const metadata = await getPapiMetadata(client);
@@ -111,38 +177,15 @@ function useServerPreimages() {
       );
     }
 
-    return preimages.map((item) => {
-      if (!item.hex) {
-        return addNoPreimageBytes(item);
-      }
+    const relayMetadata = relayChainMetadata ? await relayChainMetadata : null;
+    const metadataList = relayMetadata ? [metadata, relayMetadata] : [metadata];
 
-      const callBytes = Binary.fromHex(item.hex);
+    return decodeInSlices(preimages, (item) =>
+      decodeWithPapi(item, metadataList),
+    );
+  }, dependencies);
 
-      try {
-        const { proposal, callData } = decodeCallTreeWithInfo(
-          callBytes,
-          metadata,
-        );
-
-        return addLengthWarning(item, proposal, callData.length);
-      } catch {
-        const textPreimage = getTextPreimage(callBytes);
-        if (textPreimage !== null) {
-          return {
-            ...item,
-            textPreimage,
-          };
-        }
-
-        return addDecodeError(
-          item,
-          "Unable to decode preimage bytes into a valid Call",
-        );
-      }
-    });
-  }, [trigger, client, enablePapi, api]);
-
-  return { value: parsedPreimages, loading };
+  return { value: parsedPreimages, loading: loading || waitingForApi };
 }
 
 export default function PreImagesList() {
