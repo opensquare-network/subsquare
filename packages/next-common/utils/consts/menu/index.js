@@ -21,6 +21,7 @@ import { coretimeMenu } from "./coretime";
 import { getPeopleMenu } from "./people";
 import { stakingMenu } from "./staking";
 import dapMenu from "./dap";
+import dotUsdMenu from "./dotusd";
 import whitelist from "./whitelist";
 import getDataMenu from "./data";
 import vesting from "./vesting";
@@ -74,6 +75,7 @@ export function getHomeMenu({
         modules?.whitelist && whitelist,
         (modules?.proxy || hasMultisig) && getDataMenu(),
         modules?.dap && dapMenu,
+        modules?.dotusd && dotUsdMenu,
         calendarMenu,
         isPolkadotChain(CHAIN) && polkadotFellowshipMenu,
         votingSpace && votingMenu,
