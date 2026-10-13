@@ -1,4 +1,5 @@
 import { useState, memo } from "react";
+import dynamic from "next/dynamic";
 import { isNil } from "lodash-es";
 import { addressEllipsis } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
@@ -10,6 +11,14 @@ import { ForeignAssetLink } from "next-common/components/assethubMigrationAssets
 
 const LocationDetailPopup = dynamicPopup(() =>
   import("next-common/components/callDetailPopup"),
+);
+
+// Renders the location popup's JSON tab as a tree, like the preimage call tree.
+const JsonTreeView = dynamic(
+  () => import("next-common/components/jsonTreeView"),
+  {
+    ssr: false,
+  },
 );
 
 function LocationInfoIcon({ location }) {
@@ -31,6 +40,7 @@ function LocationInfoIcon({ location }) {
           jsonViewData={location}
           hasTreeViewData={false}
           setShow={setShowDetail}
+          customJsonView={JsonTreeView}
           title="Location"
         />
       )}

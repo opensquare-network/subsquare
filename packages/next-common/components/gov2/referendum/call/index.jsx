@@ -42,6 +42,14 @@ const MultiAssetBountiesMetadata = dynamic(
   },
 );
 
+// Renders the call detail popup's JSON tab as a tree, like the preimage call tree.
+const JsonTreeView = dynamic(
+  () => import("next-common/components/jsonTreeView"),
+  {
+    ssr: false,
+  },
+);
+
 export default function Gov2ReferendumCall() {
   const chain = useChain();
   const onchainData = useOnchainData();
@@ -74,6 +82,7 @@ export default function Gov2ReferendumCall() {
         key={"call"}
         call={inlineCall?.call}
         preImageHash={preImageHash}
+        customJsonView={JsonTreeView}
       />,
     ]);
   }
@@ -85,6 +94,7 @@ export default function Gov2ReferendumCall() {
         call={proposal?.call}
         shorten={proposal?.shorten}
         preImageHash={preImageHash}
+        customJsonView={JsonTreeView}
       />,
     ]);
   }
