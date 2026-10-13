@@ -65,6 +65,7 @@ export default function CallDetailPopup({
   hasTreeViewData = true,
   setShow,
   customCallTree = null,
+  customJsonView: CustomJsonView = null,
   title = "Call Detail",
 }) {
   const hasTableData = !!tableViewData;
@@ -112,11 +113,16 @@ export default function CallDetailPopup({
           <InnerDataTable data={tableViewData} />
         </ArgsWrapper>
       )}
-      {selectedTabId === "json" && (
-        <ArgsWrapper className="wrapper">
-          <JsonView src={jsonViewData} />
-        </ArgsWrapper>
-      )}
+      {selectedTabId === "json" &&
+        (CustomJsonView ? (
+          // A tree renders on the popup background, like the Tree tab, otherwise its
+          // neutral200 value boxes would blend into the ArgsWrapper frame.
+          <CustomJsonView src={jsonViewData} />
+        ) : (
+          <ArgsWrapper className="wrapper">
+            <JsonView src={jsonViewData} />
+          </ArgsWrapper>
+        ))}
     </Popup>
   );
 }

@@ -1,4 +1,4 @@
-import { cn } from "next-common/utils";
+import { cn } from "next-common/utils/clsx";
 
 export default function IndentPanel({ className, children }) {
   return (
