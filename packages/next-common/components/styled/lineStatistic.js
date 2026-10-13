@@ -47,7 +47,7 @@ function Item({ label = "", children }) {
     <div
       className={cn(
         "flex items-center gap-x-1 text12Medium text-textTertiary",
-        "before:content-['·'] before:mx-1 before:first:hidden",
+        "not-first:before:content-['·'] before:mx-1 before:first:hidden",
       )}
     >
       <div className="whitespace-nowrap">{label}</div>
