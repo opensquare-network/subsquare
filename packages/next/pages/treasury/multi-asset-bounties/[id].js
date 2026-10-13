@@ -99,13 +99,6 @@ export default function MultiAssetBountyPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
-
-  // Multi asset bounty ids are numeric. /treasury/multi-asset-bounties/summary is a backend stats endpoint, and treating
-  // its response as a detail threw "No on chain data when call `useOnchainData`", i.e. a
-  // 500 page plus a server error report. Render other values as a missing post instead.
-  if (!/^\d+$/.test(id)) {
-    return getNullDetailProps(id);
-  }
   const [
     { result: detail },
     { result: childBounties },
