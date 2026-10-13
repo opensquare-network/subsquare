@@ -43,7 +43,6 @@ export default function usePoolData({ days = 7 } = {}) {
   const [contributions, setContributions] = useState([]);
   const [isContributionsLoading, setContributionsLoading] = useState(true);
   const [poolIo, setPoolIo] = useState([]);
-  const [minimumCreditPurchase, setMinimumCreditPurchase] = useState(null);
   const [history, setHistory] = useState([]);
   const [historyStep, setHistoryStep] = useState(1);
   const [isHistoryLoading, setHistoryLoading] = useState(true);
@@ -74,12 +73,6 @@ export default function usePoolData({ days = 7 } = {}) {
           setPoolIo([]);
         },
       });
-
-    api.constants.Broker.MinimumCreditPurchase()
-      .then(setMinimumCreditPurchase)
-      .catch((error) =>
-        console.error("Failed to read MinimumCreditPurchase:", error),
-      );
 
     return () => {
       contributionsSubscription.unsubscribe();
@@ -170,7 +163,6 @@ export default function usePoolData({ days = 7 } = {}) {
     privatePool: formatPoolSize(status?.privatePoolSize),
     contributions: formattedContributions,
     upcomingIo,
-    minimumCreditPurchase,
     historyDays,
     historyStep,
     totalPayout,

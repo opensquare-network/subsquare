@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { isNil } from "lodash-es";
 import * as Popover from "@radix-ui/react-popover";
 import { SystemMore } from "@osn/icons/subsquare";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -8,33 +7,12 @@ import {
   OptionItem,
   OptionWrapper,
 } from "next-common/components/internalDropdown/styled";
-import { RegionStatus } from "next-common/components/coretime/regions/utils";
 
 const ClaimRevenuePopup = dynamicPopup(() => import("./claimRevenuePopup"));
-const DropContributionPopup = dynamicPopup(() =>
-  import("./dropContributionPopup"),
-);
 
-export default function ContributionActionColumn({
-  contribution,
-  lastTimeslice,
-  contributionTimeout,
-}) {
+export default function ContributionActionColumn({ contribution }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeAction, setActiveAction] = useState(null);
-  // A contribution can only be dropped once the contribution plus the
-  // contribution timeout has passed.
-  const canDrop =
-    contribution.status === RegionStatus.Expired &&
-    !isNil(lastTimeslice) &&
-    !isNil(contributionTimeout) &&
-    lastTimeslice >=
-      contribution.begin + contribution.length + contributionTimeout;
-
-  const handleSelectAction = (action) => {
-    setIsMenuOpen(false);
-    setActiveAction(action);
-  };
+  const [isClaimOpen, setIsClaimOpen] = useState(false);
 
   return (
     <>
@@ -60,35 +38,22 @@ export default function ContributionActionColumn({
                 as="button"
                 type="button"
                 className="w-full"
-                onClick={() => handleSelectAction("claim")}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsClaimOpen(true);
+                }}
               >
                 Claim revenue
-              </OptionItem>
-              <OptionItem
-                as="button"
-                type="button"
-                disabled={!canDrop}
-                className="w-full disabled:cursor-not-allowed disabled:text-textDisabled"
-                onClick={() => handleSelectAction("drop")}
-              >
-                Drop contribution
               </OptionItem>
             </OptionWrapper>
           </Popover.Content>
         </Popover.Portal>
       </Popover.Root>
 
-      {activeAction === "claim" && (
+      {isClaimOpen && (
         <ClaimRevenuePopup
           contribution={contribution}
-          onClose={() => setActiveAction(null)}
-        />
-      )}
-      {activeAction === "drop" && (
-        <DropContributionPopup
-          contribution={contribution}
-          canDrop={canDrop}
-          onClose={() => setActiveAction(null)}
+          onClose={() => setIsClaimOpen(false)}
         />
       )}
     </>

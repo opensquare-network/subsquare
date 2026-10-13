@@ -6,8 +6,6 @@ import NumberWithComma from "next-common/components/numberWithComma";
 import Tooltip from "next-common/components/tooltip";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
-import useCoretimeStatus from "next-common/context/coretime/status";
-import useCoretimeConfiguration from "next-common/context/coretime/configuration";
 import { formatRegionShare } from "next-common/components/coretime/regions/utils";
 import RegionStatusTag from "next-common/components/coretime/regions/statusTag";
 import RegionTimeColumn, {
@@ -40,11 +38,7 @@ function LengthColumn({ length, perDay }) {
 export default function PoolContributions({ contributions = [], loading }) {
   const api = useContextApi();
   const { blockTime } = useChainSettings();
-  const status = useCoretimeStatus();
-  const configuration = useCoretimeConfiguration();
   const timeslicePeriod = api?.consts.broker?.timeslicePeriod?.toNumber();
-  const contributionTimeout = configuration?.contributionTimeout;
-  const lastTimeslice = status?.lastTimeslice;
 
   const perDay = useMemo(
     () => timeslicesPerDay(timeslicePeriod, blockTime),
@@ -129,15 +123,11 @@ export default function PoolContributions({ contributions = [], loading }) {
         key: "action",
         className: "w-[80px] flex justify-end text-right",
         render: (contribution) => (
-          <ContributionActionColumn
-            contribution={contribution}
-            lastTimeslice={lastTimeslice}
-            contributionTimeout={contributionTimeout}
-          />
+          <ContributionActionColumn contribution={contribution} />
         ),
       },
     ],
-    [timeslicePeriod, perDay, lastTimeslice, contributionTimeout],
+    [timeslicePeriod, perDay],
   );
 
   return (
