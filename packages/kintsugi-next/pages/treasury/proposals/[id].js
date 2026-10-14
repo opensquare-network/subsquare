@@ -82,6 +82,15 @@ export default function Proposal({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+
+  // Treasury proposal ids are numeric, so any other value can't be one of our detail pages
+  // (it could only be a backend endpoint under the same path, e.g. the
+  // /treasury/proposals/summary stats endpoint of the polkadot backend). Render it as a
+  // missing post instead, like other unknown ids.
+  if (!/^\d+$/.test(id)) {
+    return getNullDetailProps(id);
+  }
+
   const { result: detail } = await backendApi.fetch(`treasury/proposals/${id}`);
 
   if (!detail) {

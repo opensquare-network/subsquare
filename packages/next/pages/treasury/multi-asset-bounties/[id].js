@@ -99,6 +99,16 @@ export default function MultiAssetBountyPage({ detail }) {
 
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
+
+  // Multi asset bounty ids are numeric. Any other value is not one of our pages: e.g.
+  // /treasury/multi-asset-bounties/active is a backend list endpoint, and a stats endpoint
+  // under the same path would be read as a detail, which threw "No on chain data when call
+  // `useOnchainData`" (a 500 page plus a server error report). Render such values as a
+  // missing post instead, like other unknown ids.
+  if (!/^\d+$/.test(id)) {
+    return getNullDetailProps(id, { childBounties: EmptyList });
+  }
+
   const [
     { result: detail },
     { result: childBounties },

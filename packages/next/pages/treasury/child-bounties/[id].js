@@ -88,6 +88,15 @@ export default function ChildBountyPage({ detail }) {
 export const getServerSideProps = withCommonProps(async (context) => {
   const { id } = context.query;
 
+  // Child bounty ids are <parentBountyId>_<index>, or <parentBountyId>_<index>_<blockHeight>
+  // when two child bounties share the same parent and index. Other values are not one of our
+  // pages: e.g. /treasury/child-bounties/summary is a backend stats endpoint, and treating
+  // its response as a detail threw "No on chain data when call `useOnchainData`" (a 500 page
+  // plus a server error report). Render it as a missing post instead, like other unknown ids.
+  if (!/^\d+(_\d+){0,2}$/.test(id)) {
+    return getNullDetailProps(id);
+  }
+
   const { result: detail } = await backendApi.fetch(
     `treasury/child-bounties/${id}`,
   );
