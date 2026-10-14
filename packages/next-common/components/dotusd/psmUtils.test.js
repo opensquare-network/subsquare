@@ -262,6 +262,8 @@ describe("buildPsmData", () => {
       debt: "2996624883933",
     });
     expect(data.externals[0].mintingFee.toFixed()).toBe("0");
+    // The raw Permill parts, which psm.mint takes as max_fee.
+    expect(data.externals[0].mintingFeePermill).toBe(0);
     expect(data.externals[0].redemptionFee.toFixed()).toBe("0.01");
     // The location passed to the popup must stay JSON serialisable.
     expect(JSON.stringify(data.externals[0].location)).toContain("\"1984\"");

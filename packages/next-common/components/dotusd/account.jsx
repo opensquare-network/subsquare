@@ -4,7 +4,9 @@ import { SystemTransfer } from "@osn/icons/subsquare";
 import { addressEllipsis, toPrecision } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { IconButton } from "next-common/components/styled/iconButton";
-import Divider from "next-common/components/styled/layout/divider";
+import Divider, {
+  VerticalDivider,
+} from "next-common/components/styled/layout/divider";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Copyable from "next-common/components/copyable";
@@ -20,6 +22,7 @@ import { useDotUsdContext } from "./context";
 import useDotUsdBalance from "./useDotUsdBalance";
 
 const TransferPopup = dynamicPopup(() => import("./transferPopup"));
+const MintPopup = dynamicPopup(() => import("./mintPopup"));
 
 function AccountIdentity({ address }) {
   const user = useUser();
@@ -85,6 +88,52 @@ function TransferButton({ assetId, symbol, decimals }) {
   );
 }
 
+/**
+ * Minting is the point of the page, so it is a labelled button rather than a second icon: no
+ * icon in the set says "mint" unambiguously. It sits with the transfer, which is the other way
+ * the balance shown just below is moved.
+ */
+function MintButton({ disabled }) {
+  const [showPopup, setShowPopup] = useState(false);
+
+  return (
+    <>
+      <Tooltip
+        content={
+          disabled
+            ? "There is no external asset to mint against right now"
+            : null
+        }
+      >
+        <PrimaryButton
+          size="small"
+          // Matches the transfer icon's 32px so the two read as one control group.
+          className="h-8"
+          disabled={disabled}
+          onClick={() => setShowPopup(true)}
+        >
+          Mint
+        </PrimaryButton>
+      </Tooltip>
+      {showPopup && <MintPopup onClose={() => setShowPopup(false)} />}
+    </>
+  );
+}
+
+function AccountActions({ asset, externals, isAssetLoading }) {
+  const { index: assetId, symbol, decimals } = asset ?? {};
+  const hasExternalAsset = (externals?.length ?? 0) > 0;
+
+  return (
+    <div className="flex shrink-0 items-center gap-x-3">
+      <MintButton disabled={!isAssetLoading && !hasExternalAsset} />
+      {/* Separates the page's primary action from the transfer utility beside it. */}
+      <VerticalDivider height={20} className="shrink-0" />
+      <TransferButton assetId={assetId} symbol={symbol} decimals={decimals} />
+    </div>
+  );
+}
+
 // Mirrors the balance row of the overview account panel (AccountBalanceItem): the label and
 // the amount are both 14px, the label in the tertiary colour and the amount in the primary
 // one, with the two ends of the row aligned.
@@ -108,7 +157,7 @@ function Balance({ value, symbol, decimals, isLoading }) {
   );
 }
 
-function ConnectedAccount({ asset, isLoading: isAssetLoading }) {
+function ConnectedAccount({ asset, externals, isLoading: isAssetLoading }) {
   const address = useRealAddress();
   const { index: assetId, symbol, decimals } = asset ?? {};
   const { balance, isLoading: isBalanceLoading } = useDotUsdBalance({
@@ -120,7 +169,11 @@ function ConnectedAccount({ asset, isLoading: isAssetLoading }) {
     <>
       <div className="flex items-start justify-between gap-4">
         <AccountIdentity address={address} />
-        <TransferButton assetId={assetId} symbol={symbol} decimals={decimals} />
+        <AccountActions
+          asset={asset}
+          externals={externals}
+          isAssetLoading={isAssetLoading}
+        />
       </div>
 
       <Divider />
@@ -143,7 +196,7 @@ function ConnectPrompt() {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
       <span className="text14Medium text-textTertiary">
-        Connect your wallet to see your dotUSD balance and transfer it.
+        Connect your wallet to mint, see your dotUSD balance and transfer it.
       </span>
       <PrimaryButton onClick={openLoginPopup}>Connect Wallet</PrimaryButton>
     </div>
@@ -159,7 +212,11 @@ export default function DotUsdAccount() {
       {/* The connected account is the user's, not the chain's: whether there is a wallet to
           show must not wait on the PSM read. */}
       {address ? (
-        <ConnectedAccount asset={data?.internalAsset} isLoading={isLoading} />
+        <ConnectedAccount
+          asset={data?.internalAsset}
+          externals={data?.externals}
+          isLoading={isLoading}
+        />
       ) : (
         <ConnectPrompt />
       )}
