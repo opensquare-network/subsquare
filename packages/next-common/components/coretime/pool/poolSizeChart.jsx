@@ -1,12 +1,9 @@
 import { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
-import { SystemLoadingDots } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
 import "next-common/components/charts/globalConfig";
 import { Skeleton } from "next-common/components/skeleton";
 import { cn, toPrecision } from "next-common/utils";
-import Tooltip from "next-common/components/tooltip";
-import ValueDisplay from "next-common/components/valueDisplay";
 import { useChainSettings } from "next-common/context/chain";
 import BigNumber from "bignumber.js";
 import useTimesliceDate from "../hooks/useTimesliceDate";
@@ -41,7 +38,6 @@ export default function PoolSizeChart({
   onDaysChange,
   historyDays = [],
   step = 1,
-  totalPayout,
   loading,
 }) {
   const theme = useTheme();
@@ -157,23 +153,6 @@ export default function PoolSizeChart({
           No pool history in this window
         </div>
       )}
-
-      <div className="mt-4 flex items-center gap-x-1 text12Medium text-textTertiary">
-        <span>On-demand revenue in this window:</span>
-        {loading ? (
-          <SystemLoadingDots width={16} height={16} />
-        ) : totalPayout ? (
-          <ValueDisplay
-            value={toPrecision(new BigNumber(totalPayout).toFixed(0), decimals)}
-            symbol={symbol}
-          />
-        ) : (
-          <span>-</span>
-        )}
-        <Tooltip content="Revenue recorded for private pool contributions in this window. Contributors take their share with a claim revenue call.">
-          <span className="cursor-help">ⓘ</span>
-        </Tooltip>
-      </div>
     </div>
   );
 }

@@ -29,7 +29,86 @@ const ITEMS = [
   },
 ];
 
+const secondaryTextClass = "text-white/75";
+
+function formatTimeslice(timeslice) {
+  return `#${Number(timeslice).toLocaleString("en-US")}`;
+}
+
+function RegionListItem({ region }) {
+  const hasShare =
+    Number.isFinite(region.parts) && Number.isFinite(region.totalParts);
+
+  return (
+    <div className="flex items-center gap-x-2 whitespace-nowrap">
+      <span>{`Core #${region.core}`}</span>
+      {hasShare && (
+        <span className={secondaryTextClass}>
+          {`${region.parts}/${region.totalParts}`}
+        </span>
+      )}
+      <span className={secondaryTextClass}>
+        {`${formatTimeslice(region.begin)} – ${formatTimeslice(region.end)}`}
+      </span>
+    </div>
+  );
+}
+
+function CoreListItem({ core }) {
+  return <div className="whitespace-nowrap">{`Core #${core}`}</div>;
+}
+
+const toCoreItems = (cores) =>
+  (cores ?? []).map((core) => ({ key: core, core }));
+
+function buildListTooltip(items, renderItem) {
+  if (!items.length) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-1">
+      {items.map((item) => (
+        <div key={item.key}>{renderItem(item)}</div>
+      ))}
+    </div>
+  );
+}
+
+function ValueWithTooltip({ value, content }) {
+  if (!content) {
+    return value;
+  }
+
+  return (
+    <Tooltip content={content} contentClassName="max-w-[360px]">
+      <span>{value}</span>
+    </Tooltip>
+  );
+}
+
 export default function MyCoretimeSummaryItems({ summary, loading }) {
+  const regionItems = (summary.regionList ?? []).map((region) => ({
+    key: `${region.begin}-${region.core}-${region.mask}`,
+    region,
+  }));
+  const renderCoreItem = ({ core }) => <CoreListItem core={core} />;
+
+  const tooltips = {
+    regions: buildListTooltip(regionItems, ({ region }) => (
+      <RegionListItem region={region} />
+    )),
+    cores: buildListTooltip(toCoreItems(summary.coreList), renderCoreItem),
+    pendingRenewals: buildListTooltip(
+      toCoreItems(summary.pendingRenewalList),
+      renderCoreItem,
+    ),
+    autoRenew: buildListTooltip(
+      toCoreItems(summary.autoRenewList),
+      renderCoreItem,
+    ),
+  };
+
   return (
     <SummaryLayout>
       {ITEMS.map(({ key, title, tooltip }) => (
@@ -44,7 +123,7 @@ export default function MyCoretimeSummaryItems({ summary, loading }) {
           {loading ? (
             <SystemLoadingDots width={20} height={20} />
           ) : (
-            summary[key]
+            <ValueWithTooltip value={summary[key]} content={tooltips[key]} />
           )}
         </SummaryItem>
       ))}

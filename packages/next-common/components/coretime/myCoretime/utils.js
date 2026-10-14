@@ -4,9 +4,13 @@ import { RegionStatus } from "next-common/components/coretime/regions/utils";
 
 export const EMPTY_MY_CORETIME_SUMMARY = {
   regions: 0,
+  regionList: [],
   cores: 0,
+  coreList: [],
   pendingRenewals: 0,
+  pendingRenewalList: [],
   autoRenew: 0,
+  autoRenewList: [],
 };
 
 // Cores that were paid for by the address, either by renewing a core or by
@@ -62,36 +66,53 @@ export function buildMyCoretimeSummary({
     return EMPTY_MY_CORETIME_SUMMARY;
   }
 
-  const myRegions = regions.filter(
-    (region) =>
-      isSameAddress(region?.owner, address) &&
-      region.status !== RegionStatus.Expired,
-  );
+  const myRegions = regions
+    .filter(
+      (region) =>
+        isSameAddress(region?.owner, address) &&
+        region.status !== RegionStatus.Expired,
+    )
+    .sort((a, b) => a.core - b.core || a.begin - b.begin);
 
-  const cores = new Set(myRegions.map((region) => region.core));
+  const coreIndexes = new Set();
+  const addCore = (core) => {
+    if (!isNil(core)) {
+      coreIndexes.add(Number(core));
+    }
+  };
+
+  for (const core of paidCores) {
+    addCore(core);
+  }
+  for (const region of myRegions) {
+    addCore(region.core);
+  }
   for (const contribution of contributions) {
     if (isSameAddress(contribution?.payee, address)) {
-      cores.add(contribution.core);
+      addCore(contribution.core);
     }
   }
-  for (const core of paidCores) {
-    cores.add(core);
-  }
 
-  let pendingRenewals = 0;
-  let autoRenew = 0;
-  for (const core of cores) {
+  const coreList = [...coreIndexes].sort((coreA, coreB) => coreA - coreB);
+
+  const pendingRenewalList = [];
+  const autoRenewList = [];
+  for (const core of coreList) {
     if (autoRenewByCore[core]) {
-      autoRenew += 1;
+      autoRenewList.push(core);
     } else if (renewalByCore[core]) {
-      pendingRenewals += 1;
+      pendingRenewalList.push(core);
     }
   }
 
   return {
     regions: myRegions.length,
-    cores: cores.size,
-    pendingRenewals,
-    autoRenew,
+    regionList: myRegions,
+    cores: coreList.length,
+    coreList,
+    pendingRenewals: pendingRenewalList.length,
+    pendingRenewalList,
+    autoRenew: autoRenewList.length,
+    autoRenewList,
   };
 }

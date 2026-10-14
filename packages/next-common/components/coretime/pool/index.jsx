@@ -17,7 +17,6 @@ export default function CoretimePool() {
     contributions,
     historyDays,
     historyStep,
-    totalPayout,
     loading,
     historyLoading,
   } = usePoolData({ days });
@@ -31,15 +30,14 @@ export default function CoretimePool() {
       ),
     },
     {
-      label: "On-demand",
-      value: "on-demand",
+      label: "History",
+      value: "history",
       content: (
         <PoolSizeChart
           days={days}
           onDaysChange={setDays}
           historyDays={historyDays}
           step={historyStep}
-          totalPayout={totalPayout}
           loading={historyLoading}
         />
       ),

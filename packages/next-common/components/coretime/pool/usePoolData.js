@@ -123,22 +123,12 @@ export default function usePoolData({ days = 7 } = {}) {
     [timeslices, history, perDay],
   );
 
-  const totalPayout = useMemo(
-    () =>
-      history.reduce(
-        (sum, record) => sum + Number(record?.maybe_payout ?? 0),
-        0,
-      ),
-    [history],
-  );
-
   return {
     systemPool: formatPoolSize(status?.systemPoolSize),
     privatePool: formatPoolSize(status?.privatePoolSize),
     contributions: formattedContributions,
     historyDays,
     historyStep,
-    totalPayout,
     lastTimeslice,
     // Data of the overview cards and of the contributions table does not depend
     // on the chart window, so they must not reload while the chart refetches.
