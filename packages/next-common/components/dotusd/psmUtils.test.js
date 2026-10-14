@@ -6,6 +6,7 @@ import {
   computeEffectiveCaps,
   formatPercent,
   isLocalAssetLocation,
+  isRoundedAmount,
   MIN_MAX_FEE_PERMILL,
   normalizeAssetId,
   parseAssetAmount,
@@ -447,3 +448,34 @@ describe("pickDefaultExternal", () => {
   });
 });
 
+describe("isRoundedAmount", () => {
+  // The swap rows mark an amount with "≈" exactly when this says the shown number is not the
+  // whole value.
+  it("passes an amount the display shows in full", () => {
+    expect(isRoundedAmount(25_500_000n, 6)).toBe(false);
+    expect(isRoundedAmount(1_000_000n, 6)).toBe(false);
+    expect(isRoundedAmount(0n, 6)).toBe(false);
+    expect(isRoundedAmount(1_235_000n, 6)).toBe(false);
+  });
+
+  it("flags an amount the display rounds off", () => {
+    // A redemption fee of 0.0001 dotUSD rendered as a bare "0" before this existed.
+    expect(isRoundedAmount(100n, 6)).toBe(true);
+    // 25.49745 USDt out of a redeem.
+    expect(isRoundedAmount(25_497_450n, 6)).toBe(true);
+    // 0.00255 dotUSD of fee.
+    expect(isRoundedAmount(2_550n, 6)).toBe(true);
+  });
+
+  it("does not care what the asset's own scale is", () => {
+    // The same amount of value at different decimals decides the same way.
+    expect(isRoundedAmount(1n, 0)).toBe(false);
+    expect(isRoundedAmount(10_000n, 4)).toBe(false);
+    expect(isRoundedAmount(1n, 4)).toBe(true);
+  });
+
+  it("says nothing for a missing amount", () => {
+    expect(isRoundedAmount(null, 6)).toBe(false);
+    expect(isRoundedAmount(undefined, 6)).toBe(false);
+  });
+});
