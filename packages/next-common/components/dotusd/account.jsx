@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 import { isNil } from "lodash-es";
 import { SystemTransfer } from "@osn/icons/subsquare";
 import { addressEllipsis, toPrecision } from "next-common/utils";
@@ -21,12 +20,6 @@ import { useDotUsdContext } from "./context";
 import useDotUsdBalance from "./useDotUsdBalance";
 
 const TransferPopup = dynamicPopup(() => import("./transferPopup"));
-
-// The tables below are StyledTable cards with a 6px radius; match them so the sections read as
-// one set of panels.
-const AccountCard = styled(SecondaryCard)`
-  border-radius: 6px;
-`;
 
 function AccountIdentity({ address }) {
   const user = useUser();
@@ -162,7 +155,7 @@ export default function DotUsdAccount() {
   const address = useRealAddress();
 
   return (
-    <AccountCard className="space-y-4">
+    <SecondaryCard className="space-y-4">
       {/* The connected account is the user's, not the chain's: whether there is a wallet to
           show must not wait on the PSM read. */}
       {address ? (
@@ -170,6 +163,6 @@ export default function DotUsdAccount() {
       ) : (
         <ConnectPrompt />
       )}
-    </AccountCard>
+    </SecondaryCard>
   );
 }

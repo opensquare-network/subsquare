@@ -1,5 +1,4 @@
 import { isNil } from "lodash-es";
-import styled from "styled-components";
 import { toPrecision } from "next-common/utils";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import LoadableContent from "next-common/components/common/loadableContent";
@@ -8,12 +7,6 @@ import AddressUser from "next-common/components/user/addressUser";
 import TokenIcon from "next-common/components/assethubMigrationAssets/swap/components/tokenIcon";
 import { Location } from "next-common/components/assethubMigrationAssets/foreignAssets/table/columns/id";
 import { useDotUsdContext } from "./context";
-
-// The tables below are StyledTable cards with a 6px radius; match them so the sections read as
-// one set of panels.
-const InstanceCard = styled(SecondaryCard)`
-  border-radius: 6px;
-`;
 
 function Field({ label, children }) {
   return (
@@ -52,7 +45,7 @@ export default function DotUsdInstance() {
   const { index, location, symbol, decimals } = data?.internalAsset ?? {};
 
   return (
-    <InstanceCard>
+    <SecondaryCard>
       <LoadableContent isLoading={isLoading}>
         <div className="grid grid-cols-2 gap-x-6 gap-y-5 max-sm:grid-cols-1">
           <Field label="Internal asset">
@@ -96,6 +89,6 @@ export default function DotUsdInstance() {
           </Field>
         </div>
       </LoadableContent>
-    </InstanceCard>
+    </SecondaryCard>
   );
 }

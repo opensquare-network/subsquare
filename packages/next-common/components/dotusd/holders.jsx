@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 import { isNil } from "lodash-es";
 import { toPrecision } from "next-common/utils";
-import StyledList from "next-common/components/styledList";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import Pagination from "next-common/components/pagination/index";
 import { defaultPageSize } from "next-common/utils/constants";
 import useHolders from "./useHolders";
+import { TableCard } from "./styled";
 import { useDotUsdContext } from "./context";
 
 // Matches the value style of the PSM instance panel (text14Medium on textPrimary).
@@ -77,7 +77,7 @@ export default function DotUsdHolders() {
 
   return (
     <div>
-      <StyledList
+      <TableCard
         columns={columns}
         rows={rows}
         items={holders}
