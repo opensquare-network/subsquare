@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { isNil } from "lodash-es";
 import { getAssetHubPapi } from "next-common/utils/assetHub";
 import { assetIndexFromLocation, buildPsmData } from "./psmUtils";
@@ -70,33 +70,36 @@ export async function fetchPsmData(api) {
 
 export default function usePsmData() {
   const [state, setState] = useState({ isLoading: true });
+  const isMountedRef = useRef(true);
 
-  useEffect(() => {
-    let isMounted = true;
+  const load = useCallback(async () => {
+    try {
+      const api = await getAssetHubPapi();
+      const data = await fetchPsmData(api);
 
-    async function load() {
-      try {
-        const api = await getAssetHubPapi();
-        const data = await fetchPsmData(api);
+      if (isMountedRef.current) {
+        setState({ data, isLoading: false });
+      }
+    } catch (error) {
+      console.error("Failed to fetch dotUSD PSM data", error);
 
-        if (isMounted) {
-          setState({ data, isLoading: false });
-        }
-      } catch (error) {
-        console.error("Failed to fetch dotUSD PSM data", error);
-
-        if (isMounted) {
-          setState({ isLoading: false });
-        }
+      if (isMountedRef.current) {
+        setState({ isLoading: false });
       }
     }
+  }, []);
 
+  useEffect(() => {
+    isMountedRef.current = true;
     load();
 
     return () => {
-      isMounted = false;
+      isMountedRef.current = false;
     };
-  }, []);
+  }, [load]);
 
-  return state;
+  // The balances are subscriptions, but this snapshot is read once, so a mint leaves the debt,
+  // utilisation and cap panels behind until the page is reloaded. `refresh` re-reads it; it
+  // deliberately leaves `isLoading` alone so the tables do not flash.
+  return { ...state, refresh: load };
 }
