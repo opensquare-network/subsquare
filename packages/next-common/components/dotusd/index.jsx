@@ -1,6 +1,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import DotUsdProvider from "./context";
+import DotUsdAccount from "./account";
 import DotUsdSummary from "./summary";
 import DotUsdInstance from "./instance";
 import DotUsdExternalAssets from "./externalAssets";
@@ -30,6 +31,13 @@ export default function DotUsdPageContent() {
         summary={<DotUsdSummary />}
       >
         <div className="space-y-6">
+          <Section
+            title="Your account"
+            hint="Your dotUSD balance on Asset Hub, transferable to any account"
+          >
+            <DotUsdAccount />
+          </Section>
+
           <Section
             title="PSM instance"
             hint="Instance parameters read from the on-chain PSM storage"
