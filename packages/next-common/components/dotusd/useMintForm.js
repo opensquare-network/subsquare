@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDotUsdContext } from "./context";
 import useDotUsdBalance from "./useDotUsdBalance";
+import { computeMintQuote, getMintDisabledReason } from "./mintUtils";
 import {
   buildLocalAssetLocation,
-  computeMintQuote,
-  getMintDisabledReason,
-  parseExternalAmount,
+  parseAssetAmount,
   pickDefaultExternal,
   resolveMaxFeePermill,
-} from "./mintUtils";
+} from "./psmUtils";
 
 /**
  * The mint popup's state: which external asset is being paid with, how much, what that would
@@ -42,7 +41,7 @@ export default function useMintForm({ address, apiReady }) {
   }, [external?.index]);
 
   const amount = useMemo(
-    () => parseExternalAmount(inputAmount, external?.decimals),
+    () => parseAssetAmount(inputAmount, external?.decimals),
     [inputAmount, external?.decimals],
   );
 
