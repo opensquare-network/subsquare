@@ -51,6 +51,13 @@ export default function useDotUsdBalance({ address, assetId }) {
       subscription = papi.query.Assets.Account.watchValue(
         assetId,
         address,
+        // `at` defaults to "finalized". Finality on Asset Hub trails the best block by however
+        // far the relay chain's is behind, which is not a block or two: subscribing both ways
+        // at once, best sat 15 blocks (~90s) ahead of finalized. That lag lands exactly when
+        // the user has just transferred or minted and is watching this number. Best blocks put
+        // the update in the block that included their transaction; a reorg would show a stale
+        // value briefly and then correct itself.
+        { at: "best" },
       ).subscribe(({ value }) => {
         if (!isMounted) {
           return;
