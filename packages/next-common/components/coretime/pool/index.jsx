@@ -15,11 +15,11 @@ export default function CoretimePool() {
     systemPool,
     privatePool,
     contributions,
-    upcomingIo,
     historyDays,
     historyStep,
     totalPayout,
     loading,
+    historyLoading,
   } = usePoolData({ days });
 
   const tabs = [
@@ -39,7 +39,8 @@ export default function CoretimePool() {
           onDaysChange={setDays}
           historyDays={historyDays}
           step={historyStep}
-          loading={loading}
+          totalPayout={totalPayout}
+          loading={historyLoading}
         />
       ),
     },
@@ -58,9 +59,6 @@ export default function CoretimePool() {
             <PoolSummaryItems
               systemPool={systemPool}
               privatePool={privatePool}
-              upcomingIo={upcomingIo}
-              totalPayout={totalPayout}
-              days={days}
               loading={loading}
             />
           </div>

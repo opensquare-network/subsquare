@@ -1,11 +1,16 @@
 import { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
+import { SystemLoadingDots } from "@osn/icons/subsquare";
 import { useTheme } from "styled-components";
 import "next-common/components/charts/globalConfig";
 import { Skeleton } from "next-common/components/skeleton";
-import { cn } from "next-common/utils";
+import { cn, toPrecision } from "next-common/utils";
+import Tooltip from "next-common/components/tooltip";
+import ValueDisplay from "next-common/components/valueDisplay";
+import { useChainSettings } from "next-common/context/chain";
+import BigNumber from "bignumber.js";
 import useTimesliceDate from "../hooks/useTimesliceDate";
-import { BITS_PER_CORE, POOL_WINDOWS } from "./utils";
+import { POOL_WINDOWS } from "./utils";
 
 const CHART_HEIGHT = 208;
 
@@ -36,10 +41,12 @@ export default function PoolSizeChart({
   onDaysChange,
   historyDays = [],
   step = 1,
+  totalPayout,
   loading,
 }) {
   const theme = useTheme();
   const toDate = useTimesliceDate();
+  const { decimals, symbol } = useChainSettings();
 
   const data = useMemo(
     () => ({
@@ -86,13 +93,24 @@ export default function PoolSizeChart({
         tooltip: {
           callbacks: {
             label: (item) =>
-              `${item.dataset.label}: ${item.raw.toLocaleString()} cores (${(
-                item.raw * BITS_PER_CORE
-              ).toLocaleString()} bits)`,
-            footer: (items) =>
-              `Total: ${items
-                .reduce((sum, item) => sum + item.raw, 0)
-                .toLocaleString()} cores`,
+              `${item.dataset.label}: ${item.raw.toLocaleString()} cores`,
+            footer: (items) => {
+              const lines = [
+                `Total: ${items
+                  .reduce((sum, item) => sum + item.raw, 0)
+                  .toLocaleString()} cores`,
+              ];
+              const payout = historyDays[items[0]?.dataIndex]?.payout;
+              if (payout) {
+                lines.push(
+                  `On-demand revenue: ${toPrecision(
+                    new BigNumber(payout).toFixed(0),
+                    decimals,
+                  )} ${symbol}`,
+                );
+              }
+              return lines;
+            },
           },
         },
       },
@@ -111,7 +129,7 @@ export default function PoolSizeChart({
         },
       },
     }),
-    [theme],
+    [theme, historyDays, decimals, symbol],
   );
 
   return (
@@ -139,6 +157,23 @@ export default function PoolSizeChart({
           No pool history in this window
         </div>
       )}
+
+      <div className="mt-4 flex items-center gap-x-1 text12Medium text-textTertiary">
+        <span>On-demand revenue in this window:</span>
+        {loading ? (
+          <SystemLoadingDots width={16} height={16} />
+        ) : totalPayout ? (
+          <ValueDisplay
+            value={toPrecision(new BigNumber(totalPayout).toFixed(0), decimals)}
+            symbol={symbol}
+          />
+        ) : (
+          <span>-</span>
+        )}
+        <Tooltip content="Revenue recorded for private pool contributions in this window. Contributors take their share with a claim revenue call.">
+          <span className="cursor-help">ⓘ</span>
+        </Tooltip>
+      </div>
     </div>
   );
 }

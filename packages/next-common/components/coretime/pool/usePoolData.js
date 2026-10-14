@@ -7,7 +7,6 @@ import useRelayChainBlockTime from "next-common/context/coretime/hooks/useRelayC
 import {
   aggregatePoolHistory,
   buildHistoryTimeslices,
-  formatPoolIo,
   formatPoolSize,
   getContributionStatus,
 } from "./utils";
@@ -23,15 +22,6 @@ function formatContributionEntry({ args, value }) {
   };
 }
 
-function formatIoEntry({ args, value }) {
-  const [timeslice] = args ?? [];
-  return {
-    timeslice: Number(timeslice),
-    private: Number(value?.private ?? 0),
-    system: Number(value?.system ?? 0),
-  };
-}
-
 export default function usePoolData({ days = 7 } = {}) {
   const api = useContextPapiApi();
   const contextApi = useContextApi();
@@ -42,7 +32,6 @@ export default function usePoolData({ days = 7 } = {}) {
 
   const [contributions, setContributions] = useState([]);
   const [isContributionsLoading, setContributionsLoading] = useState(true);
-  const [poolIo, setPoolIo] = useState([]);
   const [history, setHistory] = useState([]);
   const [historyStep, setHistoryStep] = useState(1);
   const [isHistoryLoading, setHistoryLoading] = useState(true);
@@ -65,18 +54,8 @@ export default function usePoolData({ days = 7 } = {}) {
         },
       });
 
-    const ioSubscription =
-      api.query.Broker.InstaPoolIo.watchEntries().subscribe({
-        next: ({ entries }) => setPoolIo((entries ?? []).map(formatIoEntry)),
-        error: (error) => {
-          console.error("Failed to watch coretime pool IO:", error);
-          setPoolIo([]);
-        },
-      });
-
     return () => {
       contributionsSubscription.unsubscribe();
-      ioSubscription.unsubscribe();
     };
   }, [api]);
 
@@ -139,11 +118,6 @@ export default function usePoolData({ days = 7 } = {}) {
     [contributions, lastTimeslice],
   );
 
-  const upcomingIo = useMemo(
-    () => formatPoolIo(poolIo, status?.lastCommittedTimeslice),
-    [poolIo, status?.lastCommittedTimeslice],
-  );
-
   const historyDays = useMemo(
     () => aggregatePoolHistory({ timeslices, records: history, perDay }),
     [timeslices, history, perDay],
@@ -162,15 +136,15 @@ export default function usePoolData({ days = 7 } = {}) {
     systemPool: formatPoolSize(status?.systemPoolSize),
     privatePool: formatPoolSize(status?.privatePoolSize),
     contributions: formattedContributions,
-    upcomingIo,
     historyDays,
     historyStep,
     totalPayout,
     lastTimeslice,
+    // Data of the overview cards and of the contributions table does not depend
+    // on the chart window, so they must not reload while the chart refetches.
     loading:
-      isContributionsLoading ||
-      isHistoryLoading ||
-      isNil(lastTimeslice) ||
-      isNil(timeslicePeriod),
+      isContributionsLoading || isNil(lastTimeslice) || isNil(timeslicePeriod),
+    historyLoading:
+      isHistoryLoading || isNil(lastTimeslice) || isNil(timeslicePeriod),
   };
 }

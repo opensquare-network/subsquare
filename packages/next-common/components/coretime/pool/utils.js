@@ -137,17 +137,3 @@ export function aggregatePoolHistory({
       payout: bucket.hasPayout ? bucket.payoutTotal : 0,
     }));
 }
-
-// Upcoming pool size changes, earliest first. A negative delta means the pool
-// shrinks, because the coretime backing it is no longer available.
-export function formatPoolIo(entries = [], lastTimeslice) {
-  return entries
-    .map(({ timeslice, private: privateDelta, system: systemDelta }) => ({
-      timeslice: Number(timeslice),
-      private: Number(privateDelta ?? 0),
-      system: Number(systemDelta ?? 0),
-      delta: Number(privateDelta ?? 0) + Number(systemDelta ?? 0),
-    }))
-    .filter((item) => isNil(lastTimeslice) || item.timeslice >= lastTimeslice)
-    .sort((a, b) => a.timeslice - b.timeslice);
-}
