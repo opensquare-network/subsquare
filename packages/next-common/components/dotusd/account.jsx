@@ -14,6 +14,7 @@ import Tooltip from "next-common/components/tooltip";
 import AddressUser from "next-common/components/user/addressUser";
 import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import PrimaryButton from "next-common/lib/button/primary";
+import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { useUser } from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
@@ -23,6 +24,7 @@ import useDotUsdBalance from "./useDotUsdBalance";
 
 const TransferPopup = dynamicPopup(() => import("./transferPopup"));
 const MintPopup = dynamicPopup(() => import("./mintPopup"));
+const RedeemPopup = dynamicPopup(() => import("./redeemPopup"));
 
 function AccountIdentity({ address }) {
   const user = useUser();
@@ -120,14 +122,46 @@ function MintButton({ disabled }) {
   );
 }
 
+/**
+ * The way back out of dotUSD, so it sits with mint rather than buried: mint stays the primary
+ * button because it is what the page is for, and redeem reads as its counterpart.
+ */
+function RedeemButton({ disabled }) {
+  const [showPopup, setShowPopup] = useState(false);
+
+  return (
+    <>
+      <Tooltip
+        content={
+          disabled
+            ? "There is no external asset to redeem against right now"
+            : null
+        }
+      >
+        <SecondaryButton
+          size="small"
+          className="h-8"
+          disabled={disabled}
+          onClick={() => setShowPopup(true)}
+        >
+          Redeem
+        </SecondaryButton>
+      </Tooltip>
+      {showPopup && <RedeemPopup onClose={() => setShowPopup(false)} />}
+    </>
+  );
+}
+
 function AccountActions({ asset, externals, isAssetLoading }) {
   const { index: assetId, symbol, decimals } = asset ?? {};
   const hasExternalAsset = (externals?.length ?? 0) > 0;
+  const noExternalAsset = !isAssetLoading && !hasExternalAsset;
 
   return (
     <div className="flex shrink-0 items-center gap-x-3">
-      <MintButton disabled={!isAssetLoading && !hasExternalAsset} />
-      {/* Separates the page's primary action from the transfer utility beside it. */}
+      <MintButton disabled={noExternalAsset} />
+      <RedeemButton disabled={noExternalAsset} />
+      {/* Separates the swap actions from the transfer utility beside them. */}
       <VerticalDivider height={20} className="shrink-0" />
       <TransferButton assetId={assetId} symbol={symbol} decimals={decimals} />
     </div>

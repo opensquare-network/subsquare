@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { isNil } from "lodash-es";
 import { useDispatch } from "react-redux";
-import { toPrecision } from "next-common/utils";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
@@ -9,11 +8,6 @@ import SignerWithBalance from "next-common/components/signerPopup/signerWithBala
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-import PopupLabel from "next-common/components/popup/label";
-import CurrencyInput from "next-common/components/currencyInput";
-import Select from "next-common/components/select";
-import TokenIcon from "next-common/components/assethubMigrationAssets/swap/components/tokenIcon";
-import ValueDisplay from "next-common/components/valueDisplay";
 import LoadableContent from "next-common/components/common/loadableContent";
 import Tooltip from "next-common/components/tooltip";
 import {
@@ -23,52 +17,17 @@ import {
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
-import { permillToPercent } from "./psmUtils";
 import { useDotUsdContext } from "./context";
 import useMintForm from "./useMintForm";
+import {
+  ExternalAssetSelect,
+  MaxFeeField,
+  SwapAmountValue,
+} from "./swapPopupFields";
 
-function ExternalAssetField({ externals, external, setExternalIndex }) {
-  const options = externals.map((item) => ({
-    value: item.index,
-    // The label is what the dropdown searches on, so it carries the id too.
-    label: `${item.symbol} #${item.index}`,
-    displayValue: (
-      <span className="inline-flex items-center gap-x-2">
-        <span>{item.symbol}</span>
-        <span className="text-textTertiary">{`#${item.index}`}</span>
-      </span>
-    ),
-    icon: <TokenIcon token={{ assetId: item.index, symbol: item.symbol }} />,
-    // A pair whose circuit breaker has tripped cannot be minted against; it stays listed so
-    // the state is visible, but it cannot be selected.
-    disabled: item.status !== "AllEnabled",
-  }));
-
-  return (
-    <div>
-      <PopupLabel text="Pay with" />
-      <Select
-        value={external?.index}
-        options={options}
-        onChange={(item) => setExternalIndex(item.value)}
-        // With a single approved asset there is nothing to choose; showing the row read only
-        // keeps the pair on screen.
-        readOnly={externals.length <= 1}
-        placeholder="Select an asset"
-      />
-    </div>
-  );
-}
-
-function AmountValue({ value, decimals, symbol }) {
-  if (isNil(value)) {
-    // A bare hyphen that inherits the row's value styling, like the swap summary's empty
-    // state. An em dash in a lighter colour reads as a stray glyph that is bigger than the
-    // numbers it stands in for.
-    return "-";
-  }
-
-  return <ValueDisplay value={toPrecision(value.toString(), decimals)} symbol={symbol} />;
+// Minting needs the breaker fully open; the middle state only allows redeeming.
+function allowsMinting(asset) {
+  return asset.status === "AllEnabled";
 }
 
 function MintSummary({ external, internal, quote, isLoading }) {
@@ -80,7 +39,7 @@ function MintSummary({ external, internal, quote, isLoading }) {
         title="You will receive"
         value={
           <LoadableContent isLoading={isLoading}>
-            <AmountValue
+            <SwapAmountValue
               value={quote?.received}
               decimals={internal?.decimals}
               symbol={internal?.symbol ?? "dotUSD"}
@@ -100,7 +59,7 @@ function MintSummary({ external, internal, quote, isLoading }) {
         }
         value={
           <LoadableContent isLoading={isLoading}>
-            <AmountValue
+            <SwapAmountValue
               value={quote?.fee}
               decimals={internal?.decimals}
               symbol={internal?.symbol ?? "dotUSD"}
@@ -109,23 +68,6 @@ function MintSummary({ external, internal, quote, isLoading }) {
         }
       />
     </DetailList>
-  );
-}
-
-function MaxFeeField({ maxFeePermill }) {
-  return (
-    <div>
-      <PopupLabel
-        text="Max fee"
-        tooltip="The highest minting fee this mint accepts. The chain rejects it if the fee has risen above this by the time it runs."
-        tooltipContentClassName="max-w-[260px]"
-      />
-      <CurrencyInput
-        disabled
-        value={permillToPercent(maxFeePermill).toString()}
-        symbol="%"
-      />
-    </div>
   );
 }
 
@@ -199,10 +141,12 @@ function PopupContent() {
 
   return (
     <>
-      <ExternalAssetField
+      <ExternalAssetSelect
+        label="Pay with"
         externals={externals}
         external={external}
-        setExternalIndex={setExternalIndex}
+        onChange={setExternalIndex}
+        isEnabled={allowsMinting}
       />
       <SignerWithBalance api={api} />
 
