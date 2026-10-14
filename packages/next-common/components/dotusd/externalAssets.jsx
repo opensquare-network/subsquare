@@ -1,11 +1,11 @@
 import { isNil } from "lodash-es";
 import { cn, toPrecision } from "next-common/utils";
-import StyledList from "next-common/components/styledList";
 import Tooltip from "next-common/components/tooltip";
 import ValueDisplay from "next-common/components/valueDisplay";
 import TokenIcon from "next-common/components/assethubMigrationAssets/swap/components/tokenIcon";
 import { Location } from "next-common/components/assethubMigrationAssets/foreignAssets/table/columns/id";
 import { formatPercent, permillToPercent } from "./psmUtils";
+import { TableCard } from "./styled";
 import { useDotUsdContext } from "./context";
 
 // Matches the value style of the PSM instance panel (text14Medium on textPrimary).
@@ -157,7 +157,7 @@ export default function DotUsdExternalAssets() {
   ]);
 
   return (
-    <StyledList
+    <TableCard
       columns={columns}
       rows={rows}
       loading={isLoading}
