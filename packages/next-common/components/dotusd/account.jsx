@@ -168,26 +168,49 @@ function AccountActions({ asset, externals, isAssetLoading }) {
   );
 }
 
-// Mirrors the balance row of the overview account panel (AccountBalanceItem): the label and
-// the amount are both 14px, the label in the tertiary colour and the amount in the primary
-// one, with the two ends of the row aligned.
-function Balance({ value, symbol, decimals, isLoading }) {
+// Mirrors the balance rows of the overview account panel (AccountBalanceItem): the symbol and
+// the amount are both 14px, the symbol in the tertiary colour and the amount in the primary
+// one, with the two ends of the row aligned so the amounts stack up on the right.
+//
+// Every asset is shown the same way, so the list reads as one set however many external assets
+// are approved. The amount leaves the symbol off, because the row has already named it.
+function AssetBalance({ symbol, value, decimals, isLoading }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text14Medium text-textTertiary">Balance</span>
+      <span className="text14Medium text-textTertiary whitespace-nowrap">
+        {symbol}
+      </span>
       <span className="text14Medium text-textPrimary min-w-0 break-all text-right">
         <LoadableContent size={16} isLoading={isLoading}>
           {isNil(value) ? (
             <span className="text-textTertiary">—</span>
           ) : (
-            <ValueDisplay
-              value={toPrecision(value, decimals)}
-              symbol={symbol}
-            />
+            <ValueDisplay value={toPrecision(value, decimals)} />
           )}
         </LoadableContent>
       </span>
     </div>
+  );
+}
+
+/**
+ * One external asset's balance for the connected account. The subscription is per asset, so
+ * each asset gets its own row rather than the panel reading a list of them at once. It starts
+ * once the row mounts, which is after the asset list it comes from has been read.
+ */
+function ExternalAssetBalance({ address, asset }) {
+  const { balance, isLoading } = useDotUsdBalance({
+    address,
+    assetId: asset.index,
+  });
+
+  return (
+    <AssetBalance
+      symbol={asset.symbol}
+      value={balance}
+      decimals={asset.decimals}
+      isLoading={isLoading}
+    />
   );
 }
 
@@ -212,14 +235,35 @@ function ConnectedAccount({ asset, externals, isLoading: isAssetLoading }) {
 
       <Divider />
 
-      <Balance
-        value={balance}
-        symbol={symbol}
-        decimals={decimals}
-        // The asset itself is read from the PSM storage, so the balance cannot be asked
-        // for before that read lands.
-        isLoading={isAssetLoading || isBalanceLoading}
-      />
+      {/* What the user can mint with, listed beside what they hold: the panel is where the
+          balances they are about to move are read. */}
+      <div className="space-y-2">
+        <div className="text14Medium text-textSecondary">Balances</div>
+
+        {/* Every symbol in this list, dotUSD's included, comes from the PSM storage, so until
+            that read lands the rows have nothing to name themselves with. One placeholder
+            stands in for the whole list rather than each row rendering a nameless amount. */}
+        {isAssetLoading ? (
+          <LoadableContent size={16} isLoading />
+        ) : (
+          <>
+            <AssetBalance
+              symbol={symbol}
+              value={balance}
+              decimals={decimals}
+              isLoading={isBalanceLoading}
+            />
+
+            {(externals ?? []).map((item) => (
+              <ExternalAssetBalance
+                key={item.index}
+                address={address}
+                asset={item}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </>
   );
 }
