@@ -209,6 +209,9 @@ export function buildPsmData({
       cap: isNil(caps[index]) ? null : caps[index].toFixed(0),
       utilization: isNil(utilization) ? null : utilization.toFixed(2),
       mintingFee: permillToPercent(pair.mintingFee),
+      // Kept raw alongside the display percent: psm.mint takes its max_fee as a Permill and the
+      // chain compares it against this exact value, so it must not round-trip through a float.
+      mintingFeePermill: isNil(pair.mintingFee) ? null : Number(pair.mintingFee),
       redemptionFee: permillToPercent(pair.redemptionFee),
     };
   });
