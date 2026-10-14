@@ -5,7 +5,7 @@ import Select from "next-common/components/select";
 import CurrencyInput from "next-common/components/currencyInput";
 import TokenIcon from "next-common/components/assethubMigrationAssets/swap/components/tokenIcon";
 import ValueDisplay from "next-common/components/valueDisplay";
-import { permillToPercent } from "./psmUtils";
+import { isRoundedAmount, permillToPercent } from "./psmUtils";
 
 /**
  * The external asset field of both swap popups. With a single approved asset there is nothing
@@ -56,17 +56,27 @@ export function ExternalAssetSelect({
  * A planck amount in a summary row. The empty state is a bare hyphen that inherits the row's
  * value styling, like the swap summary's: an em dash in a lighter colour reads as a stray
  * glyph bigger than the numbers it stands in for.
+ *
+ * The "≈" is decided here rather than left to ValueDisplay, which only marks the roundings its
+ * own abbreviation notices — see isRoundedAmount. ValueDisplay keeps the full value in its
+ * tooltip either way.
  */
 export function SwapAmountValue({ value, decimals, symbol }) {
   if (isNil(value)) {
     return "-";
   }
 
+  const rounded = isRoundedAmount(value, decimals);
+
   return (
-    <ValueDisplay
-      value={toPrecision(value.toString(), decimals)}
-      symbol={symbol}
-    />
+    <span className="inline-flex items-center gap-x-1">
+      {rounded && <span>≈</span>}
+      <ValueDisplay
+        value={toPrecision(value.toString(), decimals)}
+        symbol={symbol}
+        showApproximationSymbol={false}
+      />
+    </span>
   );
 }
 

@@ -408,6 +408,30 @@ export function formatAssetAmount(value, decimals) {
     .toString();
 }
 
+// The precision the swap popups show an amount at.
+export const DISPLAY_DECIMALS = 3;
+
+/**
+ * Whether showing `value` (planck) at DISPLAY_DECIMALS drops part of it.
+ *
+ * ValueDisplay marks a rounded amount with its own "≈", but only in the branches its
+ * abbreviation handles: a redemption fee of 0.0001 dotUSD renders as a bare "0", which reads
+ * as no fee at all. The swap rows ask this instead and mark every case where the number on
+ * screen is not the whole value.
+ */
+export function isRoundedAmount(value, decimals) {
+  if (isNil(value)) {
+    return false;
+  }
+
+  const places = Number.isInteger(decimals) && decimals > 0 ? decimals : 0;
+  const exact = new BigNumber(value.toString()).dividedBy(
+    new BigNumber(10).pow(places),
+  );
+
+  return !exact.isEqualTo(exact.toFixed(DISPLAY_DECIMALS));
+}
+
 /**
  * The external asset to preselect: the one the user picked while it still exists, else the
  * first one that can be swapped, else the first one so the field is never empty.
