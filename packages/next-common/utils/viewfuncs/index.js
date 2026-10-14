@@ -13,6 +13,7 @@ import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTi
 import { isAddress } from "@polkadot/util-crypto";
 import { isNil } from "lodash-es";
 import { getChildBountyIndex } from "./treasury/childBounty";
+export { getEffectiveNumbers } from "./getEffectiveNumbers";
 
 export function toApiType(type) {
   // Open Gov
@@ -80,21 +81,6 @@ export function toApiType(type) {
   }
 
   return type;
-}
-
-export function getEffectiveNumbers(n) {
-  const result = [];
-  let flag = false;
-  n.toString()
-    .split("")
-    .reverse()
-    .forEach((dig) => {
-      if (!isNaN(parseInt(dig))) {
-        flag = flag || parseInt(dig) > 0;
-        flag && result.push(dig);
-      }
-    });
-  return result.reverse().join();
 }
 
 export function abbreviateBigNumber(x, fixed = 2) {
