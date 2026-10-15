@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { gql, request } from "graphql-request";
 import { useChainSettings } from "next-common/context/chain";
 import { defaultPageSize } from "next-common/utils/constants";
+import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 
 const stakingRewardsQuery = gql`
   query GetAccountStakingRewards(
@@ -50,7 +51,7 @@ export default function useStakingRewards(
       return;
     }
 
-    const url = `https://${graphqlApiDomain}.statescan.io/graphql`;
+    const url = getStatescanGraphqlUrl(graphqlApiDomain);
     setLoading(true);
 
     request(url, stakingRewardsQuery, {

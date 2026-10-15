@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useChainSettings } from "next-common/context/chain";
 import { gql, request } from "graphql-request";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 
 const foreignAssetTransfersQuery = gql`
   query MyQuery($limit: Int!, $offset: Int!, $address: String!) {
@@ -61,7 +62,7 @@ export default function useForeignAssetTransfers(
     try {
       setLoading(true);
 
-      const url = `https://${domain}.statescan.io/graphql`;
+      const url = getStatescanGraphqlUrl(domain);
       const transfersData = await request(url, foreignAssetTransfersQuery, {
         limit: page_size,
         offset: page * page_size,

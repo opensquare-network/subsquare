@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { gql, request } from "graphql-request";
 import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
+import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 
 const assetHoldersQuery = gql`
   query DotUsdHolders($assetId: Int!, $limit: Int!, $offset: Int!) {
@@ -22,7 +23,7 @@ const assetHoldersQuery = gql`
  */
 export default function useHolders(assetId, page, pageSize) {
   const { assethubMigration } = useChainSettings();
-  const domain = assethubMigration?.graphqlApiSubDomain;
+  const url = getStatescanGraphqlUrl(assethubMigration?.graphqlApiSubDomain);
   const [state, setState] = useState({
     holders: [],
     total: 0,
@@ -30,7 +31,7 @@ export default function useHolders(assetId, page, pageSize) {
   });
 
   useEffect(() => {
-    if (isNil(assetId) || !domain) {
+    if (isNil(assetId) || !url) {
       setState({ holders: [], total: 0, isLoading: false });
       return;
     }
@@ -39,7 +40,7 @@ export default function useHolders(assetId, page, pageSize) {
     // Keep the total of the previous page around so the pager stays mounted while loading.
     setState((previous) => ({ ...previous, isLoading: true }));
 
-    request(`https://${domain}.statescan.io/graphql`, assetHoldersQuery, {
+    request(url, assetHoldersQuery, {
       assetId,
       limit: pageSize,
       offset: (page - 1) * pageSize,
@@ -68,7 +69,7 @@ export default function useHolders(assetId, page, pageSize) {
     return () => {
       isMounted = false;
     };
-  }, [assetId, page, pageSize, domain]);
+  }, [assetId, page, pageSize, url]);
 
   return state;
 }

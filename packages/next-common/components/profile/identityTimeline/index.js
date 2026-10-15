@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import ExternalLink from "next-common/components/externalLink";
 import { getRelayChain } from "next-common/utils/chain";
+import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 import { isEmpty } from "lodash-es";
 
 export function sortIdentityTimeline(data) {
@@ -25,7 +26,7 @@ function useIdentityUrl() {
   const chain = useChain();
   const { graphqlApiSubDomain } = useChainSettings();
   if (graphqlApiSubDomain) {
-    return `https://${graphqlApiSubDomain}.statescan.io/graphql`;
+    return getStatescanGraphqlUrl(graphqlApiSubDomain);
   } else {
     return `https://${chain}-identity-api.statescan.io/graphql`;
   }
