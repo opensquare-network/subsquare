@@ -12,28 +12,12 @@ import { useTransferAmount } from "next-common/components/popup/fields/useTransf
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-import PopupLabel from "next-common/components/popup/label";
-import TokenIcon from "next-common/components/assethubMigrationAssets/swap/components/tokenIcon";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { isSameAddress } from "next-common/utils";
 import useDotUsdBalance from "./useDotUsdBalance";
-
-function AssetField({ assetId, symbol }) {
-  return (
-    <div>
-      <PopupLabel text="Asset" />
-      <div className="flex items-center gap-x-2 text14Medium text-textPrimary">
-        <TokenIcon token={{ assetId, symbol }} />
-        <span>{symbol}</span>
-        {!isNil(assetId) && (
-          <span className="text-textTertiary">{`#${assetId}`}</span>
-        )}
-      </div>
-    </div>
-  );
-}
+import { ReadOnlyAssetField } from "./swapPopupFields";
 
 function PopupContent() {
   const { assetId, symbol, decimals } = usePopupParams();
@@ -106,8 +90,8 @@ function PopupContent() {
 
   return (
     <>
-      <AssetField assetId={assetId} symbol={symbol} />
       <SignerWithBalance api={api} />
+      <ReadOnlyAssetField asset={{ index: assetId, symbol }} />
       {transferToAddressField}
       {transferAmountField}
       <AdvanceSettings>

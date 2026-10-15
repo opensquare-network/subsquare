@@ -7,6 +7,38 @@ import TokenIcon from "next-common/components/assethubMigrationAssets/swap/compo
 import ValueDisplay from "next-common/components/valueDisplay";
 import { isRoundedAmount, permillToPercent } from "./psmUtils";
 
+// One asset as a Select option. The label is what the dropdown searches on, so it carries the
+// id too; displayValue is what the closed field shows.
+function buildAssetOption(asset, { disabled } = {}) {
+  return {
+    value: asset.index,
+    label: `${asset.symbol} #${asset.index}`,
+    displayValue: (
+      <span className="inline-flex items-center gap-x-2">
+        <span>{asset.symbol}</span>
+        <span className="text-textTertiary">{`#${asset.index}`}</span>
+      </span>
+    ),
+    icon: <TokenIcon token={{ assetId: asset.index, symbol: asset.symbol }} />,
+    disabled,
+  };
+}
+
+function AssetSelectField({ label, options, value, onChange, readOnly }) {
+  return (
+    <div>
+      <PopupLabel text={label} />
+      <Select
+        value={value}
+        options={options}
+        onChange={onChange}
+        readOnly={readOnly}
+        placeholder="Select an asset"
+      />
+    </div>
+  );
+}
+
 /**
  * The external asset field of both swap popups. With a single approved asset there is nothing
  * to choose, so it renders read only and the pair still shows; with several it becomes a
@@ -22,33 +54,37 @@ export function ExternalAssetSelect({
   onChange,
   isEnabled,
 }) {
-  const options = externals.map((item) => ({
-    value: item.index,
-    // The label is what the dropdown searches on, so it carries the id too.
-    label: `${item.symbol} #${item.index}`,
-    displayValue: (
-      <span className="inline-flex items-center gap-x-2">
-        <span>{item.symbol}</span>
-        <span className="text-textTertiary">{`#${item.index}`}</span>
-      </span>
-    ),
-    icon: <TokenIcon token={{ assetId: item.index, symbol: item.symbol }} />,
-    // An asset the breaker has stopped stays listed so its state is visible, but it cannot be
-    // picked.
-    disabled: !isEnabled(item),
-  }));
+  const options = externals.map((item) =>
+    buildAssetOption(item, {
+      // An asset the breaker has stopped stays listed so its state is visible, but it cannot
+      // be picked.
+      disabled: !isEnabled(item),
+    }),
+  );
 
   return (
-    <div>
-      <PopupLabel text={label} />
-      <Select
-        value={external?.index}
-        options={options}
-        onChange={(item) => onChange(item.value)}
-        readOnly={externals.length <= 1}
-        placeholder="Select an asset"
-      />
-    </div>
+    <AssetSelectField
+      label={label}
+      value={external?.index}
+      options={options}
+      onChange={(item) => onChange(item.value)}
+      readOnly={externals.length <= 1}
+    />
+  );
+}
+
+/**
+ * The asset field of a popup whose asset is fixed, like the dotUSD transfer: the same field as
+ * the swap popups', held read only, so the asset they would let you pick is shown the same way.
+ */
+export function ReadOnlyAssetField({ label = "Asset", asset }) {
+  return (
+    <AssetSelectField
+      label={label}
+      value={asset?.index}
+      options={isNil(asset?.index) ? [] : [buildAssetOption(asset)]}
+      readOnly
+    />
   );
 }
 
