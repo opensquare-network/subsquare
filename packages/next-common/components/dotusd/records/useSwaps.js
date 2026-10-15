@@ -1,87 +1,68 @@
 import { useEffect, useState } from "react";
-import { gql, request } from "graphql-request";
 import { isNil } from "lodash-es";
 import { useChainSettings } from "next-common/context/chain";
 import { defaultPageSize } from "next-common/utils/constants";
-import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
-
-const swapsQuery = gql`
-  query PsmSwaps($method: String!, $offset: Int!, $limit: Int!) {
-    chainEvents(
-      section: "psm"
-      method: $method
-      offset: $offset
-      limit: $limit
-    ) {
-      events {
-        method
-        args
-        indexer {
-          blockHeight
-          blockTime
-          eventIndex
-          extrinsicIndex
-        }
-      }
-      total
-    }
-  }
-`;
+import { getStatescanApiUrl } from "next-common/utils/statescan";
+import { swapsPage } from "./swapRecords";
 
 /**
- * One page of the swaps of the dotUSD PSM, newest first. They are read from the block scan
- * of Asset Hub, which indexes the `psm.Minted` and `psm.Redeemed` events, the same API the
- * holders of the dotUSD page come from.
+ * One page of the swaps of the dotUSD PSM, newest first. The block scan of Asset Hub indexes the
+ * `psm.Minted` and `psm.Redeemed` events, and its api lists them by `section` and `method`, sorted
+ * by block height, which is the order this table reads them in.
  */
 export default function useSwaps(method, page, pageSize = defaultPageSize) {
   const { assethubMigration } = useChainSettings();
-  const url = getStatescanGraphqlUrl(assethubMigration?.graphqlApiSubDomain);
+  const apiUrl = getStatescanApiUrl(
+    assethubMigration?.statescanAssethubApiDomain,
+  );
   const [state, setState] = useState({
     swaps: [],
-    total: 0,
+    hasMore: false,
     isLoading: true,
   });
 
   useEffect(() => {
-    if (isNil(method) || !url) {
-      setState({ swaps: [], total: 0, isLoading: false });
+    if (isNil(method) || !apiUrl) {
+      setState({ swaps: [], hasMore: false, isLoading: false });
       return;
     }
 
-    let isMounted = true;
-    // Keep the total of the previous page around so the pager stays mounted while loading.
+    const controller = new AbortController();
+    // Keep the rows of the previous page around so the table keeps its height while loading.
     setState((previous) => ({ ...previous, isLoading: true }));
 
-    request(url, swapsQuery, {
-      method,
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
-    })
-      .then((data) => {
-        if (!isMounted) {
-          return;
+    // A row more than the page holds tells whether another page is left, which the api does not
+    // report itself.
+    fetch(
+      `${apiUrl}/events?section=psm&method=${method}&page=${
+        page - 1
+      }&page_size=${pageSize + 1}`,
+      { signal: controller.signal },
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
         }
 
+        return response.json();
+      })
+      .then((data) => {
         setState({
-          swaps: data?.chainEvents?.events ?? [],
-          total: data?.chainEvents?.total ?? 0,
-          // The page this data belongs to, which lags the requested one while loading.
-          page,
+          ...swapsPage({ items: data?.items ?? [], pageSize }),
           isLoading: false,
         });
       })
       .catch((error) => {
-        console.error("Failed to fetch dotUSD swaps", error);
-
-        if (isMounted) {
-          setState({ swaps: [], total: 0, isLoading: false });
+        if (error?.name === "AbortError") {
+          return;
         }
+
+        console.error("Failed to fetch dotUSD swaps", error);
+        setState({ swaps: [], hasMore: false, isLoading: false });
       });
 
-    return () => {
-      isMounted = false;
-    };
-  }, [method, page, pageSize, url]);
+    return () => controller.abort();
+  }, [method, page, pageSize, apiUrl]);
 
   return state;
 }

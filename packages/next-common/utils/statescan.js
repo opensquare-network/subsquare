@@ -31,6 +31,25 @@ export function getStatescanGraphqlUrl(subDomain) {
   return `https://${subDomain}.statescan.io/graphql`;
 }
 
+/**
+ * The statescan REST api of a chain, e.g. https://ahp-api.statescan.io, which serves the lists
+ * the GraphQL api has no query for. A dev can serve them from a locally running `server` instead,
+ * e.g. NEXT_PUBLIC_STATESCAN_API_ENDPOINT=http://localhost:7101.
+ */
+export function getStatescanApiUrl(apiDomain) {
+  const endpoint = process.env.NEXT_PUBLIC_STATESCAN_API_ENDPOINT;
+
+  if (endpoint) {
+    return endpoint.replace(/\/+$/, "");
+  }
+
+  if (!apiDomain) {
+    return null;
+  }
+
+  return `https://${apiDomain}-api.statescan.io`;
+}
+
 export function getStatescanApiDomain(chain) {
   const { integrations } = getChainSettings(chain);
 

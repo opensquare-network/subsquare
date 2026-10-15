@@ -18,6 +18,19 @@ export function eventArgsToValues(args) {
 }
 
 /**
+ * The swaps of one page of the events api: its `items` holds a row more than the page does while
+ * another page is left, which is how the pager knows of one without the api counting the events.
+ */
+export function swapsPage({ items = [], pageSize }) {
+  const hasMore = items.length > pageSize;
+
+  return {
+    swaps: hasMore ? items.slice(0, pageSize) : items,
+    hasMore,
+  };
+}
+
+/**
  * The assets of a swap are XCM locations in the form the chain serialises them to, e.g.
  * `{ parents: 0, interior: { x2: [{ palletInstance: 50 }, { generalIndex: 7873 }] } }`.
  * `assetIndexFromLocation` of psmUtils reads the PAPI decoded form of the same location,

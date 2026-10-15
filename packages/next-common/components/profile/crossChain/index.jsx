@@ -4,7 +4,7 @@ import Spin from "next-common/components/spin";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { memo, useState } from "react";
 import useCrossChainJourneys from "./hooks/useCrossChainJourneys";
-import CursorPagination from "./pagination";
+import CursorPagination from "next-common/components/pagination/cursor";
 import PoweredBy from "./poweredBy";
 import { useColumnsDef } from "./table";
 
@@ -52,11 +52,7 @@ const CrossChainDataList = memo(function CrossChainDataList({ data, error }) {
   const noDataText = error?.message || "No cross-chain data";
 
   return (
-    <MapDataList
-      columnsDef={columnsDef}
-      data={data}
-      noDataText={noDataText}
-    />
+    <MapDataList columnsDef={columnsDef} data={data} noDataText={noDataText} />
   );
 });
 
