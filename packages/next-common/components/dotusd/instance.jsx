@@ -1,3 +1,4 @@
+import { ArrowExternalLink } from "@osn/icons/subsquare";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import { toPrecision } from "next-common/utils";
@@ -5,17 +6,37 @@ import { SecondaryCard } from "next-common/components/styled/containers/secondar
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
+import Link from "next-common/components/link";
+import Tooltip from "next-common/components/tooltip";
 import TokenIcon from "next-common/components/assethubMigrationAssets/swap/components/tokenIcon";
 import { Location } from "next-common/components/assethubMigrationAssets/foreignAssets/table/columns/id";
 import { useDotUsdContext } from "./context";
 import usePsmStats from "./usePsmStats";
 
-function Field({ label, children }) {
+function Field({ label, titleExtra, children }) {
   return (
     <div className="flex flex-col gap-y-1 min-w-0">
-      <span className="text12Medium text-textTertiary">{label}</span>
+      <div className="inline-flex items-center gap-x-1 text12Medium text-textTertiary">
+        {label}
+        {titleExtra}
+      </div>
       <div className="text14Medium text-textPrimary break-all">{children}</div>
     </div>
+  );
+}
+
+// Jumps to the records list the flow number is summed from.
+function RecordsLink({ href, tooltip }) {
+  return (
+    <Tooltip className="inline-flex" content={tooltip}>
+      <Link
+        href={href}
+        aria-label={tooltip}
+        className="inline-flex items-center text-textTertiary hover:text-textSecondary"
+      >
+        <ArrowExternalLink className="w-3.5 h-3.5" />
+      </Link>
+    </Tooltip>
   );
 }
 
@@ -113,7 +134,12 @@ export default function DotUsdInstance() {
 
         <div className="mt-5 border-t border-neutral300 pt-5">
           <div className="grid grid-cols-3 gap-x-6 gap-y-5 max-sm:grid-cols-1">
-            <Field label="24h net minted">
+            <Field
+              label="24h net minted"
+              titleExtra={
+                <RecordsLink href="/dotusd/mint" tooltip="View mint records" />
+              }
+            >
               <LoadableContent isLoading={isStatsLoading}>
                 <Amount
                   value={stats?.minted?.amount}
@@ -123,7 +149,15 @@ export default function DotUsdInstance() {
               </LoadableContent>
             </Field>
 
-            <Field label="24h net redeemed">
+            <Field
+              label="24h net redeemed"
+              titleExtra={
+                <RecordsLink
+                  href="/dotusd/redeem"
+                  tooltip="View redeem records"
+                />
+              }
+            >
               <LoadableContent isLoading={isStatsLoading}>
                 <Amount
                   value={stats?.redeemed?.amount}
