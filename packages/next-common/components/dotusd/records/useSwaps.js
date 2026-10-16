@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
-import { isNil } from "lodash-es";
 import nextApi from "next-common/services/nextApi";
 import { defaultPageSize } from "next-common/utils/constants";
+import { SWAP_METHOD } from "./swapRecords";
+
+// The two swap directions live in their own collections, so each of them is served by its own
+// api.
+const SWAP_ENDPOINTS = new Map([
+  [SWAP_METHOD.mint, "psm/minted-events"],
+  [SWAP_METHOD.redeem, "psm/redeemed-events"],
+]);
 
 /**
- * One page of the swaps of the dotUSD PSM, newest first. The block scan of Asset Hub indexes
- * the `psm.Minted` and `psm.Redeemed` events into the psmEvent collection, and the backend
- * serves a method at a time together with the total, which is what lets the pager name a page.
+ * One page of the swaps of the dotUSD PSM of one direction, newest first. The block scan of
+ * Asset Hub indexes the `psm.Minted` and `psm.Redeemed` events into their own collections, and
+ * the backend serves each of them together with the total, which is what lets the pager name a
+ * page.
  */
 export default function useSwaps(method, page, pageSize = defaultPageSize) {
   const [state, setState] = useState({
@@ -18,7 +26,8 @@ export default function useSwaps(method, page, pageSize = defaultPageSize) {
   });
 
   useEffect(() => {
-    if (isNil(method)) {
+    const endpoint = SWAP_ENDPOINTS.get(method);
+    if (!endpoint) {
       setState({ swaps: [], total: 0, page: 1, isLoading: false });
       return;
     }
@@ -28,7 +37,7 @@ export default function useSwaps(method, page, pageSize = defaultPageSize) {
     setState((previous) => ({ ...previous, isLoading: true }));
 
     nextApi
-      .fetch("psm/swaps", { method, page, pageSize })
+      .fetch(endpoint, { page, pageSize })
       .then(({ result, error }) => {
         if (!isMounted) {
           return;
