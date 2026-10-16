@@ -97,7 +97,7 @@ function Amount({ value, asset, index }) {
   return (
     <ValueDisplay
       className={VALUE_CLASS}
-      value={toPrecision(value, asset.decimals)}
+      value={toPrecision(value, asset.decimals, 2)}
       symbol={asset.symbol}
     />
   );

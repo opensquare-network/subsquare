@@ -1,13 +1,12 @@
 import DotUsdLayout, { Section } from "./layout";
 import DotUsdAccount from "./account";
-import DotUsdSummary from "./summary";
 import DotUsdInstance from "./instance";
 import DotUsdExternalAssets from "./externalAssets";
 import DotUsdHolders from "./holders";
 
 export default function DotUsdPageContent() {
   return (
-    <DotUsdLayout summary={<DotUsdSummary />}>
+    <DotUsdLayout>
       <div className="space-y-6">
         <Section
           title="Your account"

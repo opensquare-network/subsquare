@@ -77,7 +77,7 @@ function AmountValue({ value, symbol, decimals }) {
   return (
     <ValueDisplay
       className={VALUE_CLASS}
-      value={toPrecision(value, decimals)}
+      value={toPrecision(value, decimals, 2)}
       symbol={symbol}
     />
   );
@@ -102,7 +102,9 @@ function UtilizationCell({ value }) {
   const overCap = percent > 100;
 
   return (
-    <span className={cn("inline-flex flex-col items-start gap-y-1", VALUE_CLASS)}>
+    <span
+      className={cn("inline-flex flex-col items-start gap-y-1", VALUE_CLASS)}
+    >
       <span className={cn("num", overCap && "text-red500")}>
         {formatPercent(value, 2)}
       </span>

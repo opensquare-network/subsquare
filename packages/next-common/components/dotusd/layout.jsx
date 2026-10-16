@@ -1,6 +1,7 @@
 import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import DotUsdProvider from "./context";
+import DotUsdSummary from "./summary";
 
 export const DOT_USD_TABS = [
   { value: "overview", label: "Overview", url: "/dotusd" },
@@ -24,25 +25,25 @@ export function Section({ title, hint, children }) {
 }
 
 /**
- * The shell of every dotUSD page: the title, and the tabs between the overview and the swap
- * records. `withPsmState` is for the pages whose panels read the PSM storage; the records
- * pages do not, and their tables must not depend on the chain being reachable.
+ * The shell of every dotUSD page: the title, the summary of the PSM instance and the tabs
+ * between the overview and the swap records. Every page reads the PSM storage, so the header
+ * carries the same summary whichever tab is open; the records tables themselves read the scan
+ * api and do not wait on that storage.
  */
 export default function DotUsdLayout({
-  summary,
+  summary = <DotUsdSummary />,
   children,
-  withPsmState = true,
 }) {
-  const layout = (
-    <ListLayout
-      title="dotUSD"
-      description="Peg stability module on Polkadot Asset Hub"
-      summary={summary}
-      tabs={DOT_USD_TABS}
-    >
-      {children}
-    </ListLayout>
+  return (
+    <DotUsdProvider>
+      <ListLayout
+        title="dotUSD"
+        description="Peg stability module on Polkadot Asset Hub"
+        summary={summary}
+        tabs={DOT_USD_TABS}
+      >
+        {children}
+      </ListLayout>
+    </DotUsdProvider>
   );
-
-  return withPsmState ? <DotUsdProvider>{layout}</DotUsdProvider> : layout;
 }

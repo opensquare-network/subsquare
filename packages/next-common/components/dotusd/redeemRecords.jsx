@@ -4,7 +4,7 @@ import { SWAP_METHOD } from "./records/swapRecords";
 
 export default function DotUsdRedeemRecords() {
   return (
-    <DotUsdLayout withPsmState={false}>
+    <DotUsdLayout>
       <Section
         title="Redeem records"
         hint="dotUSD redeemed through the PSM for an approved external asset"
