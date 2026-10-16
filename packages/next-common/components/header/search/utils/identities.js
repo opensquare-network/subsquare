@@ -1,11 +1,10 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import getChainSettings from "next-common/utils/consts/settings";
-import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 
 function getSearchIdentityApiUrl(chain) {
   const { graphql } = getChainSettings(chain);
 
-  return getStatescanGraphqlUrl(graphql.domain);
+  return `https://${graphql.domain}.statescan.io/graphql`;
 }
 
 function getDefaultOptions() {

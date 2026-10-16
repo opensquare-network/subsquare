@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { gql, request } from "graphql-request";
-import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 import { useChainSettings } from "next-common/context/chain";
 
 const nominationsQuery = gql`
@@ -32,7 +31,7 @@ export default function useStakingNominations(address) {
       return;
     }
 
-    const url = getStatescanGraphqlUrl(stakingSubDomain);
+    const url = `https://${stakingSubDomain}.statescan.io/graphql`;
     setLoading(true);
 
     request(url, nominationsQuery, { address })

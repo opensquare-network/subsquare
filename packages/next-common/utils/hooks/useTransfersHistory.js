@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useChain } from "next-common/context/chain";
 import { gql, request } from "graphql-request";
-import { getStatescanGraphqlUrl } from "next-common/utils/statescan";
 
 const assetTransfersQuery = gql`
   query MyQuery($limit: Int!, $offset: Int!, $address: String!) {
@@ -35,10 +34,10 @@ const assetMetadataQuery = gql`
   }
 `;
 
-const STATESCAN_CHAIN_SUB_DOMAIN_MAP = Object.freeze({
-  polkadot: "ahp-gh-api",
-  westend: "westmint-gh-api",
-  kusama: "statemine-gh-api",
+const STATESCAN_CHAIN_URL_MAP = Object.freeze({
+  polkadot: "https://ahp-gh-api.statescan.io/graphql",
+  westend: "https://westmint-gh-api.statescan.io/graphql",
+  kusama: "https://statemine-gh-api.statescan.io/graphql",
 });
 
 export default function useTransfersHistory(address, page = 0, page_size = 25) {
@@ -50,8 +49,7 @@ export default function useTransfersHistory(address, page = 0, page_size = 25) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const url = getStatescanGraphqlUrl(STATESCAN_CHAIN_SUB_DOMAIN_MAP[chain]);
-    if (!url) {
+    if (!STATESCAN_CHAIN_URL_MAP[chain]) {
       setError(new Error(`Chain ${chain} is not supported.`));
       setLoading(false);
       return;
@@ -62,6 +60,7 @@ export default function useTransfersHistory(address, page = 0, page_size = 25) {
         setLoading(true);
         setError(null);
 
+        const url = STATESCAN_CHAIN_URL_MAP[chain];
         const transfersData = await request(url, assetTransfersQuery, {
           limit: page_size,
           offset: page * page_size,
