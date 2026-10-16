@@ -5,7 +5,7 @@ import { toPrecision } from "next-common/utils";
 import Duration from "next-common/components/duration";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
-import CursorPagination from "next-common/components/pagination/cursor";
+import Pagination from "next-common/components/pagination";
 import { defaultPageSize } from "next-common/utils/constants";
 import { TableCard } from "../styled";
 import { getAssetMeta } from "../assetMetas";
@@ -105,17 +105,22 @@ function TimeCell({ indexer, isTime }) {
 }
 
 export default function DotUsdSwapRecords({ method, noDataText }) {
-  // The page is local state: the events are read a page at a time and the list is not counted,
-  // so the pager only walks forward and back rather than naming a page.
+  // The page is local state: the rows are read a page at a time and the pager is rendered in
+  // buttonMode, so paging never puts a `page` query param in the URL.
   const [page, setPage] = useState(1);
   // The time column reads either as the moment of the swap or as how long ago it was.
   const [isTime, setIsTime] = useState(true);
 
   const toggleTime = useCallback(() => setIsTime((value) => !value), []);
+  const onPageChange = useCallback((event, nextPage) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setPage(nextPage);
+  }, []);
 
   const columns = buildColumns({ isTime, onToggleTime: toggleTime });
 
-  const { swaps, hasMore, isLoading } = useSwaps(method, page, defaultPageSize);
+  const { swaps, total, isLoading } = useSwaps(method, page, defaultPageSize);
 
   // The rows of the previous page stay on screen while the next one loads, so the table keeps
   // its height and the page does not jump; the pager carries the loading state instead.
@@ -160,16 +165,16 @@ export default function DotUsdSwapRecords({ method, noDataText }) {
         loading={isFirstLoad}
         noDataText={noDataText}
       />
-      <div className="flex justify-center pt-2">
-        <CursorPagination
+      {total > 0 && (
+        <Pagination
           page={page}
-          disabled={isLoading}
-          hasPreviousPage={page > 1}
-          hasNextPage={hasMore}
-          onNextPage={() => setPage(page + 1)}
-          onPreviousPage={() => setPage(page - 1)}
+          pageSize={defaultPageSize}
+          total={total}
+          onPageChange={onPageChange}
+          buttonMode
+          loading={isLoading}
         />
-      </div>
+      )}
     </div>
   );
 }
