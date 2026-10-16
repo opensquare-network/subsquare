@@ -8,9 +8,9 @@ import SummaryItem from "next-common/components/summary/layout/item";
 import LoadableContent from "next-common/components/common/loadableContent";
 import ValueDisplay from "next-common/components/valueDisplay";
 import Tooltip from "next-common/components/tooltip";
-import Link from "next-common/components/link";
 import { useDotUsdContext } from "./context";
 import usePsmStats from "./usePsmStats";
+import { useDotUsdTabs } from "./tabs";
 
 function EmptyValue() {
   return <span className="text-textTertiary">—</span>;
@@ -57,17 +57,20 @@ function SignedAmountValue({ value, symbol, decimals }) {
   );
 }
 
-// Jumps to the records list the flow number is summed from.
-function RecordsLink({ href, tooltip }) {
+// Switches to the records list the flow number is summed from.
+function RecordsLink({ tab, tooltip }) {
+  const { setActiveTab } = useDotUsdTabs();
+
   return (
     <Tooltip className="inline-flex" content={tooltip}>
-      <Link
-        href={href}
+      <button
+        type="button"
         aria-label={tooltip}
+        onClick={() => setActiveTab(tab)}
         className="inline-flex items-center text-textTertiary hover:text-textSecondary"
       >
         <ArrowExternalLink className="w-3.5 h-3.5" />
-      </Link>
+      </button>
     </Tooltip>
   );
 }
@@ -139,7 +142,7 @@ export default function DotUsdSummary() {
         title={
           <span className="inline-flex items-center gap-x-1">
             24h net minted
-            <RecordsLink href="/dotusd/mint" tooltip="View mint records" />
+            <RecordsLink tab="mint" tooltip="View mint records" />
           </span>
         }
       >
@@ -156,7 +159,7 @@ export default function DotUsdSummary() {
         title={
           <span className="inline-flex items-center gap-x-1">
             24h net redeemed
-            <RecordsLink href="/dotusd/redeem" tooltip="View redeem records" />
+            <RecordsLink tab="redeem" tooltip="View redeem records" />
           </span>
         }
       >
