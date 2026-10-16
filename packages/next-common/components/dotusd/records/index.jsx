@@ -1,12 +1,16 @@
-import dayjs from "dayjs";
 import { useCallback, useState } from "react";
 import { isNil } from "lodash-es";
 import { toPrecision } from "next-common/utils";
-import Duration from "next-common/components/duration";
 import ValueDisplay from "next-common/components/valueDisplay";
 import AddressUser from "next-common/components/user/addressUser";
 import Pagination from "next-common/components/pagination";
 import { defaultPageSize } from "next-common/utils/constants";
+import { useChain } from "next-common/context/chain";
+import {
+  TimeAgeCell,
+  TimeAgeToggle,
+  useTimeAge,
+} from "next-common/components/timeAge";
 import { TableCard } from "../styled";
 import { getAssetMeta } from "../assetMetas";
 import useSwaps from "./useSwaps";
@@ -29,11 +33,7 @@ function buildColumns({ isTime, onToggleTime }) {
       style: { width: "220px", minWidth: "220px" },
     },
     {
-      name: (
-        <button className="text-theme500" onClick={onToggleTime}>
-          {isTime ? "Time" : "Age"}
-        </button>
-      ),
+      name: <TimeAgeToggle isTime={isTime} onToggle={onToggleTime} />,
       className: "text-left whitespace-nowrap",
       style: { minWidth: "170px" },
     },
@@ -79,46 +79,21 @@ function Amount({ value, asset, index }) {
   );
 }
 
-// The time is the whole column now, so it keeps the primary text style rather than the muted
-// second-line one it had under the extrinsic link. The age is left to `Duration`, which
-// re-renders it as it passes.
-function TimeCell({ indexer, isTime }) {
-  const blockTime = indexer?.blockTime;
-
-  if (isNil(blockTime)) {
-    return <span className={EMPTY_CLASS}>—</span>;
-  }
-
-  if (!isTime) {
-    return (
-      <span className={VALUE_CLASS}>
-        <Duration time={blockTime} />
-      </span>
-    );
-  }
-
-  return (
-    <span className={VALUE_CLASS}>
-      {dayjs(blockTime).format("YYYY-MM-DD HH:mm:ss")}
-    </span>
-  );
-}
-
 export default function DotUsdSwapRecords({ method, noDataText }) {
   // The page is local state: the rows are read a page at a time and the pager is rendered in
   // buttonMode, so paging never puts a `page` query param in the URL.
   const [page, setPage] = useState(1);
   // The time column reads either as the moment of the swap or as how long ago it was.
-  const [isTime, setIsTime] = useState(true);
+  const { isTime, onToggle } = useTimeAge();
+  const chain = useChain();
 
-  const toggleTime = useCallback(() => setIsTime((value) => !value), []);
   const onPageChange = useCallback((event, nextPage) => {
     event.preventDefault();
     event.stopPropagation();
     setPage(nextPage);
   }, []);
 
-  const columns = buildColumns({ isTime, onToggleTime: toggleTime });
+  const columns = buildColumns({ isTime, onToggleTime: onToggle });
 
   const { swaps, total, isLoading } = useSwaps(method, page, defaultPageSize);
 
@@ -134,7 +109,12 @@ export default function DotUsdSwapRecords({ method, noDataText }) {
       // The account column is pinned, so a long identity name is truncated into a tooltip
       // rather than widening the column.
       <AddressUser key="account" add={record.address} maxWidth={160} />,
-      <TimeCell key="time" indexer={record.indexer} isTime={isTime} />,
+      <TimeAgeCell
+        key="time"
+        indexer={record.indexer}
+        isTime={isTime}
+        customDomain={`assethub-${chain}`}
+      />,
       <Amount
         key="paid"
         value={record.paidAmount}
