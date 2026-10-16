@@ -52,11 +52,7 @@ const CrossChainDataList = memo(function CrossChainDataList({ data, error }) {
   const noDataText = error?.message || "No cross-chain data";
 
   return (
-    <MapDataList
-      columnsDef={columnsDef}
-      data={data}
-      noDataText={noDataText}
-    />
+    <MapDataList columnsDef={columnsDef} data={data} noDataText={noDataText} />
   );
 });
 

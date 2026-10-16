@@ -1,12 +1,14 @@
-import dayjs from "dayjs";
 import DataList from "next-common/components/dataList";
 import AddressUser from "next-common/components/user/addressUser";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { useChain, useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
-import { useState } from "react";
-import Duration from "next-common/components/duration";
 import { getStatescanDomain } from "next-common/utils/statescan";
+import {
+  TimeAgeCell,
+  TimeAgeToggle,
+  useTimeAge,
+} from "next-common/components/timeAge";
 
 function EventID({ blockHeight, eventIndex, statescanDomain }) {
   const chain = useChain();
@@ -46,7 +48,9 @@ function ExtrinsicID({ blockHeight, extrinsicIndex, statescanDomain }) {
 
 export default function TransferList({ isLoading, items, statescanDomain }) {
   const { symbol, decimals } = useChainSettings();
-  const [timeType, setTimeType] = useState("time");
+  const chain = useChain();
+  const { isTime, onToggle } = useTimeAge();
+  const domain = statescanDomain || getStatescanDomain(chain);
 
   const columns = [
     {
@@ -58,16 +62,7 @@ export default function TransferList({ isLoading, items, statescanDomain }) {
       style: { width: 120, maxWidth: 120, textAlign: "left" },
     },
     {
-      name: (
-        <span
-          className="cursor-pointer text-theme500 capitalize"
-          onClick={() => {
-            setTimeType(timeType === "time" ? "age" : "time");
-          }}
-        >
-          {timeType}
-        </span>
-      ),
+      name: <TimeAgeToggle isTime={isTime} onToggle={onToggle} />,
       style: { width: 200, minWidth: 200, textAlign: "left" },
     },
     {
@@ -98,11 +93,12 @@ export default function TransferList({ isLoading, items, statescanDomain }) {
         {...item.indexer}
         statescanDomain={statescanDomain}
       />,
-      timeType === "time" ? (
-        dayjs(item.indexer.blockTime).format("YYYY-MM-DD HH:mm:ss")
-      ) : (
-        <Duration key="time" time={item.indexer.blockTime} />
-      ),
+      <TimeAgeCell
+        key="time"
+        indexer={item.indexer}
+        isTime={isTime}
+        customDomain={domain}
+      />,
       <AddressUser key="from" add={item.from} />,
       <AddressUser key="to" add={item.to} />,
       <ValueDisplay
