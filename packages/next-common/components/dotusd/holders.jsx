@@ -30,7 +30,7 @@ function BalanceValue({ value, symbol, decimals }) {
   return (
     <ValueDisplay
       className={VALUE_CLASS}
-      value={toPrecision(value, decimals)}
+      value={toPrecision(value, decimals, 2)}
       symbol={symbol}
     />
   );

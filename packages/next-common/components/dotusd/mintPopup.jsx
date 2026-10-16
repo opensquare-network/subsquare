@@ -53,7 +53,11 @@ function MintSummary({ external, internal, quote, isLoading }) {
           // asset being paid, so the row has to say so or a 0 fee looks like a missing one.
           <Tooltip content="Taken out of the dotUSD that is minted, not out of the asset you pay with.">
             <span className="cursor-default">
-              {`Mint fee${isNil(feePercent) ? "" : ` (${feePercent.toFixed(4).replace(/\.?0+$/, "")}%)`}`}
+              {`Mint fee${
+                isNil(feePercent)
+                  ? ""
+                  : ` (${feePercent.toFixed(4).replace(/\.?0+$/, "")}%)`
+              }`}
             </span>
           </Tooltip>
         }
