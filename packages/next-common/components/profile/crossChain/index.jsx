@@ -4,7 +4,7 @@ import Spin from "next-common/components/spin";
 import { SecondaryCard } from "next-common/components/styled/containers/secondaryCard";
 import { memo, useState } from "react";
 import useCrossChainJourneys from "./hooks/useCrossChainJourneys";
-import CursorPagination from "next-common/components/pagination/cursor";
+import CursorPagination from "./pagination";
 import PoweredBy from "./poweredBy";
 import { useColumnsDef } from "./table";
 

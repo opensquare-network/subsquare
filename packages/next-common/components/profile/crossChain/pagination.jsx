@@ -1,7 +1,6 @@
-import CaretLeft from "../../assets/imgs/icons/pager-caret-left.svg";
-import CaretRight from "../../assets/imgs/icons/pager-caret-right.svg";
+import CaretLeft from "../../../assets/imgs/icons/pager-caret-left.svg";
+import CaretRight from "../../../assets/imgs/icons/pager-caret-right.svg";
 import styled, { css } from "styled-components";
-import { isNil } from "lodash-es";
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,27 +55,7 @@ const FirstPageButton = styled(PageButton)`
   }
 `;
 
-// Same box as the numbered pager gives the page it is on.
-const PageNumber = styled.span`
-  min-width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  background: var(--neutral300);
-  color: var(--textPrimary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 500;
-`;
-
-/**
- * The pager of a list that is read a page at a time without counting it, so it knows nothing but
- * the page it is on and whether a page is left on either side. The First button is left out when
- * `onFirstPage` is not given; the page number only reads when `page` is.
- */
 export default function CursorPagination({
-  page,
   disabled = false,
   hasNextPage,
   hasPreviousPage,
@@ -90,16 +69,14 @@ export default function CursorPagination({
 
   return (
     <Wrapper>
-      {onFirstPage && (
-        <FirstPageButton
-          aria-label="First page"
-          disabled={disabled || !hasPreviousPage}
-          onClick={onFirstPage}
-          type="button"
-        >
-          First
-        </FirstPageButton>
-      )}
+      <FirstPageButton
+        aria-label="First page"
+        disabled={disabled || !hasPreviousPage}
+        onClick={onFirstPage}
+        type="button"
+      >
+        First
+      </FirstPageButton>
       <PageButton
         aria-label="Previous page"
         disabled={disabled || !hasPreviousPage}
@@ -108,7 +85,6 @@ export default function CursorPagination({
       >
         <CaretLeft />
       </PageButton>
-      {!isNil(page) && <PageNumber>{page}</PageNumber>}
       <PageButton
         aria-label="Next page"
         disabled={disabled || !hasNextPage}

@@ -145,8 +145,6 @@ function PopupContent() {
 
   return (
     <>
-      <SignerWithBalance api={api} />
-
       <ExternalAssetSelect
         label="Pay with"
         externals={externals}
@@ -154,6 +152,8 @@ function PopupContent() {
         onChange={setExternalIndex}
         isEnabled={allowsMinting}
       />
+      <SignerWithBalance api={api} />
+
       <AmountInputWithHint
         label="Amount"
         hintLabel="Available"
