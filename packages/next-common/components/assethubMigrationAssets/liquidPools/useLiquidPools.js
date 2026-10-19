@@ -7,6 +7,7 @@ import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import { useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import {
+  buildBalanceQuery,
   computeNativeQuotePrice,
   computePoolTvl,
   decodeSymbol,
@@ -14,6 +15,7 @@ import {
   getLocationHash,
   getPoolAssetId,
   parseTokenLocation,
+  readReserveBalance,
   stringifyLocation,
   toTokenUnits,
 } from "./utils";
@@ -66,26 +68,6 @@ function normalizeToken(
     decimals: meta.decimals ?? 0,
     hasName: !!meta.symbol,
   };
-}
-
-export function readReserveBalance(result, tokenType) {
-  if (!result) {
-    return new BigNumber(0);
-  }
-
-  if (tokenType === "native") {
-    const free = new BigNumber(result.data.free.toString());
-    const frozen = new BigNumber(result.data.frozen.toString());
-    const available = free.minus(frozen);
-    return available.isNegative() ? new BigNumber(0) : available;
-  }
-
-  const isLiquid = result.status?.type === "Liquid";
-  if (!isLiquid) {
-    return new BigNumber(0);
-  }
-
-  return new BigNumber(result.balance.toString());
 }
 
 // Fetch all chain entries the liquidity pools list needs, in parallel.
@@ -229,16 +211,6 @@ function buildPools(
   }
 
   return pools;
-}
-
-export function buildBalanceQuery(papi, token, address) {
-  if (token.type === "native") {
-    return papi.query.System.Account.getValue(address);
-  }
-  if (token.type === "asset") {
-    return papi.query.Assets.Account.getValue(token.assetId, address);
-  }
-  return papi.query.ForeignAssets.Account.getValue(token.location, address);
 }
 
 // Fetch a single pool's reserve balances ([reserve1, reserve2]) as BigNumbers.

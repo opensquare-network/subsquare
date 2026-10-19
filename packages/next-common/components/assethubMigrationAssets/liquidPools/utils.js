@@ -67,6 +67,38 @@ export function toTokenUnits(plancks, decimals) {
   return new BigNumber(plancks).div(new BigNumber(10).pow(decimals));
 }
 
+// Read a token account's spendable balance. Native accounts carry free/frozen, asset
+// accounts carry a status; a non-liquid account holds nothing that can be moved.
+export function readReserveBalance(result, tokenType) {
+  if (!result) {
+    return new BigNumber(0);
+  }
+
+  if (tokenType === "native") {
+    const free = new BigNumber(result.data.free.toString());
+    const frozen = new BigNumber(result.data.frozen.toString());
+    const available = free.minus(frozen);
+    return available.isNegative() ? new BigNumber(0) : available;
+  }
+
+  const isLiquid = result.status?.type === "Liquid";
+  if (!isLiquid) {
+    return new BigNumber(0);
+  }
+
+  return new BigNumber(result.balance.toString());
+}
+
+export function buildBalanceQuery(papi, token, address) {
+  if (token.type === "native") {
+    return papi.query.System.Account.getValue(address);
+  }
+  if (token.type === "asset") {
+    return papi.query.Assets.Account.getValue(token.assetId, address);
+  }
+  return papi.query.ForeignAssets.Account.getValue(token.location, address);
+}
+
 // Normalized pool helpers -------------------------------------------------
 
 export function hasToken(pool, tokenKey) {

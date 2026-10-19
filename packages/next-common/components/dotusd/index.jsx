@@ -32,7 +32,7 @@ function DotUsdOverview() {
         <DotUsdExternalAssets />
       </Section>
 
-      <Section title="Pool" hint="DOT/dotUSD pool of the Hub DEX">
+      <Section title="Pools" hint="All dotUSD liquidity pools on the Hub DEX">
         <DotUsdPool />
       </Section>
 
