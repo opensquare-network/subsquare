@@ -10,7 +10,6 @@ import { SelfContainedScheduledTreasurySpendPrompt } from "next-common/component
 import { CACHE_KEY } from "next-common/utils/constants";
 import businessCategory from "next-common/utils/consts/business/category";
 import normalizeTreasurySpendListItem from "next-common/utils/viewfuncs/treasury/normalizeTreasurySpendListItem";
-import Loading from "next-common/components/loading";
 
 function SummaryFooter() {
   return (
@@ -40,7 +39,6 @@ export default function TreasurySpendsPageContent({ chain }) {
   );
   const category = businessCategory.treasurySpends;
   const seoInfo = { title: category, desc: category };
-  const showLoading = loading && !items?.length;
 
   return (
     <ListLayout
@@ -50,20 +48,20 @@ export default function TreasurySpendsPageContent({ chain }) {
       summaryFooter={<SummaryFooter />}
     >
       <DropdownUrlFilterProvider
-        defaultFilterValues={{ status: "", valid_only: false, page: "" }}
+        defaultFilterValues={{
+          status: "",
+          symbol: "",
+          valid_only: false,
+          page: "",
+        }}
         shallow
       >
-        {showLoading ? (
-          <div className="flex justify-center py-6">
-            <Loading size={20} />
-          </div>
-        ) : (
-          <TreasurySpendsPostList
-            titleCount={total}
-            items={spends}
-            pagination={{ page, pageSize, total, shallow: true }}
-          />
-        )}
+        <TreasurySpendsPostList
+          titleCount={total}
+          items={spends}
+          loading={loading}
+          pagination={{ page, pageSize, total, shallow: true }}
+        />
       </DropdownUrlFilterProvider>
     </ListLayout>
   );
