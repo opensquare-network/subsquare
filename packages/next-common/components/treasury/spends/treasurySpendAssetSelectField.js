@@ -1,17 +1,11 @@
-import { noop } from "lodash-es";
-import * as RadixSelect from "@radix-ui/react-select";
 import { useMemo } from "react";
-import { cn } from "next-common/utils";
-import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
-
-const NONE = "none";
+import { noop } from "lodash-es";
+import Select from "next-common/components/select";
 
 export default function TreasurySpendAssetSelectField({
   value = "",
   symbols = [],
   onChange = noop,
-  open,
-  onOpenChange,
 }) {
   const options = useMemo(() => {
     const list = [...symbols];
@@ -20,68 +14,18 @@ export default function TreasurySpendAssetSelectField({
     }
 
     return [
-      { value: NONE, label: "All assets" },
+      { value: "", label: "All assets" },
       ...list.map((symbol) => ({ value: symbol, label: symbol })),
     ];
   }, [symbols, value]);
 
-  const selectedLabel = useMemo(() => {
-    return options.find((item) => item.value === (value || NONE))?.label;
-  }, [options, value]);
-
   return (
-    <RadixSelect.Root
-      open={open}
-      onOpenChange={onOpenChange}
+    <Select
+      small
+      className="w-40 text12Medium"
       value={value}
-      onValueChange={(symbol) => {
-        onChange(symbol === NONE ? "" : symbol);
-      }}
-    >
-      <RadixSelect.Trigger className=" flex justify-between items-center min-w-5 w-40 h-7 bg-neutral100 border border-neutral400 cursor-pointer text-textPrimary rounded-md py-1.5 px-1.5 pl-4">
-        <span className="text12Medium">{selectedLabel}</span>
-        <div>
-          <ArrowDown
-            className={cn(
-              open && "rotate-180",
-              "w-5 h-5",
-              "[&_path]:stroke-textTertiary",
-            )}
-          />
-        </div>
-      </RadixSelect.Trigger>
-      <RadixSelect.Portal>
-        <RadixSelect.Content
-          position="popper"
-          align="center"
-          className={cn(
-            "max-h-[--radix-select-content-available-height] min-w-32 overflow-x-hidden overflow-y-auto relative z-50",
-            "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-            "bg-neutral100 shadow-200 rounded py-2 px-0 text-textPrimary dark:border dark:border-neutral300",
-          )}
-        >
-          <RadixSelect.ScrollUpButton className="absolute z-10 bg-neutral100 top-0  w-full h-4 flex items-center justify-center border-neutral400 border-b">
-            <ArrowUp className="w-5 h-5" />
-          </RadixSelect.ScrollUpButton>
-          <RadixSelect.Viewport>
-            {options.map((item) => (
-              <RadixSelect.Item
-                className={cn(
-                  "px-6 py-2.5 hover:bg-neutral200 cursor-pointer w-40",
-                  item.value === (value || NONE) && "bg-neutral200 ",
-                )}
-                key={item.value}
-                value={item.value}
-              >
-                <span className="text12Medium">{item.label}</span>
-              </RadixSelect.Item>
-            ))}
-          </RadixSelect.Viewport>
-          <RadixSelect.ScrollDownButton className="absolute z-10 bg-neutral100 bottom-0 w-full h-4 flex items-center justify-center border-neutral400 border-t">
-            <ArrowDown className="w-5 h-5" />
-          </RadixSelect.ScrollDownButton>
-        </RadixSelect.Content>
-      </RadixSelect.Portal>
-    </RadixSelect.Root>
+      options={options}
+      onChange={({ value: symbol }) => onChange(symbol)}
+    />
   );
 }

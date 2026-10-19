@@ -3,6 +3,7 @@ import nextApi from "next-common/services/nextApi";
 
 export default function useTreasurySpendSymbols() {
   const [symbols, setSymbols] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -11,6 +12,7 @@ export default function useTreasurySpendSymbols() {
       const { result } = await nextApi.fetch("treasury/spends/symbols");
       if (!cancelled) {
         setSymbols(result?.symbols || []);
+        setLoading(false);
       }
     }
 
@@ -21,5 +23,5 @@ export default function useTreasurySpendSymbols() {
     };
   }, []);
 
-  return symbols;
+  return { symbols, loading };
 }
