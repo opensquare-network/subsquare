@@ -50,7 +50,12 @@ export default function TreasurySpendsPageContent({ chain }) {
       summaryFooter={<SummaryFooter />}
     >
       <DropdownUrlFilterProvider
-        defaultFilterValues={{ status: "", valid_only: false, page: "" }}
+        defaultFilterValues={{
+          status: "",
+          symbol: "",
+          valid_only: false,
+          page: "",
+        }}
         shallow
       >
         {showLoading ? (

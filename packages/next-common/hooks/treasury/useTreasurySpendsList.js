@@ -13,6 +13,7 @@ export default function useTreasurySpendsList() {
     page,
     page_size: pageSize,
     status,
+    symbol,
     valid_only: validOnlyQuery,
   } = router.query;
   const validOnly = validOnlyQuery === "true" || validOnlyQuery === true;
@@ -49,6 +50,10 @@ export default function useTreasurySpendsList() {
         params.status = upperFirst(status);
       }
 
+      if (symbol) {
+        params.symbol = symbol;
+      }
+
       if (validOnly) {
         params.valid_only = true;
         params.ids = claimableIds;
@@ -65,6 +70,7 @@ export default function useTreasurySpendsList() {
     page,
     pageSize,
     status,
+    symbol,
     validOnly,
     shouldWaitPendingSpends,
     claimableIds,

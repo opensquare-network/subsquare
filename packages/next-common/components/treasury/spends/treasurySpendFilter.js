@@ -8,16 +8,21 @@ import { useState } from "react";
 import { useUpdateEffect } from "react-use";
 import ToggleOption from "next-common/components/toggleOption";
 import TreasurySpendStatusSelectField from "./treasurySpendStatusSelectField";
+import TreasurySpendAssetSelectField from "./treasurySpendAssetSelectField";
+import useTreasurySpendSymbols from "next-common/hooks/treasury/useTreasurySpendSymbols";
 
 export default function TreasurySpendFilter() {
   const [committedFilter, setCommittedFilter] = useCommittedFilterState();
   const status = committedFilter?.status || "";
+  const symbol = committedFilter?.symbol || "";
   const validOnly = committedFilter?.valid_only === "true";
+  const symbols = useTreasurySpendSymbols();
 
-  const [stateOpen, setStateOpen] = useState(false);
+  const [stateOpen, setStateOpen] = useState(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
     status,
+    symbol,
     validOnly,
   });
 
@@ -26,19 +31,22 @@ export default function TreasurySpendFilter() {
       return {
         ...val,
         status,
+        symbol,
         validOnly,
       };
     });
-  }, [status, validOnly]);
+  }, [status, symbol, validOnly]);
 
   const filterCount = Object.values({
     status,
+    symbol,
     validOnly,
   }).filter(Boolean).length;
 
   function handleApply() {
     const filters = {
       status: value.status,
+      symbol: value.symbol,
       valid_only: value.validOnly,
     };
     setCommittedFilter(filters);
@@ -46,8 +54,8 @@ export default function TreasurySpendFilter() {
   }
 
   function handleReset() {
-    setValue({ status: "", validOnly: false });
-    setCommittedFilter({ status: "", valid_only: false });
+    setValue({ status: "", symbol: "", validOnly: false });
+    setCommittedFilter({ status: "", symbol: "", valid_only: false });
     setOpen(false);
   }
 
@@ -56,7 +64,7 @@ export default function TreasurySpendFilter() {
       open={open}
       onOpenChange={(open) => {
         if (!open && stateOpen) {
-          return setStateOpen(false);
+          return setStateOpen(null);
         }
         setOpen(open);
       }}
@@ -94,11 +102,34 @@ export default function TreasurySpendFilter() {
               </div>
 
               <div className="flex items-center justify-between py-1.5">
+                <div>Asset</div>
+
+                <TreasurySpendAssetSelectField
+                  open={stateOpen === "asset"}
+                  onOpenChange={(isOpen) =>
+                    setStateOpen(isOpen ? "asset" : null)
+                  }
+                  value={value?.symbol}
+                  symbols={symbols}
+                  onChange={(symbol) => {
+                    setValue?.((val) => {
+                      return {
+                        ...val,
+                        symbol,
+                      };
+                    });
+                  }}
+                />
+              </div>
+
+              <div className="flex items-center justify-between py-1.5">
                 <div>Status</div>
 
                 <TreasurySpendStatusSelectField
-                  open={stateOpen}
-                  onOpenChange={setStateOpen}
+                  open={stateOpen === "status"}
+                  onOpenChange={(isOpen) =>
+                    setStateOpen(isOpen ? "status" : null)
+                  }
                   value={value?.status}
                   onChange={(status) => {
                     setValue?.((val) => {
