@@ -2,6 +2,7 @@ import DotUsdLayout, { Section } from "./layout";
 import DotUsdAccount from "./account";
 import DotUsdInstance from "./instance";
 import DotUsdExternalAssets from "./externalAssets";
+import DotUsdPool from "./pool";
 import DotUsdHolders from "./holders";
 
 export default function DotUsdPageContent() {
@@ -27,6 +28,10 @@ export default function DotUsdPageContent() {
           hint="Approved external assets with their circuit breaker status, weight, effective cap and fees"
         >
           <DotUsdExternalAssets />
+        </Section>
+
+        <Section title="Pool" hint="DOT/dotUSD pool of the Hub DEX">
+          <DotUsdPool />
         </Section>
 
         <Section
