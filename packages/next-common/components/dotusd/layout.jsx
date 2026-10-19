@@ -2,12 +2,7 @@ import ListLayout from "next-common/components/layout/ListLayout";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import DotUsdProvider from "./context";
 import DotUsdSummary from "./summary";
-
-export const DOT_USD_TABS = [
-  { value: "overview", label: "Overview", url: "/dotusd" },
-  { value: "mint", label: "Mint records", url: "/dotusd/mint" },
-  { value: "redeem", label: "Redeem records", url: "/dotusd/redeem" },
-];
+import { DOT_USD_TABS, DotUsdTabsProvider, useDotUsdTabs } from "./tabs";
 
 export function Section({ title, hint, children }) {
   return (
@@ -24,26 +19,36 @@ export function Section({ title, hint, children }) {
   );
 }
 
+// The header of every dotUSD page: the title, the summary of the PSM instance and the tabs
+// between the overview and the swap records. The tabs are switched in place, so the active one
+// comes from the tabs context rather than from the router.
+function DotUsdHeader({ children }) {
+  const { activeTab, setActiveTab } = useDotUsdTabs();
+
+  return (
+    <ListLayout
+      title="dotUSD"
+      description="Peg stability module on Polkadot Asset Hub"
+      summary={<DotUsdSummary />}
+      tabs={DOT_USD_TABS}
+      activeTabValue={activeTab}
+      onTabClick={(tab) => setActiveTab(tab.value)}
+    >
+      {children}
+    </ListLayout>
+  );
+}
+
 /**
- * The shell of every dotUSD page: the title, the summary of the PSM instance and the tabs
- * between the overview and the swap records. Every page reads the PSM storage, so the header
- * carries the same summary whichever tab is open; the records tables themselves read the scan
- * api and do not wait on that storage.
+ * The shell of the dotUSD page. Both the PSM data and the selected tab are shared by the header
+ * and the content below it.
  */
-export default function DotUsdLayout({
-  summary = <DotUsdSummary />,
-  children,
-}) {
+export default function DotUsdLayout({ children }) {
   return (
     <DotUsdProvider>
-      <ListLayout
-        title="dotUSD"
-        description="Peg stability module on Polkadot Asset Hub"
-        summary={summary}
-        tabs={DOT_USD_TABS}
-      >
-        {children}
-      </ListLayout>
+      <DotUsdTabsProvider>
+        <DotUsdHeader>{children}</DotUsdHeader>
+      </DotUsdTabsProvider>
     </DotUsdProvider>
   );
 }

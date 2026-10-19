@@ -26,6 +26,8 @@ import TabsList from "../tabs/list";
  * summary?: JSX.Element
  * summaryFooter?: JSX.Element
  * tabs?: Tab[]
+ * activeTabValue?: string
+ * onTabClick?(tab: Tab): void
  * }} ListLayoutProps
  */
 
@@ -42,6 +44,8 @@ export default function ListLayout({
   summary,
   summaryFooter,
   tabs = [],
+  activeTabValue,
+  onTabClick,
   header,
   customTabs = null,
 }) {
@@ -90,7 +94,11 @@ export default function ListLayout({
 
         {tabs?.length > 0 && (
           <div className={cn("px-12 mx-auto max-w-[1200px]", "max-sm:px-6")}>
-            <TabsList tabs={tabs} />
+            <TabsList
+              tabs={tabs}
+              activeTabValue={activeTabValue}
+              onTabClick={onTabClick}
+            />
           </div>
         )}
         {customTabs}
