@@ -188,6 +188,18 @@ export function formatPrice(value) {
   return bn.toPrecision(6).replace(/\.?0+$/, "");
 }
 
+// Permill is parts per million: 1_000_000 = 100%.
+export function formatPermillPercent(value, maxDecimals = 4) {
+  if (isNil(value)) {
+    return null;
+  }
+
+  return `${new BigNumber(value.toString())
+    .dividedBy(10_000)
+    .toFixed(maxDecimals)
+    .replace(/\.?0+$/, "")}%`;
+}
+
 // PAPI-native foreign-token location hash ---------------------------------
 //
 // The foreign-token `assetId` (used for icons) is the blake2_256 hash of the

@@ -28,10 +28,10 @@ function PoolCell({ pool }) {
   );
 }
 
-// The two reserves stack and right align, the layout the liquidity pools page reads them in.
+// The two reserves stack and left align, the same reading direction as the pool name.
 function ReservesCell({ pool }) {
   return (
-    <div className="flex flex-col items-end gap-0.5">
+    <div className="flex flex-col items-start gap-0.5">
       <ValueDisplay
         className={VALUE_CLASS}
         value={formatAmount(pool.otherReserve)}
@@ -65,11 +65,11 @@ const columns = [
   { name: "Pool", className: "text-left" },
   {
     name: "Reserves",
-    className: "text-right",
+    className: "text-left",
     style: { width: "160px", minWidth: "160px" },
   },
-  { name: "Price", className: "text-right" },
-  { name: "LP fee", className: "text-right" },
+  { name: "Price", className: "text-left" },
+  { name: "LP fee", className: "text-left" },
   { name: "TVL", className: "text-right" },
 ];
 

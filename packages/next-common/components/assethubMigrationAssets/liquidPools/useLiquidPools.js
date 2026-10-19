@@ -249,7 +249,7 @@ function compareTvlDesc(a, b, anchor) {
 // Format a single pool into its display row: reserves and TVL (in the anchor
 // token) in token units. The token pair price is computed at render time by the
 // caller.
-function formatPoolRow(pool, anchor) {
+function formatPoolRow(pool, anchor, lpFee) {
   const [reserve1, reserve2] = pool.reserves;
 
   const tvlPlancks = computePoolTvl(
@@ -269,6 +269,7 @@ function formatPoolRow(pool, anchor) {
       ? formatAmount(toTokenUnits(tvlPlancks, anchor.decimals))
       : null,
     tvlSymbol: anchor.symbol,
+    lpFee,
   };
 }
 
@@ -276,12 +277,16 @@ async function fetchLiquidPools(
   papi,
   { isUsdcAnchor, nativeSymbol, nativeDecimals },
 ) {
+  const [poolEntries, lpFee] = await Promise.all([
+    fetchPoolEntries(papi),
+    papi.constants.AssetConversion.LPFee(),
+  ]);
   const {
     poolsEntries,
     poolAssetsEntries,
     assetsMetadataEntries,
     foreignAssetsMetadataEntries,
-  } = await fetchPoolEntries(papi);
+  } = poolEntries;
 
   const assetsMetadata = buildAssetsMetadata(assetsMetadataEntries);
   const foreignAssetsMetadata = buildForeignAssetsMetadata(
@@ -330,7 +335,7 @@ async function fetchLiquidPools(
   // Sort by TVL descending; pools without a computable TVL last.
   return [...poolsWithReserves]
     .sort((a, b) => compareTvlDesc(a, b, anchor))
-    .map((pool) => formatPoolRow(pool, anchor));
+    .map((pool) => formatPoolRow(pool, anchor, lpFee));
 }
 
 export default function useLiquidPools() {
