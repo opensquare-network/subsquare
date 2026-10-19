@@ -3,6 +3,7 @@ import { useDotUsdTabs } from "./tabs";
 import DotUsdAccount from "./account";
 import DotUsdInstance from "./instance";
 import DotUsdExternalAssets from "./externalAssets";
+import DotUsdPool from "./pool";
 import DotUsdHolders from "./holders";
 import DotUsdMintRecords from "./mintRecords";
 import DotUsdRedeemRecords from "./redeemRecords";
@@ -29,6 +30,10 @@ function DotUsdOverview() {
         hint="Approved external assets with their circuit breaker status, weight, effective cap and fees"
       >
         <DotUsdExternalAssets />
+      </Section>
+
+      <Section title="Pools" hint="All dotUSD liquidity pools on the Hub DEX">
+        <DotUsdPool />
       </Section>
 
       <Section

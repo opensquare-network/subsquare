@@ -5,6 +5,9 @@ const AssetIconDed = dynamic(() => import("@osn/icons/subsquare/AssetIconDed"));
 const AssetIconDota = dynamic(() =>
   import("@osn/icons/subsquare/AssetIconDota"),
 );
+const AssetIconDotUsd = dynamic(() =>
+  import("@osn/icons/subsquare/AssetIconDotUsd"),
+);
 const AssetIconPink = dynamic(() =>
   import("@osn/icons/subsquare/AssetIconPink"),
 );
@@ -45,6 +48,11 @@ const knownPolkadotAssetHubAssets = [
     symbol: "HOLLAR",
     assetId: 222,
     icon: HollarSvg,
+  },
+  {
+    symbol: "dotUSD",
+    assetId: 7873,
+    icon: AssetIconDotUsd,
   },
 ];
 

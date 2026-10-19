@@ -2,9 +2,9 @@ import ValueDisplay from "next-common/components/valueDisplay";
 
 export const colReserve = {
   name: "Reserve",
-  style: { textAlign: "right", width: "160px", minWidth: "160px" },
+  style: { textAlign: "left", width: "160px", minWidth: "160px" },
   render: (item) => (
-    <div className="flex flex-col items-end gap-0.5">
+    <div className="flex flex-col items-start gap-0.5">
       <ValueDisplay
         key={`${item.poolAssetId}-1`}
         value={item.reserve1}

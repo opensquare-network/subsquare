@@ -191,10 +191,19 @@ function DataList(
 
 const ForwardRefDataList = forwardRef(DataList);
 
-export function MapDataList({ data, columnsDef = [], getRowKey, ...props }) {
+export function MapDataList({
+  data,
+  columnsDef = [],
+  getRowKey,
+  onRowClick,
+  ...props
+}) {
   const rows = (data || []).map((item, index) => {
     const row = columnsDef.map(({ render }) => render(item));
     row.key = getRowKey ? getRowKey(item) : index;
+    if (onRowClick) {
+      row.onClick = () => onRowClick(item);
+    }
     return row;
   });
 
