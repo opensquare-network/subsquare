@@ -153,12 +153,20 @@ export default function Signup() {
   const { username, email, password } = formData;
 
   useEffect(() => {
-    if (user?.emailVerified) {
-      showErrorToast("You have already verified email address.");
-      return setTimeout(() => {
-        // router.replace("/");
-      }, 1000);
+    if (!user?.emailVerified) {
+      return;
     }
+
+    showErrorToast("You have already verified email address.");
+
+    // Whatever an effect returns is its cleanup, so this has to hand back a function. It used
+    // to return the timer id, which React then called when the page unmounted — a number is
+    // not callable, and the crash surfaced as "t is not a function" in React's effect cleanup.
+    const timer = setTimeout(() => {
+      // router.replace("/");
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, [user, showErrorToast]);
 
   return (
