@@ -9,22 +9,16 @@ import { useUpdateEffect } from "react-use";
 import ToggleOption from "next-common/components/toggleOption";
 import Loading from "next-common/components/loading";
 import TreasurySpendStatusSelectField from "./treasurySpendStatusSelectField";
-import TreasurySpendAssetSelectField from "./treasurySpendAssetSelectField";
-import useTreasurySpendSymbols from "next-common/hooks/treasury/useTreasurySpendSymbols";
 
 export default function TreasurySpendFilter({ loading = false }) {
   const [committedFilter, setCommittedFilter] = useCommittedFilterState();
   const status = committedFilter?.status || "";
-  const symbol = committedFilter?.symbol || "";
   const validOnly = committedFilter?.valid_only === "true";
-  const { symbols, loading: symbolsLoading } = useTreasurySpendSymbols();
-  const showLoading = loading || symbolsLoading;
 
   const [stateOpen, setStateOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({
     status,
-    symbol,
     validOnly,
   });
 
@@ -33,22 +27,19 @@ export default function TreasurySpendFilter({ loading = false }) {
       return {
         ...val,
         status,
-        symbol,
         validOnly,
       };
     });
-  }, [status, symbol, validOnly]);
+  }, [status, validOnly]);
 
   const filterCount = Object.values({
     status,
-    symbol,
     validOnly,
   }).filter(Boolean).length;
 
   function handleApply() {
     const filters = {
       status: value.status,
-      symbol: value.symbol,
       valid_only: value.validOnly,
     };
     setCommittedFilter(filters);
@@ -56,14 +47,14 @@ export default function TreasurySpendFilter({ loading = false }) {
   }
 
   function handleReset() {
-    setValue({ status: "", symbol: "", validOnly: false });
-    setCommittedFilter({ status: "", symbol: "", valid_only: false });
+    setValue({ status: "", validOnly: false });
+    setCommittedFilter({ status: "", valid_only: false });
     setOpen(false);
   }
 
   return (
     <div className="flex items-center gap-x-2">
-      {showLoading && <Loading size={16} />}
+      {loading && <Loading size={16} />}
       <Popover.Root
         open={open}
         onOpenChange={(open) => {
@@ -101,23 +92,6 @@ export default function TreasurySpendFilter({ loading = false }) {
                         ...val,
                         validOnly: isOn,
                       }));
-                    }}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between py-1.5">
-                  <div>Asset</div>
-
-                  <TreasurySpendAssetSelectField
-                    value={value?.symbol}
-                    symbols={symbols}
-                    onChange={(symbol) => {
-                      setValue?.((val) => {
-                        return {
-                          ...val,
-                          symbol,
-                        };
-                      });
                     }}
                   />
                 </div>
