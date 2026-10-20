@@ -1,11 +1,14 @@
 import Pagination from "next-common/components/pagination/index.js";
 import ListTitleBar from "../../listTitleBar";
 import TreasurySpendFilter from "next-common/components/treasury/spends/treasurySpendFilter";
+import PolkadotTreasurySpendFilter from "next-common/components/treasury/spends/polkadotTreasurySpendFilter";
 import MaybeEmpty from "next-common/components/emptyList";
 import Loading from "next-common/components/loading";
 import businessCategory from "next-common/utils/consts/business/category";
 import { ListWrapper } from "../styled";
 import PostItem from "./postItem";
+import { useChain } from "next-common/context/chain";
+import { isPolkadotChain } from "next-common/utils/chain";
 
 export default function PostList({
   titleCount = null,
@@ -13,6 +16,7 @@ export default function PostList({
   loading = false,
   pagination,
 }) {
+  const chain = useChain();
   const showLoading = loading && !items?.length;
 
   return (
@@ -21,7 +25,13 @@ export default function PostList({
         title="List"
         link="/treasury/spends"
         titleCount={titleCount}
-        titleExtra={<TreasurySpendFilter loading={loading} />}
+        titleExtra={
+          isPolkadotChain(chain) ? (
+            <PolkadotTreasurySpendFilter loading={loading} />
+          ) : (
+            <TreasurySpendFilter loading={loading} />
+          )
+        }
       />
       {showLoading ? (
         <div className="flex justify-center py-6">
