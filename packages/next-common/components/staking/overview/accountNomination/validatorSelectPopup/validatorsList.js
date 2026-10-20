@@ -38,55 +38,64 @@ function ValidatorsListImpl({ nominees, setNominees }) {
     loading: isLoadingValidatorsWithIdentity,
   } = useValidatorsWithIdentity(validators);
   const filteredValidators = useFilteredValidators(validatorsWithIdentity);
-  const skipSelectedValidators = useMemo(() => {
-    if (!filteredValidators) {
-      return null;
-    }
-    return filteredValidators.filter(
-      (v) => !nominees || !nominees.includes(v.account),
-    );
-  }, [filteredValidators, nominees]);
-  const { searchedValidators, component: searchBox } = useSearchedValidators(
-    skipSelectedValidators,
-  );
+  const { searchedValidators, component: searchBox } =
+    useSearchedValidators(filteredValidators);
 
+  const selectedAccounts = useMemo(() => new Set(nominees || []), [nominees]);
   const canAdd = (nominees?.length || 0) < 16;
-  const columnsDef = useMemo(
-    () => [
-      colAccount,
-      colCommission,
+  // Keep selected validators in place and only grey them out,
+  // so the list (and its pagination) stays stable while adding.
+  const columnsDef = useMemo(() => {
+    const renderDimmedIfSelected = (render, item) => {
+      if (!selectedAccounts.has(item.account)) {
+        return render(item);
+      }
+      return <div className="opacity-50">{render(item)}</div>;
+    };
+
+    return [
+      {
+        ...colAccount,
+        render: (item) => renderDimmedIfSelected(colAccount.render, item),
+      },
+      {
+        ...colCommission,
+        render: (item) => renderDimmedIfSelected(colCommission.render, item),
+      },
       {
         name: "",
         style: { textAlign: "right", width: "60px", minWidth: "60px" },
-        render: (item) => (
-          <div
-            role="button"
-            className={cn(
-              "flex items-center gap-1 cursor-pointer text14Medium",
-              canAdd
-                ? "text-theme500 [&_svg_path]:stroke-theme500"
-                : "text-textTertiary [&_svg_path]:stroke-textTertiary pointer-events-none",
-            )}
-            onClick={() => {
-              if (!canAdd) {
-                return;
-              }
-              setNominees((prev) => {
-                if (prev.includes(item.account)) {
-                  return prev;
+        render: (item) => {
+          const disabled = !canAdd || selectedAccounts.has(item.account);
+          return (
+            <div
+              role="button"
+              className={cn(
+                "flex items-center gap-1 text14Medium",
+                disabled
+                  ? "cursor-default text-textTertiary [&_svg_path]:stroke-textTertiary pointer-events-none"
+                  : "cursor-pointer text-theme500 [&_svg_path]:stroke-theme500",
+              )}
+              onClick={() => {
+                if (disabled) {
+                  return;
                 }
-                return [...prev, item.account];
-              });
-            }}
-          >
-            <SystemPlus width={16} height={16} />
-            <span>Add</span>
-          </div>
-        ),
+                setNominees((prev) => {
+                  if (prev.includes(item.account)) {
+                    return prev;
+                  }
+                  return [...prev, item.account];
+                });
+              }}
+            >
+              <SystemPlus width={16} height={16} />
+              <span>Add</span>
+            </div>
+          );
+        },
       },
-    ],
-    [canAdd, setNominees],
-  );
+    ];
+  }, [canAdd, setNominees, selectedAccounts]);
 
   const { sortedColumn, sortDirection, columns } = useColumns(
     columnsDef,
