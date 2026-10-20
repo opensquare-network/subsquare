@@ -41,6 +41,7 @@ function MyStaking() {
     return (
       <ActiveEraStakersProvider>
         <AccountStaking />
+        <AccountNominationEmpty />
       </ActiveEraStakersProvider>
     );
   }
@@ -49,6 +50,7 @@ function MyStaking() {
     return (
       <ActiveEraStakersProvider>
         <AccountNomination />
+        <AccountStakingEmpty />
       </ActiveEraStakersProvider>
     );
   }
