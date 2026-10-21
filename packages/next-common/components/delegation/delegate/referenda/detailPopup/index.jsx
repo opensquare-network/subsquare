@@ -5,13 +5,15 @@ import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../avatar";
 import ReferendaDelegateeDetailPopupTabsContent from "./tabsContent";
 import DetailButtons from "../../common/detailButtons";
+import { announcementText } from "../../common/announcementText";
 
 export default function ReferendaDelegateeDetailPopup({
   delegate,
   setDetailOpen,
 }) {
   const { address, manifesto, shortBio } = delegate;
-  const shortDescription = shortBio || manifesto?.shortDescription;
+  const shortDescription =
+    announcementText(shortBio) || announcementText(manifesto?.shortDescription);
 
   return (
     <Popup

@@ -2,6 +2,7 @@ import nextApi from "next-common/services/nextApi";
 import { useEffect, useState, useMemo } from "react";
 import { useChain } from "next-common/context/chain";
 import useProfileAddress from "next-common/components/profile/useProfileAddress";
+import { announcementText } from "next-common/components/delegation/delegate/common/announcementText";
 
 function useApiPath(pallet) {
   const chain = useChain();
@@ -35,7 +36,10 @@ export default function useDelegationAnnouncement(pallet) {
       .then(({ result }) => {
         if (result) {
           const { shortDescription, longDescription } = result?.manifesto || {};
-          setData({ shortDescription, longDescription });
+          setData({
+            shortDescription: announcementText(shortDescription),
+            longDescription: announcementText(longDescription),
+          });
         }
       })
       .finally(() => {

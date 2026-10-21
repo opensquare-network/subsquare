@@ -14,6 +14,7 @@ import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import useSubDemocracyDelegating from "next-common/utils/hooks/referenda/useSubDemocracyDelegating";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import MineTag from "../common/mineTag";
+import { announcementText } from "../common/announcementText";
 
 const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
   import("./detailPopup"),
@@ -24,6 +25,7 @@ export default function DemocracyDelegateCard({
   showDelegateButton = true,
 }) {
   const { address, manifesto } = delegate;
+  const shortDescription = announcementText(manifesto?.shortDescription);
 
   const realAddress = useRealAddress();
   const { delegating } = useSubDemocracyDelegating(realAddress);
@@ -70,13 +72,13 @@ export default function DemocracyDelegateCard({
           className="block h-full"
           delayDuration={700}
           content={
-            manifesto?.shortDescription && (
-              <div className="max-w-xs">{manifesto?.shortDescription}</div>
+            shortDescription && (
+              <div className="max-w-xs">{shortDescription}</div>
             )
           }
         >
           <div className={cn("text-textTertiary text14Medium", "line-clamp-2")}>
-            {manifesto?.shortDescription || "-"}
+            {shortDescription || "-"}
           </div>
         </Tooltip>
 

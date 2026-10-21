@@ -13,6 +13,7 @@ import { DelegateAvatar } from "./avatar";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import MineTag from "../common/mineTag";
+import { announcementText } from "../common/announcementText";
 
 const ReferendaDelegateeDetailPopup = dynamicPopup(() =>
   import("./detailPopup"),
@@ -25,7 +26,8 @@ export default function ReferendaDelegateCard({
   const realAddress = useRealAddress();
   const { address, manifesto, shortBio } = delegate;
 
-  const shortDescription = shortBio || manifesto?.shortDescription;
+  const shortDescription =
+    announcementText(shortBio) || announcementText(manifesto?.shortDescription);
 
   const [detailOpen, setDetailOpen] = useState(false);
 

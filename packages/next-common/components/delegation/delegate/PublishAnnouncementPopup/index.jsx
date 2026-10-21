@@ -19,6 +19,7 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import PrimaryButton from "next-common/lib/button/primary";
 import { PopupButtonWrapper } from "next-common/components/popup/wrapper";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
+import { announcementText } from "../common/announcementText";
 
 function PopupContent({ onClose, myDelegation, proxyAddress }) {
   const dispatch = useDispatch();
@@ -38,12 +39,20 @@ function PopupContent({ onClose, myDelegation, proxyAddress }) {
     switch (myDelegation?.manifesto?.source) {
       case "nova":
       case "sima":
-        setShortDescription(myDelegation?.manifesto?.shortDescription || "");
-        setLongDescription(myDelegation?.manifesto?.longDescription || "");
+        setShortDescription(
+          announcementText(myDelegation?.manifesto?.shortDescription) || "",
+        );
+        setLongDescription(
+          announcementText(myDelegation?.manifesto?.longDescription) || "",
+        );
         break;
       case "parity":
-        setShortDescription(myDelegation?.manifesto?.manifesto || "");
-        setLongDescription(myDelegation?.manifesto?.manifesto || "");
+        setShortDescription(
+          announcementText(myDelegation?.manifesto?.manifesto) || "",
+        );
+        setLongDescription(
+          announcementText(myDelegation?.manifesto?.manifesto) || "",
+        );
         break;
     }
   }, [myDelegation]);
