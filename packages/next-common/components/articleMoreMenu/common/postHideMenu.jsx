@@ -12,16 +12,22 @@ const HidePopup = dynamicPopup(() =>
   import("next-common/components/deletePopup/hidePopup"),
 );
 
-export default function PostHideMenu({ setShow = noop }) {
+export default function PostHideMenu({
+  setShow = noop,
+  apiPath,
+  redirectPath = "/discussions",
+  itemName = "Post",
+}) {
   const [showHidePopup, setShowHidePopup] = useState(false);
   const post = usePost();
   const dispatch = useDispatch();
   const router = useRouter();
 
   const hidden = !!post.hide;
+  const hideApi = apiPath || `posts/${post._id}/hide`;
 
   const doHide = useCallback(async () => {
-    const { error } = await nextApi.patch(`posts/${post._id}/hide`, {
+    const { error } = await nextApi.patch(hideApi, {
       hide: !hidden,
     });
     if (error) {
@@ -32,11 +38,11 @@ export default function PostHideMenu({ setShow = noop }) {
     setShowHidePopup(false);
 
     if (!hidden) {
-      router.replace("/discussions");
+      router.replace(redirectPath);
     } else {
       router.replace(router.asPath);
     }
-  }, [dispatch, hidden, post._id, router]);
+  }, [dispatch, hidden, hideApi, redirectPath, router]);
 
   return (
     <div>
@@ -48,7 +54,12 @@ export default function PostHideMenu({ setShow = noop }) {
         }}
       />
       {showHidePopup && (
-        <HidePopup hidden={hidden} setShow={setShowHidePopup} doHide={doHide} />
+        <HidePopup
+          hidden={hidden}
+          setShow={setShowHidePopup}
+          doHide={doHide}
+          itemName={itemName}
+        />
       )}
     </div>
   );

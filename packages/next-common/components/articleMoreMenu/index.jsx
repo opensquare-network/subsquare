@@ -12,12 +12,18 @@ import {
   EditMenuItem,
   ReportMenu,
   LinkOrUnlinkMenu,
+  PostHideMenu,
 } from "next-common/components/articleMoreMenu/common";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
+import { usePost } from "next-common/context/post";
 
 export default function ArticleMoreMenu(props) {
   const postType = useDetailType();
   if (postType === detailPageCategory.GOV2_REFERENDUM) {
     return <ReferendaArticleMoreMenu {...props} />;
+  }
+  if (postType === detailPageCategory.DEMOCRACY_REFERENDUM) {
+    return <CommonArticleMoreMenu {...props} postType={postType} />;
   }
   if (postType === detailPageCategory.POST) {
     return <DiscussionArticleMoreMenu {...props} />;
@@ -31,8 +37,10 @@ export default function ArticleMoreMenu(props) {
   return <CommonArticleMoreMenu {...props} />;
 }
 
-function CommonArticleMoreMenu({ isAuthor, editable, setIsEdit }) {
+function CommonArticleMoreMenu({ isAuthor, editable, setIsEdit, postType }) {
   const [show, setShow] = useState(false);
+  const post = usePost();
+  const isAdmin = useIsAdmin();
   const ref = useRef();
   useClickAway(ref, () => setShow(false));
 
@@ -52,6 +60,14 @@ function CommonArticleMoreMenu({ isAuthor, editable, setIsEdit }) {
           />
         )}
         {editable && isAuthor && <LinkOrUnlinkMenu setShow={setShow} />}
+        {isAdmin && postType === detailPageCategory.DEMOCRACY_REFERENDUM && (
+          <PostHideMenu
+            setShow={setShow}
+            apiPath={`democracy/referendums/${post?._id}/hide`}
+            redirectPath="/democracy/referenda"
+            itemName="Referendum"
+          />
+        )}
         <ReportMenu setShow={setShow} />
       </OptionWrapper>
     </div>

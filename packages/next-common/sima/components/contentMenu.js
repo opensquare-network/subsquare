@@ -108,7 +108,24 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
   const post = usePost();
   const type = useDetailType();
   const isSimaDiscussion = type === detailPageCategory.POST;
+  const isGov2Referendum = type === detailPageCategory.GOV2_REFERENDUM;
+  const isDemocracyReferendum =
+    type === detailPageCategory.DEMOCRACY_REFERENDUM;
+  const isReferendum = isGov2Referendum || isDemocracyReferendum;
   const isAdmin = useIsAdmin();
+
+  const canHide = isReferendum ? isAdmin : isAuthor || isAdmin;
+  let hideApi = null;
+  if (isGov2Referendum) {
+    hideApi = `gov2/referendums/${post?._id}/hide`;
+  } else if (isDemocracyReferendum) {
+    hideApi = `democracy/referendums/${post?._id}/hide`;
+  }
+  const redirectPath = isGov2Referendum
+    ? "/referenda"
+    : isDemocracyReferendum
+    ? "/democracy/referenda"
+    : "/discussions";
 
   useClickAway(ref, () => setShow(false));
 
@@ -159,7 +176,14 @@ export function PostContextMenu({ isAuthor, canEdit, setIsAppend, setIsEdit }) {
               )}
             </>
           )}
-          {(isAuthor || isAdmin) && <PostHideMenu setShow={setShow} />}
+          {canHide && (
+            <PostHideMenu
+              setShow={setShow}
+              apiPath={hideApi}
+              redirectPath={redirectPath}
+              itemName={isReferendum ? "Referendum" : "Post"}
+            />
+          )}
         </OptionWrapper>
       </Wrapper>
       {showLinkPopup && <PostLinkPopup setShow={setShowLinkPopup} />}

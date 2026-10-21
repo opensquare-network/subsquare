@@ -13,7 +13,10 @@ import {
   CancelReferendumMenu,
   KillReferendumMenu,
   AppendReferendaMenu,
+  PostHideMenu,
 } from "./common";
+import useIsAdmin from "next-common/hooks/useIsAdmin";
+import { usePost } from "next-common/context/post";
 
 export default function ReferendaArticleMoreMenu({
   isAuthor,
@@ -22,6 +25,8 @@ export default function ReferendaArticleMoreMenu({
 }) {
   const ref = useRef();
   const [show, setShow] = useState(false);
+  const post = usePost();
+  const isAdmin = useIsAdmin();
   const { appendants } = useReferendaAppendantsContext();
   const { newProposalQuickStart: { cancelReferendum, killReferendum } = {} } =
     useChainSettings();
@@ -47,6 +52,14 @@ export default function ReferendaArticleMoreMenu({
           {<AppendReferendaMenu setShow={setShow} />}
           {editable && isAuthor && !appendants?.length && (
             <LinkOrUnlinkMenu setShow={setShow} />
+          )}
+          {isAdmin && (
+            <PostHideMenu
+              setShow={setShow}
+              apiPath={`gov2/referendums/${post?._id}/hide`}
+              redirectPath="/referenda"
+              itemName="Referendum"
+            />
           )}
           <ReportMenu setShow={setShow} />
           {cancelReferendum && <CancelReferendumMenu setShow={setShow} />}

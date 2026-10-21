@@ -10,6 +10,7 @@ export default function HidePopup({
   hidden = false,
   setShow = noop,
   doHide = noop,
+  itemName = "Post",
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
@@ -29,13 +30,13 @@ export default function HidePopup({
 
   return (
     <Popup
-      title={hidden ? "Unhide Post" : "Hide Post"}
+      title={`${hidden ? "Unhide" : "Hide"} ${itemName}`}
       onClose={() => setShow(false)}
     >
       <div className="text-[14px] text-textPrimary">
         {hidden
-          ? "This post will be visible to everyone again."
-          : "This post will be hidden from the list."}
+          ? `This ${itemName.toLowerCase()} will be visible to everyone again.`
+          : `This ${itemName.toLowerCase()} will be hidden from the list.`}
       </div>
       <PopupButtonWrapper className="gap-[8px]">
         <SecondaryButton onClick={() => setShow(false)}>Cancel</SecondaryButton>
