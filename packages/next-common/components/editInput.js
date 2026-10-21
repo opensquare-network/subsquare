@@ -4,6 +4,8 @@ import ErrorText from "next-common/components/ErrorText";
 import SecondaryButton from "next-common/lib/button/secondary";
 import Editor from "./editor";
 import PrimaryButton from "next-common/lib/button/primary";
+import Tooltip from "next-common/components/tooltip";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 const Wrapper = styled.div`
   margin-top: 8px;
@@ -31,6 +33,7 @@ export default function EditInput({
   const [content, setContent] = useState(editContent);
   const [contentType, setContentType] = useState(editContentType);
   const [errors, setErrors] = useState();
+  const isMuted = useIsMuted();
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
@@ -71,13 +74,15 @@ export default function EditInput({
             Cancel
           </SecondaryButton>
         )}
-        <PrimaryButton
-          loading={loading}
-          disabled={isEmpty}
-          onClick={() => onUpdate()}
-        >
-          {updateButtonText}
-        </PrimaryButton>
+        <Tooltip content={isMuted ? MUTED_TOOLTIP_TEXT : ""}>
+          <PrimaryButton
+            loading={loading}
+            disabled={isEmpty || isMuted}
+            onClick={() => onUpdate()}
+          >
+            {updateButtonText}
+          </PrimaryButton>
+        </Tooltip>
       </ButtonWrapper>
     </Wrapper>
   );

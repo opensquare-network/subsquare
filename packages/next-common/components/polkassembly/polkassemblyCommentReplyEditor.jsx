@@ -11,6 +11,7 @@ import { useChain } from "next-common/context/chain";
 import nextApi from "next-common/services/nextApi";
 import { usePost } from "next-common/context/post";
 import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 import { useDispatch } from "react-redux";
 import { newErrorToast } from "next-common/store/reducers/toastSlice";
 
@@ -57,6 +58,7 @@ function PolkassemblyCommentReplyEditor(
   // const [errors, setErrors] = useState();
   const [loading, setLoading] = useState(false);
   const { ensureLogin } = useEnsureLogin();
+  const isMuted = useIsMuted();
 
   const isEmpty = content === "" || content === "<p><br></p>";
 
@@ -129,10 +131,18 @@ function PolkassemblyCommentReplyEditor(
             Cancel
           </SecondaryButton>
         )}
-        <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
+        <Tooltip
+          content={
+            isMuted
+              ? MUTED_TOOLTIP_TEXT
+              : isEmpty
+              ? "Cannot submit empty content"
+              : ""
+          }
+        >
           <PrimaryButton
             loading={loading}
-            disabled={isEmpty}
+            disabled={isEmpty || isMuted}
             onClick={createReply}
           >
             Reply
