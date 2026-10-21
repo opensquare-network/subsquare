@@ -5,5 +5,5 @@ export default function Post() {
 }
 
 export const getServerSideProps = getRedirectServerSideProps(
-  (id) => `/polkassembly/posts/${id}`,
+  (id) => `/polkassembly/posts/${encodeURIComponent(id)}`,
 );

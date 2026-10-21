@@ -22,7 +22,7 @@ export const getServerSideProps = withCommonProps(async (context) => {
     return {
       redirect: {
         permanent: true,
-        destination: `/user/${id}/${activityType}/membership`,
+        destination: `/user/${encodeURIComponent(id)}/${encodeURIComponent(activityType)}/membership`,
       },
     };
   }
