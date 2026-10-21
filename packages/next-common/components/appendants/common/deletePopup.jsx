@@ -19,7 +19,7 @@ export default function DeleteAppendantPopup({
   update,
 }) {
   const dispatch = useDispatch();
-  const appendantId = appendantData?.id;
+  const appendantId = appendantData?._id;
 
   const deletePost = useCallback(async () => {
     try {

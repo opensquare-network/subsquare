@@ -15,6 +15,7 @@ import { noop } from "lodash-es";
 import { useReferendaIsVoting } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import Tooltip from "next-common/components/tooltip";
 import { cn } from "next-common/utils";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 export function LinkMenuItem({ onClick }) {
   return (
@@ -39,13 +40,29 @@ export function UnlinkMenuItem({ onClick }) {
 }
 
 export function EditMenuItem({ onClick }) {
-  return (
-    <OptionItem onClick={onClick}>
+  const isMuted = useIsMuted();
+  const item = (
+    <OptionItem
+      onClick={isMuted ? undefined : onClick}
+      className={cn(
+        isMuted && "opacity-50 cursor-not-allowed hover:bg-transparent",
+      )}
+    >
       <div className="mr-2">
         <SystemEdit />
       </div>
       <span>Edit</span>
     </OptionItem>
+  );
+
+  if (!isMuted) {
+    return item;
+  }
+
+  return (
+    <Tooltip content={MUTED_TOOLTIP_TEXT} className="block">
+      {item}
+    </Tooltip>
   );
 }
 
@@ -147,13 +164,29 @@ export function KillReferendumMenuItem({ onClick }) {
 }
 
 export function AppendMenuItem({ onClick }) {
-  return (
-    <OptionItem onClick={onClick}>
+  const isMuted = useIsMuted();
+  const item = (
+    <OptionItem
+      onClick={isMuted ? undefined : onClick}
+      className={cn(
+        isMuted && "opacity-50 cursor-not-allowed hover:bg-transparent",
+      )}
+    >
       <div className="mr-2">
         <InfoPlus />
       </div>
       <span>Append</span>
     </OptionItem>
+  );
+
+  if (!isMuted) {
+    return item;
+  }
+
+  return (
+    <Tooltip content={MUTED_TOOLTIP_TEXT} className="block">
+      {item}
+    </Tooltip>
   );
 }
 

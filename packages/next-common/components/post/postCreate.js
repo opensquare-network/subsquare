@@ -21,6 +21,7 @@ import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import { WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 const Wrapper = styled(NeutralPanel)`
   color: var(--textPrimary);
@@ -81,6 +82,7 @@ export default function PostCreate() {
   const { ensureLogin } = useEnsureLogin();
   const [editorUploading] = useEditorUploading();
   const isWatchOnly = useIsWatchOnly();
+  const isMuted = useIsMuted();
 
   const createPost = async () => {
     setCreating(true);
@@ -198,12 +200,13 @@ export default function PostCreate() {
 
       <ButtonWrapper>
         <WatchOnlyTooltip
+          content={isMuted ? MUTED_TOOLTIP_TEXT : ""}
           watchOnlyContent={WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT}
         >
           <PrimaryButton
             loading={creating}
             onClick={createPost}
-            disabled={isDisableCreate || isWatchOnly}
+            disabled={isDisableCreate || isWatchOnly || isMuted}
           >
             Create
           </PrimaryButton>
