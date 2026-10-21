@@ -5,5 +5,5 @@ export default function Post() {
 }
 
 export const getServerSideProps = getRedirectServerSideProps(
-  (id) => `/posts/${encodeURIComponent(id)}`,
+  (id) => `/posts/${id}`,
 );

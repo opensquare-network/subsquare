@@ -5,5 +5,5 @@ export default function Track() {
 }
 
 export const getServerSideProps = getRedirectServerSideProps(
-  (id) => `/referenda/tracks/${encodeURIComponent(id)}`,
+  (id) => `/referenda/tracks/${id}`,
 );
