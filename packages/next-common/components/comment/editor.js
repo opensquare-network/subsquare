@@ -20,6 +20,7 @@ import { getRealField } from "next-common/sima/actions/common";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import { WATCH_ONLY_COMMENT_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 const Wrapper = styled.div`
   margin-top: 48px;
@@ -94,6 +95,7 @@ function CommentEditor(
 
   const shouldUseSima = useShouldUseSima(replyToComment);
   const isWatchOnly = useIsWatchOnly();
+  const isMuted = useIsMuted();
 
   const createComment = async (realAddress) => {
     if (!isMounted()) {
@@ -127,6 +129,7 @@ function CommentEditor(
 
       if (result.error) {
         setErrors(result.error);
+        dispatch(newErrorToast(result.error.message));
       } else {
         setContent("");
         if (isReply) {
@@ -153,6 +156,11 @@ function CommentEditor(
   };
 
   const isEmpty = content === "" || content === "<p><br></p>";
+  const submitTooltipContent = isMuted
+    ? MUTED_TOOLTIP_TEXT
+    : isEmpty
+    ? "Cannot submit empty content"
+    : "";
 
   const loadSuggestions = (text) => {
     return (users || [])
@@ -195,14 +203,14 @@ function CommentEditor(
           </SecondaryButton>
         )}
         <WatchOnlyTooltip
-          content={isEmpty ? "Cannot submit empty content" : ""}
+          content={submitTooltipContent}
           watchOnlyContent={WATCH_ONLY_COMMENT_TOOLTIP_TEXT}
         >
           <MaybeSplitCommentButton
             isSima={shouldUseSima}
             isReply={isReply}
             loading={loading}
-            disabled={isEmpty || isWatchOnly}
+            disabled={isEmpty || isWatchOnly || isMuted}
             onClickComment={() => createComment()}
             onClickCommentAsProxy={(realAddress) => {
               createComment(realAddress);

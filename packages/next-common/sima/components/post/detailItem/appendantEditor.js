@@ -13,6 +13,8 @@ import { useAddDiscussionAppendant } from "next-common/sima/actions/appendant";
 import { getRealField } from "next-common/sima/actions/common";
 import usePostProxyAuthor from "next-common/hooks/usePostProxyAuthor";
 import { useIsPostAuthor } from "next-common/context/post/useIsPostAuthor";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
+import Tooltip from "next-common/components/tooltip";
 
 function MaybeProxyAppendButton({ submitAppendant, ...props }) {
   const isAuthor = useIsPostAuthor();
@@ -42,6 +44,7 @@ export default function AppendantEditor({ setIsAppend }) {
   const [errors, setErrors] = useState();
   const { reloadPost } = useArticleActions();
   const addAppendant = useAddDiscussionAppendant();
+  const isMuted = useIsMuted();
 
   const isEmpty = !content.trim();
 
@@ -109,14 +112,16 @@ export default function AppendantEditor({ setIsAppend }) {
             Cancel
           </SecondaryButton>
         )}
-        <MaybeProxyAppendButton
-          loading={isAppending}
-          submitAppendant={submitAppendant}
-          disabled={isEmpty}
-          title={isEmpty ? "cannot submit empty content" : ""}
-        >
-          Append
-        </MaybeProxyAppendButton>
+        <Tooltip content={isMuted ? MUTED_TOOLTIP_TEXT : ""}>
+          <MaybeProxyAppendButton
+            loading={isAppending}
+            submitAppendant={submitAppendant}
+            disabled={isEmpty || isMuted}
+            title={isEmpty ? "cannot submit empty content" : ""}
+          >
+            Append
+          </MaybeProxyAppendButton>
+        </Tooltip>
       </div>
     </>
   );
