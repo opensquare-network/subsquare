@@ -14,7 +14,11 @@ import { useMyPoolRewardContext } from "next-common/context/staking/poolReward";
 function ClaimPoolRewardPopupContent() {
   const api = useContextApi();
   const { decimals, symbol } = useChainSettings();
-  const { claimable, loading: isClaimableLoading } = useMyPoolRewardContext();
+  const {
+    claimable,
+    loading: isClaimableLoading,
+    refresh,
+  } = useMyPoolRewardContext();
 
   const getTxFunc = useCallback(async () => {
     if (!api) {
@@ -40,6 +44,7 @@ function ClaimPoolRewardPopupContent() {
         <TxSubmissionButton
           disabled={isClaimableLoading}
           getTxFunc={getTxFunc}
+          onInBlock={refresh}
         />
       </div>
     </div>
