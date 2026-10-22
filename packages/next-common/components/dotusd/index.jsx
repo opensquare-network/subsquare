@@ -4,8 +4,8 @@ import DotUsdAccount from "./account";
 import DotUsdInstance from "./instance";
 import DotUsdExternalAssets from "./externalAssets";
 import DotUsdPool from "./pool";
-import DotUsdHolders from "./holders";
-import { DotUsdHolderStats, DotUsdIssuanceStats } from "./dailyStats";
+import DotUsdStats from "./dailyStats";
+import DotUsdHoldersTab from "./holdersTab";
 import DotUsdMintRecords from "./mintRecords";
 import DotUsdRedeemRecords from "./redeemRecords";
 
@@ -38,21 +38,10 @@ function DotUsdOverview() {
       </Section>
 
       <Section
-        title="Holder trend"
-        hint="Accounts holding a non-zero dotUSD balance"
+        title="Trend"
+        hint="dotUSD total issuance and holders since launch"
       >
-        <DotUsdHolderStats />
-      </Section>
-
-      <Section title="Total issuance" hint="dotUSD in circulation">
-        <DotUsdIssuanceStats />
-      </Section>
-
-      <Section
-        title="Holders"
-        hint="dotUSD holders ordered by balance, as indexed by statescan"
-      >
-        <DotUsdHolders />
+        <DotUsdStats />
       </Section>
     </div>
   );
@@ -60,6 +49,10 @@ function DotUsdOverview() {
 
 function DotUsdTabContent() {
   const { activeTab } = useDotUsdTabs();
+
+  if (activeTab === "holders") {
+    return <DotUsdHoldersTab />;
+  }
 
   if (activeTab === "mint") {
     return <DotUsdMintRecords />;

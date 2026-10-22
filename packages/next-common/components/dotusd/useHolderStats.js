@@ -1,7 +1,6 @@
 import useDailyStats from "./useDailyStats";
 
-export const holderStatsDays = 7;
-
+// No days argument: the api returns the whole history since the launch.
 export default function useHolderStats() {
-  return useDailyStats("dotusd/holder-stats", holderStatsDays);
+  return useDailyStats("dotusd/holder-stats");
 }

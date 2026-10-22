@@ -1,4 +1,3 @@
-import { ArrowExternalLink } from "@osn/icons/subsquare";
 import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import { toPrecision } from "next-common/utils";
@@ -10,7 +9,7 @@ import ValueDisplay from "next-common/components/valueDisplay";
 import Tooltip from "next-common/components/tooltip";
 import { useDotUsdContext } from "./context";
 import usePsmStats from "./usePsmStats";
-import { useDotUsdTabs } from "./tabs";
+import RecordsLink from "./recordsLink";
 
 function EmptyValue() {
   return <span className="text-textTertiary">—</span>;
@@ -54,24 +53,6 @@ function SignedAmountValue({ value, symbol, decimals }) {
         decimals={decimals}
       />
     </div>
-  );
-}
-
-// Switches to the records list the flow number is summed from.
-function RecordsLink({ tab, tooltip }) {
-  const { setActiveTab } = useDotUsdTabs();
-
-  return (
-    <Tooltip className="inline-flex" content={tooltip}>
-      <button
-        type="button"
-        aria-label={tooltip}
-        onClick={() => setActiveTab(tab)}
-        className="inline-flex items-center text-textTertiary hover:text-textSecondary"
-      >
-        <ArrowExternalLink className="w-3.5 h-3.5" />
-      </button>
-    </Tooltip>
   );
 }
 
