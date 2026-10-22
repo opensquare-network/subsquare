@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 export const DOT_USD_TABS = [
   { value: "overview", label: "Overview" },
+  { value: "holders", label: "Holders" },
   { value: "mint", label: "Mint records" },
   { value: "redeem", label: "Redeem records" },
 ];
