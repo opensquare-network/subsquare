@@ -124,10 +124,13 @@ function ModifyNomineesPopupContent() {
   );
 }
 
-export default function ModifyNomineesPopup({ onClose }) {
+export default function ModifyNomineesPopup({ onClose, startNominating }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Modify Nominees" onClose={onClose}>
+      <Popup
+        title={startNominating ? "Start Nominating" : "Modify Nominees"}
+        onClose={onClose}
+      >
         <ModifyNomineesPopupContent />
       </Popup>
     </SignerPopupWrapper>
