@@ -21,7 +21,8 @@ function buildChartData(points, color, valueOf) {
         borderColor: color,
         backgroundColor: color,
         borderWidth: 2,
-        pointRadius: 2,
+        // A long series would otherwise be covered by its own points.
+        pointRadius: points.length > 31 ? 0 : 2,
         pointHoverRadius: 4,
         pointBackgroundColor: color,
         tension: 0.2,
@@ -44,7 +45,7 @@ function buildChartOptions(
       x: {
         border: { display: false },
         grid: { display: false },
-        ticks: { color: textTertiary, maxRotation: 0, autoSkip: false },
+        ticks: { color: textTertiary, maxRotation: 0, maxTicksLimit: 7 },
       },
       y: {
         border: { display: false },

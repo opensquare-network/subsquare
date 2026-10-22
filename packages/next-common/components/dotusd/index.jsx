@@ -6,14 +6,10 @@ import DotUsdExternalAssets from "./externalAssets";
 import DotUsdPool from "./pool";
 import DotUsdHolders from "./holders";
 import { DotUsdHolderStats, DotUsdIssuanceStats } from "./dailyStats";
-import useDailyStats from "./useDailyStats";
 import DotUsdMintRecords from "./mintRecords";
 import DotUsdRedeemRecords from "./redeemRecords";
 
 function DotUsdOverview() {
-  // Both charts come from the same daily snapshots, so they share one request.
-  const dailyStats = useDailyStats();
-
   return (
     <div className="space-y-6">
       <Section
@@ -45,11 +41,11 @@ function DotUsdOverview() {
         title="Holder trend"
         hint="Accounts holding a non-zero dotUSD balance"
       >
-        <DotUsdHolderStats {...dailyStats} />
+        <DotUsdHolderStats />
       </Section>
 
       <Section title="Total issuance" hint="dotUSD in circulation">
-        <DotUsdIssuanceStats {...dailyStats} />
+        <DotUsdIssuanceStats />
       </Section>
 
       <Section

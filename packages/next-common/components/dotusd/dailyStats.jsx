@@ -2,12 +2,15 @@ import { toPrecision, toPrecisionNumber } from "next-common/utils";
 import { abbreviateBigNumber } from "next-common/utils/viewfuncs";
 import ValueDisplay from "next-common/components/valueDisplay";
 import DailyStatChart from "./dailyStatChart";
-import { dailyStatsDays } from "./useDailyStats";
+import useHolderStats, { holderStatsDays } from "./useHolderStats";
+import useIssuanceStats from "./useIssuanceStats";
 
 // dotUSD is an Asset Hub asset with six decimals.
 const DOT_USD_DECIMALS = 6;
 
-export function DotUsdHolderStats({ items, isLoading }) {
+export function DotUsdHolderStats() {
+  const { items, isLoading } = useHolderStats();
+
   return (
     <DailyStatChart
       points={items}
@@ -18,14 +21,16 @@ export function DotUsdHolderStats({ items, isLoading }) {
       formatTick={(value) => value}
       ticksPrecision={0}
       formatTooltip={(value) => `${value} accounts`}
-      subtitle={`Accounts holding the asset · last ${dailyStatsDays} days`}
-      ariaLabel={`dotUSD holders of the last ${dailyStatsDays} days`}
+      subtitle={`Accounts holding the asset · last ${holderStatsDays} days`}
+      ariaLabel={`dotUSD holders of the last ${holderStatsDays} days`}
       emptyText="No holder data available."
     />
   );
 }
 
-export function DotUsdIssuanceStats({ items, isLoading }) {
+export function DotUsdIssuanceStats() {
+  const { items, isLoading } = useIssuanceStats();
+
   return (
     <DailyStatChart
       points={items}
@@ -42,8 +47,8 @@ export function DotUsdIssuanceStats({ items, isLoading }) {
       )}
       formatTick={(value) => abbreviateBigNumber(value, 2)}
       formatTooltip={(value) => `${abbreviateBigNumber(value, 2)} dotUSD`}
-      subtitle={`Total issued dotUSD · last ${dailyStatsDays} days`}
-      ariaLabel={`dotUSD total issuance of the last ${dailyStatsDays} days`}
+      subtitle="Total issued dotUSD · since launch"
+      ariaLabel="dotUSD total issuance since launch"
       emptyText="No issuance data available."
     />
   );

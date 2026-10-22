@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 
-export const dailyStatsDays = 7;
-
 /**
- * The daily dotUSD snapshots served by the backend, oldest first. Each one holds the holder
- * count and the total issuance read from the Asset Hub state once a day, so the last one
- * reflects the current state of the asset.
+ * The daily snapshots of one dotUSD metric served by the backend, oldest first. `days` is
+ * forwarded to the api when set, and the api decides how much history it returns otherwise.
  */
-export default function useDailyStats(days = dailyStatsDays) {
+export default function useDailyStats(path, days) {
   const [state, setState] = useState({ items: [], isLoading: true });
 
   useEffect(() => {
@@ -16,15 +13,17 @@ export default function useDailyStats(days = dailyStatsDays) {
     // Keep the previous points on screen while the next response loads.
     setState((previous) => ({ ...previous, isLoading: true }));
 
+    const params = days === undefined ? {} : { days };
+
     nextApi
-      .fetch("dotusd/daily-stats", { days })
+      .fetch(path, params)
       .then(({ result, error }) => {
         if (!isMounted) {
           return;
         }
 
         if (error) {
-          console.error("Failed to fetch dotUSD daily stats", error);
+          console.error(`Failed to fetch ${path}`, error);
           setState({ items: [], isLoading: false });
           return;
         }
@@ -35,7 +34,7 @@ export default function useDailyStats(days = dailyStatsDays) {
         });
       })
       .catch((error) => {
-        console.error("Failed to fetch dotUSD daily stats", error);
+        console.error(`Failed to fetch ${path}`, error);
 
         if (isMounted) {
           setState({ items: [], isLoading: false });
@@ -45,7 +44,7 @@ export default function useDailyStats(days = dailyStatsDays) {
     return () => {
       isMounted = false;
     };
-  }, [days]);
+  }, [path, days]);
 
   return state;
 }
