@@ -1,5 +1,4 @@
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useContextApi } from "next-common/context/api";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Signer from "next-common/components/popup/fields/signerField";
@@ -169,10 +168,8 @@ function StartNominatingPopupContent() {
 
 export default function StartNominatingPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Start Nominating" onClose={onClose}>
-        <StartNominatingPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Start Nominating" onClose={onClose}>
+      <StartNominatingPopupContent />
+    </PopupWithSigner>
   );
 }

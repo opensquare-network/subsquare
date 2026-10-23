@@ -1,5 +1,4 @@
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useContextApi } from "next-common/context/api";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useCallback, useEffect, useState } from "react";
@@ -126,13 +125,11 @@ function ModifyNomineesPopupContent() {
 
 export default function ModifyNomineesPopup({ onClose, startNominating }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup
-        title={startNominating ? "Start Nominating" : "Modify Nominees"}
-        onClose={onClose}
-      >
-        <ModifyNomineesPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner
+      title={startNominating ? "Start Nominating" : "Modify Nominees"}
+      onClose={onClose}
+    >
+      <ModifyNomineesPopupContent />
+    </PopupWithSigner>
   );
 }

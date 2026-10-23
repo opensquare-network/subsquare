@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useCallback, useState } from "react";
@@ -85,10 +84,8 @@ function BondExtraPopupContent() {
 
 export default function BondExtraPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Bond Extra" onClose={onClose}>
-        <BondExtraPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Bond Extra" onClose={onClose}>
+      <BondExtraPopupContent />
+    </PopupWithSigner>
   );
 }
