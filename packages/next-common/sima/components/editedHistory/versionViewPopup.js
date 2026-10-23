@@ -134,9 +134,60 @@ function VersionedContent({ item, previousItem }) {
   );
 }
 
-export function CommentVersionView({ item, version, previousItem }) {
+function VersionedTitle({ title, previousTitle }) {
+  const diffParts = useMemo(
+    () => (previousTitle ? diffWords(previousTitle, title || "") : []),
+    [previousTitle, title],
+  );
+  const hasDiff = diffParts.some((part) => part.added || part.removed);
+
+  if (!previousTitle || !hasDiff) {
+    return (
+      <div className="text16Bold text-textPrimary break-words">
+        {title || ""}
+      </div>
+    );
+  }
+
+  return (
+    <div className="text16Bold text-textPrimary break-words">
+      {diffParts.map((part, index) => {
+        if (part.added) {
+          return (
+            <ins
+              key={index}
+              className="bg-green100 text-textPrimary rounded-sm px-0.5"
+            >
+              {part.value}
+            </ins>
+          );
+        }
+        if (part.removed) {
+          return (
+            <del
+              key={index}
+              className="bg-red100 text-textTertiary line-through rounded-sm px-0.5"
+            >
+              {part.value}
+            </del>
+          );
+        }
+        return <span key={index}>{part.value}</span>;
+      })}
+    </div>
+  );
+}
+
+export function VersionView({
+  item,
+  version,
+  previousItem,
+  showTitle = false,
+  firstVersionTimeLabel = "Created at",
+}) {
   const time = dayjs(item.timestamp).format("YYYY-MM-DD HH:mm:ss");
-  const timeLabel = version === 1 ? "Created at" : "Edited at";
+  const timeLabel = version === 1 ? firstVersionTimeLabel : "Edited at";
+  const hasTitle = showTitle && (item?.title || previousItem?.title);
 
   return (
     <div>
@@ -144,15 +195,25 @@ export function CommentVersionView({ item, version, previousItem }) {
         <span className="text12Medium text-textTertiary">
           {timeLabel} {time}
         </span>
-        <ExternalLink
-          href={getStorageLink(item.cid)}
-          externalIcon={false}
-          title={item.cid}
-          className="text-textTertiary hover:text-textSecondary"
-        >
-          <LinkIpfs className="w-4 h-4" />
-        </ExternalLink>
+        {item.cid && (
+          <ExternalLink
+            href={getStorageLink(item.cid)}
+            externalIcon={false}
+            title={item.cid}
+            className="text-textTertiary hover:text-textSecondary"
+          >
+            <LinkIpfs className="w-4 h-4" />
+          </ExternalLink>
+        )}
       </div>
+      {hasTitle && (
+        <div className="mb-3">
+          <VersionedTitle
+            title={item.title}
+            previousTitle={previousItem?.title}
+          />
+        </div>
+      )}
       <div>
         <VersionedContent item={item} previousItem={previousItem} />
       </div>
@@ -160,22 +221,27 @@ export function CommentVersionView({ item, version, previousItem }) {
   );
 }
 
-export default function CommentVersionViewPopup({
+export default function VersionViewPopup({
   item,
   version,
   previousItem,
+  popupTitle = "Edit History",
+  showTitle = false,
+  firstVersionTimeLabel = "Created at",
   setShow = noop,
 }) {
   return (
     <Popup
-      title="Comment Version"
+      title={popupTitle}
       onClose={() => setShow(false)}
       className="w-200 max-w-full"
     >
-      <CommentVersionView
+      <VersionView
         item={item}
         version={version}
         previousItem={previousItem}
+        showTitle={showTitle}
+        firstVersionTimeLabel={firstVersionTimeLabel}
       />
     </Popup>
   );
