@@ -9,10 +9,10 @@ import EditAvatarIconButton from "next-common/components/editAvatarIconButton";
 import { useAvatarPermissionsContext } from "next-common/components/profile/header/context/avatarPermissionsContext";
 import SecondaryButton from "next-common/lib/button/secondary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import getStorageLink from "next-common/utils/env/storageLink";
 import { useProfileUserInfoContext } from "next-common/components/profile/header/context/profileUserInfoContext";
+import useBannerUrl from "next-common/hooks/profile/banner/useBannerUrl";
 import { STATICS_CDN_URL } from "next-common/utils/consts/statics";
 import useIsAdmin from "next-common/hooks/useIsAdmin";
 import nextApi from "next-common/services/nextApi";
@@ -47,15 +47,7 @@ export function useProfileBannerUrl() {
   const { user } = useProfileUserInfoContext();
   const defaultBannerUrl = useProfileBannerUrlWithDefault();
 
-  const bannerUrl = useMemo(() => {
-    if (!user?.bannerCid) {
-      return defaultBannerUrl;
-    }
-
-    return getStorageLink(user.bannerCid);
-  }, [defaultBannerUrl, user]);
-
-  return bannerUrl;
+  return useBannerUrl(user?.bannerCid, defaultBannerUrl);
 }
 
 export default function ProfileHeaderWithBanner() {
