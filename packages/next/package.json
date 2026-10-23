@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
-    "@next/env": "16.3.8",
+    "@next/env": "16.4.2",
     "@osn/icons": "^1.235.10",
     "@svgr/webpack": "^7.0.0",
     "bignumber.js": "^9.0.2",
@@ -22,11 +22,11 @@
     "http-proxy": "^1.18.1",
     "localforage": "^1.10.0",
     "lodash-es": "^4.18.1",
-    "next": "16.3.8",
+    "next": "16.4.2",
     "next-common": "workspace:*",
     "nprogress": "^0.2.0",
     "pluralize": "^8.0.0",
-    "posthog-js": "^1.324.1",
+    "posthog-js": "^1.438.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.3.1",
