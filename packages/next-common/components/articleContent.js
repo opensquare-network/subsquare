@@ -13,6 +13,7 @@ import ContentSummary from "./contentSummary";
 import PostDataSource from "./postDataSource";
 import PostContentTranslations from "./postContentTranslations";
 import useShowTranslations from "next-common/hooks/useShowTranslations";
+import PostEditedMarker from "next-common/sima/components/postEditedMarker";
 
 const Wrapper = styled.div`
   :hover {
@@ -44,9 +45,7 @@ export default function ArticleContent({
     <>
       <BannerImage bannerCid={post.bannerCid} />
       <PostContent post={post} isFold={isFold} />
-      {isPostEdited(post) && (
-        <div className="mt-4 text12Medium text-textTertiary">Edited</div>
-      )}
+      {isPostEdited(post) && <PostEditedMarker post={post} className="mt-4" />}
     </>
   );
 

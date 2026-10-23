@@ -7,8 +7,8 @@ import Loading from "next-common/components/loading";
 import nextApi from "next-common/services/nextApi";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 
-const CommentVersionViewPopup = dynamicPopup(() =>
-  import("next-common/sima/components/commentVersionViewPopup"),
+const VersionViewPopup = dynamicPopup(() =>
+  import("next-common/sima/components/editedHistory/versionViewPopup"),
 );
 
 function formatEditedAgo(timestamp) {
@@ -38,44 +38,99 @@ function formatEditedAgo(timestamp) {
   return `${parts.join(" ")} ago`;
 }
 
-export default function CommentEditedHistoryDropdown({ commentCid }) {
+export function PlainEditedMarker({ label = "Edited", className }) {
+  return (
+    <div className={cn("text12Medium text-textTertiary", className)}>
+      {label}
+    </div>
+  );
+}
+
+export default function EditedHistoryDropdown({
+  historyUrl,
+  popupTitle = "Edit History",
+  showTitle = false,
+  prefetch = false,
+  label = "Edited",
+  firstVersionLabel = "Created",
+  firstVersionTimeLabel = "Created at",
+  className,
+}) {
   const [show, setShow] = useState(false);
   const [history, setHistory] = useState(null);
   const [selected, setSelected] = useState(null);
+  const loadingUrlRef = useRef(null);
+  const currentUrlRef = useRef(historyUrl);
   const ref = useRef();
 
   useClickAway(ref, () => setShow(false));
 
   const loadHistory = useCallback(async () => {
-    const { result, error } = await nextApi.fetch(
-      `sima/comments/${commentCid}/history`,
-    );
-    if (error) {
-      setHistory({ cid: commentCid, error: error.message });
+    if (!historyUrl || loadingUrlRef.current === historyUrl) {
       return;
     }
-    setHistory({ cid: commentCid, items: result?.items || [] });
-  }, [commentCid]);
 
-  // Fetch history when the dropdown opens, and refetch when the comment gets a
-  // new version (cid changes after an edit), so the list is always up to date.
+    loadingUrlRef.current = historyUrl;
+    try {
+      const { result, error } = await nextApi.fetch(historyUrl);
+      if (currentUrlRef.current !== historyUrl) {
+        return;
+      }
+      if (error) {
+        setHistory({ url: historyUrl, error: error.message });
+        return;
+      }
+      setHistory({ url: historyUrl, items: result?.items || [] });
+    } finally {
+      if (loadingUrlRef.current === historyUrl) {
+        loadingUrlRef.current = null;
+      }
+    }
+  }, [historyUrl]);
+
+  const isHistoryFresh = !!history && history.url === historyUrl;
+  const items = isHistoryFresh ? history.items : null;
+  const errorMessage = isHistoryFresh ? history.error : null;
+
   useEffect(() => {
-    if (!show || history?.cid === commentCid) {
+    currentUrlRef.current = historyUrl;
+    setHistory(null);
+    setSelected(null);
+    setShow(false);
+  }, [historyUrl]);
+
+  useEffect(() => {
+    if (!show || isHistoryFresh) {
       return;
     }
     loadHistory();
-  }, [show, commentCid, history?.cid, loadHistory]);
+  }, [show, isHistoryFresh, loadHistory]);
 
-  const isHistoryFresh = !!history && history.cid === commentCid;
-  const items = isHistoryFresh ? history.items : null;
-  const errorMessage = isHistoryFresh ? history.error : null;
+  useEffect(() => {
+    if (!prefetch || !historyUrl || isHistoryFresh) {
+      return;
+    }
+    loadHistory();
+  }, [prefetch, historyUrl, isHistoryFresh, loadHistory]);
+
+  if (!historyUrl) {
+    return <PlainEditedMarker label={label} className={className} />;
+  }
+
+  if (prefetch && (!items || items.length <= 1)) {
+    return <PlainEditedMarker label={label} className={className} />;
+  }
+
   const editCount = items ? Math.max(0, items.length - 1) : 0;
 
   return (
     <>
       <div
         ref={ref}
-        className="relative mt-2 inline-flex items-center text12Medium text-textTertiary"
+        className={cn(
+          "relative inline-flex items-center text12Medium text-textTertiary",
+          className,
+        )}
       >
         <span
           role="button"
@@ -85,7 +140,7 @@ export default function CommentEditedHistoryDropdown({ commentCid }) {
           )}
           onClick={() => setShow(!show)}
         >
-          <span>Edited</span>
+          <span>{label}</span>
           <ArrowDown
             className={cn(
               "w-4 h-4",
@@ -116,8 +171,8 @@ export default function CommentEditedHistoryDropdown({ commentCid }) {
                 {items.map((item, index) => {
                   const isCreated = index === items.length - 1;
                   const isMostRecent = index === 0;
-                  const label = `${
-                    isCreated ? "Created" : "Edited"
+                  const itemLabel = `${
+                    isCreated ? firstVersionLabel : "Edited"
                   } ${formatEditedAgo(item.timestamp)}${
                     isMostRecent ? " (most recent)" : ""
                   }`;
@@ -135,7 +190,7 @@ export default function CommentEditedHistoryDropdown({ commentCid }) {
                         });
                       }}
                     >
-                      {label}
+                      {itemLabel}
                     </button>
                   );
                 })}
@@ -145,10 +200,13 @@ export default function CommentEditedHistoryDropdown({ commentCid }) {
         )}
       </div>
       {selected && (
-        <CommentVersionViewPopup
+        <VersionViewPopup
           item={selected.item}
           version={selected.version}
           previousItem={selected.previousItem}
+          popupTitle={popupTitle}
+          showTitle={showTitle}
+          firstVersionTimeLabel={firstVersionTimeLabel}
           setShow={() => setSelected(null)}
         />
       )}
