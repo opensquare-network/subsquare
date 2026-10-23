@@ -4,8 +4,7 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import Signer from "next-common/components/popup/fields/signerField";
 import TextInputField from "next-common/components/popup/fields/textInputField";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { InfoMessage } from "next-common/components/setting/styled";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
@@ -77,10 +76,8 @@ function StopNominatingPopupContent() {
 
 export default function StopNominationPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Stop Nominating" onClose={onClose}>
-        <StopNominatingPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Stop Nominating" onClose={onClose}>
+      <StopNominatingPopupContent />
+    </PopupWithSigner>
   );
 }

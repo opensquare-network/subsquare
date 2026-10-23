@@ -2,8 +2,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import EstimatedGas from "next-common/components/estimatedGas";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import Signer from "next-common/components/popup/fields/signerField";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
@@ -53,10 +52,8 @@ function ClaimPoolRewardPopupContent() {
 
 export default function ClaimPoolRewardPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Claim Reward" onClose={onClose}>
-        <ClaimPoolRewardPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Claim Reward" onClose={onClose}>
+      <ClaimPoolRewardPopupContent />
+    </PopupWithSigner>
   );
 }

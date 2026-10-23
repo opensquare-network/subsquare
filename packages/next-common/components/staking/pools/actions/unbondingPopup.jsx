@@ -1,5 +1,4 @@
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
-import Popup from "next-common/components/popup/wrapper/Popup";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import SummaryLayout from "next-common/components/summary/layout/layout";
 import SummaryItem from "next-common/components/summary/layout/item";
 import { useMemo } from "react";
@@ -82,15 +81,14 @@ export default function UnbondingPopup({ onClose, unbondingEras }) {
     return null;
   }
   return (
-    <SignerPopupWrapper
+    <PopupWithSigner
       onClose={onClose}
       unbondingEras={unbondingEras}
       activeEra={activeEra}
+      title="Unbonding Pool"
     >
-      <Popup title="Unbonding Pool" onClose={onClose}>
-        <UnbondingPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+      <UnbondingPopupContent />
+    </PopupWithSigner>
   );
 }
 
