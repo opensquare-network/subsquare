@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
 import { useMinJoin } from "next-common/components/staking/pools/hooks/useMinJoin";
@@ -87,10 +86,8 @@ function JoinPopupContent() {
 
 export default function JoinPopup({ onClose, poolId }) {
   return (
-    <SignerPopupWrapper onClose={onClose} poolId={poolId}>
-      <Popup title="Join Pool" onClose={onClose}>
-        <JoinPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner onClose={onClose} poolId={poolId} title="Join Pool">
+      <JoinPopupContent />
+    </PopupWithSigner>
   );
 }
