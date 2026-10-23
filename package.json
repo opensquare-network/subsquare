@@ -12,7 +12,7 @@
     "postcss": "8.5.31",
     "sharp": "0.35.5",
     "terser-webpack-plugin": "5.6.1",
-    "undici": "8.12.3",
+    "undici@npm:^8.4.1": "8.12.3",
     "unstorage": "1.17.6",
     "uuid": "11.1.1",
     "ws@npm:8.17.1": "8.22.0",
