@@ -2,6 +2,66 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.9.0
+
+Date:
+2026-09-30. [Code diff](https://github.com/opensquare-network/subsquare/compare/4da9a545c0e473bd2ff3e4bcb195b6b458952761...53d8a36eedcb042f95ec2e3882a8d87cf744ffd5).
+
+- [Big] Full text search on Polkadot: integrate full-text search into the header search popup, covering referenda,
+  democracy referenda, referenda comments, bounties, child bounties, tips, treasury proposals and spends, fellowship
+  referenda, identities and treasury-funded projects, with keyword highlighting and grouped sections. Related backend
+  API is included.
+- [Medium] NFT assets:
+  - Show NFT collections and items on the user profile page.
+  - Add an NFT list to the AssetHub page and show NFT on-chain data on the assets page.
+  - Support transferring NFTs, and refresh the list after a transfer.
+  - Enhance the collection tree with show all/show less.
+  - Resolve NFT metadata through the new `NEXT_PUBLIC_IPFS_GATEWAY` config.
+- [Medium] Multi-asset bounties:
+  - Add the accept curator action, including pure proxy multisig and multisig selection, and warn about duplicate
+    pending multisigs.
+  - Support creating child bounties with metadata hash, and add child bounty curator proposal and check-status actions.
+  - Support award, close and payment actions for multi-asset bounties and child bounties based on on-chain live status.
+  - Add a referenda template to fund a multi-asset bounty, decode its preimage metadata and show a preimage popup.
+  - Scan marks a newly created child bounty as active instead of funded when the child curator is the parent curator.
+- [Medium] Coretime:
+  - Add a regions page and account prompt.
+  - Support coretime purchase renewal and region actions: partition, interlace, pool assign and transfer, with filters.
+  - Show account information and coretime transfers on the coretime page.
+  - Improve the coretime history tab order and fix the chart dot order.
+- [Medium] Watch-only accounts: support adding a watch-only address on all chains. Actions that require a signer are
+  disabled with hints, and the eye icon and metadata warning are adjusted for watch-only accounts.
+- [Medium] EVM accounts: support EVM accounts with the existing WalletConnect connector on Hydration, including network
+  switching and sending EVM transactions.
+- [Medium] Comments:
+  - Show comment edit history. Related backend API is included.
+  - Allow the referenda proposer to save the comment filter as the default for all visitors, with a confirmation popup.
+    Related backend API is included.
+- [Medium] Referenda and preimages:
+  - Correct preimage decoding and show text preimages in the preimage list.
+  - Fix preimage call details on account preimages and the my-deposits filter.
+  - Fix referenda call decoding for polkadot index 1944 in both the frontend and scan.
+- Treasury:
+  - Improve treasury spend payout button state management.
+  - Reorder treasury proposal templates.
+- UI/UX:
+  - Change the Hydration block explorer to Neckwork.
+  - Update Polkadot social links: new Discord URL and add Telegram.
+  - Opt out of machine translation and merge adjacent text nodes to avoid Google Translate breaking React DOM updates.
+  - Add a link to the account assets page and remove a useless address label.
+- Performance: lazy load referendum statistics and the curve chart.
+- Bug fixes:
+  - Fix DV pages crash caused by a missing referenda pallet provider.
+  - Fix null find error in fellowship salary.
+  - Fix the outlabels plugin affecting unrelated charts.
+- Backend: add `.nvmrc` to pin the Node version.
+- Scan:
+  - Fix decoding of v5 general extrinsics with versioned transaction extensions.
+  - Improve VerifyMultiSignature handling in general extrinsics.
+  - Add a script to mark treasury proposals as removed.
+  - PAPI: fix the `System.Events` query error at block 18407475.
+- Upgrade dependencies.
+
 # 6.8.0
 
 Date:
