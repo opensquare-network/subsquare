@@ -33,6 +33,7 @@ import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated"
 import { calendarMenu } from "./calendar";
 import { votingMenu } from "./voting";
 import { navigationMenu } from "./navigation";
+import { dotNsWebIdsMenu } from "./dotNsWebIds";
 import { votingSpace } from "next-common/utils/opensquareVoting";
 import { isPolkadotChain } from "next-common/utils/chain";
 import { polkadotFellowshipMenu } from "./polkadotFellowship";
@@ -76,6 +77,7 @@ export function getHomeMenu({
         (modules?.proxy || hasMultisig) && getDataMenu(),
         modules?.dap && dapMenu,
         modules?.dotusd && dotUsdMenu,
+        modules?.dotns && dotNsWebIdsMenu,
         calendarMenu,
         isPolkadotChain(CHAIN) && polkadotFellowshipMenu,
         votingSpace && votingMenu,
