@@ -5,12 +5,9 @@ import {
 } from "next-common/context/relationship/selectViewType";
 import { noop } from "lodash-es";
 import { useMemo } from "react";
-import { useChain } from "next-common/context/chain";
-import { isPolkadotChain } from "next-common/utils/chain";
 
 export default function ViewTypeSelect({ setViewType = noop, className = "" }) {
   const { viewType } = useRelationshipViewTypeState();
-  const chain = useChain();
 
   const options = useMemo(() => {
     return [
@@ -22,14 +19,15 @@ export default function ViewTypeSelect({ setViewType = noop, className = "" }) {
         label: "Delegation",
         value: VIEW_TYPE.DELEGATION,
       },
-      isPolkadotChain(chain)
-        ? {
-            label: "Transfer",
-            value: VIEW_TYPE.TRANSFER,
-          }
-        : null,
+      // Transfer API is not available at the moment, so we comment it out for now.
+      // isPolkadotChain(chain)
+      //   ? {
+      //       label: "Transfer",
+      //       value: VIEW_TYPE.TRANSFER,
+      //     }
+      //   : null,
     ].filter(Boolean);
-  }, [chain]);
+  }, []);
 
   return (
     <Select
