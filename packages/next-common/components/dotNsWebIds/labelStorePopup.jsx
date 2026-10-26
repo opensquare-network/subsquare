@@ -43,7 +43,11 @@ export default function LabelStorePopup({ labelStore, onClose }) {
   const noDataText = error ? "Failed to load labels" : "No labels";
 
   return (
-    <Popup title="Label Store" onClose={onClose} size={PopupSize.MIDDLE}>
+    <Popup
+      title="Owner's Label Store"
+      onClose={onClose}
+      size={PopupSize.MIDDLE}
+    >
       <div className="space-y-2">
         <InfoRow label="Address">
           <Tooltip content={labelStore}>

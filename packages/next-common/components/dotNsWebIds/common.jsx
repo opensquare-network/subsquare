@@ -24,7 +24,7 @@ export function StoreAddress({ address, className = "", onView, compact }) {
   return (
     <div className={cn("flex items-center gap-x-1", className)}>
       {onView && (
-        <Tooltip content="View labels" className="flex">
+        <Tooltip content="View owner's label store" className="flex">
           <DetailButton onClick={onView} className={compact ? "!p-0" : ""} />
         </Tooltip>
       )}
