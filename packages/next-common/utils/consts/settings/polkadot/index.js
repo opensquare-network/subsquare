@@ -57,6 +57,8 @@ const polkadot = {
     },
   },
   hasMultisig: true,
+  // pallet-revive, the EVM runtime running on the Asset Hub.
+  hasRevive: true,
   multisigApiPrefix: "ahp-gh-api",
   relayChainMultisigApiPrefix: "dot-multisig-api",
   useVoteCall: true,
