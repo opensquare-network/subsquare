@@ -1,8 +1,7 @@
 import Tooltip from "next-common/components/tooltip";
-import CopyButton from "next-common/components/copyButton";
 import DetailButton from "next-common/components/detailButton";
 import AddressUser from "next-common/components/user/addressUser";
-import { addressEllipsis, cn } from "next-common/utils";
+import { cn } from "next-common/utils";
 
 export function WebIdName({ label = "", className = "" }) {
   const separatorIndex = label.lastIndexOf(".");
@@ -29,12 +28,7 @@ export function StoreAddress({ address, className = "", onView, compact }) {
           <DetailButton onClick={onView} className={compact ? "!p-0" : ""} />
         </Tooltip>
       )}
-      <Tooltip content={address}>
-        <span className="text14Medium text-textPrimary">
-          {addressEllipsis(address)}
-        </span>
-      </Tooltip>
-      <CopyButton copyText={address} />
+      <AddressUser add={address} needHref={false} />
     </div>
   );
 }
