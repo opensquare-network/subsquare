@@ -16,6 +16,26 @@ export function WebIdName({ label = "", className = "" }) {
   );
 }
 
+function ContractIcon({ size = 12 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M5.5 3.5 2 8l3.5 4.5M10.5 3.5 14 8l-3.5 4.5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function StoreAddress({ address, className = "", onView, compact }) {
   if (!address) {
     return <span className="text14Medium text-textTertiary">-</span>;
@@ -28,7 +48,12 @@ export function StoreAddress({ address, className = "", onView, compact }) {
           <DetailButton onClick={onView} className={compact ? "!p-0" : ""} />
         </Tooltip>
       )}
-      <AddressUser add={address} needHref={false} />
+      <AddressUser add={address} needHref={false} maxWidth={140} />
+      <Tooltip content="Contract address">
+        <span className="flex text-textTertiary">
+          <ContractIcon />
+        </span>
+      </Tooltip>
     </div>
   );
 }
@@ -59,5 +84,5 @@ export function WebIdOwner({ item }) {
     return <EscrowStatusTag reclaimable={item.reclaimable} />;
   }
 
-  return <AddressUser add={item.owner} />;
+  return <AddressUser add={item.owner} maxWidth={160} />;
 }

@@ -60,7 +60,7 @@ export default function LabelStorePopup({ labelStore, onClose }) {
             "-"
           )}
         </InfoRow>
-        <InfoRow label="Labels">
+        <InfoRow label="Labels Count">
           {isLoading ? (
             <FieldLoading size={20} />
           ) : (
