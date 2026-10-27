@@ -11,6 +11,7 @@ import polkadotCommonCfg, {
   polkadotAssethubMigration,
 } from "next-common/utils/consts/settings/polkadot/common";
 import { polkadotAssethubPreimageSettings } from "next-common/utils/consts/settings/common/preimage/polkadot";
+import { polkadotDotnsDeployment } from "next-common/utils/consts/settings/common/dotns";
 import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
 import {
   ProjectLogoPolkadotDark as ProjectIconPolkadotDark,
@@ -94,7 +95,9 @@ const polkadot = {
     staking: true,
     dap: true,
     dotusd: true,
+    dotns: true,
   }),
+  dotns: polkadotDotnsDeployment,
   integrations: {
     doTreasury: true,
     statescan: true,
