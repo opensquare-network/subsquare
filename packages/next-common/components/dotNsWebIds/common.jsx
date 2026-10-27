@@ -3,16 +3,36 @@ import DetailButton from "next-common/components/detailButton";
 import AddressUser from "next-common/components/user/addressUser";
 import { cn } from "next-common/utils";
 
-export function WebIdName({ label = "", className = "" }) {
+export function WebIdName({ label = "", className = "", muted = false }) {
   const separatorIndex = label.lastIndexOf(".");
   const name = separatorIndex > 0 ? label.slice(0, separatorIndex) : label;
   const tld = separatorIndex > 0 ? label.slice(separatorIndex) : "";
 
   return (
-    <span className={cn("text14Medium text-textPrimary", className)}>
+    <span
+      className={cn(
+        "text14Medium",
+        muted ? "text-textTertiary" : "text-textPrimary",
+        className,
+      )}
+    >
       {name}
-      {tld && <span className="text-textTertiary">{tld}</span>}
+      {tld && (
+        <span className={muted ? "text-textDisabled" : "text-textTertiary"}>
+          {tld}
+        </span>
+      )}
     </span>
+  );
+}
+
+export function HeldStatusTag() {
+  return (
+    <Tooltip content="Currently owned by this label store's owner">
+      <span className="rounded-[10px] bg-green100 px-[8px] py-[2px] text12Medium text-green500">
+        Held
+      </span>
+    </Tooltip>
   );
 }
 

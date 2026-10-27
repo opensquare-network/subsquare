@@ -22,6 +22,7 @@ const storeFactoryAbi = parseAbi([
 
 const labelStoreAbi = parseAbi([
   "function owner() view returns (address)",
+  "function getLabel(bytes32 labelhash) view returns (string)",
   "function getLabelCount() view returns (uint256)",
   "function getLabels(uint256 offset, uint256 limit) view returns (string[])",
 ]);
@@ -406,7 +407,47 @@ export async function fetchLabelStoreDetail(labelStore) {
     labels.push(...page);
   }
 
-  const detail = { address: labelStore, owner, labels };
+  // A stored label outlives ownership, so each entry is checked against the
+  // registrar: `held` means the store owner still owns that name.
+  const [tldNode, tld] = await client.multicall({
+    contracts: [
+      {
+        address: deployment.protocolRegistry,
+        abi: protocolRegistryAbi,
+        functionName: "tldNode",
+      },
+      {
+        address: deployment.protocolRegistry,
+        abi: protocolRegistryAbi,
+        functionName: "tld",
+      },
+    ],
+    allowFailure: false,
+  });
+
+  const entries = labels.map((label) => ({
+    label,
+    node: getDotnsNameNode(tldNode, stripTld(label, tld)),
+    held: false,
+  }));
+  const owners = entries.length
+    ? await multicallInBatches(
+        client,
+        entries.map(({ node }) => ({
+          address: deployment.registrar,
+          abi: registrarAbi,
+          functionName: "ownerOf",
+          args: [BigInt(node)],
+        })),
+      )
+    : [];
+  entries.forEach((entry, index) => {
+    const result = owners[index];
+    entry.held =
+      result?.status === "success" && isSameAddressAs(result.result, owner);
+  });
+
+  const detail = { address: labelStore, owner, labels: entries };
   labelStoreDetails.set(key, { timestamp: Date.now(), detail });
 
   return detail;

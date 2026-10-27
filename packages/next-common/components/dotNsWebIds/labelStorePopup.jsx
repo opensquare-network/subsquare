@@ -8,7 +8,7 @@ import { useListPagination } from "next-common/components/pagination/usePaginati
 import useLabelStoreDetail from "next-common/hooks/dotns/useLabelStoreDetail";
 import { addressEllipsis } from "next-common/utils";
 import { useMemo } from "react";
-import { WebIdName } from "./common";
+import { HeldStatusTag, WebIdName } from "./common";
 
 const PAGE_SIZE = 10;
 
@@ -36,7 +36,17 @@ export default function LabelStorePopup({ labelStore, onClose }) {
     {
       name: "Name",
       className: "text-left",
-      render: (label) => <WebIdName label={label} />,
+      render: (item) =>
+        item.held ? (
+          <div className="flex items-center gap-x-2">
+            <WebIdName label={item.label} />
+            <HeldStatusTag />
+          </div>
+        ) : (
+          <Tooltip content="No longer owned by this label store's owner">
+            <WebIdName label={item.label} muted />
+          </Tooltip>
+        ),
     },
   ];
 
@@ -73,7 +83,7 @@ export default function LabelStorePopup({ labelStore, onClose }) {
         className="max-h-[60vh]"
         columnsDef={columnsDef}
         data={pagedItems}
-        getRowKey={(label) => label}
+        getRowKey={(item) => item.label}
         loading={isLoading}
         noDataText={noDataText}
       />
