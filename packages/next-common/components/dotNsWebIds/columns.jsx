@@ -1,5 +1,4 @@
-import AddressUser from "next-common/components/user/addressUser";
-import { StoreAddress, WebIdName } from "./common";
+import { StoreAddress, WebIdName, WebIdOwner } from "./common";
 
 function labelStoreViewHandler(item, onViewLabelStore) {
   if (!item.labelStore || !onViewLabelStore) {
@@ -18,7 +17,7 @@ export function getDesktopColumns({ onViewLabelStore } = {}) {
     {
       name: "Owner",
       className: "min-w-[180px] text-left",
-      render: (item) => <AddressUser add={item.owner} />,
+      render: (item) => <WebIdOwner item={item} />,
     },
     {
       name: "Label Store",
@@ -50,7 +49,7 @@ export function getMobileColumns({ onViewLabelStore } = {}) {
     {
       name: "Owner",
       className: "text-right",
-      render: (item) => <AddressUser add={item.owner} />,
+      render: (item) => <WebIdOwner item={item} />,
     },
     {
       name: "Label Store",

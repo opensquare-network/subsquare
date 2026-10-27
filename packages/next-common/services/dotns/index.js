@@ -3,6 +3,7 @@ import {
   defineChain,
   http,
   parseAbi,
+  toHex,
   zeroAddress,
 } from "viem";
 import { CHAIN } from "next-common/utils/constants";
@@ -32,7 +33,14 @@ const registrarAbi = parseAbi([
 const protocolRegistryAbi = parseAbi([
   "function tld() view returns (string)",
   "function tldNode() view returns (bytes32)",
+  "function get(bytes32 key) view returns (address)",
 ]);
+
+const nameEscrowAbi = parseAbi([
+  "function isReclaimable(uint256 tokenId) view returns (bool)",
+]);
+
+const NAME_ESCROW_KEY = toHex("nameEscrow", { size: 32 });
 
 let cachedClient = null;
 let cachedClientRpcUrl = null;
@@ -72,6 +80,12 @@ function getDotnsClient(deployment) {
 
 function isZeroAddress(address) {
   return !address || address.toLowerCase() === zeroAddress;
+}
+
+function isSameAddressAs(address, target) {
+  return (
+    !!address && !!target && address.toLowerCase() === target.toLowerCase()
+  );
 }
 
 function chunk(items, size) {
@@ -183,7 +197,7 @@ function collectRegisteredLabels(stores, labelsByStore, tld) {
 async function fetchDotNsWebIdsFromChain(deployment) {
   const client = getDotnsClient(deployment);
 
-  const [tldNode, tld] = await client.multicall({
+  const [tldNode, tld, nameEscrow] = await client.multicall({
     contracts: [
       {
         address: deployment.protocolRegistry,
@@ -194,6 +208,12 @@ async function fetchDotNsWebIdsFromChain(deployment) {
         address: deployment.protocolRegistry,
         abi: protocolRegistryAbi,
         functionName: "tld",
+      },
+      {
+        address: deployment.protocolRegistry,
+        abi: protocolRegistryAbi,
+        functionName: "get",
+        args: [NAME_ESCROW_KEY],
       },
     ],
     allowFailure: false,
@@ -234,10 +254,46 @@ async function fetchDotNsWebIdsFromChain(deployment) {
     if (result.status !== "success") {
       return;
     }
-    registered.push({ label: labels[index], owner: result.result });
+    const label = labels[index];
+    registered.push({
+      label,
+      node: nodeByLabel.get(label),
+      owner: result.result,
+    });
   });
 
-  const uniqueOwners = [...new Set(registered.map(({ owner }) => owner))];
+  // The escrow never owns a store: names in custody keep their label record in
+  // the previous holder's store, so those entries are resolved separately.
+  const escrowed = registered.filter(({ owner }) =>
+    isSameAddressAs(owner, nameEscrow),
+  );
+  const reclaimableResults = escrowed.length
+    ? await multicallInBatches(
+        client,
+        escrowed.map(({ node }) => ({
+          address: nameEscrow,
+          abi: nameEscrowAbi,
+          functionName: "isReclaimable",
+          args: [BigInt(node)],
+        })),
+      )
+    : [];
+  const reclaimableByNode = new Map();
+  escrowed.forEach(({ node }, index) => {
+    const result = reclaimableResults[index];
+    reclaimableByNode.set(
+      node,
+      result?.status === "success" ? result.result : false,
+    );
+  });
+
+  const uniqueOwners = [
+    ...new Set(
+      registered
+        .filter(({ owner }) => !isSameAddressAs(owner, nameEscrow))
+        .map(({ owner }) => owner),
+    ),
+  ];
   const storeResults = await multicallInBatches(
     client,
     uniqueOwners.flatMap((owner) => [
@@ -266,20 +322,25 @@ async function fetchDotNsWebIdsFromChain(deployment) {
     });
   });
 
-  return registered.map(({ label, owner }) => {
+  return registered.map(({ label, node, owner }) => {
+    const inEscrow = isSameAddressAs(owner, nameEscrow);
     const ownerStores = storesByOwner.get(owner) || {};
     return {
-      node: nodeByLabel.get(label),
+      node,
       label,
       name: stripTld(label, tld),
       tld,
       owner,
-      labelStore: isZeroAddress(ownerStores.labelStore)
-        ? null
-        : ownerStores.labelStore,
-      userStore: isZeroAddress(ownerStores.userStore)
-        ? null
-        : ownerStores.userStore,
+      labelStore:
+        inEscrow || isZeroAddress(ownerStores.labelStore)
+          ? null
+          : ownerStores.labelStore,
+      userStore:
+        inEscrow || isZeroAddress(ownerStores.userStore)
+          ? null
+          : ownerStores.userStore,
+      inEscrow,
+      reclaimable: inEscrow ? !!reclaimableByNode.get(node) : null,
     };
   });
 }
