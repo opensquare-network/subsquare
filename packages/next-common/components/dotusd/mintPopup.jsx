@@ -13,7 +13,7 @@ import Tooltip from "next-common/components/tooltip";
 import {
   DetailList,
   DetailRow,
-} from "next-common/components/overview/centrifugeStats/detailRow";
+} from "next-common/components/overview/detailRow";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";

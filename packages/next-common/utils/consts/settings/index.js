@@ -13,7 +13,6 @@ import kintsugi from "./kintsugi";
 import polkadex from "./polkadex";
 import turing from "./turing";
 import crust from "./crust";
-import centrifuge from "./centrifuge";
 import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
@@ -66,7 +65,6 @@ const settingsMap = {
   basilisk,
   bifrost,
   calamari,
-  centrifuge,
   collectives,
   crab,
   crust,
@@ -111,7 +109,7 @@ const settingsMap = {
 };
 
 /**
- * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof centrifuge & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
  */
 export default function getChainSettings(chain, blockHeight = null) {
   let settings = settingsMap[chain];
