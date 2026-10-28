@@ -1,4 +1,3 @@
-import centrifugeSettings from "next-common/utils/consts/settings/centrifuge";
 import hydradxSettings from "next-common/utils/consts/settings/hydradx";
 import shibuyaSettings from "next-common/utils/consts/settings/shibuya";
 import astarSettings from "next-common/utils/consts/settings/astar";
@@ -11,13 +10,12 @@ import { coinbaseWallet, injected } from "wagmi/connectors";
 import walletConnectEvm from "./walletConnectEvm";
 
 const hydradx = compatWagmiChainConfig(hydradxSettings.ethereumNetwork);
-const centrifuge = compatWagmiChainConfig(centrifugeSettings.ethereumNetwork);
 const shibuya = compatWagmiChainConfig(shibuyaSettings.ethereumNetwork);
 const astar = compatWagmiChainConfig(astarSettings.ethereumNetwork);
 const laos = compatWagmiChainConfig(laosSettings.ethereumNetwork);
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, base, darwinia, hydradx, centrifuge, shibuya, astar, laos],
+  chains: [mainnet, base, darwinia, hydradx, shibuya, astar, laos],
   ssr: true,
   connectors: [
     injected(),
@@ -34,7 +32,6 @@ export const wagmiConfig = createConfig({
     [base.id]: http(),
     [darwinia.id]: http(),
     [hydradx.id]: http(),
-    [centrifuge.id]: http(),
     [shibuya.id]: http(),
     [astar.id]: http(),
     [laos.id]: http(),

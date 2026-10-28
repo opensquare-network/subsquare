@@ -18,7 +18,6 @@ const Chains = {
   calamari: "calamari",
   turing: "turing",
   crab: "crab",
-  centrifuge: "centrifuge",
   litmus: "litmus",
   zeitgeist: "zeitgeist",
   altair: "altair",

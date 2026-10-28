@@ -13,10 +13,6 @@ export function isCollectivesChain(chain) {
   return [Chains.collectives, Chains.westendCollectives].includes(chain);
 }
 
-export function isCentrifugeChain(chain) {
-  return Chains.centrifuge === chain;
-}
-
 export function isKintsugiChain(chain) {
   return [Chains.kintsugi, Chains.interlay].includes(chain);
 }
