@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import { Location } from "next-common/components/assethubMigrationAssets/foreignAssets/table/columns/id";
 import LoadableContent from "next-common/components/common/loadableContent";
-import { DetailRow } from "next-common/components/overview/centrifugeStats/detailRow";
+import { DetailRow } from "next-common/components/overview/detailRow";
 import { SecondaryCardDetail } from "next-common/components/styled/containers/secondaryCard";
 import { TitleContainer } from "next-common/components/styled/containers/titleContainer";
 import ValueDisplay from "next-common/components/valueDisplay";

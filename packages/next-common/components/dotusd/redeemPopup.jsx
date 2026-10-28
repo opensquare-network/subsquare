@@ -13,7 +13,7 @@ import Tooltip from "next-common/components/tooltip";
 import {
   DetailList,
   DetailRow,
-} from "next-common/components/overview/centrifugeStats/detailRow";
+} from "next-common/components/overview/detailRow";
 import { useContextApi } from "next-common/context/api";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -53,7 +53,11 @@ function RedeemSummary({ external, internal, quote, isLoading }) {
           // that comes back.
           <Tooltip content="Taken out of the dotUSD you redeem, not out of the asset you receive.">
             <span className="cursor-default">
-              {`Redeem fee${isNil(feePercent) ? "" : ` (${feePercent.toFixed(4).replace(/\.?0+$/, "")}%)`}`}
+              {`Redeem fee${
+                isNil(feePercent)
+                  ? ""
+                  : ` (${feePercent.toFixed(4).replace(/\.?0+$/, "")}%)`
+              }`}
             </span>
           </Tooltip>
         }

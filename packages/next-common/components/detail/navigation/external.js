@@ -27,7 +27,7 @@ export default function ExternalNavigation() {
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
 
-      {/* centrifuge/altair use council to `fast_track` external proposal, so here we have councilMotions*/}
+      {/* altair use council to `fast_track` external proposal, so here we have councilMotions*/}
       {external?.councilMotions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} />
       ))}
