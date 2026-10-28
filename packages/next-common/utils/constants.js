@@ -25,7 +25,6 @@ import astar from "next-common/utils/consts/settings/astar";
 import zkverify from "./consts/settings/zkverify";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
-// import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 // import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
@@ -45,7 +44,6 @@ export const nodes = [
   kusamaPeople,
   acala,
   // acurast,
-  // ajuna,
   astar,
   basilisk,
   bifrost,
