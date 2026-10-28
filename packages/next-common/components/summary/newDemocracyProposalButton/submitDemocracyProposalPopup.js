@@ -8,7 +8,6 @@ import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPop
 import ForwardPopupProvider, {
   useForwardPopupContext,
 } from "next-common/context/forwardPopup";
-import { AjunaDemocracyProposalQuickStart } from "./ajuna/quickStart";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { NewPreimageInnerPopup } from "next-common/components/preImages/newPreimagePopup";
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
@@ -63,9 +62,7 @@ export default function SubmitDemocracyProposalPopup({ onClose }) {
   return (
     <SignerPopupWrapper onClose={onClose}>
       <ForwardPopupProvider>
-        <SubmitDemocracyProposalInnerPopup>
-          <AjunaDemocracyProposalQuickStart />
-        </SubmitDemocracyProposalInnerPopup>
+        <SubmitDemocracyProposalInnerPopup />
       </ForwardPopupProvider>
     </SignerPopupWrapper>
   );
