@@ -46,7 +46,7 @@ export default function ReferendumNavigation() {
       {referendum?.techCommMotions?.map((techCommMotion, key) => (
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
-      {/* used for centrifuge/altair, they use council to fast_track external proposal */}
+      {/* used for centrifuge, which uses council to fast_track external proposal */}
       {referendum?.councilMotions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} hasTriangle={false} />
       ))}

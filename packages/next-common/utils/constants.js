@@ -1,10 +1,8 @@
 import polkadot from "./consts/settings/polkadot";
 import kusama from "./consts/settings/kusama";
-// import crab from "./consts/settings/crab";
 import karura from "./consts/settings/karura";
 import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
-// import kabocha from "./consts/settings/kabocha";
 // import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
 import basilisk from "./consts/settings/basilisk";
@@ -33,7 +31,6 @@ import laos from "./consts/settings/laos";
 import paseoPeople from "./consts/settings/paseoPeople";
 import westendPeople from "./consts/settings/westendPeople";
 import hyperBridge from "./consts/settings/hyperBridge";
-// import acurast from "./consts/settings/acurast";
 
 const optionalNodes =
   process.env.NEXT_PUBLIC_DEVELOPMENT === "true" ? [development] : [];
@@ -46,15 +43,12 @@ export const nodes = [
   // kusamaAssetHub,
   kusamaPeople,
   acala,
-  // acurast,
   // ajuna,
   astar,
   basilisk,
   bifrost,
   bifrostPolkadot,
-  // calamari,
   collectives,
-  // crab,
   westend,
   // westendAssetHub,
   westendPeople,
@@ -62,7 +56,6 @@ export const nodes = [
   hydradx,
   hyperBridge,
   // interlay,
-  // kabocha,
   karura,
   // kintsugi,
   laos,

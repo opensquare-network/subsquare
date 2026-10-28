@@ -3,18 +3,14 @@ import kusama from "./kusama";
 import acala from "./acala";
 import basilisk from "./basilisk";
 import bifrost from "./bifrost";
-import calamari from "./calamari";
-import crab from "./crab";
 import interlay from "./interlay";
 import karura from "./karura";
 import khala from "./khala";
 import phala from "./phala";
 import kintsugi from "./kintsugi";
 import polkadex from "./polkadex";
-import turing from "./turing";
 import crust from "./crust";
 import centrifuge from "./centrifuge";
-import litmus from "./litmus";
 import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
@@ -44,13 +40,11 @@ import ajuna from "./ajuna";
 import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
 import laos from "./laos";
-import laosTestnet from "./laosTestnet";
 import polkadotPeople from "./polkadotPeople";
 import kusamaPeople from "./kusamaPeople";
 import paseoPeople from "./paseoPeople";
 import westendPeople from "./westendPeople";
 import hyperBridge from "./hyperBridge";
-import acurast from "./acurast";
 import Chains from "../chains";
 
 const ASSET_HUB_OF = {
@@ -67,10 +61,8 @@ const settingsMap = {
   astar,
   basilisk,
   bifrost,
-  calamari,
   centrifuge,
   collectives,
-  crab,
   crust,
   darwinia2,
   hydradx,
@@ -80,16 +72,12 @@ const settingsMap = {
   karura,
   khala,
   kintsugi,
-  acurast,
   laos,
-  [laosTestnet.value]: laosTestnet,
   litentry,
-  litmus,
   moonbeam,
   moonriver,
   phala,
   polkadex,
-  turing,
   zeitgeist,
   rococo,
   westend,
