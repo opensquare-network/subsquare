@@ -36,7 +36,6 @@ const Chains = {
   zkverifyTestnet: "zkverify-testnet",
   paseo: "paseo",
   paseoAssetHub: "paseo-assethub",
-  ajuna: "ajuna",
   kusamaCoretime: "kusama-coretime",
   kusamaPeople: "kusama-people",
   polkadotCoretime: "polkadot-coretime",
