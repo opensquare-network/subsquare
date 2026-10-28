@@ -13,7 +13,6 @@ const Chains = {
   kintsugi: "kintsugi",
   interlay: "interlay",
   polkadex: "polkadex",
-  crust: "crust",
   centrifuge: "centrifuge",
   zeitgeist: "zeitgeist",
   development: "development",

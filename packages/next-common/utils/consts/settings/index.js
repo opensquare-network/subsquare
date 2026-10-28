@@ -9,7 +9,6 @@ import khala from "./khala";
 import phala from "./phala";
 import kintsugi from "./kintsugi";
 import polkadex from "./polkadex";
-import crust from "./crust";
 import centrifuge from "./centrifuge";
 import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
@@ -59,7 +58,6 @@ const settingsMap = {
   bifrost,
   centrifuge,
   collectives,
-  crust,
   hydradx,
   [hyperBridge.value]: hyperBridge,
   [hydradxTestnet.value]: hydradxTestnet,

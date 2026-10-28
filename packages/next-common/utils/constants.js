@@ -3,7 +3,6 @@ import kusama from "./consts/settings/kusama";
 import karura from "./consts/settings/karura";
 import bifrost from "./consts/settings/bifrost";
 import acala from "./consts/settings/acala";
-// import crust from "./consts/settings/crust";
 import litentry from "./consts/settings/litentry";
 import basilisk from "./consts/settings/basilisk";
 import hydradx from "./consts/settings/hydradx";
@@ -48,7 +47,6 @@ export const nodes = [
   westend,
   // westendAssetHub,
   westendPeople,
-  // crust,
   hydradx,
   hyperBridge,
   // interlay,
