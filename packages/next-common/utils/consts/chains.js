@@ -22,7 +22,6 @@ const Chains = {
   westend: "westend",
   westendCollectives: "westend-collectives",
   collectives: "collectives",
-  darwinia2: "darwinia2",
   moonriver: "moonriver",
   moonbeam: "moonbeam",
   bifrostPolkadot: "bifrost-polkadot",

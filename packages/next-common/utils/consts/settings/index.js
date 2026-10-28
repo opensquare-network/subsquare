@@ -20,7 +20,6 @@ import litentry from "./litentry";
 import westendCollectives from "./westendCollectives";
 import westend from "./westend";
 import collectives from "./collectives";
-import darwinia2 from "./darwinia";
 import moonriver from "./moonriver";
 import moonbeam from "./moonbeam";
 import bifrostPolkadot from "./bifrostPolkadot";
@@ -63,7 +62,6 @@ const settingsMap = {
   centrifuge,
   collectives,
   crust,
-  darwinia2,
   hydradx,
   [hyperBridge.value]: hyperBridge,
   [hydradxTestnet.value]: hydradxTestnet,

@@ -26,7 +26,6 @@ const kusamaSlots = generateSlots([100, 500, 1000, 5000, k10, k100]);
 export const VOTES_RANGE = {
   [Chains.polkadot]: generateSlots([k10, k500, m1, m5]),
   [Chains.kusama]: kusamaSlots,
-  [Chains.darwinia2]: generateSlots([5 * k10, k100, m1, m10]),
   [Chains.vara]: generateSlots([k100, m1, m10, m100]),
   // [Chains.moonriver]: kusamaSlots,
   [Chains.bifrost]: kusamaSlots,
