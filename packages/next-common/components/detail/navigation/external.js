@@ -27,7 +27,6 @@ export default function ExternalNavigation() {
         <TechCommMotionNavigator motion={techCommMotion} key={key} />
       ))}
 
-      {/* centrifuge uses council to `fast_track` external proposal, so here we have councilMotions */}
       {external?.councilMotions?.map((motion, key) => (
         <CouncilMotionNavigator key={key} motion={motion} />
       ))}

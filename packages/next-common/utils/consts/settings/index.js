@@ -8,7 +8,6 @@ import karura from "./karura";
 import khala from "./khala";
 import phala from "./phala";
 import kintsugi from "./kintsugi";
-import centrifuge from "./centrifuge";
 import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
@@ -55,7 +54,6 @@ const settingsMap = {
   astar,
   basilisk,
   bifrost,
-  centrifuge,
   collectives,
   hydradx,
   [hyperBridge.value]: hyperBridge,
@@ -91,7 +89,7 @@ const settingsMap = {
 };
 
 /**
- * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof centrifuge & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
  */
 export default function getChainSettings(chain, blockHeight = null) {
   let settings = settingsMap[chain];
