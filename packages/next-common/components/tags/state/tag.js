@@ -63,12 +63,6 @@ const categoryTagMap = {
   [businessCategory.financialMotions]: CollectiveTag,
   [detailPageCategory.FINANCIAL_MOTION]: CollectiveTag,
 
-  [businessCategory.treasuryCouncilMotions]: CollectiveTag,
-  [detailPageCategory.TREASURY_COUNCIL_MOTION]: CollectiveTag,
-
-  [businessCategory.openTechCommitteeProposals]: CollectiveTag,
-  [detailPageCategory.OPEN_TECH_COMM_PROPOSAL]: CollectiveTag,
-
   [businessCategory.collective]: CollectiveTag,
 
   [businessCategory.democracyProposals]: DemocracyProposalTag,
