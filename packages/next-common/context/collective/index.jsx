@@ -23,7 +23,6 @@ export function useCollectivePallet() {
 }
 
 export const collectivePallets = Object.freeze({
-  openTechCommitteeCollective: "openTechCommitteeCollective", // moonriver
   advisoryCommittee: "advisoryCommittee", // zeitgeist
   allianceMotion: "allianceMotion",
   communityCouncil: "communityCouncil", // astar and shibuya
@@ -31,6 +30,5 @@ export const collectivePallets = Object.freeze({
   generalCouncil: "generalCouncil", // acala and karura, same as council in other chains
   technicalCommittee: "technicalCommittee",
   technicalCollective: "technicalCollective", // hyperbridge
-  treasuryCouncilCollective: "treasuryCouncilCollective", // moonriver
   council: "council",
 });
