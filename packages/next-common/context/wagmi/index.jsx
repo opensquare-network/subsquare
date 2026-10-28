@@ -6,7 +6,7 @@ import laosSettings from "next-common/utils/consts/settings/laos";
 import { compatWagmiChainConfig } from "next-common/utils/evm/wagmi";
 import { WagmiProvider as Provider } from "wagmi";
 import { http, createConfig } from "wagmi";
-import { mainnet, base, darwinia, moonbeam, moonriver } from "wagmi/chains";
+import { mainnet, base, darwinia } from "wagmi/chains";
 import { coinbaseWallet, injected } from "wagmi/connectors";
 import walletConnectEvm from "./walletConnectEvm";
 
@@ -17,18 +17,7 @@ const astar = compatWagmiChainConfig(astarSettings.ethereumNetwork);
 const laos = compatWagmiChainConfig(laosSettings.ethereumNetwork);
 
 export const wagmiConfig = createConfig({
-  chains: [
-    mainnet,
-    base,
-    darwinia,
-    moonbeam,
-    moonriver,
-    hydradx,
-    centrifuge,
-    shibuya,
-    astar,
-    laos,
-  ],
+  chains: [mainnet, base, darwinia, hydradx, centrifuge, shibuya, astar, laos],
   ssr: true,
   connectors: [
     injected(),
@@ -44,8 +33,6 @@ export const wagmiConfig = createConfig({
     [mainnet.id]: http(),
     [base.id]: http(),
     [darwinia.id]: http(),
-    [moonbeam.id]: http(),
-    [moonriver.id]: http(),
     [hydradx.id]: http(),
     [centrifuge.id]: http(),
     [shibuya.id]: http(),

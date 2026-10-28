@@ -12,8 +12,6 @@ import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 // import rococo from "./consts/settings/rococo";
 import collectives from "./consts/settings/collectives";
-// import moonbeam from "./consts/settings/moonbeam";
-// import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
@@ -67,8 +65,6 @@ export const nodes = [
   // kintsugi,
   laos,
   litentry,
-  // moonbeam,
-  // moonriver,
   // polkadex,
   // rococo,
   // shibuya,

@@ -14,7 +14,6 @@ const PARACHAIN_CHAINS = {
     1002: Chainspolyfill.polkadotBridge,
     1004: Chains.polkadotPeople,
     1005: Chains.polkadotCoretime,
-    2004: Chains.moonbeam,
     2030: Chains.bifrostPolkadot,
     2032: Chains.interlay,
     2034: Chains.hydradx,
@@ -26,7 +25,6 @@ const PARACHAIN_CHAINS = {
     1004: Chains.kusamaPeople,
     1005: Chains.kusamaCoretime,
     2004: Chains.khala,
-    2023: Chains.moonriver,
   },
   paseo: {
     0: Chains.paseo,

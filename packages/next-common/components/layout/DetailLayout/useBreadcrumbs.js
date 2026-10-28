@@ -206,17 +206,6 @@ export default function useBreadcrumbs() {
       },
       getMotionField(post, id),
     ];
-  } else if (detailPageCategory.OPEN_TECH_COMM_PROPOSAL === type) {
-    return [
-      {
-        content: "Open Tech. Comm.",
-      },
-      {
-        content: "Proposals",
-        path: "/open-techcomm/proposals",
-      },
-      getMotionField(post, id),
-    ];
   } else if (detailPageCategory.ALLIANCE_MOTION === type) {
     return [
       {
@@ -225,17 +214,6 @@ export default function useBreadcrumbs() {
       {
         content: "Motions",
         path: "/alliance/motions",
-      },
-      getMotionField(post, id),
-    ];
-  } else if (detailPageCategory.TREASURY_COUNCIL_MOTION === type) {
-    return [
-      {
-        content: "Treasury Council",
-      },
-      {
-        content: "Motions",
-        path: "/treasury-council/motions",
       },
       getMotionField(post, id),
     ];
