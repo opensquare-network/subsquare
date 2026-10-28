@@ -54,7 +54,6 @@ export const nodes = [
   // kintsugi,
   laos,
   litentry,
-  // polkadex,
   // rococo,
   // shibuya,
   vara,

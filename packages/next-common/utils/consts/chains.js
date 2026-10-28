@@ -12,7 +12,6 @@ const Chains = {
   bifrost: "bifrost",
   kintsugi: "kintsugi",
   interlay: "interlay",
-  polkadex: "polkadex",
   centrifuge: "centrifuge",
   zeitgeist: "zeitgeist",
   development: "development",

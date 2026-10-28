@@ -8,7 +8,6 @@ import karura from "./karura";
 import khala from "./khala";
 import phala from "./phala";
 import kintsugi from "./kintsugi";
-import polkadex from "./polkadex";
 import centrifuge from "./centrifuge";
 import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
@@ -68,7 +67,6 @@ const settingsMap = {
   laos,
   litentry,
   phala,
-  polkadex,
   zeitgeist,
   rococo,
   westend,

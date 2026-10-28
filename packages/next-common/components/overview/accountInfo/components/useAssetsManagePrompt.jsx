@@ -45,7 +45,7 @@ function useAssetsManagePrompt() {
 
 export default function AssetsManagePrompt({ onClose }) {
   return (
-    <OnlyChains chains={[Chains.polkadex, Chains.kusama]}>
+    <OnlyChains chains={[Chains.kusama]}>
       <AssetHubMetadataProvider>
         <AssetsManagePromptImpl onClose={onClose} />
       </AssetHubMetadataProvider>
