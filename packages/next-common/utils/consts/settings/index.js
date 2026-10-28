@@ -37,7 +37,6 @@ import zkverify from "./zkverify";
 import zkverifyTestnet from "./zkverifyTestnet";
 import paseo from "./paseo";
 import paseoAssetHub from "./paseoAssetHub";
-import ajuna from "./ajuna";
 import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
 import laos from "./laos";
@@ -98,7 +97,6 @@ const settingsMap = {
   [zkverifyTestnet.value]: zkverifyTestnet,
   paseo,
   [paseoAssetHub.value]: paseoAssetHub,
-  ajuna,
   [polkadotCoretime.value]: polkadotCoretime,
   [polkadotPeople.value]: polkadotPeople,
   [kusamaCoretime.value]: kusamaCoretime,
