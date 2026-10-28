@@ -22,8 +22,6 @@ const Chains = {
   westend: "westend",
   westendCollectives: "westend-collectives",
   collectives: "collectives",
-  moonriver: "moonriver",
-  moonbeam: "moonbeam",
   bifrostPolkadot: "bifrost-polkadot",
   polkadotAssetHub: "polkadot-assethub",
   westendAssetHub: "westend-assethub",

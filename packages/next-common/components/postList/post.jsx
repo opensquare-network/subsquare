@@ -59,8 +59,6 @@ export default function Post({ data, type }) {
         businessCategory.collective,
         businessCategory.financialMotions,
         businessCategory.advisoryMotions,
-        businessCategory.treasuryCouncilMotions,
-        businessCategory.openTechCommitteeProposals,
       ].includes(type)
     ) {
       return getMotionStateArgs(data?.onchainData?.state);
@@ -73,8 +71,6 @@ export default function Post({ data, type }) {
         businessCategory.financialMotions,
         businessCategory.advisoryMotions,
         businessCategory.allianceMotions,
-        businessCategory.treasuryCouncilMotions,
-        businessCategory.openTechCommitteeProposals,
       ].includes(type)
     ) {
       return <MotionElapse motion={data.onchainData} />;

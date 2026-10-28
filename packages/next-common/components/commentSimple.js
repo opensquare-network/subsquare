@@ -244,15 +244,6 @@ const getCommentSource = (comment) => {
       `/alliance/announcements/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
     ];
   }
-  if (comment?.openTechCommittee) {
-    const motionId = getMotionId(comment?.openTechCommittee);
-    return [
-      "Open Tech. Comm. Proposals",
-      comment?.openTechCommittee?.title || `Proposal #${motionId}`,
-      `/open-techcomm/proposals/${motionId}`,
-    ];
-  }
-
   return ["Unknown"];
 };
 

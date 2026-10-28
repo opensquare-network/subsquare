@@ -88,8 +88,6 @@ export function getStatusTagColumn(props) {
           businessCategory.advisoryMotions,
           businessCategory.allianceMotions,
           businessCategory.financialMotions,
-          businessCategory.treasuryCouncilMotions,
-          businessCategory.openTechCommitteeProposals,
           businessCategory.communityMotions,
           businessCategory.collective,
         ].includes(category)

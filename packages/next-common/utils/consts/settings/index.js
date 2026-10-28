@@ -20,8 +20,6 @@ import litentry from "./litentry";
 import westendCollectives from "./westendCollectives";
 import westend from "./westend";
 import collectives from "./collectives";
-import moonriver from "./moonriver";
-import moonbeam from "./moonbeam";
 import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
 import polkadotAssetHub from "./polkadotAssetHub";
@@ -71,8 +69,6 @@ const settingsMap = {
   kintsugi,
   laos,
   litentry,
-  moonbeam,
-  moonriver,
   phala,
   polkadex,
   zeitgeist,
@@ -99,7 +95,7 @@ const settingsMap = {
 };
 
 /**
- * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver & typeof centrifuge & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof centrifuge & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
  */
 export default function getChainSettings(chain, blockHeight = null) {
   let settings = settingsMap[chain];
