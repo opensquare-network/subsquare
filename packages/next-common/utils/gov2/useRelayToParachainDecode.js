@@ -42,12 +42,14 @@ export function useRelayToParachainDecode(calls) {
 
       try {
         let blockHeightOrHash = !isVoting ? finishBlockHeight : null;
+
+        let relayChainBlockNumber;
         if (needConvertHeight && !isNil(blockHeightOrHash)) {
-          blockHeightOrHash = await getRelayChainBlockNumber(
+          relayChainBlockNumber = await getRelayChainBlockNumber(
             contextApi,
             blockHeightOrHash,
           );
-          if (isNil(blockHeightOrHash)) {
+          if (isNil(relayChainBlockNumber)) {
             return decodes;
           }
         }
@@ -55,7 +57,7 @@ export function useRelayToParachainDecode(calls) {
         const parachainsBlock = await getParachainsBlockNumber(
           api,
           parachainIdNumber,
-          blockHeightOrHash,
+          needConvertHeight ? relayChainBlockNumber : blockHeightOrHash,
         );
         const cacheApiPromise = cacheParachainApi(
           parachainIdNumber,
