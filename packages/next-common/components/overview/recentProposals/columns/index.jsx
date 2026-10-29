@@ -85,7 +85,6 @@ export function getStatusTagColumn(props) {
         [
           businessCategory.councilMotions,
           businessCategory.tcProposals,
-          businessCategory.advisoryMotions,
           businessCategory.allianceMotions,
           businessCategory.financialMotions,
           businessCategory.communityMotions,

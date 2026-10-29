@@ -5,7 +5,6 @@ import { detailPageCategory } from "../consts/business/category";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import {
-  advisoryCommitteeBaseUrl,
   childBountyBaseUrl,
   communityMotionBaseUrl,
 } from "next-common/utils/postBaseUrl";
@@ -73,11 +72,6 @@ export function toApiType(type) {
   // Karura
   if (type === detailPageCategory.FINANCIAL_MOTION) {
     return "financial-motions";
-  }
-
-  // Zeitgeist
-  if (type === detailPageCategory.ADVISORY_MOTION) {
-    return "advisory-motions";
   }
 
   return type;
@@ -150,17 +144,6 @@ export const toFinancialMotionsListItem = (item) => {
     time: getPostLastActivityAt(item),
   };
 };
-
-export const toAdvisoryMotionsListItem = (item) => ({
-  ...item,
-  index: item.motionIndex,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item.state ?? "Unknown",
-  detailLink: `${advisoryCommitteeBaseUrl}/${getMotionId(item)}`,
-  time: getPostLastActivityAt(item),
-});
 
 export const toCommunityMotionsListItem = (item) => ({
   ...item,

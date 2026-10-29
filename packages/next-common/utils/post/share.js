@@ -24,8 +24,6 @@ export const getShare2SNStext = (post, type) => {
     category = `Tech. Comm. motion #${post.motionIndex}:`;
   } else if (detailPageCategory.FINANCIAL_MOTION === type) {
     category = `Financial council motion #${post.motionIndex}:`;
-  } else if (detailPageCategory.ADVISORY_MOTION === type) {
-    category = `Advisory motion #${post.motionIndex}:`;
   } else if (detailPageCategory.ALLIANCE_ANNOUNCEMENT === type) {
     category = `Alliance announcement #${post.cid}:`;
   } else if (detailPageCategory.ALLIANCE_MOTION === type) {

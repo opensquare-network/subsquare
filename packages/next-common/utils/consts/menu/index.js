@@ -4,7 +4,6 @@ import { getTreasuryMenu } from "./treasury";
 import { getCouncilMenu } from "./council";
 import { getTechCommMenu } from "./tc";
 import { getFinancialCouncilMenu } from "./financialCouncil";
-import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
@@ -61,7 +60,6 @@ export function getHomeMenu({
     modules?.council && getCouncilMenu(summary),
     modules?.technicalCommittee && getTechCommMenu(summary),
     modules?.financialCouncil && getFinancialCouncilMenu(summary),
-    modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.staking && stakingMenu,

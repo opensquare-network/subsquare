@@ -54,9 +54,6 @@ const categoryTagMap = {
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
 
-  [businessCategory.advisoryMotions]: CollectiveTag,
-  [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
-
   [businessCategory.allianceMotions]: CollectiveTag,
   [detailPageCategory.ALLIANCE_MOTION]: CollectiveTag,
 
