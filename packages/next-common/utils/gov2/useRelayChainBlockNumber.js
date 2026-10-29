@@ -1,5 +1,5 @@
 import { useContextApi } from "next-common/context/api";
-import { getBlockApiByHeight } from "next-common/services/chain/api";
+import { getRelayChainBlockNumber } from "next-common/utils/ahm";
 import { useCallback, useEffect, useState } from "react";
 
 export function useRelayChainBlockNumberExecute(blockHeight) {
@@ -10,12 +10,8 @@ export function useRelayChainBlockNumberExecute(blockHeight) {
   const execute = useCallback(() => {
     if (api && blockHeight) {
       setIsLoading(true);
-      getBlockApiByHeight(api, blockHeight)
-        .then((atApi) =>
-          atApi?.query?.parachainSystem.lastRelayChainBlockNumber(),
-        )
-        .then((res) => res.toNumber())
-        .then((relayNumber) => setRelayChainBlockNumber(relayNumber))
+      getRelayChainBlockNumber(api, blockHeight)
+        .then(setRelayChainBlockNumber)
         .catch(console.error)
         .finally(() => setIsLoading(false));
     }
