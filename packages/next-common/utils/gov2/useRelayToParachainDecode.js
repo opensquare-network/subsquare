@@ -2,26 +2,38 @@ import { useCallback, useEffect, useState } from "react";
 import { useRelayChainApi } from "next-common/context/relayChain";
 import { getParachainsBlockNumber } from "./getParachainsBlockNumber";
 import { getParachainApi } from "./getParachainApi";
-import useReferendumVotingFinishHeight, {
+import {
+  useReferendumVotingFinishIndexer,
   useReferendaIsVoting,
 } from "next-common/context/post/referenda/useReferendumVotingFinishHeight";
 import { convertDecodedCallToViewData } from "./useRelayChainCallDecode";
+import { isBeforeAhm } from "next-common/hooks/useCompatibleMigrationHeight";
+import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { getRelayChainBlockNumber } from "next-common/utils/ahm";
+import { useContextApi } from "next-common/context/api";
+import { isNil } from "lodash-es";
 
 const parachainApiMap = new Map();
 
 const cacheParachainApi = (parachainIdNumber, blockHeight) => {
-  if (!parachainApiMap.has(parachainIdNumber)) {
+  const cacheKey = `${parachainIdNumber}-${blockHeight ?? "latest"}`;
+  if (!parachainApiMap.has(cacheKey)) {
     const parachainApi = getParachainApi(parachainIdNumber, blockHeight);
-    parachainApiMap.set(parachainIdNumber, parachainApi);
+    parachainApiMap.set(cacheKey, parachainApi);
   }
-  return parachainApiMap.get(parachainIdNumber);
+  return parachainApiMap.get(cacheKey);
 };
 
 export function useRelayToParachainDecode(calls) {
   const [results, setResults] = useState([]);
   const api = useRelayChainApi();
-  const blockHeight = useReferendumVotingFinishHeight();
+  const contextApi = useContextApi();
+  const finishIndexer = useReferendumVotingFinishIndexer();
   const isVoting = useReferendaIsVoting();
+  const finishBlockHeight = finishIndexer?.blockHeight;
+
+  const needConvertHeight =
+    !isVoting && isAssetHubMigrated() && !isBeforeAhm(finishIndexer);
 
   const decodedCall = useCallback(
     async (call) => {
@@ -29,10 +41,23 @@ export function useRelayToParachainDecode(calls) {
       const decodes = [];
 
       try {
+        let blockHeightOrHash = !isVoting ? finishBlockHeight : null;
+
+        let relayChainBlockNumber;
+        if (needConvertHeight && !isNil(blockHeightOrHash)) {
+          relayChainBlockNumber = await getRelayChainBlockNumber(
+            contextApi,
+            blockHeightOrHash,
+          );
+          if (isNil(relayChainBlockNumber)) {
+            return decodes;
+          }
+        }
+
         const parachainsBlock = await getParachainsBlockNumber(
           api,
           parachainIdNumber,
-          !isVoting ? blockHeight : null,
+          needConvertHeight ? relayChainBlockNumber : blockHeightOrHash,
         );
         const cacheApiPromise = cacheParachainApi(
           parachainIdNumber,
@@ -57,16 +82,21 @@ export function useRelayToParachainDecode(calls) {
       }
       return decodes;
     },
-    [blockHeight, isVoting, api],
+    [finishBlockHeight, needConvertHeight, isVoting, api, contextApi],
   );
 
   useEffect(() => {
-    if (calls.length && api) {
-      Promise.all(calls.map((call) => decodedCall(call))).then((decodes) => {
-        setResults(decodes?.flat?.());
-      });
+    if (!calls.length || !api) {
+      return;
     }
-  }, [calls, decodedCall, api]);
+    if (needConvertHeight && !contextApi) {
+      return;
+    }
+
+    Promise.all(calls.map((call) => decodedCall(call))).then((decodes) => {
+      setResults(decodes?.flat?.());
+    });
+  }, [calls, decodedCall, api, needConvertHeight, contextApi]);
 
   useEffect(() => {
     return () => {
