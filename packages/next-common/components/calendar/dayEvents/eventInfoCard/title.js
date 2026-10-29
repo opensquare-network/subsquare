@@ -170,17 +170,6 @@ function getEventTitle(event) {
         event.motionHash,
       )} executed`;
     }
-    case EventType.AdvisoryCommitteeProposed: {
-      return `Advisory committee motion ${hashEllipsis(event.hash)} proposed`;
-    }
-    case EventType.AdvisoryCommitteeApproved: {
-      return `Advisory committee motion ${hashEllipsis(event.hash)} approved`;
-    }
-    case EventType.AdvisoryCommitteeDisApproved: {
-      return `Advisory committee motion ${hashEllipsis(
-        event.hash,
-      )} disapproved`;
-    }
     case EventType.DemocracyProposalProposed: {
       return `Democracy proposal #${event.proposalIndex} proposed`;
     }

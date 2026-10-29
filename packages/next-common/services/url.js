@@ -219,7 +219,6 @@ export const overviewApi = {
   financialMotions: "overview/financial-motions",
   allianceMotions: "overview/alliance-motions",
   allianceAnnouncements: "overview/alliance-announcements",
-  advisoryMotions: "overview/advisory-motions",
   communityMotions: "overview/community-motions",
   communityTreasuryProposals: "overview/community-treasury-proposals",
   fellowshipTreasurySpends: "overview/fellowship/treasury-spends",

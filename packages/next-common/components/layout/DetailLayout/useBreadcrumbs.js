@@ -184,17 +184,6 @@ export default function useBreadcrumbs() {
       },
       getMotionField(post, id),
     ];
-  } else if (detailPageCategory.ADVISORY_MOTION === type) {
-    return [
-      {
-        content: "Advisory Committee",
-      },
-      {
-        content: "Motions",
-        path: "/advisory-committee/motions",
-      },
-      getMotionField(post, id),
-    ];
   } else if (detailPageCategory.TECH_COMM_MOTION === type) {
     return [
       {

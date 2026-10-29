@@ -219,14 +219,6 @@ const getCommentSource = (comment) => {
       `/fellowship/referenda/${referendumIndex}`,
     ];
   }
-  if (comment?.advisoryCommitteeMotion) {
-    const motionId = getMotionId(comment?.advisoryCommitteeMotion);
-    return [
-      "Advisory Committee Motions",
-      comment?.advisoryCommitteeMotion?.title || `Motion #${motionId}`,
-      `/advisory-committee/motions/${motionId}`,
-    ];
-  }
   if (comment?.allianceMotion) {
     const motionId = getMotionId(comment?.allianceMotion);
     return [

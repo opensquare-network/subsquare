@@ -19,7 +19,6 @@ const Chains = {
   turing: "turing",
   crab: "crab",
   litmus: "litmus",
-  zeitgeist: "zeitgeist",
   altair: "altair",
   development: "development",
   rococo: "rococo",

@@ -23,7 +23,6 @@ export function useCollectivePallet() {
 }
 
 export const collectivePallets = Object.freeze({
-  advisoryCommittee: "advisoryCommittee", // zeitgeist
   allianceMotion: "allianceMotion",
   communityCouncil: "communityCouncil", // astar and shibuya
   financialCouncil: "financialCouncil", // acala and karura
