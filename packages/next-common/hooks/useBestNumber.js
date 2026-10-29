@@ -1,5 +1,6 @@
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
+import { getRelayChainBlockNumber } from "next-common/utils/ahm";
 import { useEffect, useState } from "react";
 
 export default function useBestNumber() {
@@ -13,10 +14,7 @@ export default function useBestNumber() {
       return;
     }
     if (isMigrated) {
-      api?.query?.parachainSystem
-        ?.validationData?.()
-        .then((result) => result?.toJSON())
-        .then((result) => setBestNumber(result?.relayParentNumber));
+      getRelayChainBlockNumber(api).then(setBestNumber);
     } else {
       api?.derive?.chain
         ?.bestNumber?.()
