@@ -59,7 +59,6 @@ export default function useIsProposalFinished() {
       [
         detailPageCategory.COUNCIL_MOTION,
         detailPageCategory.FINANCIAL_MOTION,
-        detailPageCategory.ADVISORY_MOTION,
         detailPageCategory.ALLIANCE_MOTION,
         detailPageCategory.TECH_COMM_MOTION,
       ].includes(type)

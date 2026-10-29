@@ -17,6 +17,5 @@ export const ambassadorReferendaBaseUrl = "/ambassador/referenda";
 export const fellowshipTrackBaseUrl = "/fellowship/tracks";
 export const councilMotionBaseUrl = "/council/motions";
 export const techCommMotionBaseUrl = "/techcomm/proposals";
-export const advisoryCommitteeBaseUrl = "/advisory-committee/motions";
 export const communityMotionBaseUrl = "/community-council/motions";
 export const communityTreasuryProposalBaseUrl = "/community-treasury/proposals";

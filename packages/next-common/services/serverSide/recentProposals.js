@@ -1,6 +1,5 @@
 import { backendApi } from "next-common/services/nextApi";
 import { CHAIN } from "next-common/utils/constants";
-import { Names as asAdvisoryCommitteeNames } from "next-common/utils/consts/menu/advisoryCouncil";
 import {
   getAllianceMenu,
   Names as allianceNames,
@@ -152,15 +151,6 @@ export async function fetchRecentProposalsProps(summary = {}) {
         ] = await fetcher(initDataApi);
       }
     }
-  }
-
-  // advisory
-  const hasAdvisoryCommittee = modules?.advisoryCommittee;
-  if (hasAdvisoryCommittee) {
-    recentProposalsData[asAdvisoryCommitteeNames.advisoryCommittee] = {};
-    recentProposalsData[
-      asAdvisoryCommitteeNames.advisoryCommittee
-    ].advisoryMotions = await fetcher(overviewApi.advisoryMotions);
   }
 
   if (isShibuyaChain(CHAIN)) {

@@ -1,4 +1,3 @@
-import AdvisoryCommitteeSubscription from "next-common/components/pages/components/settings/subscription/advisoryCommitteeSubscription";
 import OpenGovSubscription from "next-common/components/pages/components/settings/subscription/openGovSubscription";
 import TreasurySubscription from "next-common/components/pages/components/settings/subscription/treasurySubscription";
 import DemocracySubscription from "next-common/components/pages/components/settings/subscription/democracySubscription";
@@ -12,7 +11,6 @@ export default function OnChainEventsSubscription() {
       <DemocracySubscription />
       <CouncilSubscription />
       <TreasurySubscription />
-      <AdvisoryCommitteeSubscription />
       <TechCommSubscription />
     </>
   );

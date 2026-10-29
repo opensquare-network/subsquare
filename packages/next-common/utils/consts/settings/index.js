@@ -14,7 +14,6 @@ import polkadex from "./polkadex";
 import turing from "./turing";
 import crust from "./crust";
 import litmus from "./litmus";
-import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
 import development from "./development";
@@ -83,7 +82,6 @@ const settingsMap = {
   phala,
   polkadex,
   turing,
-  zeitgeist,
   rococo,
   westend,
   [westendCollectives.value]: westendCollectives,

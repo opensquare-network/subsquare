@@ -35,7 +35,6 @@ const base = {
   financialCouncil: false,
   communityCouncil: false,
   communityTreasury: false,
-  advisoryCommittee: false,
   alliance: false,
   preimages: true,
   scheduler: false,

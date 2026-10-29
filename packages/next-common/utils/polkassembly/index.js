@@ -11,7 +11,6 @@ export const PolkassemblyChains = [
   Chains.kusama,
   Chains.polkadot,
   Chains.collectives,
-  Chains.zeitgeist,
 ];
 
 export function getPolkassemblyLink(type, post) {
@@ -51,9 +50,6 @@ export function getPolkassemblyLink(type, post) {
     }
     case detailPageCategory.GOV2_REFERENDUM: {
       return `https://${chain}.polkassembly.io/referenda/${post.referendumIndex}`;
-    }
-    case detailPageCategory.ADVISORY_MOTION: {
-      return `https://${chain}.polkassembly.io/advisory-committee/motions/${post.height}_${post.hash}`;
     }
     default: {
       return null;
