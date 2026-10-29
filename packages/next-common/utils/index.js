@@ -186,11 +186,17 @@ export function isMotionEnded(motion) {
 }
 
 export function isPolkadotKeyRegisteredUser(user) {
-  return user?.username?.startsWith("polkadot-key-0x");
+  return (
+    typeof user?.username === "string" &&
+    user.username.startsWith("polkadot-key-0x")
+  );
 }
 
 export function isEthereumKeyRegisteredUser(user) {
-  return user?.username?.startsWith("ethereum-key-0x");
+  return (
+    typeof user?.username === "string" &&
+    user.username.startsWith("ethereum-key-0x")
+  );
 }
 
 export function isKeyRegisteredUser(user) {
