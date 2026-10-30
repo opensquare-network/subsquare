@@ -41,6 +41,39 @@ function getNormalLimit(blockWeights) {
 }
 
 /**
+ * Keep only the tracks whose current voting state still allows the call.
+ *
+ * `utility.batch` is atomic: if a partially successful delegate/undelegate is
+ * retried with the tracks of the already sent chunks included, the first
+ * `AlreadyDelegating` / `NotDelegating` call fails the whole batch again, so the
+ * retry could never succeed. Drop the tracks that are already in the requested
+ * state before building the next attempt.
+ */
+export async function filterConvictionVotingTracks(
+  api,
+  address,
+  trackIds,
+  predicate,
+) {
+  if (
+    !api?.query?.convictionVoting?.votingFor?.multi ||
+    !address ||
+    !trackIds?.length
+  ) {
+    return trackIds;
+  }
+
+  try {
+    const votingFor = await api.query.convictionVoting.votingFor.multi(
+      trackIds.map((trackId) => [address, trackId]),
+    );
+    return trackIds.filter((trackId, index) => predicate(votingFor[index]));
+  } catch {
+    return trackIds;
+  }
+}
+
+/**
  * Work out how many convictionVoting calls fit into one extrinsic on this chain.
  *
  * `convictionVoting.delegate` / `undelegate` are heavy on proof size on Asset

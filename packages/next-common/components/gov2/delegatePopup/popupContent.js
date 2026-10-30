@@ -23,6 +23,7 @@ import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import {
   DEFAULT_CONVICTION_VOTING_CALLS_PER_TX,
+  filterConvictionVotingTracks,
   getConvictionVotingCallsPerTx,
 } from "next-common/utils/convictionVotingBatch";
 
@@ -81,7 +82,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   }, [api, signerAddress, selectedTracks]);
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
-    (toastError) => {
+    async (toastError) => {
       if (!selectedTracks || selectedTracks?.length === 0) {
         toastError("Please select at least one track");
         return;
@@ -114,7 +115,21 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         return;
       }
 
-      const calls = selectedTracks.map((trackId) =>
+      // A previous attempt may already have delegated some of the selected
+      // tracks (utility.batch is atomic, so a partially sent batch must not be
+      // replayed with those tracks included).
+      const trackIdsToDelegate = await filterConvictionVotingTracks(
+        api,
+        signerAddress,
+        selectedTracks,
+        (voting) => !voting?.isDelegating,
+      );
+      if (trackIdsToDelegate.length === 0) {
+        toastError("All selected tracks are already delegated");
+        return;
+      }
+
+      const calls = trackIdsToDelegate.map((trackId) =>
         api.tx.convictionVoting.delegate(
           trackId,
           targetAddress,
@@ -132,6 +147,7 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
     [
       api,
       signerAccount,
+      signerAddress,
       targetAddress,
       selectedTracks,
       inputVoteBalance,

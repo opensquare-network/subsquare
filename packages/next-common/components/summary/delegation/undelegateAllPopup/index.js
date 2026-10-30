@@ -5,6 +5,7 @@ import { useContextApi } from "next-common/context/api";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import {
   DEFAULT_CONVICTION_VOTING_CALLS_PER_TX,
+  filterConvictionVotingTracks,
   getConvictionVotingCallsPerTx,
 } from "next-common/utils/convictionVotingBatch";
 
@@ -51,11 +52,24 @@ export default function UndelegateAllPopup({
   );
 
   const getTxFunc = useCallback(async () => {
-    if (!api || chunks.length === 0) {
+    if (!api || !trackIds?.length) {
       return;
     }
 
-    const txs = chunks.map((ids) => {
+    // Skip the tracks that are not delegated anymore, e.g. the tracks of a
+    // chunk that already succeeded in a previous attempt. A retried atomic
+    // batch must not contain a NotDelegating call.
+    const trackIdsToUndelegate = await filterConvictionVotingTracks(
+      api,
+      signerAddress,
+      trackIds,
+      (voting) => !!voting?.isDelegating,
+    );
+    if (trackIdsToUndelegate.length === 0) {
+      return;
+    }
+
+    const txs = chunk(trackIdsToUndelegate, callsPerTx).map((ids) => {
       const calls = ids.map((trackId) =>
         api.tx.convictionVoting.undelegate(trackId),
       );
@@ -63,7 +77,7 @@ export default function UndelegateAllPopup({
     });
 
     return txs.length === 1 ? txs[0] : txs;
-  }, [api, chunks]);
+  }, [api, signerAddress, trackIds, callsPerTx]);
 
   return (
     <SimpleTxPopup
