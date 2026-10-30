@@ -117,6 +117,7 @@ export function useSendTransaction() {
         await setSigner(api, signerAccount);
       } catch (e) {
         dispatch(newErrorToast(e.message));
+        onTxError(e);
         return;
       }
 
@@ -296,6 +297,7 @@ export function useSendTransaction() {
         });
       } catch (e) {
         dispatch(newErrorToast(e.message));
+        onTxError(e);
       } finally {
         setIsSubmitting(false);
       }

@@ -79,23 +79,42 @@ export default function useGasFeeEstimate(getTxFunc, feeAssetType) {
     setGasFee(null);
     setIsGasFeeLoading(true);
 
-    tx.paymentInfo(address)
-      .then(async (info) => {
+    // getTxFunc may return several transactions (e.g. a batch split by the
+    // block weight limit); estimate them all and show the total.
+    const txs = Array.isArray(tx) ? tx : [tx];
+
+    Promise.all(txs.map((item) => item.paymentInfo(address)))
+      .then(async (infos) => {
         if (cancelled) return;
 
-        if (feeAssetType === NATIVE_ASSET_TYPE) {
-          setGasFee(info.partialFee);
+        if (infos.length === 0) {
+          setGasFee(null);
           return;
         }
 
-        const convertedFee = await convertFeeToAsset(
-          api,
-          info.partialFee,
-          info.weight,
-          location,
-        );
+        if (feeAssetType === NATIVE_ASSET_TYPE) {
+          const totalFee = infos
+            .map((info) => info.partialFee)
+            .reduce((sum, fee) => sum.add(fee));
+          setGasFee(totalFee);
+          return;
+        }
 
-        if (!cancelled) setGasFee(convertedFee);
+        let totalFee = null;
+        for (const info of infos) {
+          const convertedFee = await convertFeeToAsset(
+            api,
+            info.partialFee,
+            info.weight,
+            location,
+          );
+          const value =
+            typeof convertedFee === "bigint"
+              ? convertedFee
+              : BigInt(convertedFee.toString());
+          totalFee = totalFee === null ? value : totalFee + value;
+        }
+        if (!cancelled) setGasFee(totalFee);
       })
       .catch((err) => {
         if (!cancelled) {
