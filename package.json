@@ -7,6 +7,7 @@
   "repository": "git@github.com:opensquare-network/subsquare.git",
   "author": "OpenSquare <https://www.opensquare.network/>",
   "resolutions": {
+    "decode-uri-component": "0.5.1",
     "deepmerge-ts": "8.0.2",
     "dompurify": "3.4.17",
     "postcss": "8.5.31",
