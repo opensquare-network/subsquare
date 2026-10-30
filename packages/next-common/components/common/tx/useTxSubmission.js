@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
 import { noop } from "lodash-es";
@@ -9,6 +9,7 @@ import { useSendTransaction } from "next-common/hooks/useSendTransaction";
 import { useMaybeMultisigCallback } from "./useMaybeMultisigCallback";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
 import { WATCH_ONLY_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
+import WalletTypes from "next-common/utils/consts/walletTypes";
 
 export default function useTxSubmission({
   api,
@@ -31,6 +32,15 @@ export default function useTxSubmission({
     onFinalized: maybeMultisigOnFinalized,
   } = useMaybeMultisigCallback({ onInBlock, onFinalized });
   const [isWrapping, setIsWrapping] = useState(false);
+  const [isSequencing, setIsSequencing] = useState(false);
+  const unmountedRef = useRef(false);
+
+  useEffect(() => {
+    unmountedRef.current = false;
+    return () => {
+      unmountedRef.current = true;
+    };
+  }, []);
 
   const getTx = useCallback(
     async (...args) => {
@@ -46,10 +56,81 @@ export default function useTxSubmission({
         return;
       }
 
+      if (Array.isArray(tx)) {
+        return Promise.all(
+          tx.map((item) => wrapTransaction(apiToUse, item, signerAccount)),
+        );
+      }
+
       tx = await wrapTransaction(apiToUse, tx, signerAccount);
       return tx;
     },
     [getTxFunc, apiToUse, signerAccount, dispatch],
+  );
+
+  // A getTxFunc may return several transactions, e.g. when a batch has to be
+  // split because of the block weight limit. Sign and send them one by one and
+  // wait for each one to be included (so the next one reads the updated nonce).
+  const sendTxsSequentially = useCallback(
+    async (txs) => {
+      // Signet only submits the transaction to the multisig service, it never
+      // reports an in-block event.
+      const waitForInBlock =
+        signerAccount?.meta?.source !== WalletTypes.SIGNET;
+
+      for (const tx of txs) {
+        // Stop prompting for the next signature once the popup is closed.
+        if (unmountedRef.current) {
+          return;
+        }
+
+        await new Promise((resolve, reject) => {
+          let settled = false;
+          const finish = () => {
+            if (!settled) {
+              settled = true;
+              resolve();
+            }
+          };
+          const fail = (e) => {
+            if (!settled) {
+              settled = true;
+              reject(e);
+            }
+          };
+
+          sendTxFunc({
+            api: apiToUse,
+            tx,
+            onTxStart,
+            onInBlock: (data) => {
+              maybeMultisigOnInBlock(data);
+              finish();
+            },
+            onFinalized: maybeMultisigOnFinalized,
+            onSubmitted: waitForInBlock ? noop : finish,
+            onCancelled: () => {
+              onCancelled();
+              fail(new Error("Cancelled"));
+            },
+            onTxError: (e) => {
+              onTxError(e);
+              fail(e);
+            },
+          });
+        });
+      }
+    },
+    [
+      apiToUse,
+      sendTxFunc,
+      signerAccount,
+      onTxStart,
+      maybeMultisigOnInBlock,
+      maybeMultisigOnFinalized,
+      onCancelled,
+      onTxError,
+    ],
   );
 
   const doSubmit = useCallback(
@@ -81,6 +162,19 @@ export default function useTxSubmission({
         return;
       }
 
+      if (Array.isArray(tx)) {
+        setIsSequencing(true);
+        try {
+          await sendTxsSequentially(tx);
+          onSubmitted();
+        } catch {
+          // sendTxFunc already shows the error toast.
+        } finally {
+          setIsSequencing(false);
+        }
+        return;
+      }
+
       await sendTxFunc({
         api: apiToUse,
         tx,
@@ -99,6 +193,7 @@ export default function useTxSubmission({
       signerAccount,
       getTx,
       sendTxFunc,
+      sendTxsSequentially,
       onTxStart,
       onSubmitted,
       maybeMultisigOnInBlock,
@@ -110,7 +205,7 @@ export default function useTxSubmission({
 
   return {
     isWrapping,
-    isSubmitting,
+    isSubmitting: isSubmitting || isSequencing,
     doSubmit,
   };
 }

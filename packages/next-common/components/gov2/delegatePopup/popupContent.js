@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAddressVotingBalance } from "next-common/utils/hooks/useAddressVotingBalance";
 import { checkInputValue, isSameAddress } from "next-common/utils";
@@ -16,11 +16,15 @@ import {
 import { usePopupParams } from "next-common/components/popupWithSigner/context";
 import { useContextApi } from "next-common/context/api";
 import { normalizeAddress } from "next-common/utils/address";
-import { noop } from "lodash-es";
+import { chunk, noop } from "lodash-es";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
+import {
+  DEFAULT_CONVICTION_VOTING_CALLS_PER_TX,
+  getConvictionVotingCallsPerTx,
+} from "next-common/utils/convictionVotingBatch";
 
 export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const { tracks, showTrackSelect = true, onInBlock = noop } = usePopupParams();
@@ -41,6 +45,40 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
   const [inputVoteBalance, setInputVoteBalance] = useState("0");
   const [conviction, setConviction] = useState(0);
   const [selectedTracks, setSelectedTracks] = useState(tracks);
+  const signerAddress = signerAccount?.realAddress;
+  const [callsPerTx, setCallsPerTx] = useState(
+    DEFAULT_CONVICTION_VOTING_CALLS_PER_TX,
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    if (
+      !api?.tx?.convictionVoting?.delegate ||
+      !signerAddress ||
+      !selectedTracks?.length
+    ) {
+      return;
+    }
+
+    getConvictionVotingCallsPerTx({
+      api,
+      address: signerAddress,
+      sampleCall: api.tx.convictionVoting.delegate(
+        selectedTracks[0],
+        signerAddress,
+        0,
+        "0",
+      ),
+    }).then((size) => {
+      if (!cancelled) {
+        setCallsPerTx(size);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [api, signerAddress, selectedTracks]);
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -76,28 +114,20 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         return;
       }
 
-      let tx;
-      if (selectedTracks.length === 1) {
-        tx = api.tx.convictionVoting.delegate(
-          selectedTracks[0],
+      const calls = selectedTracks.map((trackId) =>
+        api.tx.convictionVoting.delegate(
+          trackId,
           targetAddress,
           conviction,
           bnVoteBalance.toString(),
-        );
-      } else {
-        tx = api.tx.utility.batch(
-          selectedTracks.map((trackId) =>
-            api.tx.convictionVoting.delegate(
-              trackId,
-              targetAddress,
-              conviction,
-              bnVoteBalance.toString(),
-            ),
-          ),
-        );
-      }
+        ),
+      );
 
-      return tx;
+      const txs = chunk(calls, callsPerTx).map((txCalls) =>
+        txCalls.length === 1 ? txCalls[0] : api.tx.utility.batch(txCalls),
+      );
+
+      return txs.length === 1 ? txs[0] : txs;
     },
     [
       api,
@@ -106,10 +136,12 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
       selectedTracks,
       inputVoteBalance,
       conviction,
+      callsPerTx,
     ],
   );
 
   const disabled = !(selectedTracks?.length > 0);
+  const txCount = Math.ceil((selectedTracks?.length || 0) / callsPerTx);
 
   return (
     <>
@@ -143,6 +175,12 @@ export default function PopupContent({ defaultTargetAddress, targetDisabled }) {
         conviction={conviction}
         setConviction={setConviction}
       />
+      {txCount > 1 && (
+        <div className="text12Medium text-textTertiary">
+          The batch is too large for one transaction, so it will be split into{" "}
+          {txCount} transactions. Please sign them one by one.
+        </div>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
