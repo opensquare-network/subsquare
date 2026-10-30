@@ -11178,12 +11178,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deepmerge@npm:^4.3.1":
-  version: 4.3.1
-  resolution: "deepmerge@npm:4.3.1"
-  checksum: 10c0/e53481aaf1aa2c4082b5342be6b6d8ad9dfe387bc92ce197a66dea08bd4265904a087e75e464f14d1347cf2ac8afe1e4c16b266e0561cc5df29382d3c5f80044
-  languageName: node
-  linkType: hard
+"deepmerge@workspace:^, deepmerge@workspace:packages/deepmerge":
+  version: 0.0.0-use.local
+  resolution: "deepmerge@workspace:packages/deepmerge"
+  languageName: unknown
+  linkType: soft
 
 "define-data-property@npm:^1.0.1, define-data-property@npm:^1.1.4":
   version: 1.1.4
