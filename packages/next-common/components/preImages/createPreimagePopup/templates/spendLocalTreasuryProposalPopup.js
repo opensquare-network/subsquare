@@ -13,63 +13,12 @@ import InsufficientBalanceTips from "next-common/components/summary/newProposalQ
 import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
-import {
-  getBeneficiaryParam,
-  getNativeAssetKindParam,
-} from "./batchTreasurySpendPopup";
 
-function getCallArgType(call, index) {
-  return call?.meta?.args?.[index]?.type?.toString() ?? "";
-}
-
-function buildAssetKindParam(spend) {
-  // Hydration, Bifrost, ...
-  if (getCallArgType(spend, 0) === "Null") {
-    return null;
-  }
-
-  // AssetHub, Relay Chains, ...
-  return getNativeAssetKindParam();
-}
-
-function buildBeneficiaryParam(spend, beneficiary) {
-  const beneficiaryType = getCallArgType(spend, 2);
-  const locatableAccount = getBeneficiaryParam(beneficiary);
-
-  // AssetHub
-  if (beneficiaryType.includes("VersionedLocatableAccount")) {
-    return locatableAccount;
-  }
-
-  // Relay chains
-  if (beneficiaryType.includes("VersionedLocation")) {
-    return { V4: locatableAccount.V4.accountId };
-  }
-
-  // Hydration, Bifrost, ...
-  return beneficiary;
-}
-
-function buildSpendLocalCall(api, bnValue, beneficiary) {
-  return api.tx.treasury.spendLocal(bnValue.toFixed(), beneficiary);
-}
-
-function buildSpendCall(api, bnValue, beneficiary) {
-  const spend = api.tx.treasury.spend;
-  const args = [
-    buildAssetKindParam(spend),
-    bnValue.toFixed(),
-    buildBeneficiaryParam(spend, beneficiary),
-  ];
-
-  if (spend.meta.args.length > 3) {
-    args.push(null);
-  }
-
-  return spend(...args);
-}
-
-export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
+// The legacy flow, used while `modules.treasury.approvals` is true for a chain
+// (see next-common/utils/treasury/approvals.js).
+// `spend_local` writes the proposal into `Proposals`/`Approvals`, so it is
+// awarded automatically at the end of a spend period.
+export function useSpendLocalTreasuryPreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
   const { decimals } = useChainSettings();
 
@@ -86,30 +35,26 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
     }
 
     try {
-      let proposal;
-      if (api.tx.treasury?.spendLocal) {
-        proposal = buildSpendLocalCall(api, bnValue, beneficiary);
-      } else if (api.tx.treasury?.spend) {
-        proposal = buildSpendCall(api, bnValue, beneficiary);
-      } else {
-        return {};
-      }
+      const proposal = api.tx.treasury.spendLocal(
+        bnValue.toFixed(),
+        beneficiary,
+      );
       return getState(api, proposal);
     } catch (e) {
-      console.error("Failed to build treasury spend preimage:", e);
+      console.error("Failed to build treasury spend_local preimage:", e);
       return {};
     }
   }, [api, inputBalance, beneficiary, decimals]);
 }
 
-export default function NewLocalTreasuryProposalPopup() {
+export default function SpendLocalTreasuryProposalPopup() {
   const { onClose } = usePopupParams();
   const { value: inputBalance, component: balanceField } = useBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
 
   const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
-    useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
+    useSpendLocalTreasuryPreimageTx(inputBalance, beneficiary);
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>

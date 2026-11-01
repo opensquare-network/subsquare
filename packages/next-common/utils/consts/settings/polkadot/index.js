@@ -73,6 +73,9 @@ const polkadot = {
     treasury: {
       status: true,
       spends: true,
+      // The treasury migration is not live yet, keep the legacy approvals
+      // flow. Set to false to switch this chain to the new AssetHub spend flow.
+      approvals: true,
       childBounties: true,
       multiAssetBounties: true,
       tips: {
@@ -113,7 +116,6 @@ const polkadot = {
     fundMultiAssetBounty: true,
     usdxTreasuryProposal: true,
     batchUsdxTreasurySpendsProposal: true,
-    spendDotOnAssetHubProposal: true,
     cancelReferendum: true,
     killReferendum: true,
   },

@@ -7,7 +7,7 @@ import CreateProposalSubmitButton, {
 } from "../common/createProposalSubmitButton";
 import AdvanceSettings from "../common/advanceSettings";
 import Popup from "next-common/components/popup/wrapper/Popup";
-import { useSpendDotOnAssetHubPreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/spendDotOnAssetHubPopup";
+import { useLocatableAccountTreasuryPreimageTx } from "next-common/components/preImages/createPreimagePopup/templates/locatableAccountTreasuryProposalPopup";
 import useAssetHubDotBalanceField from "next-common/components/preImages/createPreimagePopup/fields/useAssetHubDotBalanceField";
 import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
 import useValidFromField from "next-common/components/preImages/createPreimagePopup/fields/useValidFromField";
@@ -19,7 +19,7 @@ import SigningTip from "../common/signingTip";
 import InsufficientBalanceTips from "../common/insufficientBalanceTips";
 import PreviousButton from "../../newProposalButton/previousButton";
 
-export function SpendDotOnAssetHubReferendumInnerPopupContent() {
+export function LocatableAccountTreasuryReferendumContent() {
   const { value: inputBalance, component: balanceField } =
     useAssetHubDotBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
@@ -31,7 +31,7 @@ export function SpendDotOnAssetHubReferendumInnerPopupContent() {
     useEnactmentBlocksField(trackId);
 
   const { encodedHash, encodedLength, notePreimageTx } =
-    useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
+    useLocatableAccountTreasuryPreimageTx(inputBalance, beneficiary, validFrom);
   const { goBack } = useStepContainer();
 
   const { isLoading, component: submitButton } = useCreateProposalSubmitButton({
@@ -86,7 +86,7 @@ function PopupContent() {
     useEnactmentBlocksField(trackId);
 
   const { encodedHash, encodedLength, notePreimageTx } =
-    useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
+    useLocatableAccountTreasuryPreimageTx(inputBalance, beneficiary, validFrom);
 
   return (
     <>
@@ -112,7 +112,7 @@ function PopupContent() {
   );
 }
 
-export function SpendDotOnAssetHubReferendumInnerPopup() {
+export function LocatableAccountTreasuryReferendumPopup() {
   const { onClose } = usePopupParams();
   const { symbol } = useChainSettings();
   return (

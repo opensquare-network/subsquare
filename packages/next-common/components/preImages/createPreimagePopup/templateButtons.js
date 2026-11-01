@@ -1,6 +1,5 @@
 import { ChoiceButton } from "next-common/components/summary/newProposalButton/common";
 import { InfoPopoular } from "@osn/icons/subsquare";
-import { useChainSettings } from "next-common/context/chain";
 
 export function FellowshipTreasurySpendButton({ onClick }) {
   return (
@@ -63,14 +62,9 @@ export function FundMultiAssetBountyButton({ onClick }) {
   );
 }
 
-export function SpendDotOnAssetHubButton({ onClick }) {
-  const { symbol } = useChainSettings();
+export function TreasuryProposalButton({ name, description, onClick }) {
   return (
-    <ChoiceButton
-      name={`${symbol} treasury proposal`}
-      description={`Create a treasury spend of ${symbol}`}
-      onClick={onClick}
-    />
+    <ChoiceButton name={name} description={description} onClick={onClick} />
   );
 }
 

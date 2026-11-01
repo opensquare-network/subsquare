@@ -52,6 +52,9 @@ const westend = {
     treasury: {
       spends: true,
       proposals: true,
+      // The treasury migration is not live yet, keep the legacy approvals
+      // flow. Set to false to switch this chain to the new AssetHub spend flow.
+      approvals: true,
       bounties: false,
       childBounties: false,
       tips: false,
@@ -64,7 +67,6 @@ const westend = {
   },
   treasuryProposalTracks: westendTreasuryTracks,
   newProposalQuickStart: {
-    spendDotOnAssetHubProposal: true,
     cancelReferendum: true,
     killReferendum: true,
   },

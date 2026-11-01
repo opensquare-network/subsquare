@@ -19,7 +19,12 @@ import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 
-export function useSpendDotOnAssetHubPreimageTx(
+// Used when a chain sets `modules.treasury.approvals` to false (see
+// next-common/utils/treasury/approvals.js). The treasury lives on
+// AssetHub, so `asset_kind` is a `VersionedLocatableAsset` and the beneficiary a
+// `VersionedLocatableAccount`. The spend is stored in `Spends` and claimed with
+// `payout`.
+export function useLocatableAccountTreasuryPreimageTx(
   inputBalance,
   beneficiary,
   validFrom,
@@ -63,7 +68,7 @@ function PopupContent() {
   const { value: validFrom, component: validFromField } = useValidFromField();
 
   const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
-    useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
+    useLocatableAccountTreasuryPreimageTx(inputBalance, beneficiary, validFrom);
 
   return (
     <>
@@ -89,7 +94,7 @@ function PopupContent() {
   );
 }
 
-export default function SpendDotOnAssetHubPopup() {
+export default function LocatableAccountTreasuryProposalPopup() {
   const { onClose } = usePopupParams();
   const { symbol } = useChainSettings();
   return (
