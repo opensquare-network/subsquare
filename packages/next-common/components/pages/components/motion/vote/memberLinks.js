@@ -27,16 +27,6 @@ function MemberLinks() {
       url: "/council/members",
       name: "tippers",
     };
-  } else if (detailPageCategory.TREASURY_COUNCIL_MOTION === type) {
-    obj = {
-      url: "/treasury-council/members",
-      name: "councilors",
-    };
-  } else if (detailPageCategory.OPEN_TECH_COMM_PROPOSAL === type) {
-    obj = {
-      url: "/open-techcomm/members",
-      name: "members",
-    };
   }
 
   if (!obj) {

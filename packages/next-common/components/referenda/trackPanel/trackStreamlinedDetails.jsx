@@ -57,15 +57,16 @@ function TrackStreamlinedDetails({ trackId, activeCount }) {
         <LineTitle title="Capacity" />
         <LineValue>
           <span>{activeCount}</span>
-          <SummaryGreyText> / {maxDeciding}</SummaryGreyText>
+          <SummaryGreyText>{` / ${maxDeciding ?? ""}`}</SummaryGreyText>
         </LineValue>
       </LineBox>
       <LineBox>
         <LineTitle title="Confirm Period" />
         <LineValue>
           <span>
-            {confirmPeriodBlockTime?.[0] || 0}
-            {confirmPeriodBlockTime[1]}
+            {`${confirmPeriodBlockTime?.[0] || 0}${
+              confirmPeriodBlockTime[1] ?? ""
+            }`}
           </span>
         </LineValue>
       </LineBox>
@@ -73,8 +74,9 @@ function TrackStreamlinedDetails({ trackId, activeCount }) {
         <LineTitle title="Prepare Period" />
         <LineValue>
           <span>
-            {preparePeriodBlockTime?.[0] || 0}
-            {preparePeriodBlockTime[1]}
+            {`${preparePeriodBlockTime?.[0] || 0}${
+              preparePeriodBlockTime[1] ?? ""
+            }`}
           </span>
         </LineValue>
       </LineBox>
@@ -82,8 +84,9 @@ function TrackStreamlinedDetails({ trackId, activeCount }) {
         <LineTitle title="Decision Period" />
         <LineValue>
           <span>
-            {decisionPeriodBlockTime?.[0] || 0}
-            {decisionPeriodBlockTime[1]}
+            {`${decisionPeriodBlockTime?.[0] || 0}${
+              decisionPeriodBlockTime[1] ?? ""
+            }`}
           </span>
         </LineValue>
       </LineBox>
@@ -91,8 +94,9 @@ function TrackStreamlinedDetails({ trackId, activeCount }) {
         <LineTitle title="Min Enact Period" />
         <LineValue>
           <span>
-            {minEnactPeriodBlockTime?.[0] || 0}
-            {minEnactPeriodBlockTime[1]}
+            {`${minEnactPeriodBlockTime?.[0] || 0}${
+              minEnactPeriodBlockTime[1] ?? ""
+            }`}
           </span>
         </LineValue>
       </LineBox>

@@ -20,7 +20,7 @@ export function NavigationItem() {
           "text12Medium text-navigationTextTertiary",
         )}
       >
-        {isMacOS ? "⌘" : "Ctrl +"} K
+        {`${isMacOS ? "⌘" : "Ctrl +"} K`}
       </span>
     </span>
   );

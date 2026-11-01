@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useContextApi } from "next-common/context/api";
 import { useCallback } from "react";
 import SecondaryButton from "next-common/lib/button/secondary";
@@ -73,10 +72,8 @@ function ClaimPayoutPopupContent() {
 
 export default function ClaimPayoutPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Claim Payout" onClose={onClose}>
-        <ClaimPayoutPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Claim Payout" onClose={onClose}>
+      <ClaimPayoutPopupContent />
+    </PopupWithSigner>
   );
 }

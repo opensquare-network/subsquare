@@ -1,0 +1,9 @@
+{
+  "name": "deepmerge",
+  "version": "4.3.2",
+  "description": "Patched copy of deepmerge 4.3.1 that denies prototype-polluting keys (CVE-2026-93753)",
+  "main": "dist/cjs.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "private": true
+}

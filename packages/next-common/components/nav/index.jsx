@@ -8,7 +8,7 @@ import { ArrowFold, SystemClose, SystemMenu } from "@osn/icons/subsquare";
 import Link from "next-common/components/link";
 import { useNavCollapsed } from "next-common/context/nav";
 import { useScrollLock } from "next-common/utils/hooks/useScrollLock";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import ChainLogo from "./logo";
 import Chains from "next-common/utils/consts/chains";
 import { useThemeSetting } from "next-common/context/theme";
@@ -16,6 +16,7 @@ import useDetectDevice from "next-common/components/header/hooks/useDetectDevice
 import { useMountedState } from "react-use";
 import { useIsMobileDevice } from "next-common/hooks/useIsMobileDevice";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
+import useMotionSupported from "next-common/hooks/useMotionSupported";
 
 export default function Nav() {
   const isMobileFromUA = useIsMobileDevice();
@@ -86,6 +87,7 @@ function NavDesktop() {
   const [navCollapsed, setNavCollapsed] = useNavCollapsed();
   const [contentCollapsed, setContentCollapsed] = useState(navCollapsed);
   const { navigationBgFrom, navigationBgTo } = useThemeSetting();
+  const motionSupported = useMotionSupported();
 
   const handleNavAnimationStart = () => {
     setContentCollapsed(false);
@@ -95,25 +97,43 @@ function NavDesktop() {
     setContentCollapsed(navCollapsed);
   };
 
+  // Without animations there is no animation callback to collapse the content,
+  // so collapse/expand it together with the nav (see useMotionSupported).
+  useEffect(() => {
+    if (!motionSupported) {
+      setContentCollapsed(navCollapsed);
+    }
+  }, [motionSupported, navCollapsed]);
+
+  const animationProps = motionSupported
+    ? {
+        initial: false,
+        animate: navCollapsed ? "collapsed" : "expanded",
+        variants: desktopNavVariants,
+        onAnimationStart: handleNavAnimationStart,
+        onAnimationComplete: handleNavAnimationComplete,
+      }
+    : {};
+  const NavContainer = motionSupported ? motion.nav : "nav";
+
   return (
-    <motion.nav
-      initial={false}
-      animate={navCollapsed ? "collapsed" : "expanded"}
-      variants={desktopNavVariants}
-      onAnimationStart={handleNavAnimationStart}
-      onAnimationComplete={handleNavAnimationComplete}
+    <NavContainer
+      {...animationProps}
       className={cn(
         "border-r border-neutral300",
         "max-w-[300px] max-sm:hidden h-full overflow-x-hidden overflow-y-scroll",
         "bg-navigationBg dark:bg-neutral100 text-navigationText",
         "scrollbar-hidden",
       )}
-      style={
-        navigationBgFrom &&
-        navigationBgTo && {
-          backgroundImage: `linear-gradient(180deg, ${navigationBgFrom}, ${navigationBgTo})`,
-        }
-      }
+      style={{
+        // Without animations the width has to be set directly (same values as
+        // desktopNavVariants, which motion would otherwise animate between).
+        ...(!motionSupported && { width: navCollapsed ? 72 : 300 }),
+        ...(navigationBgFrom &&
+          navigationBgTo && {
+            backgroundImage: `linear-gradient(180deg, ${navigationBgFrom}, ${navigationBgTo})`,
+          }),
+      }}
     >
       <div>
         <ChainLogo className="p-4 flex" />
@@ -145,7 +165,7 @@ function NavDesktop() {
       <div className="p-4">
         <NavMenu collapsed={contentCollapsed} />
       </div>
-    </motion.nav>
+    </NavContainer>
   );
 }
 
@@ -188,6 +208,16 @@ function NavMobile() {
   const [menuVisible, menuToggle] = useToggle(false);
   const [toolbarVisible, toolbarToggle] = useToggle(false);
   const [, setLocked] = useScrollLock();
+  const motionSupported = useMotionSupported();
+
+  const MenuFloatContainer = motionSupported
+    ? MotionNavMobileFloatContainer
+    : NavMobileFloatContainer;
+  const FloatContainerWrapper = motionSupported ? AnimatePresence : Fragment;
+  const menuAnimationProps = (variants) =>
+    motionSupported
+      ? { variants, initial: "hidden", animate: "visible", exit: "hidden" }
+      : {};
 
   useEffect(() => {
     if (menuVisible || toolbarVisible) {
@@ -239,33 +269,27 @@ function NavMobile() {
         </NavMobileToolbarItem>
       </div>
 
-      <AnimatePresence initial={false}>
+      <FloatContainerWrapper {...(motionSupported ? { initial: false } : {})}>
         {menuVisible && (
-          <MotionNavMobileFloatContainer
+          <MenuFloatContainer
             key="navigation-menu"
-            variants={leftMenuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            {...menuAnimationProps(leftMenuVariants)}
             className="bg-navigationBg"
           >
             <NavMenu />
-          </MotionNavMobileFloatContainer>
+          </MenuFloatContainer>
         )}
 
         {toolbarVisible && (
-          <MotionNavMobileFloatContainer
+          <MenuFloatContainer
             key="toolbar-menu"
-            variants={topMenuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
+            {...menuAnimationProps(topMenuVariants)}
             className="bg-neutral100"
           >
             <HeaderDrawer />
-          </MotionNavMobileFloatContainer>
+          </MenuFloatContainer>
         )}
-      </AnimatePresence>
+      </FloatContainerWrapper>
     </nav>
   );
 }

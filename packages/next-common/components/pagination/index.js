@@ -1,5 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import { isNil } from "lodash-es";
+import { SystemLoading } from "@osn/icons/subsquare";
+import { cn } from "next-common/utils/clsx";
 import PageCaret from "./caret";
 import Items from "./items";
 
@@ -57,6 +60,9 @@ export default function Pagination({
   onPageChange = null,
   shallow = false,
   buttonMode = false,
+  // Pass a boolean to switch the loading indicator on and off. Its slot is reserved even while
+  // it is hidden, so toggling it never moves the pager; leave it undefined to opt out entirely.
+  loading,
 }) {
   const totalPages = Math.ceil(total / pageSize)
     ? Math.ceil(total / pageSize)
@@ -92,6 +98,14 @@ export default function Pagination({
           buttonMode={buttonMode}
         />
       </Nav>
+      {!isNil(loading) && (
+        <SystemLoading
+          className={cn(
+            "w-4 h-4 [&_path]:stroke-textDisabled",
+            !loading && "invisible",
+          )}
+        />
+      )}
     </Wrapper>
   );
 }

@@ -78,6 +78,7 @@ function Header() {
   const realAddress = useRealAddress();
   const { nominators } = useMyStakingLedger();
   const width = useWindowWidthContext();
+  const hasNominations = !!nominators?.targets?.length;
 
   return (
     <div className="flex flex-col gap-2">
@@ -92,7 +93,7 @@ function Header() {
           nominator={realAddress}
         />
         <div className="flex gap-[16px] items-center">
-          <NominatorQuickActions />
+          <NominatorQuickActions hasNominations={hasNominations} />
         </div>
       </div>
     </div>
@@ -102,6 +103,8 @@ function Header() {
 function StakingBalance() {
   const { loading, total, active, unlocking, unlocked, unlockingEntries } =
     useStakingBalance();
+  const { nominators } = useMyStakingLedger();
+  const hasNominations = !!nominators?.targets?.length;
 
   return (
     <div className="flex flex-col gap-2">
@@ -109,7 +112,7 @@ function StakingBalance() {
         className="w-[300px] [&>*:not(:last-child)]:mb-1"
         labelItem={
           <AccountBalanceItem
-            title="In nominating"
+            title={hasNominations ? "In nominating" : "In staking"}
             value={total?.toString() || 0}
             isLoading={loading}
           />

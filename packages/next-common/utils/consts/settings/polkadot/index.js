@@ -11,6 +11,7 @@ import polkadotCommonCfg, {
   polkadotAssethubMigration,
 } from "next-common/utils/consts/settings/polkadot/common";
 import { polkadotAssethubPreimageSettings } from "next-common/utils/consts/settings/common/preimage/polkadot";
+import { polkadotDotnsDeployment } from "next-common/utils/consts/settings/common/dotns";
 import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
 import {
   ProjectLogoPolkadotDark as ProjectIconPolkadotDark,
@@ -56,6 +57,8 @@ const polkadot = {
     },
   },
   hasMultisig: true,
+  // pallet-revive, the EVM runtime running on the Asset Hub.
+  hasRevive: true,
   multisigApiPrefix: "ahp-gh-api",
   relayChainMultisigApiPrefix: "dot-multisig-api",
   useVoteCall: true,
@@ -95,7 +98,11 @@ const polkadot = {
     vesting: true,
     whitelist: true,
     staking: true,
+    dap: true,
+    dotusd: true,
+    dotns: true,
   }),
+  dotns: polkadotDotnsDeployment,
   integrations: {
     doTreasury: true,
     statescan: true,

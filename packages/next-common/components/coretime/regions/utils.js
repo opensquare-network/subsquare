@@ -55,13 +55,25 @@ export function createInterlaceMask(mask, inputParts) {
 
   const regionMask = hexToBn(mask);
   const bitLength = hexToU8a(mask).length * 8;
+  const totalParts = countRegionMaskBits(mask);
+  const partsToTake = parts.toNumber();
+  // Take evenly spaced parts, so the two regions take turns across the timeslice
+  // instead of splitting it into contiguous halves.
+  const takenPartIndexes = new Set();
+  for (let part = 0; part < partsToTake; part += 1) {
+    takenPartIndexes.add(Math.floor((part * totalParts) / partsToTake));
+  }
+
   const pivot = new BN(0);
-  let remainingParts = parts.toNumber();
-  for (let bit = bitLength - 1; bit >= 0 && remainingParts > 0; bit -= 1) {
-    if (regionMask.testn(bit)) {
-      pivot.setn(bit, true);
-      remainingParts -= 1;
+  let partIndex = 0;
+  for (let bit = bitLength - 1; bit >= 0; bit -= 1) {
+    if (!regionMask.testn(bit)) {
+      continue;
     }
+    if (takenPartIndexes.has(partIndex)) {
+      pivot.setn(bit, true);
+    }
+    partIndex += 1;
   }
 
   return bnToHex(pivot, { bitLength });

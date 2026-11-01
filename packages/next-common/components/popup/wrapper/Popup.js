@@ -6,6 +6,7 @@ import { cn } from "next-common/utils";
 import { SystemClose } from "@osn/icons/subsquare";
 import CommonPopupProvider from "next-common/context/popup";
 import PopupContainer from "./container";
+import PopupDialogRoot from "./root";
 import useDetectDevice from "next-common/components/header/hooks/useDetectDevice";
 
 let z = 999;
@@ -41,7 +42,7 @@ export default function Popup({
 
   return (
     <CommonPopupProvider onClose={onClose}>
-      <Dialog.Root open>
+      <PopupDialogRoot>
         <Dialog.Portal container={container}>
           <Dialog.Overlay />
           <Dialog.Content asChild onOpenAutoFocus={(e) => e.preventDefault()}>
@@ -95,7 +96,7 @@ export default function Popup({
             </PopupContainer>
           </Dialog.Content>
         </Dialog.Portal>
-      </Dialog.Root>
+      </PopupDialogRoot>
     </CommonPopupProvider>
   );
 }

@@ -13,7 +13,6 @@ import {
   isHydrationChain,
 } from "next-common/utils/chain";
 import KusamaTreasuryStats from "./kusamaTreasuryStats";
-import HydrationTreasuryStats from "./hydrationTreasuryStats";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import OnlyChain from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
@@ -21,6 +20,12 @@ import EcoNews from "./ecoNews";
 
 const MultipleColumnCard = dynamicClientOnly(() =>
   import("./fellowship/multipleColumnCard"),
+);
+
+// Loaded on demand: it pulls in @galacticcouncil/sdk and the hydradx math .wasm files
+// (~600KB), which would otherwise be part of the home page bundle on every chain.
+const HydrationTreasuryStats = dynamicClientOnly(() =>
+  import("./hydrationTreasuryStats"),
 );
 
 const AccountInfo = dynamicClientOnly(() => import("./accountInfo"));

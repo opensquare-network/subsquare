@@ -1,7 +1,6 @@
-import camelCase from "lodash.camelcase";
 import { Binary } from "polkadot-api";
 import { getTypeName, normalizeOriginalTypeName } from "./typeName.mjs";
-import { isNil } from "lodash-es";
+import { camelCase, isNil } from "lodash-es";
 
 function makeNode(typeName, opts) {
   return Object.assign({ type: typeName }, opts || {});

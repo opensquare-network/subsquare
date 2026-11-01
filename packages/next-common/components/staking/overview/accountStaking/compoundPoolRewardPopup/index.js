@@ -2,8 +2,7 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import EstimatedGas from "next-common/components/estimatedGas";
 import BalanceField from "next-common/components/popup/fields/balanceField";
 import Signer from "next-common/components/popup/fields/signerField";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import { useContextApi } from "next-common/context/api";
 import { useChainSettings } from "next-common/context/chain";
@@ -14,7 +13,11 @@ import { useMyPoolRewardContext } from "next-common/context/staking/poolReward";
 function CompoundPoolRewardPopupContent() {
   const api = useContextApi();
   const { decimals, symbol } = useChainSettings();
-  const { claimable, loading: isClaimableLoading } = useMyPoolRewardContext();
+  const {
+    claimable,
+    loading: isClaimableLoading,
+    refresh,
+  } = useMyPoolRewardContext();
 
   const getTxFunc = useCallback(async () => {
     return api?.tx.nominationPools?.bondExtra({
@@ -41,6 +44,7 @@ function CompoundPoolRewardPopupContent() {
         <TxSubmissionButton
           disabled={isClaimableLoading || !hasClaimable}
           getTxFunc={getTxFunc}
+          onInBlock={refresh}
         />
       </div>
     </div>
@@ -49,10 +53,8 @@ function CompoundPoolRewardPopupContent() {
 
 export default function CompoundPoolRewardPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Compound Reward" onClose={onClose}>
-        <CompoundPoolRewardPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Compound Reward" onClose={onClose}>
+      <CompoundPoolRewardPopupContent />
+    </PopupWithSigner>
   );
 }

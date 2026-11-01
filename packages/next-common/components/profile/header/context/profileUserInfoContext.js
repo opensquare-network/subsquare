@@ -4,9 +4,11 @@ import useProfileAddress from "next-common/components/profile/useProfileAddress"
 
 const ProfileUserInfoContext = createContext();
 
-export default function ProfileUserInfoProvider({ children }) {
-  const address = useProfileAddress();
-  const { user, isLoading, fetch } = useFetchUserInfo(address);
+export default function ProfileUserInfoProvider({ children, address }) {
+  const profileAddress = useProfileAddress();
+  const { user, isLoading, fetch } = useFetchUserInfo(
+    address ?? profileAddress,
+  );
 
   return (
     <ProfileUserInfoContext.Provider value={{ user, isLoading, fetch }}>

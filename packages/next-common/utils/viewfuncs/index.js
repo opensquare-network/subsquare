@@ -5,7 +5,6 @@ import { detailPageCategory } from "../consts/business/category";
 import { getMotionId } from "next-common/utils/motion";
 import { getTitle } from "next-common/utils/post";
 import {
-  advisoryCommitteeBaseUrl,
   childBountyBaseUrl,
   communityMotionBaseUrl,
 } from "next-common/utils/postBaseUrl";
@@ -13,6 +12,7 @@ import { getPostLastActivityAt } from "next-common/utils/viewfuncs/postUpdatedTi
 import { isAddress } from "@polkadot/util-crypto";
 import { isNil } from "lodash-es";
 import { getChildBountyIndex } from "./treasury/childBounty";
+export { getEffectiveNumbers } from "./getEffectiveNumbers";
 
 export function toApiType(type) {
   // Open Gov
@@ -74,27 +74,7 @@ export function toApiType(type) {
     return "financial-motions";
   }
 
-  // Zeitgeist
-  if (type === detailPageCategory.ADVISORY_MOTION) {
-    return "advisory-motions";
-  }
-
   return type;
-}
-
-export function getEffectiveNumbers(n) {
-  const result = [];
-  let flag = false;
-  n.toString()
-    .split("")
-    .reverse()
-    .forEach((dig) => {
-      if (!isNaN(parseInt(dig))) {
-        flag = flag || parseInt(dig) > 0;
-        flag && result.push(dig);
-      }
-    });
-  return result.reverse().join();
 }
 
 export function abbreviateBigNumber(x, fixed = 2) {
@@ -164,17 +144,6 @@ export const toFinancialMotionsListItem = (item) => {
     time: getPostLastActivityAt(item),
   };
 };
-
-export const toAdvisoryMotionsListItem = (item) => ({
-  ...item,
-  index: item.motionIndex,
-  title: getTitle(item),
-  author: item.author,
-  address: item.proposer,
-  status: item.state ?? "Unknown",
-  detailLink: `${advisoryCommitteeBaseUrl}/${getMotionId(item)}`,
-  time: getPostLastActivityAt(item),
-});
 
 export const toCommunityMotionsListItem = (item) => ({
   ...item,
