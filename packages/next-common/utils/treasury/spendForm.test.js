@@ -33,9 +33,23 @@ describe("getTreasurySpendForm", () => {
     );
   });
 
-  it("has no popup for asset kinds that are not implemented", () => {
-    expect(getTreasurySpendForm(Chains.hyperBridge, approvalsOff)).toBe(
-      TREASURY_SPEND_FORMS.unsupported,
-    );
+  it("has no popup for chains without a spend call or a treasury pallet", () => {
+    for (const chain of [
+      Chains.hyperBridge,
+      Chains.astar,
+      Chains.shibuya,
+      Chains.crust,
+      Chains.collectives,
+      Chains.polkadotPeople,
+      Chains.interlay,
+      // not classified yet, so no popup is better than a broken call
+      Chains.phala,
+      Chains.kintsugi,
+      Chains.polkadotAssetHub,
+    ]) {
+      expect(getTreasurySpendForm(chain, approvalsOff)).toBe(
+        TREASURY_SPEND_FORMS.unsupported,
+      );
+    }
   });
 });

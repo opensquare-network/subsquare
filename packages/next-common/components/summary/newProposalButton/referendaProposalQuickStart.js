@@ -112,13 +112,16 @@ const useQuickStartItems = () => {
         break;
       case TREASURY_SPEND_FORMS.unsupported:
         break;
-      default:
+      case TREASURY_SPEND_FORMS.spendLocal:
         items.push({
           name: "Treasury proposal",
           description:
             "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
           content: NewTreasuryReferendumInnerPopupContent,
         });
+        break;
+      default:
+        break;
     }
     items.push({
       name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
