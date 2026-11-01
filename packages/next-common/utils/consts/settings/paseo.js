@@ -45,6 +45,9 @@ const paseo = {
     fellowship: false,
     treasury: {
       spends: true,
+      // The treasury migration is not live yet, keep the legacy approvals
+      // flow. Set to false to switch this chain to the new AssetHub spend flow.
+      approvals: true,
       childBounties: true,
       tips: false,
       multiAssetBounties: true,
@@ -63,9 +66,6 @@ const paseo = {
     subscan: true,
   },
   treasuryProposalTracks: paseoTreasuryTracks,
-  newProposalQuickStart: {
-    spendDotOnAssetHubProposal: true,
-  },
   sima: true,
   ...paseoThemeVars,
   multisigWallets: {

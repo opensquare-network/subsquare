@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { useTreasuryPallet } from "next-common/context/treasury";
 import { useContextApi } from "next-common/context/api";
+import { useChainSettings } from "next-common/context/chain";
+import { hasTreasuryApprovals } from "next-common/utils/treasury/approvals";
 
 function hasLegacyProposalStorage(palletQuery) {
   return palletQuery?.approvals && palletQuery?.proposals;
@@ -9,13 +11,14 @@ function hasLegacyProposalStorage(palletQuery) {
 export default function useToBeAwarded() {
   const api = useContextApi();
   const pallet = useTreasuryPallet();
+  const hasApprovals = hasTreasuryApprovals(useChainSettings());
   const [toBeAwarded, setToBeAwarded] = useState();
 
   const palletQuery = api?.query?.[pallet];
   const fetchToBeAwarded = useCallback(async () => {
-    // `Proposals`/`Approvals` were removed from the treasury pallet, so when the
-    // metadata no longer contains them, nothing can be pending award.
-    if (!hasLegacyProposalStorage(palletQuery)) {
+    // Chains on the AssetHub spend flow have no approvals, and when the
+    // metadata no longer contains the storage, nothing can be pending award.
+    if (!hasApprovals || !hasLegacyProposalStorage(palletQuery)) {
       setToBeAwarded(0n);
       return;
     }
@@ -44,7 +47,7 @@ export default function useToBeAwarded() {
     } catch (error) {
       console.error("Error fetching to be awarded proposals:", error);
     }
-  }, [palletQuery]);
+  }, [palletQuery, hasApprovals]);
 
   useEffect(() => {
     if (!api) {

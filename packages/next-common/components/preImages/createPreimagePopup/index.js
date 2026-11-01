@@ -1,20 +1,20 @@
 import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
 import MainPopup from "./mainPopup";
-import NewLocalTreasuryProposalPopup from "./templates/newLocalTreasuryProposalPopup";
+import SpendLocalTreasuryProposalPopup from "./templates/spendLocalTreasuryProposalPopup";
+import LocatableAccountTreasuryProposalPopup from "./templates/locatableAccountTreasuryProposalPopup";
+import UnitAssetTreasuryProposalPopup from "./templates/unitAssetTreasuryProposalPopup";
 import NewUSDxTreasuryProposalPopup from "./templates/newUSDxTreasuryProposalPopup";
 import NewRemarkProposalPopup from "./templates/newRemarkProposalPopup";
 import CancelReferendumPopup from "./templates/cancelReferendumPopup";
 import NewFellowshipTreasuryProposalPopup from "./templates/newFellowshipTreasuryProposalPopup";
 import NewFellowshipUSDxTreasuryProposalPopup from "./templates/newFellowshipUSDxTreasuryProposalPopup";
-import SpendDotOnAssetHubPopup from "./templates/spendDotOnAssetHubPopup";
 import KillReferendumPopup from "./templates/killReferendumPopup";
 import FundMultiAssetBountyPopup from "./templates/fundMultiAssetBountyPopup";
 import {
-  SpendLocalTreasuryButton,
   FellowshipTreasurySpendButton,
   FellowshipUSDxTreasurySpendButton,
   SpendUSDxTreasuryButton,
-  SpendDotOnAssetHubButton,
+  TreasuryProposalButton,
   NewRemarkButton,
   CancelReferendumButton,
   KillReferendumButton,
@@ -28,6 +28,10 @@ import {
   isShibuyaChain,
 } from "next-common/utils/chain";
 import { useChain, useChainSettings } from "next-common/context/chain";
+import {
+  TREASURY_SPEND_FORMS,
+  getTreasurySpendForm,
+} from "next-common/utils/treasury/spendForm";
 import ForwardPopupProvider, {
   useForwardPopupContext,
 } from "next-common/context/forwardPopup";
@@ -43,20 +47,42 @@ export function QuickStart({ children }) {
   );
 }
 
-function SpendLocalTreasury() {
+function TreasuryProposal() {
   const { setForwardPopup } = useForwardPopupContext();
-  const { newProposalQuickStart: { spendDotOnAssetHubProposal } = {} } =
-    useChainSettings();
+  const settings = useChainSettings();
+  const chain = useChain();
+  const { symbol } = settings;
 
-  if (spendDotOnAssetHubProposal) {
-    return null;
+  switch (getTreasurySpendForm(chain, settings)) {
+    case TREASURY_SPEND_FORMS.locatableAccount:
+      return (
+        <TreasuryProposalButton
+          name={`${symbol} treasury proposal`}
+          description={`Create a treasury spend of ${symbol}`}
+          onClick={() =>
+            setForwardPopup(<LocatableAccountTreasuryProposalPopup />)
+          }
+        />
+      );
+    case TREASURY_SPEND_FORMS.unitAsset:
+      return (
+        <TreasuryProposalButton
+          name={`${symbol} treasury proposal`}
+          description={`Create a treasury spend of ${symbol}`}
+          onClick={() => setForwardPopup(<UnitAssetTreasuryProposalPopup />)}
+        />
+      );
+    case TREASURY_SPEND_FORMS.unsupported:
+      return null;
+    default:
+      return (
+        <TreasuryProposalButton
+          name="Treasury proposal local"
+          description="Create a treasury spend of native token that is locally available"
+          onClick={() => setForwardPopup(<SpendLocalTreasuryProposalPopup />)}
+        />
+      );
   }
-
-  return (
-    <SpendLocalTreasuryButton
-      onClick={() => setForwardPopup(<NewLocalTreasuryProposalPopup />)}
-    />
-  );
 }
 
 function FellowshipTreasurySpend() {
@@ -111,24 +137,6 @@ function SpendUSDxTreasury() {
   return (
     <SpendUSDxTreasuryButton
       onClick={() => setForwardPopup(<NewUSDxTreasuryProposalPopup />)}
-    />
-  );
-}
-
-function SpendDotOnAssetHub() {
-  const { setForwardPopup } = useForwardPopupContext();
-  const {
-    treasuryProposalTracks,
-    newProposalQuickStart: { spendDotOnAssetHubProposal } = {},
-  } = useChainSettings();
-
-  if (!treasuryProposalTracks || !spendDotOnAssetHubProposal) {
-    return null;
-  }
-
-  return (
-    <SpendDotOnAssetHubButton
-      onClick={() => setForwardPopup(<SpendDotOnAssetHubPopup />)}
     />
   );
 }
@@ -207,11 +215,10 @@ function ProposalTemplateQuickStart() {
       {isCollectivesChain(chain) && <FellowshipUSDxTreasurySpend />}
       {isHydrationChain(chain) && <HydrationTreasurySpend />}
       <SpendUSDxTreasury />
-      <SpendDotOnAssetHub />
       <BatchTreasurySpend />
       <FundMultiAssetBounty />
       {!isCollectivesChain(chain) && !isShibuyaChain(chain) && (
-        <SpendLocalTreasury />
+        <TreasuryProposal />
       )}
       <NewRemark />
       <CancelReferendum />
