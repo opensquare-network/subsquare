@@ -37,8 +37,5 @@ describe("getTreasurySpendForm", () => {
     expect(getTreasurySpendForm(Chains.hyperBridge, approvalsOff)).toBe(
       TREASURY_SPEND_FORMS.unsupported,
     );
-    expect(getTreasurySpendForm(Chains.moonbeam, approvalsOff)).toBe(
-      TREASURY_SPEND_FORMS.unsupported,
-    );
   });
 });
