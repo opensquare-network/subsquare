@@ -74,7 +74,7 @@ function TreasuryProposal() {
       );
     case TREASURY_SPEND_FORMS.unsupported:
       return null;
-    default:
+    case TREASURY_SPEND_FORMS.spendLocal:
       return (
         <TreasuryProposalButton
           name="Treasury proposal local"
@@ -82,6 +82,8 @@ function TreasuryProposal() {
           onClick={() => setForwardPopup(<SpendLocalTreasuryProposalPopup />)}
         />
       );
+    default:
+      return null;
   }
 }
 

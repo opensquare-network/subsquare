@@ -13,14 +13,17 @@
 //     spend_local, spend(VersionedLocatableAsset, VersionedLocatableAccount)
 // - polkadot relay, kusama relay:
 //     spend_local, spend(VersionedLocatableAsset, VersionedLocation)
-// - hydradx, hydradx-testnet, bifrost, bifrost-polkadot, acala, karura,
-//   altair, darwinia2, vara, zkverify, litentry:
+// - acala, karura, bifrost, bifrost-polkadot, basilisk, hydradx,
+//   hydradx-testnet, altair, litentry, vara, zkverify, zkverify-testnet:
 //     spend_local, spend((), AccountId32)
 // - acurast: spend_local, spend((), MultiAddress)
+// - darwinia2: spend_local, spend((), AccountId20)
 // - hyperbridge: spend_local, spend(H256, AccountId32)
 // - astar, shibuya, crust: neither, only propose_spend/approve_proposal
 // - collectives, westend-collectives, polkadot-people, kusama-people,
-//   interlay: no treasury pallet
+//   westend-people, kusama-coretime, interlay: no treasury pallet
+// - calamari, crab, khala, kintsugi, laos, laos-testnet, litmus, phala,
+//   polkadex, turing, rococo, kabocha: not verified yet, see spendForm.js
 //
 // The AssetHub migration is not live yet, so every chain keeps the default of
 // `approvals: true`. Set `modules.treasury.approvals` to false on a chain to
