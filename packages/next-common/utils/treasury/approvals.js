@@ -14,11 +14,9 @@
 // - polkadot relay, kusama relay:
 //     spend_local, spend(VersionedLocatableAsset, VersionedLocation)
 // - hydradx, hydradx-testnet, bifrost, bifrost-polkadot, acala, karura,
-//   centrifuge, altair, darwinia2, vara, zkverify, litentry:
+//   altair, darwinia2, vara, zkverify, litentry:
 //     spend_local, spend((), AccountId32)
 // - acurast: spend_local, spend((), MultiAddress)
-// - moonbeam, moonriver: spend_local, spend(NativeOrWithId, AccountId20)
-// - ajuna: spend_local, spend(NativeOrWithId, AccountId32)
 // - hyperbridge: spend_local, spend(H256, AccountId32)
 // - astar, shibuya, crust: neither, only propose_spend/approve_proposal
 // - collectives, westend-collectives, polkadot-people, kusama-people,

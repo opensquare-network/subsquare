@@ -12,11 +12,9 @@ import { hasTreasuryApprovals } from "./approvals";
 // | polkadot relay, kusama relay          | VersionedLocatableAsset | VersionedLocation         |
 // | hydradx, hydradx-testnet, bifrost,    |                         |                           |
 // | bifrost-polkadot, acala, karura,      | ()                      | AccountId32               |
-// | centrifuge, altair, darwinia2, vara,  |                         |                           |
-// | zkverify, litentry                    |                         |                           |
+// | altair, darwinia2, vara, zkverify,    |                         |                           |
+// | litentry                              |                         |                           |
 // | acurast                               | ()                      | MultiAddress              |
-// | moonbeam, moonriver                   | NativeOrWithId          | AccountId20               |
-// | ajuna                                 | NativeOrWithId          | AccountId32               |
 // | hyperbridge                           | H256                    | AccountId32               |
 //
 // A chain that still has approvals keeps using `spend_local(amount,
@@ -28,7 +26,7 @@ export const TREASURY_SPEND_FORMS = {
   locatableAccount: "locatableAccount",
   // spend((), amount, account, validFrom)
   unitAsset: "unitAsset",
-  // asset kinds without a popup yet: VersionedLocation, NativeOrWithId, H256
+  // asset kinds without a popup yet, e.g. H256 on hyperbridge
   unsupported: "unsupported",
 };
 
@@ -37,9 +35,6 @@ const spendFormByChain = {
   [Chains.kusama]: TREASURY_SPEND_FORMS.locatableAccount,
   [Chains.westend]: TREASURY_SPEND_FORMS.locatableAccount,
   [Chains.paseo]: TREASURY_SPEND_FORMS.locatableAccount,
-  [Chains.moonbeam]: TREASURY_SPEND_FORMS.unsupported,
-  [Chains.moonriver]: TREASURY_SPEND_FORMS.unsupported,
-  [Chains.ajuna]: TREASURY_SPEND_FORMS.unsupported,
   [Chains.hyperBridge]: TREASURY_SPEND_FORMS.unsupported,
 };
 
