@@ -5,24 +5,21 @@ All notable changes to this project will be documented in this file.
 # 6.10.0
 
 Date:
-2026-11-02. [Code diff](https://github.com/opensquare-network/subsquare/compare/53d8a36eedcb042f95ec2e3882a8d87cf744ffd5...e5b29959afc85999a020a10228193d2bd1410db6).
+2026-10-31. [Code diff](https://github.com/opensquare-network/subsquare/compare/53d8a36eedcb042f95ec2e3882a8d87cf744ffd5...d001e89bc3a7e5481fafddbd1814126525230ecc).
 
 - [Big] dotUSD on Polkadot: add the dotUSD page with the account panel and external asset balances, minting,
   redeeming and swapping. Add mint/redeem records, 24h stats, swap pool list, holders and issuance charts to the
-  overview, watch balances on best blocks, and mark approximated amounts in swap summaries. Related backend APIs
-  and scan jobs are included.
+  overview, watch balances on best blocks, and mark approximated amounts in swap summaries. The related backend
+  APIs (PSM events, 24h stats and holders/issuance) and scan jobs (PSM events and backfill, holders/issuance
+  statistics and the supply history fix) are included.
 - [Medium] Coretime:
   - Add a renewal column showing the renewal due date or auto-renewal information.
   - Add my coretime to the overview.
   - Add the pool page with pool size chart, contributions, claim revenue and on-demand data.
 - [Medium] DAP: add the Dynamic Allocation Pool page with supply, allocation, supply history and supply projection.
-  Related backend API and scan job are included.
+  It is backed by a new total issuance API and scan job.
 - [Medium] Treasury:
-  - Add the asset filter to the treasury spends list, enabled on Polkadot.
-  - Handle the treasury pallet changes that remove spend_local and remove_approval, including preimage templates,
-    approvals, deposits and spend period tips.
-  - Disable the spend Payout button as soon as the payout tx is in block, instead of waiting for finalization or
-    the scanner.
+  - Add the asset filter to the treasury spends list, enabled on Polkadot, with the backing backend API.
   - Fix the expired spend counter, and show a tooltip when hovering the spends notification counter.
   - Serve invalid spend ids as missing posts and stop reporting the resulting 404s.
 - [Medium] Staking:
@@ -37,13 +34,14 @@ Date:
     banner finishes loading.
   - Hide the relatives transfer view.
 - [Medium] Content and discussions:
-  - Show revision history for posts, appendants and comments. Related backend API is included.
-  - Allow muting users so they cannot create or edit content. Related backend API is included.
+  - Show revision history for posts, appendants and comments, backed by a new backend API.
+  - Allow muting users so they cannot create or edit content, including backend enforcement.
   - Render delegation announcements whose content is not plain text.
 - [Medium] Referenda and delegation:
   - Split large delegation/undelegation and clear-expired-votes batches by block weight, submit the transactions
     sequentially, and refresh my delegations at the best block right after a transaction is in block.
   - Fix the PAPI migration of currency locked by vesting, and the V5/para-relay call decoding.
+  - Improve whitelist call parsing/logging and the linking between OpenGov and fellowship referenda in scan.
 - Call data: add a call tree style JSON view and improve preimage decoding performance.
 - UI/UX:
   - Make popups non-modal to avoid the Radix body style crash.
@@ -54,29 +52,23 @@ Date:
   - Keep ethers and the Polkadot Vault QR libraries out of the first load.
   - Load the Hydration treasury stats widget on demand with its own error boundary.
   - Optimize dotUSD summary loading.
-- Reliability: add canvas context fallbacks for chart.js so pages do not break on headless browsers (e.g.
-  Lightpanda), skip sidebar animations where SVGElement is missing, and skip client error reports from crawlers.
+  - Reduce intime scan memory usage with paged voting reads, streamed vote refresh, a bounded block API cache and
+    garbage collection during refreshes.
+- Reliability:
+  - Add a canvas measureText fallback for chart.js so pages do not break on headless browsers (e.g. Lightpanda).
+  - Skip sidebar animations where SVGElement is missing, and skip client error reports from crawlers.
+  - Fix general v5 transaction decoding in the intime scan, and restart a slow scan after a runtime upgrade.
 - Bug fixes:
   - Fix the multi-asset bounty curator rendering crash.
   - Fix the number formatter that mangled amounts below 100,000.
   - Fix a crash when leaving the signup page, and guard invalid proposal ids.
   - Fix the Polkadot key registration check.
-- Security: fix Dependabot alerts and upgrade dompurify, next, sharp, sanitize-html, follow-redirects, vite,
-  source-map-js, decode-uri-component, fast-uri and zod; vendor a patched deepmerge.
-- Chain maintenance: remove moonriver/moonbeam, centrifuge, ajuna and zeitgeist chain code.
-- Backend:
-  - Add DAP total issuance, PSM event, dotUSD 24h stats, and dotUSD holders/issuance daily stats APIs.
-  - Add treasury spends filtering by asset and proposal/appendant revision history APIs.
-  - Implement user muting, and rate limit auth emails per recipient, email type and IP.
-  - Remove moonriver/moonbeam, centrifuge, ajuna and zeitgeist chain code.
-- Scan:
-  - Add total issuance scanning, and dotUSD holders/issuance statistics.
-  - Handle PSM mint/redeem events and add a backfill script.
-  - Improve whitelist call parsing/logging and the linking between OpenGov and fellowship referenda.
-  - Fix general v5 transaction decoding in the intime scan, and restart a slow scan after a runtime upgrade.
-  - Reduce intime scan memory usage with paged voting reads, streamed vote refresh, a bounded block API cache and
-    garbage collection during refreshes.
-  - Fix the dotUSD supply history numbers.
+- Security and hardening:
+  - Fix Dependabot alerts and upgrade dompurify, next, sharp, sanitize-html, follow-redirects, vite, source-map-js,
+    decode-uri-component, fast-uri and zod; vendor a patched deepmerge.
+  - Rate limit auth email sending per recipient, email type and IP.
+- Chain maintenance: remove moonriver/moonbeam, centrifuge, ajuna and zeitgeist chain code from the frontend and
+  backend.
 - Upgrade dependencies.
 
 # 6.9.0
