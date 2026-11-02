@@ -8,14 +8,18 @@ import { cn } from "next-common/utils";
 import { noop } from "@polkadot/util";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
 import Tooltip from "next-common/components/tooltip";
+import { useTreasuryPallet } from "next-common/context/treasury";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
 export default function TreasurySpendPay() {
   const [showPopup, setShowPopup] = useState(false);
   const [payoutLoading, setPayoutLoading] = useState(false);
+  const [payoutDone, setPayoutDone] = useState(false);
   const flowStartedRef = useRef(false);
   const state = usePostState();
+  const pallet = useTreasuryPallet();
+  const { index } = useOnchainData() || {};
 
   if (["Paid", "Processed"].includes(state)) {
     return null;
@@ -37,10 +41,35 @@ export default function TreasurySpendPay() {
     setPayoutLoading(false);
   };
 
+  const onPayoutInBlock = ({ events = [] } = {}) => {
+    stopPayoutLoading();
+
+    // `onInBlock` also fires when a multisig approval is included without
+    // executing the payout, so only react to the actual Paid event.
+    const paid = events.some(
+      ({ event }) =>
+        event.section === pallet &&
+        event.method === "Paid" &&
+        Number(event.data[0]?.toString()) === Number(index),
+    );
+
+    if (paid) {
+      // The spend is removed from on-chain storage in this block, but it takes
+      // a moment for the subscription (and the scanner) to reflect that.
+      // Disable the button right away so it can not be clicked again after a
+      // successful payout.
+      setPayoutDone(true);
+    }
+  };
+
   return (
     <>
-      <ExpiredGuard onOpen={onOpen}>
-        <PayoutContent onOpen={onOpen} payoutLoading={payoutLoading} />
+      <ExpiredGuard onOpen={onOpen} payoutDone={payoutDone}>
+        <PayoutContent
+          onOpen={onOpen}
+          payoutLoading={payoutLoading}
+          payoutDone={payoutDone}
+        />
       </ExpiredGuard>
       {showPopup && (
         <Popup
@@ -49,7 +78,7 @@ export default function TreasurySpendPay() {
             flowStartedRef.current = true;
             setPayoutLoading(true);
           }}
-          onInBlock={stopPayoutLoading}
+          onInBlock={onPayoutInBlock}
           onTxError={stopPayoutLoading}
           onCancelled={stopPayoutLoading}
         />
@@ -58,12 +87,20 @@ export default function TreasurySpendPay() {
   );
 }
 
-function ExpiredGuard({ children, onOpen = noop }) {
+function ExpiredGuard({ children, onOpen = noop, payoutDone = false }) {
   const latestHeight = useAhmLatestHeight();
   const { meta } = useOnchainData() || {};
   const { expireAt } = meta || {};
 
   if (expireAt && latestHeight >= expireAt) {
+    if (payoutDone) {
+      return (
+        <div className="text14Medium text-textSecondary">
+          This treasury spend has been paid.
+        </div>
+      );
+    }
+
     return (
       <div className="text14Medium text-textSecondary">
         This treasury spend is expired,{" "}
@@ -80,7 +117,11 @@ function ExpiredGuard({ children, onOpen = noop }) {
   }
 }
 
-function PayoutContent({ onOpen = noop, payoutLoading = false }) {
+function PayoutContent({
+  onOpen = noop,
+  payoutLoading = false,
+  payoutDone = false,
+}) {
   const { index, meta } = useOnchainData() || {};
   const latestHeight = useAhmLatestHeight();
   const { spend: onchainStatus, loading } = useSubTreasurySpend(index);
@@ -91,7 +132,10 @@ function PayoutContent({ onOpen = noop, payoutLoading = false }) {
   let tooltipContent;
   let isDisabled = !isQueryDone;
 
-  if (isNil(onchainStatus) && !loading) {
+  if (payoutDone) {
+    isDisabled = true;
+    tooltipContent = "This treasury spend has been paid";
+  } else if (isNil(onchainStatus) && !loading) {
     isDisabled = true;
     tooltipContent = "Can not find on chain info";
   } else if (isQueryDone && latestHeight < validFrom) {
