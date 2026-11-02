@@ -2,6 +2,83 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.10.0
+
+Date:
+2026-11-02. [Code diff](https://github.com/opensquare-network/subsquare/compare/53d8a36eedcb042f95ec2e3882a8d87cf744ffd5...e5b29959afc85999a020a10228193d2bd1410db6).
+
+- [Big] dotUSD on Polkadot: add the dotUSD page with the account panel and external asset balances, minting,
+  redeeming and swapping. Add mint/redeem records, 24h stats, swap pool list, holders and issuance charts to the
+  overview, watch balances on best blocks, and mark approximated amounts in swap summaries. Related backend APIs
+  and scan jobs are included.
+- [Medium] Coretime:
+  - Add a renewal column showing the renewal due date or auto-renewal information.
+  - Add my coretime to the overview.
+  - Add the pool page with pool size chart, contributions, claim revenue and on-demand data.
+- [Medium] DAP: add the Dynamic Allocation Pool page with supply, allocation, supply history and supply projection.
+  Related backend API and scan job are included.
+- [Medium] Treasury:
+  - Add the asset filter to the treasury spends list, enabled on Polkadot.
+  - Handle the treasury pallet changes that remove spend_local and remove_approval, including preimage templates,
+    approvals, deposits and spend period tips.
+  - Disable the spend Payout button as soon as the payout tx is in block, instead of waiting for finalization or
+    the scanner.
+  - Fix the expired spend counter, and show a tooltip when hovering the spends notification counter.
+  - Serve invalid spend ids as missing posts and stop reporting the resulting 404s.
+- [Medium] Staking:
+  - Show the solo nominating panel when the account has ledger data.
+  - Keep selected validators in the list but disable them, and show empty states for nomination and staking.
+  - Refresh the pool unclaim reward after claiming, fix staking pool name decoding, and show the extension
+    metadata update notice in staking popups.
+- [Medium] Profile and identity:
+  - Support EVM (Revive) addresses on the Polkadot profile page and link them to the original substrate account.
+  - Add the DotNS web IDs page for Polkadot, including label store details.
+  - Click the avatar to switch between identicon and custom avatar, and render the default banner before the custom
+    banner finishes loading.
+  - Hide the relatives transfer view.
+- [Medium] Content and discussions:
+  - Show revision history for posts, appendants and comments. Related backend API is included.
+  - Allow muting users so they cannot create or edit content. Related backend API is included.
+  - Render delegation announcements whose content is not plain text.
+- [Medium] Referenda and delegation:
+  - Split large delegation/undelegation and clear-expired-votes batches by block weight, submit the transactions
+    sequentially, and refresh my delegations at the best block right after a transaction is in block.
+  - Fix the PAPI migration of currency locked by vesting, and the V5/para-relay call decoding.
+- Call data: add a call tree style JSON view and improve preimage decoding performance.
+- UI/UX:
+  - Make popups non-modal to avoid the Radix body style crash.
+  - Encode ids used to build redirect destinations.
+  - Remove the Polkassembly link icon from post detail pages.
+  - Show the extension update reminder at the top of signer popups.
+- Performance:
+  - Keep ethers and the Polkadot Vault QR libraries out of the first load.
+  - Load the Hydration treasury stats widget on demand with its own error boundary.
+  - Optimize dotUSD summary loading.
+- Reliability: add canvas context fallbacks for chart.js so pages do not break on headless browsers (e.g.
+  Lightpanda), skip sidebar animations where SVGElement is missing, and skip client error reports from crawlers.
+- Bug fixes:
+  - Fix the multi-asset bounty curator rendering crash.
+  - Fix the number formatter that mangled amounts below 100,000.
+  - Fix a crash when leaving the signup page, and guard invalid proposal ids.
+  - Fix the Polkadot key registration check.
+- Security: fix Dependabot alerts and upgrade dompurify, next, sharp, sanitize-html, follow-redirects, vite,
+  source-map-js, decode-uri-component, fast-uri and zod; vendor a patched deepmerge.
+- Chain maintenance: remove moonriver/moonbeam, centrifuge, ajuna and zeitgeist chain code.
+- Backend:
+  - Add DAP total issuance, PSM event, dotUSD 24h stats, and dotUSD holders/issuance daily stats APIs.
+  - Add treasury spends filtering by asset and proposal/appendant revision history APIs.
+  - Implement user muting, and rate limit auth emails per recipient, email type and IP.
+  - Remove moonriver/moonbeam, centrifuge, ajuna and zeitgeist chain code.
+- Scan:
+  - Add total issuance scanning, and dotUSD holders/issuance statistics.
+  - Handle PSM mint/redeem events and add a backfill script.
+  - Improve whitelist call parsing/logging and the linking between OpenGov and fellowship referenda.
+  - Fix general v5 transaction decoding in the intime scan, and restart a slow scan after a runtime upgrade.
+  - Reduce intime scan memory usage with paged voting reads, streamed vote refresh, a bounded block API cache and
+    garbage collection during refreshes.
+  - Fix the dotUSD supply history numbers.
+- Upgrade dependencies.
+
 # 6.9.0
 
 Date:
