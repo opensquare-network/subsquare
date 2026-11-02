@@ -3,9 +3,12 @@ import { useMemo } from "react";
 import { getState } from "next-common/components/preImages/newPreimagePopup";
 import { useContextApi } from "next-common/context/api";
 import { checkInputValue } from "next-common/utils";
-import { addressToPublicKey } from "next-common/utils/address";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import NotePreimageButton from "../notePreimageButton";
+import {
+  getBeneficiaryParam,
+  getNativeAssetKindParam,
+} from "./batchTreasurySpendPopup";
 import useAssetHubDotBalanceField from "../fields/useAssetHubDotBalanceField";
 import useAddressComboField from "../fields/useAddressComboField";
 import useValidFromField from "../fields/useValidFromField";
@@ -16,58 +19,12 @@ import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 
-const getAssetKindParam = () => {
-  return {
-    V4: {
-      location: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
-      },
-      assetId: {
-        parents: 1,
-        interior: "Here",
-      },
-    },
-  };
-};
-
-const getBeneficiaryParam = (beneficiary) => {
-  return {
-    V4: {
-      location: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              Parachain: 1000,
-            },
-          ],
-        },
-      },
-      accountId: {
-        parents: 0,
-        interior: {
-          X1: [
-            {
-              AccountId32: {
-                network: null,
-                id: "0x" + addressToPublicKey(beneficiary),
-              },
-            },
-          ],
-        },
-      },
-    },
-  };
-};
-
-export function useSpendDotOnAssetHubPreimageTx(
+// Used when a chain sets `modules.treasury.approvals` to false (see
+// next-common/utils/treasury/approvals.js). The treasury lives on
+// AssetHub, so `asset_kind` is a `VersionedLocatableAsset` and the beneficiary a
+// `VersionedLocatableAccount`. The spend is stored in `Spends` and claimed with
+// `payout`.
+export function useLocatableAccountTreasuryPreimageTx(
   inputBalance,
   beneficiary,
   validFrom,
@@ -89,7 +46,7 @@ export function useSpendDotOnAssetHubPreimageTx(
 
     try {
       const proposal = api.tx.treasury.spend(
-        getAssetKindParam(),
+        getNativeAssetKindParam(),
         bnValue.toFixed(),
         getBeneficiaryParam(beneficiary),
         validFrom ? parseInt(validFrom) : null,
@@ -111,7 +68,7 @@ function PopupContent() {
   const { value: validFrom, component: validFromField } = useValidFromField();
 
   const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
-    useSpendDotOnAssetHubPreimageTx(inputBalance, beneficiary, validFrom);
+    useLocatableAccountTreasuryPreimageTx(inputBalance, beneficiary, validFrom);
 
   return (
     <>
@@ -137,10 +94,11 @@ function PopupContent() {
   );
 }
 
-export default function SpendDotOnAssetHubPopup() {
+export default function LocatableAccountTreasuryProposalPopup() {
   const { onClose } = usePopupParams();
+  const { symbol } = useChainSettings();
   return (
-    <Popup title="Spend DOT on AssetHub" onClose={onClose}>
+    <Popup title={`${symbol} treasury proposal`} onClose={onClose}>
       <PopupContent />
     </Popup>
   );
