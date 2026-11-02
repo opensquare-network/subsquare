@@ -22,6 +22,10 @@ const base = {
   treasury: {
     spends: false,
     proposals: true,
+    // Whether the chain still has the legacy `Proposals`/`Approvals` treasury
+    // flow, i.e. `spend_local`. Set it to false to switch a chain to the new
+    // AssetHub `spend` flow, see utils/treasury/approvals.js.
+    approvals: true,
     bounties: true,
     childBounties: false,
     tips: true,

@@ -14,7 +14,11 @@ import ExtrinsicInfo from "../../newPreimagePopup/info";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 
-export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
+// The legacy flow, used while `modules.treasury.approvals` is true for a chain
+// (see next-common/utils/treasury/approvals.js).
+// `spend_local` writes the proposal into `Proposals`/`Approvals`, so it is
+// awarded automatically at the end of a spend period.
+export function useSpendLocalTreasuryPreimageTx(inputBalance, beneficiary) {
   const api = useContextApi();
   const { decimals } = useChainSettings();
 
@@ -31,23 +35,26 @@ export function useLocalTreasuryNotePreimageTx(inputBalance, beneficiary) {
     }
 
     try {
-      const spend = api.tx.treasury.spendLocal || api.tx.treasury.spend;
-      const proposal = spend(bnValue.toFixed(), beneficiary);
+      const proposal = api.tx.treasury.spendLocal(
+        bnValue.toFixed(),
+        beneficiary,
+      );
       return getState(api, proposal);
-    } catch {
+    } catch (e) {
+      console.error("Failed to build treasury spend_local preimage:", e);
       return {};
     }
   }, [api, inputBalance, beneficiary, decimals]);
 }
 
-export default function NewLocalTreasuryProposalPopup() {
+export default function SpendLocalTreasuryProposalPopup() {
   const { onClose } = usePopupParams();
   const { value: inputBalance, component: balanceField } = useBalanceField();
   const { value: beneficiary, component: beneficiaryField } =
     useAddressComboField();
 
   const { notePreimageTx, encodedLength, encodedProposal, encodedHash } =
-    useLocalTreasuryNotePreimageTx(inputBalance, beneficiary);
+    useSpendLocalTreasuryPreimageTx(inputBalance, beneficiary);
 
   return (
     <Popup title="Create Treasury Proposal" onClose={onClose}>

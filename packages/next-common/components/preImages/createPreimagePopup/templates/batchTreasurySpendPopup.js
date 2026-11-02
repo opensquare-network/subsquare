@@ -50,7 +50,7 @@ const getAssetKindParam = (assetId) => {
   };
 };
 
-const getNativeAssetKindParam = () => {
+export const getNativeAssetKindParam = () => {
   return {
     V4: {
       location: {
@@ -65,7 +65,7 @@ const getNativeAssetKindParam = () => {
   };
 };
 
-const getBeneficiaryParam = (beneficiary) => {
+export const getBeneficiaryParam = (beneficiary) => {
   return {
     V4: {
       location: {

@@ -1,17 +1,28 @@
 import { useEffect, useState, useCallback } from "react";
 import { useTreasuryPapiPallet } from "next-common/context/treasury";
 import { useContextPapi } from "next-common/context/papi";
+import { useChainSettings } from "next-common/context/chain";
+import { hasTreasuryApprovals } from "next-common/utils/treasury/approvals";
 
 export default function useToBeAwardedWithPapi() {
   const { api: papi, checkPallet } = useContextPapi();
   const pallet = useTreasuryPapiPallet();
+  const hasApprovals = hasTreasuryApprovals(useChainSettings());
   const [toBeAwarded, setToBeAwarded] = useState();
 
   const fetchToBeAwarded = useCallback(async () => {
+    if (!papi || !pallet) {
+      return;
+    }
+
+    // Chains on the AssetHub spend flow have no approvals, and when the legacy
+    // storage is gone nothing can be pending award anymore.
     if (
+      !hasApprovals ||
       !checkPallet(pallet, "Approvals") ||
       !checkPallet(pallet, "Proposals")
     ) {
+      setToBeAwarded(0n);
       return;
     }
 
@@ -42,7 +53,7 @@ export default function useToBeAwardedWithPapi() {
     } catch (error) {
       console.error("Error fetching to be awarded proposals with papi:", error);
     }
-  }, [checkPallet, papi, pallet]);
+  }, [checkPallet, papi, pallet, hasApprovals]);
 
   useEffect(() => {
     if (papi && pallet) {

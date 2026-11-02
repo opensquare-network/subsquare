@@ -1,26 +1,32 @@
 import { useEffect, useState, useCallback } from "react";
 import { useTreasuryPallet } from "next-common/context/treasury";
 import { useContextApi } from "next-common/context/api";
+import { useChainSettings } from "next-common/context/chain";
+import { hasTreasuryApprovals } from "next-common/utils/treasury/approvals";
 
-function isValidApi(api) {
-  return api?.approvals && api?.proposals;
+function hasLegacyProposalStorage(palletQuery) {
+  return palletQuery?.approvals && palletQuery?.proposals;
 }
 
 export default function useToBeAwarded() {
   const api = useContextApi();
   const pallet = useTreasuryPallet();
+  const hasApprovals = hasTreasuryApprovals(useChainSettings());
   const [toBeAwarded, setToBeAwarded] = useState();
 
-  const toBeAwardedAPI = api?.query?.[pallet];
+  const palletQuery = api?.query?.[pallet];
   const fetchToBeAwarded = useCallback(async () => {
-    if (!isValidApi(toBeAwardedAPI)) {
+    // Chains on the AssetHub spend flow have no approvals, and when the
+    // metadata no longer contains the storage, nothing can be pending award.
+    if (!hasApprovals || !hasLegacyProposalStorage(palletQuery)) {
+      setToBeAwarded(0n);
       return;
     }
 
     try {
       const [approvals, proposals] = await Promise.all([
-        toBeAwardedAPI.approvals(),
-        toBeAwardedAPI.proposals.entries(),
+        palletQuery.approvals(),
+        palletQuery.proposals.entries(),
       ]);
 
       const toBeAwardedProposalIds = approvals.toJSON();
@@ -41,13 +47,15 @@ export default function useToBeAwarded() {
     } catch (error) {
       console.error("Error fetching to be awarded proposals:", error);
     }
-  }, [toBeAwardedAPI]);
+  }, [palletQuery, hasApprovals]);
 
   useEffect(() => {
-    if (toBeAwardedAPI) {
-      fetchToBeAwarded();
+    if (!api) {
+      return;
     }
-  }, [fetchToBeAwarded, toBeAwardedAPI]);
+
+    fetchToBeAwarded();
+  }, [api, fetchToBeAwarded]);
 
   return toBeAwarded;
 }
