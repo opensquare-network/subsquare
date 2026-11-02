@@ -8,7 +8,7 @@ import Head from "next/head";
 import SystemVersionUpgrade from "next-common/components/systemVersionUpgrade";
 import ErrorBoundary from "next-common/components/errorBoundary";
 import dynamic from "next/dynamic";
-import "next-common/components/charts/canvasTextMeasurementFallback";
+import "next-common/components/charts/canvasContextFallback";
 
 NProgress.configure({
   minimum: 0.3,
