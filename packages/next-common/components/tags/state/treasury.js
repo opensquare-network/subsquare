@@ -15,6 +15,7 @@ const stateTagMap = {
   Rejected: NegativeTag,
   ApproveVoting: PositiveTag,
   RejectVoting: NegativeTag,
+  Removed: ClosedTag,
 };
 
 const proposedTooltip = "Submitted and waiting to enter voting";
@@ -26,6 +27,9 @@ const approveVotingTooltip =
 const rejectVotingTooltip = "Voting process has started to reject the proposal";
 const pendingPayoutTooltip = "Awaiting payout after approval";
 const canceledTooltip = "Proposal was canceled";
+// Set when the chain removed the legacy treasury proposals pallet, so the
+// proposal can never be awarded anymore.
+const removedTooltip = "Proposal was removed and will not be awarded";
 const acceptCuratorTooltip = "Curator has accepted the responsibility";
 const proposeCuratorTooltip = "A curator candidate has been nominated";
 
@@ -36,6 +40,7 @@ const treasuryTooltipMap = {
   Rejected: rejectedTooltip,
   ApproveVoting: approveVotingTooltip,
   RejectVoting: rejectVotingTooltip,
+  Removed: removedTooltip,
 };
 
 const tipStateTagMap = {
