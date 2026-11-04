@@ -6,9 +6,6 @@ import StatescanAccountLink from "./statescanAccountLink";
 import SubScanAccountLink from "./subscanAccountLink";
 import NeckworkAccountLink from "./neckworkAccountLink";
 import ConditionalMimirIcon from "./conditionalMimirIcon";
-// import { useChain } from "next-common/context/chain";
-// import CouncilorLink from "./councilorLink";
-// import Chains from "next-common/utils/consts/chains";
 import { useChainSettings } from "next-common/context/chain";
 import IdentityInfoLinks from "./identityInfoLinks";
 
@@ -19,15 +16,8 @@ const Wrapper = styled(Flex)`
   }
 `;
 
-export default function AccountLinks({
-  address,
-  // showCouncilorLink: showCouncilorLinkProp = true,
-}) {
-  // const chain = useChain();
+export default function AccountLinks({ address }) {
   const chainSettings = useChainSettings();
-
-  // const showCouncilorLink =
-  //   showCouncilorLinkProp && [Chains.polkadot, Chains.kusama].includes(chain);
 
   const showConditionalMimirIcon =
     chainSettings?.multisigWallets?.mimir && chainSettings?.multisigApiPrefix;
@@ -43,7 +33,6 @@ export default function AccountLinks({
       <SubScanAccountLink address={address} />
       <NeckworkAccountLink address={address} />
       <IdentityInfoLinks address={address} />
-      {/* {showCouncilorLink && <CouncilorLink address={address} />} */}
       {showConditionalMimirIcon && <ConditionalMimirIcon address={address} />}
     </Wrapper>
   );
