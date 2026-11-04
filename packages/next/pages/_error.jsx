@@ -64,9 +64,12 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
     stack: err?.stack,
   };
 
-  // A missing page is not an application error: crawlers and users guess urls all the
-  // time, and reporting those would only add noise to the error reports.
-  if (IS_PRODUCTION && statusCode !== 404) {
+  // 4xx responses are client errors: missing pages, malformed urls, path traversal
+  // attempts, blocked requests, etc. They are not application errors, and reporting
+  // them would only add noise to the error reports.
+  const statusNumber = Number(statusCode);
+  const isClientError = statusNumber >= 400 && statusNumber < 500;
+  if (IS_PRODUCTION && !isClientError) {
     reportClientError(errorData);
   }
 
