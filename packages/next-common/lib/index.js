@@ -17,6 +17,8 @@ import {
   fetchScanHeight,
 } from "next-common/services/fetchScanHeight";
 import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated";
+import { hasMalformedRouteParam } from "next-common/utils/isMalformedRouteParam";
+import { matchesRouteParams } from "next-common/utils/routeParams";
 
 async function defaultGetServerSideProps() {
   return { props: {} };
@@ -24,8 +26,21 @@ async function defaultGetServerSideProps() {
 
 export function withCommonProps(
   getServerSideProps = defaultGetServerSideProps,
+  { validateParams } = {},
 ) {
   return async function (context) {
+    // Answer the urls that cannot belong to this page as a missing page, before any backend
+    // query runs with them: either the route segment is not an id at all (scanner payloads
+    // such as `%3Fphpinfo=1`), or the page's own check of its id shape — declared through
+    // `validateParams` — rejects it.
+    if (
+      hasMalformedRouteParam(context.params) ||
+      (validateParams &&
+        !matchesRouteParams(validateParams, context.params, context))
+    ) {
+      return { notFound: true };
+    }
+
     if (!isBrowserCompatible(context)) {
       return toBrowserIncompatible();
     }

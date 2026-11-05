@@ -13,6 +13,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import MultiAssetBountySidebar from "next-common/components/pages/components/multiAssetBounty/sidebar";
@@ -97,50 +98,48 @@ export default function MultiAssetBountyPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  // Multi asset bounty ids are numeric. /treasury/multi-asset-bounties/summary is a backend stats endpoint, and treating
-  // its response as a detail threw "No on chain data when call `useOnchainData`", i.e. a
-  // 500 page plus a server error report. Render other values as a missing post instead.
-  if (!/^\d+$/.test(id)) {
-    return getNullDetailProps(id);
-  }
-  const [
-    { result: detail },
-    { result: childBounties },
-    { result: tracksDetail },
-    { result: statistics },
-  ] = await Promise.all([
-    backendApi.fetch(`treasury/multi-asset-bounties/${id}`),
-    backendApi.fetch(
-      `treasury/multi-asset-bounties/${id}/multi-asset-child-bounties`,
-      {
-        pageSize: 5,
+    const [
+      { result: detail },
+      { result: childBounties },
+      { result: tracksDetail },
+      { result: statistics },
+    ] = await Promise.all([
+      backendApi.fetch(`treasury/multi-asset-bounties/${id}`),
+      backendApi.fetch(
+        `treasury/multi-asset-bounties/${id}/multi-asset-child-bounties`,
+        {
+          pageSize: 5,
+        },
+      ),
+      backendApi.fetch(gov2TracksApi),
+      backendApi.fetch(`treasury/multi-asset-bounties/${id}/statistics`),
+    ]);
+
+    if (!detail) {
+      return getNullDetailProps(id, { childBounties: EmptyList });
+    }
+
+    const comments = await fetchDetailComments(
+      `treasury/multi-asset-bounties/${detail._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
+
+    return {
+      props: {
+        detail,
+        childBounties: childBounties ?? EmptyList,
+        comments: comments ?? EmptyList,
+        tracksDetail: tracksDetail ?? null,
+        statistics: statistics ?? null,
+        ...tracksProps,
       },
-    ),
-    backendApi.fetch(gov2TracksApi),
-    backendApi.fetch(`treasury/multi-asset-bounties/${id}/statistics`),
-  ]);
-
-  if (!detail) {
-    return getNullDetailProps(id, { childBounties: EmptyList });
-  }
-
-  const comments = await fetchDetailComments(
-    `treasury/multi-asset-bounties/${detail._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      detail,
-      childBounties: childBounties ?? EmptyList,
-      comments: comments ?? EmptyList,
-      tracksDetail: tracksDetail ?? null,
-      statistics: statistics ?? null,
-      ...tracksProps,
-    },
-  };
-});
+    };
+  },
+  // /treasury/multi-asset-bounties/summary is a backend stats endpoint, not a bounty.
+  { validateParams: { id: isNumericId } },
+);

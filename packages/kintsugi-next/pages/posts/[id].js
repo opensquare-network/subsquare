@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { anyOf, isNumericId, isObjectId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -42,29 +43,33 @@ export default function Post({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const chain = process.env.CHAIN;
-  const { id } = context.query;
-  const [{ result: detail = null }] = await Promise.all([
-    backendApi.fetch(`posts/${id}`),
-  ]);
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const chain = process.env.CHAIN;
+    const { id } = context.query;
+    const [{ result: detail = null }] = await Promise.all([
+      backendApi.fetch(`posts/${id}`),
+    ]);
 
-  const { votes, myVote } = await getPostVotesAndMine(detail, context);
+    const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  const { result: summary } = await backendApi.fetch("overview/summary");
+    const { result: summary } = await backendApi.fetch("overview/summary");
 
-  const comments = detail
-    ? await fetchDetailComments(`posts/${detail._id}/comments`, context)
-    : null;
+    const comments = detail
+      ? await fetchDetailComments(`posts/${detail._id}/comments`, context)
+      : null;
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      votes,
-      myVote: myVote ?? null,
-      chain,
-      summary: summary ?? {},
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        votes,
+        myVote: myVote ?? null,
+        chain,
+        summary: summary ?? {},
+      },
+    };
+  },
+  // A discussion is addressed by its numeric post uid, or by its post id.
+  { validateParams: { id: anyOf(isNumericId, isObjectId) } },
+);

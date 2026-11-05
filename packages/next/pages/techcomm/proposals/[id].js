@@ -9,6 +9,13 @@ import CheckUnFinalized from "next-common/components/motion/checkUnFinalized";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import {
+  anyOf,
+  isBlockHashId,
+  isBlockHeightHashId,
+  isNumericId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
@@ -71,25 +78,36 @@ export default function ProposalPage({ motion }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: motion } = await backendApi.fetch(`tech-comm/motions/${id}`);
-  if (!motion) {
-    return getNullDetailProps(id, { motion: null });
-  }
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: motion } = await backendApi.fetch(
+      `tech-comm/motions/${id}`,
+    );
+    if (!motion) {
+      return getNullDetailProps(id, { motion: null });
+    }
 
-  const comments = await fetchDetailComments(
-    `tech-comm/motions/${motion._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `tech-comm/motions/${motion._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      motion: motion ?? null,
-      comments: comments ?? EmptyList,
+    return {
+      props: {
+        motion: motion ?? null,
+        comments: comments ?? EmptyList,
 
-      ...tracksProps,
+        ...tracksProps,
+      },
+    };
+  },
+  // A proposal is a tech comm motion: addressed by its motion index, by
+  // `<blockHeight>_<hash>`, by its hash, or by its post id.
+  {
+    validateParams: {
+      id: anyOf(isNumericId, isBlockHeightHashId, isBlockHashId, isObjectId),
     },
-  };
-});
+  },
+);

@@ -2,6 +2,7 @@ import React from "react";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
@@ -101,34 +102,30 @@ export default function SpendPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  // Spend ids are numeric. Any other value is not one of our pages: the treasury API
-  // also serves stats at /treasury/spends/summary, and treating that response as spend
-  // detail threw "No on chain data when call `useOnchainData`" (500 page + error report).
-  // Render it as a missing post instead, like other unknown ids.
-  if (!/^\d+$/.test(id)) {
-    return getNullDetailProps(id);
-  }
+    const { result: detail } = await backendApi.fetch(`treasury/spends/${id}`);
 
-  const { result: detail } = await backendApi.fetch(`treasury/spends/${id}`);
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    const comments = await fetchDetailComments(
+      `treasury/spends/${detail._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  const comments = await fetchDetailComments(
-    `treasury/spends/${detail._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
-
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // /treasury/spends/summary is a backend stats endpoint, not a spend.
+  { validateParams: { id: isNumericId } },
+);

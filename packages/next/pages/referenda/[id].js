@@ -19,11 +19,11 @@ import DetailLayout from "next-common/components/layout/DetailLayout/referendaDe
 import DefaultDetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
 import { ReferendumContent } from "next-common/components/pages/components/referenda/referendaContent";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
-import NotFoundDetail from "next-common/components/notFoundDetail";
 
 function UnFinalizedBreadcrumb({ id }) {
   return (
@@ -95,21 +95,6 @@ function ReferendumPageImpl() {
   const detail = usePost();
   const { id } = usePageProps();
 
-  if (!/^\d+$/.test(id)) {
-    return (
-      <NotFoundDetail
-        hasSidebar
-        customId={id}
-        breadcrumbItems={[
-          {
-            path: "/referenda",
-            content: "Referenda",
-          },
-        ]}
-      />
-    );
-  }
-
   if (!detail) {
     return <ReferendumNullPage />;
   }
@@ -127,45 +112,45 @@ export default function ReferendumPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  if (!/^\d+$/.test(id)) {
-    return getNullDetailProps(id, { voteStats: {} });
-  }
+    const { result: detail } = await backendApi.fetch(
+      gov2ReferendumsDetailApi(id),
+    );
+    if (!detail) {
+      return getNullDetailProps(id, { voteStats: {} });
+    }
 
-  const { result: detail } = await backendApi.fetch(
-    gov2ReferendumsDetailApi(id),
-  );
-  if (!detail) {
-    return getNullDetailProps(id, { voteStats: {} });
-  }
+    const comments = await fetchDetailComments(
+      gov2ReferendumsCommentApi(detail?._id),
+      context,
+    );
 
-  const comments = await fetchDetailComments(
-    gov2ReferendumsCommentApi(detail?._id),
-    context,
-  );
+    const { result: voteStats } = await backendApi.fetch(
+      gov2ReferendumsVoteStatsApi(id),
+    );
+    const { result: tracksDetail } = await backendApi.fetch(gov2TracksApi);
 
-  const { result: voteStats } = await backendApi.fetch(
-    gov2ReferendumsVoteStatsApi(id),
-  );
-  const { result: tracksDetail } = await backendApi.fetch(gov2TracksApi);
+    const { result: appendants } = await backendApi.fetch(
+      gov2ReferendaAppendantApi(id),
+    );
 
-  const { result: appendants } = await backendApi.fetch(
-    gov2ReferendaAppendantApi(id),
-  );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  const tracksProps = await fetchOpenGovTracksProps();
+    return {
+      props: {
+        detail,
+        voteStats: voteStats ?? {},
+        comments: comments ?? EmptyList,
+        tracksDetail: tracksDetail ?? null,
+        appendants: appendants ?? [],
 
-  return {
-    props: {
-      detail,
-      voteStats: voteStats ?? {},
-      comments: comments ?? EmptyList,
-      tracksDetail: tracksDetail ?? null,
-      appendants: appendants ?? [],
-
-      ...tracksProps,
-    },
-  };
-});
+        ...tracksProps,
+      },
+    };
+  },
+  // A referendum is addressed by its referendum index.
+  { validateParams: { id: isNumericId } },
+);

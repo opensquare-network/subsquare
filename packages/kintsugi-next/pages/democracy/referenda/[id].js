@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withCommonProps } from "next-common/lib";
+import { anyOf, isNumericId, isObjectId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import DetailItem from "components/detailItem";
@@ -154,39 +155,43 @@ export default function DemocracyReferendumPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  const { result: detail } = await backendApi.fetch(
-    `democracy/referendums/${id}`,
-  );
-
-  if (!detail) {
-    return getNullDetailProps(id, { publicProposal: null });
-  }
-
-  let publicProposal;
-  if (!isNil(detail.proposalIndex)) {
-    const { result } = await backendApi.fetch(
-      `democracy/proposals/${detail.proposalIndex}`,
+    const { result: detail } = await backendApi.fetch(
+      `democracy/referendums/${id}`,
     );
-    publicProposal = result;
-  }
 
-  const comments = await fetchDetailComments(
-    `democracy/referendums/${detail?._id}/comments`,
-    context,
-  );
+    if (!detail) {
+      return getNullDetailProps(id, { publicProposal: null });
+    }
 
-  const { result: summary } = await backendApi.fetch("overview/summary");
+    let publicProposal;
+    if (!isNil(detail.proposalIndex)) {
+      const { result } = await backendApi.fetch(
+        `democracy/proposals/${detail.proposalIndex}`,
+      );
+      publicProposal = result;
+    }
 
-  return {
-    props: {
-      id,
-      detail: detail ?? null,
-      publicProposal: publicProposal ?? null,
-      comments: comments ?? EmptyList,
-      summary: summary ?? {},
-    },
-  };
-});
+    const comments = await fetchDetailComments(
+      `democracy/referendums/${detail?._id}/comments`,
+      context,
+    );
+
+    const { result: summary } = await backendApi.fetch("overview/summary");
+
+    return {
+      props: {
+        id,
+        detail: detail ?? null,
+        publicProposal: publicProposal ?? null,
+        comments: comments ?? EmptyList,
+        summary: summary ?? {},
+      },
+    };
+  },
+  // A democracy referendum is addressed by its numeric referendum index, or by its post id.
+  { validateParams: { id: anyOf(isNumericId, isObjectId) } },
+);

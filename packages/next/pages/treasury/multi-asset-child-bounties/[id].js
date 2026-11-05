@@ -9,6 +9,11 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import {
+  anyOf,
+  isNumericSegmentsId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import MultiAssetChildBountySidebar from "next-common/components/pages/components/multiAssetChildBounty/sidebar";
@@ -82,31 +87,36 @@ export default function MultiAssetChildBountyPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const [parentBountyId] = id.split("_");
-  const [{ result: detail }, { result: parentBounty }, tracksProps] =
-    await Promise.all([
-      backendApi.fetch(`treasury/multi-asset-child-bounties/${id}`),
-      backendApi.fetch(`treasury/multi-asset-bounties/${parentBountyId}`),
-      fetchOpenGovTracksProps(),
-    ]);
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const [parentBountyId] = id.split("_");
+    const [{ result: detail }, { result: parentBounty }, tracksProps] =
+      await Promise.all([
+        backendApi.fetch(`treasury/multi-asset-child-bounties/${id}`),
+        backendApi.fetch(`treasury/multi-asset-bounties/${parentBountyId}`),
+        fetchOpenGovTracksProps(),
+      ]);
 
-  if (!detail) {
-    return getNullDetailProps(id, {});
-  }
+    if (!detail) {
+      return getNullDetailProps(id, {});
+    }
 
-  const comments = await fetchDetailComments(
-    `treasury/multi-asset-child-bounties/${detail._id}/comments`,
-    context,
-  );
+    const comments = await fetchDetailComments(
+      `treasury/multi-asset-child-bounties/${detail._id}/comments`,
+      context,
+    );
 
-  return {
-    props: {
-      detail,
-      parentBounty: parentBounty ?? null,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        parentBounty: parentBounty ?? null,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // A multi asset child bounty is addressed by `<parentBountyId>_<index>`, by
+  // `<parentBountyId>_<index>_<blockHeight>`, or by its post id.
+  { validateParams: { id: anyOf(isNumericSegmentsId, isObjectId) } },
+);

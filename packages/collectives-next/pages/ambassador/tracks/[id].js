@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { isTrackId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorTrackReferendaApi,
@@ -69,42 +70,43 @@ export default function AmbassadorTrackPage({
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { page = 1, page_size: pageSize = 50, id } = context.query;
-  const { result: detailedTracks = [] } = await backendApi.fetch(
-    ambassadorTracksApi,
-  );
-  const track =
-    detailedTracks.find(
-      (item) => item.id === parseInt(id) || item.name === id,
-    ) || null;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { page = 1, page_size: pageSize = 50, id } = context.query;
+    const { result: detailedTracks = [] } = await backendApi.fetch(
+      ambassadorTracksApi,
+    );
+    const track =
+      detailedTracks.find(
+        (item) => item.id === parseInt(id) || item.name === id,
+      ) || null;
 
-  const [
-    tracksProps,
-    { result: posts },
-    { result: trackReferendaSummary },
-  ] = await Promise.all([
-    fetchOpenGovTracksProps(),
-    track
-      ? backendApi.fetch(ambassadorTrackReferendaApi(track?.id), {
-          page,
-          pageSize,
-          simple: true,
-        })
-      : {},
-    track
-      ? backendApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id))
-      : {},
-  ]);
+    const [tracksProps, { result: posts }, { result: trackReferendaSummary }] =
+      await Promise.all([
+        fetchOpenGovTracksProps(),
+        track
+          ? backendApi.fetch(ambassadorTrackReferendaApi(track?.id), {
+              page,
+              pageSize,
+              simple: true,
+            })
+          : {},
+        track
+          ? backendApi.fetch(ambassadorTrackReferendaSummaryApi(track?.id))
+          : {},
+      ]);
 
-  return {
-    props: {
-      posts: posts ?? EmptyList,
-      title: "Ambassador " + startCase(track?.name),
-      trackReferendaSummary: trackReferendaSummary ?? {},
-      detailedTracks,
-      track,
-      ...tracksProps,
-    },
-  };
-});
+    return {
+      props: {
+        posts: posts ?? EmptyList,
+        title: "Ambassador " + startCase(track?.name),
+        trackReferendaSummary: trackReferendaSummary ?? {},
+        detailedTracks,
+        track,
+        ...tracksProps,
+      },
+    };
+  },
+  // A track is addressed by its numeric id, or by its on-chain name.
+  { validateParams: { id: isTrackId } },
+);
