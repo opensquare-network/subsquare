@@ -7,6 +7,10 @@ import isReportableErrorStatus from "next-common/utils/isReportableErrorStatus";
 
 function getErrorReason(statusCode) {
   const reasons = {
+    400: {
+      title: "Bad Request",
+      description: "The url cannot be resolved, please check it and try again",
+    },
     500: {
       title: "Internal Server Error",
       description:
