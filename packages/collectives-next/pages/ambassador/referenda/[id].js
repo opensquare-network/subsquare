@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { isNumericId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import {
   ambassadorParamsApi,
@@ -123,31 +124,35 @@ export default function ReferendumPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: detail } = await backendApi.fetch(
-    getAmbassadorReferendumUrl(id),
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
-  if (!detail) {
-    return getNullDetailProps(id, tracksProps);
-  }
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: detail } = await backendApi.fetch(
+      getAmbassadorReferendumUrl(id),
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
+    if (!detail) {
+      return getNullDetailProps(id, tracksProps);
+    }
 
-  const comments = await fetchDetailComments(
-    getAmbassadorReferendumCommentsUrl(detail?._id),
-    context,
-  );
+    const comments = await fetchDetailComments(
+      getAmbassadorReferendumCommentsUrl(detail?._id),
+      context,
+    );
 
-  const { result: ambassadorParams = {} } = await backendApi.fetch(
-    ambassadorParamsApi,
-  );
+    const { result: ambassadorParams = {} } = await backendApi.fetch(
+      ambassadorParamsApi,
+    );
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-      ambassadorParams,
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+        ambassadorParams,
+      },
+    };
+  },
+  // An ambassador referendum is addressed by its referendum index.
+  { validateParams: { id: isNumericId } },
+);

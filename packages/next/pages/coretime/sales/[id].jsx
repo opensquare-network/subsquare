@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { isNumericId } from "next-common/utils/routeParams";
 import { createStore } from "next-common/store";
 import ChainProvider from "next-common/context/chain";
 import ApiProvider from "next-common/context/api";
@@ -106,34 +107,37 @@ export const getServerSideProps = async (ctx) => {
     };
   }
 
-  return withCommonProps(async () => {
-    const commonProps = await getCoretimeCommonProps();
-    const coretimeSale = await queryCoretimeDetailSale(saleId);
-    const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(
-      saleId,
-      {
-        limit: coretimeSale?.renewalCount,
-      },
-    );
-    const coretimeSalePurchasesChart = await queryCoretimeSalePurchasesChart(
-      saleId,
-      {
-        limit: coretimeSale?.purchaseCount,
-      },
-    );
-    const coretimeSaleTimeline = coretimeSale
-      ? await queryCoretimeSaleTimeline(saleId)
-      : [];
+  return withCommonProps(
+    async () => {
+      const commonProps = await getCoretimeCommonProps();
+      const coretimeSale = await queryCoretimeDetailSale(saleId);
+      const coretimeSaleRenewalsChart = await queryCoretimeSaleRenewalsChart(
+        saleId,
+        {
+          limit: coretimeSale?.renewalCount,
+        },
+      );
+      const coretimeSalePurchasesChart = await queryCoretimeSalePurchasesChart(
+        saleId,
+        {
+          limit: coretimeSale?.purchaseCount,
+        },
+      );
+      const coretimeSaleTimeline = coretimeSale
+        ? await queryCoretimeSaleTimeline(saleId)
+        : [];
 
-    return {
-      ...(commonProps || {}),
-      props: {
-        ...(commonProps?.props || {}),
-        coretimeSale,
-        coretimeSaleRenewalsChart,
-        coretimeSalePurchasesChart,
-        coretimeSaleTimeline,
-      },
-    };
-  })(ctx);
+      return {
+        ...(commonProps || {}),
+        props: {
+          ...(commonProps?.props || {}),
+          coretimeSale,
+          coretimeSaleRenewalsChart,
+          coretimeSalePurchasesChart,
+          coretimeSaleTimeline,
+        },
+      };
+    },
+    { validateParams: { id: isNumericId } },
+  )(ctx);
 };

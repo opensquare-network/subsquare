@@ -10,6 +10,12 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import {
+  anyOf,
+  isBlockHashId,
+  isBlockHeightHashId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
@@ -66,27 +72,35 @@ export default function DemocracyExternalPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: detail } = await backendApi.fetch(
-    `democracy/externals/${id}`,
-  );
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: detail } = await backendApi.fetch(
+      `democracy/externals/${id}`,
+    );
 
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  const comments = await fetchDetailComments(
-    `democracy/externals/${detail._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `democracy/externals/${detail._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // An external is addressed by `<blockHeight>_<hash>`, by its hash, or by its post id.
+  {
+    validateParams: {
+      id: anyOf(isBlockHeightHashId, isBlockHashId, isObjectId),
     },
-  };
-});
+  },
+);

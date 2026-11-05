@@ -1,4 +1,11 @@
 import { withCommonProps } from "next-common/lib";
+import {
+  anyOf,
+  isBlockHashId,
+  isBlockHeightHashId,
+  isNumericId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import TechcommMotionDetail from "components/motion/techcommMotionDetail";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -69,26 +76,37 @@ export default function TechCommProposalPage({ motion }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: motion } = await backendApi.fetch(`tech-comm/motions/${id}`);
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: motion } = await backendApi.fetch(
+      `tech-comm/motions/${id}`,
+    );
 
-  if (!motion) {
-    return getNullDetailProps(id, { motion: null });
-  }
+    if (!motion) {
+      return getNullDetailProps(id, { motion: null });
+    }
 
-  const comments = await fetchDetailComments(
-    `tech-comm/motions/${motion._id}/comments`,
-    context,
-  );
+    const comments = await fetchDetailComments(
+      `tech-comm/motions/${motion._id}/comments`,
+      context,
+    );
 
-  const { result: summary } = await backendApi.fetch("overview/summary");
+    const { result: summary } = await backendApi.fetch("overview/summary");
 
-  return {
-    props: {
-      motion: motion ?? null,
-      comments: comments ?? EmptyList,
-      summary: summary ?? {},
+    return {
+      props: {
+        motion: motion ?? null,
+        comments: comments ?? EmptyList,
+        summary: summary ?? {},
+      },
+    };
+  },
+  // A proposal is a tech comm motion: addressed by its motion index, by
+  // `<blockHeight>_<hash>`, by its hash, or by its post id.
+  {
+    validateParams: {
+      id: anyOf(isNumericId, isBlockHeightHashId, isBlockHashId, isObjectId),
     },
-  };
-});
+  },
+);

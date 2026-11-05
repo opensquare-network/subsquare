@@ -3,9 +3,14 @@ import ErrorLayout from "next-common/components/layout/errorLayout";
 import { reportClientError } from "next-common/services/reportClientError";
 import { CHAIN, IS_PRODUCTION } from "next-common/utils/constants";
 import fetchProfile from "next-common/lib/fetchProfile";
+import isReportableErrorStatus from "next-common/utils/isReportableErrorStatus";
 
 function getErrorReason(statusCode) {
   const reasons = {
+    400: {
+      title: "Bad Request",
+      description: "The url cannot be resolved, please check it and try again",
+    },
     500: {
       title: "Internal Server Error",
       description:
@@ -40,6 +45,14 @@ function ErrorPage({ statusCode }) {
 }
 
 ErrorPage.getInitialProps = async ({ req, res, err }) => {
+  const statusCode = res?.statusCode || err?.statusCode || "";
+
+  if (!IS_PRODUCTION || !isReportableErrorStatus(statusCode)) {
+    return { err, statusCode };
+  }
+
+  // Build the report only when it is going to be sent: the profile lookup below is a
+  // backend request, and a flood of scanner 4xx pages must not turn into a flood of those.
   const { result: user } =
     (await fetchProfile(
       req || {
@@ -49,11 +62,9 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
       },
     )) || {};
 
-  const statusCode = res?.statusCode || err?.statusCode || "";
-
   const isServerError = !!req;
 
-  let errorData = {
+  reportClientError({
     chain: CHAIN,
     url: req?.url || window?.location?.href,
     address: user?.address,
@@ -62,22 +73,9 @@ ErrorPage.getInitialProps = async ({ req, res, err }) => {
     userAgent: isServerError ? "" : window?.navigator?.userAgent,
     error: err?.message,
     stack: err?.stack,
-  };
+  });
 
-  // 4xx responses are client errors: missing pages, malformed urls, path traversal
-  // attempts, blocked requests, etc. They are not application errors, and reporting
-  // them would only add noise to the error reports.
-  const statusNumber = Number(statusCode);
-  const isClientError = statusNumber >= 400 && statusNumber < 500;
-  if (IS_PRODUCTION && !isClientError) {
-    reportClientError(errorData);
-  }
-
-  return {
-    err,
-    errorData,
-    statusCode,
-  };
+  return { err, statusCode };
 };
 
 export default ErrorPage;

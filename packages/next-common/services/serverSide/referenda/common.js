@@ -4,7 +4,7 @@ import { backendApi } from "next-common/services/nextApi";
 import { gov2ReferendumsSummaryApi } from "next-common/services/url";
 import { merge, noop } from "lodash-es";
 
-export function withReferendaCommonProps(fn = noop) {
+export function withReferendaCommonProps(fn = noop, options = {}) {
   return withCommonProps(async (context) => {
     const [tracksProps, { result: gov2ReferendaSummary }] = await Promise.all([
       fetchOpenGovTracksProps(),
@@ -23,5 +23,5 @@ export function withReferendaCommonProps(fn = noop) {
       },
       res,
     );
-  });
+  }, options);
 }

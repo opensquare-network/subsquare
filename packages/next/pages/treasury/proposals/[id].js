@@ -10,6 +10,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
@@ -71,32 +72,32 @@ export default function ProposalPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  // Treasury proposal ids are numeric. /treasury/proposals/summary is a backend stats endpoint, and treating
-  // its response as a detail threw "No on chain data when call `useOnchainData`", i.e. a
-  // 500 page plus a server error report. Render other values as a missing post instead.
-  if (!/^\d+$/.test(id)) {
-    return getNullDetailProps(id);
-  }
-  const { result: detail } = await backendApi.fetch(`treasury/proposals/${id}`);
+    const { result: detail } = await backendApi.fetch(
+      `treasury/proposals/${id}`,
+    );
 
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  const comments = await fetchDetailComments(
-    `treasury/proposals/${detail._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `treasury/proposals/${detail._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // /treasury/proposals/summary is a backend stats endpoint, not a proposal.
+  { validateParams: { id: isNumericId } },
+);

@@ -1,4 +1,9 @@
 import { withCommonProps } from "next-common/lib";
+import {
+  anyOf,
+  isBlockHeightCidId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -59,26 +64,30 @@ export default function AnnouncementPage({ announcement }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: announcement } = await backendApi.fetch(
-    `alliance/announcements/${id}`,
-  );
-  if (!announcement) {
-    return getNullDetailProps(id, { announcement: null });
-  }
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: announcement } = await backendApi.fetch(
+      `alliance/announcements/${id}`,
+    );
+    if (!announcement) {
+      return getNullDetailProps(id, { announcement: null });
+    }
 
-  const comments = await fetchDetailComments(
-    `alliance/announcements/${announcement._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `alliance/announcements/${announcement._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      ...tracksProps,
-      announcement: announcement ?? null,
-      comments: comments ?? EmptyList,
-    },
-  };
-});
+    return {
+      props: {
+        ...tracksProps,
+        announcement: announcement ?? null,
+        comments: comments ?? EmptyList,
+      },
+    };
+  },
+  // An announcement is addressed by `<blockHeight>_<cid>`, or by its post id.
+  { validateParams: { id: anyOf(isBlockHeightCidId, isObjectId) } },
+);

@@ -22,6 +22,7 @@ import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import DetailLayout from "next-common/components/layout/DetailLayout";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { usePageProps } from "next-common/context/page";
 import CollectivesProvider from "next-common/context/collectives/collectives";
@@ -148,46 +149,50 @@ export default function ReferendumPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  const { result: detail } = await backendApi.fetch(
-    getFellowshipReferendumUrl(id),
-  );
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    const { result: detail } = await backendApi.fetch(
+      getFellowshipReferendumUrl(id),
+    );
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  const [
-    comments,
-    tracksProps,
-    { result: fellowshipParams = {} },
-    { result: fellowshipTracksDetail = {} },
-    { evidence, evidenceComments },
-  ] = await Promise.all([
-    fetchDetailComments(
-      getFellowshipReferendumCommentsUrl(detail?._id),
-      context,
-    ),
-    fetchOpenGovTracksProps(),
-    backendApi.fetch(fellowshipParamsApi),
-    backendApi.fetch(fellowshipTracksApi),
-    getEvidenceProps(detail, context),
-  ]);
+    const [
+      comments,
+      tracksProps,
+      { result: fellowshipParams = {} },
+      { result: fellowshipTracksDetail = {} },
+      { evidence, evidenceComments },
+    ] = await Promise.all([
+      fetchDetailComments(
+        getFellowshipReferendumCommentsUrl(detail?._id),
+        context,
+      ),
+      fetchOpenGovTracksProps(),
+      backendApi.fetch(fellowshipParamsApi),
+      backendApi.fetch(fellowshipTracksApi),
+      getEvidenceProps(detail, context),
+    ]);
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      evidenceComments: evidenceComments ?? EmptyList,
-      evidence,
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        evidenceComments: evidenceComments ?? EmptyList,
+        evidence,
 
-      ...tracksProps,
-      fellowshipParams,
-      fellowshipTracksDetail,
-    },
-  };
-});
+        ...tracksProps,
+        fellowshipParams,
+        fellowshipTracksDetail,
+      },
+    };
+  },
+  // A fellowship referendum is addressed by its referendum index.
+  { validateParams: { id: isNumericId } },
+);
 
 async function getEvidenceProps(detail, context) {
   const memberships = detail?.onchainData?.memberships || [];
