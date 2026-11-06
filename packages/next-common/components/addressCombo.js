@@ -321,6 +321,7 @@ function AddressComboListOptions({ groups, address, onSelect, size }) {
               </Item>
             );
           })}
+          {group.extra}
         </div>
       ))}
     </Options>
@@ -350,7 +351,9 @@ export default function AddressCombo({
 
   const groups = useMemo(() => {
     if (accountGroups?.length) {
-      return accountGroups.filter((group) => group.accounts?.length);
+      return accountGroups.filter(
+        (group) => group.accounts?.length || group.extra,
+      );
     }
 
     return accounts?.length ? [{ accounts }] : [];
@@ -360,6 +363,9 @@ export default function AddressCombo({
     () => groups.flatMap((group) => group.accounts || []),
     [groups],
   );
+
+  const hasOptions =
+    allAccounts.length > 0 || groups.some((group) => !!group.extra);
 
   useEffect(() => {
     return () => clearTimeout(focusTimerRef.current);
@@ -473,11 +479,9 @@ export default function AddressCombo({
           edit={edit && canEdit}
           size={size}
         />
-        {(allAccounts.length > 0 || rightContent) &&
-          !readOnly &&
-          rightContentComponent}
+        {(hasOptions || rightContent) && !readOnly && rightContentComponent}
       </Select>
-      {show && allAccounts.length > 0 && (
+      {show && hasOptions && (
         <AddressComboListOptions
           groups={groups}
           address={address}
