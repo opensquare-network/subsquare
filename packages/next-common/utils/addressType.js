@@ -32,7 +32,9 @@ export function isUnsupportedAddress(address) {
 }
 
 export function getUnsupportedAddressMessage(address) {
-  if (!isUnsupportedAddress(address)) {
+  // An empty or malformed address is reported as invalid input, not as an
+  // unsupported address type
+  if (!address || !isUnsupportedAddress(address)) {
     return null;
   }
 

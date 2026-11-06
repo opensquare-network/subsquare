@@ -7,6 +7,7 @@ import { useEnsureLogin } from "next-common/hooks/useEnsureLogin";
 import { ContactAccount } from "./styled";
 import RemoveContactButton from "./removeContactButton";
 import { useContactsContext } from "./context/contactsContext";
+import { MAX_CONTACTS } from "./constants";
 
 const AddContactPopup = dynamicPopup(() => import("./addContactPopup"));
 
@@ -52,23 +53,36 @@ export default function ContactsList() {
         contacts={contacts}
         isLoading={isLoading && contacts.length === 0}
       />
-      <AddContactButton />
+      <AddContactLimitHint count={contacts.length} />
+      <AddContactButton disabled={contacts.length >= MAX_CONTACTS} />
     </div>
   );
 }
 
-function AddContactButton() {
+function AddContactButton({ disabled = false }) {
   const [popupOpen, setPopupOpen] = useState(false);
 
   return (
     <>
       <div className="flex justify-end">
-        <PrimaryButton onClick={() => setPopupOpen(true)}>
+        <PrimaryButton disabled={disabled} onClick={() => setPopupOpen(true)}>
           Add Contact
         </PrimaryButton>
       </div>
       {popupOpen && <AddContactPopup onClose={() => setPopupOpen(false)} />}
     </>
+  );
+}
+
+function AddContactLimitHint({ count }) {
+  if (count < MAX_CONTACTS) {
+    return null;
+  }
+
+  return (
+    <div className="text12Medium text-textTertiary text-right">
+      {`You can keep at most ${MAX_CONTACTS} contacts.`}
+    </div>
   );
 }
 

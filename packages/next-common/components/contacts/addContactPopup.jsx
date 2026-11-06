@@ -5,7 +5,7 @@ import Popup from "next-common/components/popup/wrapper/Popup";
 import PopupLabel from "next-common/components/popup/label";
 import TextInputField from "next-common/components/popup/fields/textInputField";
 import AddressCombo from "next-common/components/addressCombo";
-import SubmitButton from "next-common/components/common/tx/submitButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import SecondaryButton from "next-common/lib/button/secondary";
 import { colorStyle, PromptTypes } from "next-common/components/scrollPrompt";
 import { GreyPanel } from "next-common/components/styled/containers/greyPanel";
@@ -116,13 +116,13 @@ export default function AddContactPopup({ onClose }) {
       </div>
       <div className="flex gap-[8px] justify-end">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <SubmitButton
+        <PrimaryButton
           loading={isLoading}
           disabled={isLoading || buttonDisabled}
           onClick={doSubmit}
         >
           Add
-        </SubmitButton>
+        </PrimaryButton>
       </div>
     </Popup>
   );

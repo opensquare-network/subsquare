@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import SecondaryButton from "next-common/lib/button/secondary";
-import SubmitButton from "next-common/components/common/tx/submitButton";
+import PrimaryButton from "next-common/lib/button/primary";
 import nextApi from "next-common/services/nextApi";
 import {
   newErrorToast,
@@ -50,14 +50,14 @@ export default function RemoveContactPopup({ contact, onClose }) {
       </div>
       <div className="flex gap-[8px] justify-end">
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <SubmitButton
+        <PrimaryButton
           loading={isLoading}
           disabled={isLoading}
           className="!bg-red500"
           onClick={doSubmit}
         >
           Confirm
-        </SubmitButton>
+        </PrimaryButton>
       </div>
     </Popup>
   );
