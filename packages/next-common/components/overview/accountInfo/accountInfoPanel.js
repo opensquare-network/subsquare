@@ -20,6 +20,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
+import transferEnabledChains from "next-common/utils/consts/transferEnabledChains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { useWindowWidthContext } from "next-common/context/windowSize";
@@ -249,18 +250,6 @@ function ParaChainTeleportOnRelayChainButton() {
     </>
   );
 }
-
-const transferEnabledChains = [
-  Chains.polkadot,
-  Chains.kusama,
-  Chains.westend,
-  Chains.rococo,
-  Chains.paseo,
-  Chains.hyperBridge,
-  Chains.hydradx,
-  Chains.polkadotCoretime,
-  Chains.kusamaCoretime,
-];
 
 const paraChainTeleportEnabledChains = [Chains.collectives, Chains.hydradx];
 

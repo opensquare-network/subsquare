@@ -30,3 +30,15 @@ export function isUnsupportedAddress(address) {
   }
   return !isSubstrate;
 }
+
+export function getUnsupportedAddressMessage(address) {
+  if (!isUnsupportedAddress(address)) {
+    return null;
+  }
+
+  if (getChainAddressType() === ChainTypes.ETHEREUM) {
+    return "Only EVM addresses are supported on this chain.";
+  }
+
+  return "EVM addresses are not supported on this chain.";
+}
