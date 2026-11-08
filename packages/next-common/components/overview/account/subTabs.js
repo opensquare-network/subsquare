@@ -4,6 +4,7 @@ import { isKintsugiChain } from "next-common/utils/chain";
 import DepositsTitle from "./depositsTitle";
 import ProxiesTitle from "./proxiesTitle";
 import Chains from "next-common/utils/consts/chains";
+import transferEnabledChains from "next-common/utils/consts/transferEnabledChains";
 import TabsList from "next-common/components/tabs/list";
 
 function TabTitle({ active, children }) {
@@ -81,6 +82,14 @@ export default function AccountSubTabs({ className = "" }) {
       value: "recovery",
       label: ({ active }) => <TabTitle active={active}>Recovery</TabTitle>,
       url: "/account/my-recovery",
+    });
+  }
+
+  if (transferEnabledChains.includes(chain)) {
+    tabs.push({
+      value: "contacts",
+      label: ({ active }) => <TabTitle active={active}>Contacts</TabTitle>,
+      url: "/account/contacts",
     });
   }
 

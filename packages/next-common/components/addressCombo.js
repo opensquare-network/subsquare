@@ -13,6 +13,7 @@ import { tryConvertToEvmAddress } from "next-common/utils/mixedChainUtil";
 import { useClickAway } from "react-use";
 import useIdentityInfo from "next-common/hooks/useIdentityInfo";
 import AddressInfoLoading from "./addressInfo";
+import Tooltip from "./tooltip";
 import { noop } from "lodash-es";
 
 const Wrapper = Relative;
@@ -130,6 +131,7 @@ function getAddressHint(address) {
 export function AddressComboInput({
   inputAddress,
   setInputAddress,
+  onInputChange,
   onBlur,
   placeholder,
   avatarSize = 40,
@@ -139,7 +141,10 @@ export function AddressComboInput({
       <Avatar address={inputAddress} size={avatarSize} />
       <Input
         value={inputAddress}
-        onChange={(e) => setInputAddress(e.target.value)}
+        onChange={(e) => {
+          setInputAddress(e.target.value);
+          onInputChange?.(e.target.value);
+        }}
         onBlur={onBlur}
         placeholder={placeholder}
       />
@@ -171,6 +176,8 @@ export function IdentityDisplay({ address, name }) {
 export function AddressComboListItemAccount({ account, size }) {
   const { isLoading } = useIdentityInfo(account.address);
   const address = normalizeAddress(account.address);
+  const displayAddress = account.displayAddress || address;
+  const showAddressTooltip = displayAddress !== address;
 
   if (isLoading) {
     return <AddressInfoLoading address={address} size={size} />;
@@ -183,7 +190,13 @@ export function AddressComboListItemAccount({ account, size }) {
         <IdentityDisplay address={account.address} name={account?.name} />
         {size === "default" && (
           <div className="flex-1 w-full overflow-hidden whitespace-nowrap overflow-ellipsis">
-            {address}
+            {showAddressTooltip ? (
+              <Tooltip content={address} contentClassName="pointer-events-none">
+                {displayAddress}
+              </Tooltip>
+            ) : (
+              displayAddress
+            )}
           </div>
         )}
       </NameWrapper>
@@ -246,6 +259,7 @@ export function AddressComboCustomAddress({ address, size = "default" }) {
 function AddressComboHeader({
   inputAddress,
   setInputAddress,
+  onInputChange,
   onBlur,
   placeholder,
   accounts,
@@ -253,7 +267,7 @@ function AddressComboHeader({
   edit,
   size = "default",
 }) {
-  const selectedAccount = accounts.find((item) =>
+  const selectedAccount = (accounts || []).find((item) =>
     isSameAddress(normalizeAddress(item.address), address),
   );
 
@@ -262,6 +276,7 @@ function AddressComboHeader({
       <AddressComboInput
         inputAddress={inputAddress}
         setInputAddress={setInputAddress}
+        onInputChange={onInputChange}
         onBlur={onBlur}
         placeholder={placeholder}
         avatarSize={size === "default" ? 40 : 24}
@@ -282,23 +297,33 @@ function AddressComboHeader({
   return <AddressComboCustomAddress address={address} size={size} />;
 }
 
-function AddressComboListOptions({ accounts, address, onSelect, size }) {
+function AddressComboListOptions({ groups, address, onSelect, size }) {
   return (
     <Options className="scrollbar-pretty">
-      {(accounts || []).map((item, index) => {
-        const isDisabled = !!item.disabled;
-        return (
-          <Item
-            key={index}
-            onClick={() => !isDisabled && onSelect(item)}
-            selected={isSameAddress(item.address, address)}
-            disabled={isDisabled}
-            className={cn(size === "small" && "!h-10")}
-          >
-            <AddressComboListItemAccount account={item} size={size} />
-          </Item>
-        );
-      })}
+      {groups.map((group, groupIndex) => (
+        <div key={group.title ?? `group-${groupIndex}`}>
+          {group.title && (
+            <div className="px-4 pt-2 pb-1 text12Medium text-textTertiary">
+              {group.title}
+            </div>
+          )}
+          {(group.accounts || []).map((item, index) => {
+            const isDisabled = !!item.disabled;
+            return (
+              <Item
+                key={item.address ?? index}
+                onClick={() => !isDisabled && onSelect(item)}
+                selected={isSameAddress(item.address, address)}
+                disabled={isDisabled}
+                className={cn(size === "small" && "!h-10")}
+              >
+                <AddressComboListItemAccount account={item} size={size} />
+              </Item>
+            );
+          })}
+          {group.extra}
+        </div>
+      ))}
     </Options>
   );
 }
@@ -306,11 +331,13 @@ function AddressComboListOptions({ accounts, address, onSelect, size }) {
 export default function AddressCombo({
   className,
   accounts,
+  accountGroups,
   address,
   setAddress,
   allowInvalidAddress = false,
   readOnly = false,
   canEdit = true,
+  updateOnChange = false,
   size = "default",
   placeholder = "Please fill the address or select another one...",
   rightContent = null,
@@ -321,6 +348,24 @@ export default function AddressCombo({
   );
   const ref = useRef();
   const focusTimerRef = useRef();
+
+  const groups = useMemo(() => {
+    if (accountGroups?.length) {
+      return accountGroups.filter(
+        (group) => group.accounts?.length || group.extra,
+      );
+    }
+
+    return accounts?.length ? [{ accounts }] : [];
+  }, [accountGroups, accounts]);
+
+  const allAccounts = useMemo(
+    () => groups.flatMap((group) => group.accounts || []),
+    [groups],
+  );
+
+  const hasOptions =
+    allAccounts.length > 0 || groups.some((group) => !!group.extra);
 
   useEffect(() => {
     return () => clearTimeout(focusTimerRef.current);
@@ -372,6 +417,19 @@ export default function AddressCombo({
     setShow(false);
   };
 
+  const onInputChange = (value) => {
+    if (!updateOnChange) {
+      return;
+    }
+
+    if (!isAddress(value) && !isEthereumAddress(value)) {
+      setAddress(value);
+      return;
+    }
+
+    setAddress(normalizeAddress(value) || value);
+  };
+
   const rightContentComponent = useMemo(() => {
     if (readOnly) {
       return null;
@@ -413,20 +471,19 @@ export default function AddressCombo({
         <AddressComboHeader
           inputAddress={inputAddress}
           setInputAddress={setInputAddress}
+          onInputChange={onInputChange}
           onBlur={onBlur}
           placeholder={placeholder}
-          accounts={accounts}
+          accounts={allAccounts}
           address={address}
           edit={edit && canEdit}
           size={size}
         />
-        {((accounts || []).length > 0 || rightContent) &&
-          !readOnly &&
-          rightContentComponent}
+        {(hasOptions || rightContent) && !readOnly && rightContentComponent}
       </Select>
-      {show && (accounts || []).length > 0 && (
+      {show && hasOptions && (
         <AddressComboListOptions
-          accounts={accounts}
+          groups={groups}
           address={address}
           onSelect={onSelect}
           size={size}
