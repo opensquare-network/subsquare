@@ -5,6 +5,7 @@ import SubScanLink from "./subscanLink";
 import { isEmpty } from "lodash-es";
 import StatescanLink from "./statescanLink";
 import NeckworkLink from "./neckworkLink";
+import VaraExplorerLink from "./varaExplorerLink";
 
 const Wrapper = styled(Flex)`
   height: 20px;
@@ -24,6 +25,7 @@ export default function ExplorerLinks({ indexer = {}, style = {}, children }) {
       <SubScanLink indexer={indexer}>{children}</SubScanLink>
       <StatescanLink indexer={indexer}>{children}</StatescanLink>
       <NeckworkLink indexer={indexer}>{children}</NeckworkLink>
+      <VaraExplorerLink indexer={indexer}>{children}</VaraExplorerLink>
     </Wrapper>
   );
 }
