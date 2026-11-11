@@ -99,7 +99,7 @@ const vara = {
     vesting: true,
   }),
   integrations: {
-    subscan: true,
+    varaExplorer: true,
   },
   cssVarsLight: {
     theme100: "rgba(11,234,179,0.10)",

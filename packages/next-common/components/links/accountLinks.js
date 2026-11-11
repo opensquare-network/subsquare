@@ -5,6 +5,7 @@ import DotreasuryAccountLink from "./dotreasuryAccountLink";
 import StatescanAccountLink from "./statescanAccountLink";
 import SubScanAccountLink from "./subscanAccountLink";
 import NeckworkAccountLink from "./neckworkAccountLink";
+import { VaraExplorerAccountLink } from "./varaExplorerLink";
 import ConditionalMimirIcon from "./conditionalMimirIcon";
 import { useChainSettings } from "next-common/context/chain";
 import IdentityInfoLinks from "./identityInfoLinks";
@@ -32,6 +33,7 @@ export default function AccountLinks({ address }) {
       <DotreasuryAccountLink address={address} />
       <SubScanAccountLink address={address} />
       <NeckworkAccountLink address={address} />
+      <VaraExplorerAccountLink address={address} />
       <IdentityInfoLinks address={address} />
       {showConditionalMimirIcon && <ConditionalMimirIcon address={address} />}
     </Wrapper>
