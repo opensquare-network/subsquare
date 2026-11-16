@@ -23,6 +23,7 @@ import MultiAssetChildBountyAward from "next-common/components/treasury/multiAss
 import MultiAssetChildBountyCloseBounty from "next-common/components/treasury/multiAssetChildBounty/closeBounty";
 import MultiAssetChildBountyPaymentAction from "next-common/components/treasury/multiAssetChildBounty/paymentAction";
 import SplitMoreContent from "next-common/components/splitMoreContent";
+import UnassignCurator from "next-common/components/treasury/multiAssetBounty/unassignCurator";
 
 function MultiAssetChildBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -81,9 +82,19 @@ function MultiAssetChildBountySidebar() {
         <BountySidebarCurator />
       </CuratorProvider>
 
-      <SplitMoreContent more={<MultiAssetChildBountyCloseBounty />}>
+      <SplitMoreContent
+        more={
+          <>
+            <MultiAssetChildBountyCloseBounty />
+            <UnassignCurator isChild phase="Active" />
+            <UnassignCurator isChild phase="Active" remove />
+          </>
+        }
+      >
         <MultiAssetChildBountyProposeCurator />
         <MultiAssetChildBountyAcceptCurator />
+        <UnassignCurator isChild phase="Funded" />
+        <UnassignCurator isChild phase="Funded" remove />
         <MultiAssetChildBountyAward />
         <MultiAssetChildBountyPaymentAction />
       </SplitMoreContent>

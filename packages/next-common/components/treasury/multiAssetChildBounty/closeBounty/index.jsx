@@ -47,11 +47,9 @@ export default function MultiAssetChildBountyCloseBounty() {
       ? status?.value?.curator
       : null;
 
-  // The parent curator can close the child while the parent is Funded/Active.
+  // Only an active parent curator can close the child.
   const parentCurator =
-    parentStatus?.type === "Funded" || parentStatus?.type === "Active"
-      ? parentStatus?.value?.curator
-      : null;
+    parentStatus?.type === "Active" ? parentStatus?.value?.curator : null;
 
   // useAccountRole(origin) resolves every route the current user has to
   // dispatch with `origin`; it returns [] when the user is not that curator

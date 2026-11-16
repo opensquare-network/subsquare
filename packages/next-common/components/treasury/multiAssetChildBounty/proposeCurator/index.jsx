@@ -24,12 +24,9 @@ export default function MultiAssetChildBountyProposeCurator() {
   const status = useMultiAssetChildBountyStatus(parentBountyId, childBountyId);
   const parentStatus = useMultiAssetBountyStatus(parentBountyId);
 
-  // Only the parent bounty curator can propose a curator for a child bounty,
-  // and only while the parent is Funded/Active (i.e. it still has a curator).
+  // Only an active parent curator can propose a child curator.
   const parentCurator =
-    parentStatus?.type === "Funded" || parentStatus?.type === "Active"
-      ? parentStatus?.value?.curator
-      : null;
+    parentStatus?.type === "Active" ? parentStatus?.value?.curator : null;
 
   const { loading: isRoleLoading, roles } = useAccountRole(parentCurator);
   const { showPopup, popup } = useProposeCuratorPopup(parentCurator);
