@@ -16,6 +16,7 @@ import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { toPrecision } from "next-common/utils";
 import useMultiAssetBountyValueState from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountyValueState";
+import useMultiAssetBountyStatus from "next-common/components/treasury/multiAssetBounty/useMultiAssetBountyStatus";
 
 function PopupContent({ origin, role }) {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function PopupContent({ origin, role }) {
   const connectedAddress =
     signerAccount?.proxyAddress || signerAccount?.address;
   const { bountyIndex } = useOnchainData();
+  const status = useMultiAssetBountyStatus(bountyIndex);
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -42,14 +44,19 @@ function PopupContent({ origin, role }) {
 
   // Close refunds the recorded value only: unregistered funds stay on the
   // account afterwards and no pallet call can move them, so they should be
-  // registered with Increase Value first.
+  // registered with Increase Value first. increase_value only accepts the
+  // curator of an `Active` bounty and has no governance fallback, so the hint
+  // is pointless while the bounty is still `Funded`.
   const {
     assetInfo,
     unregistered,
     loading: valueStateLoading,
   } = useMultiAssetBountyValueState();
   const showUnregisteredHint =
-    !valueStateLoading && !!unregistered && unregistered.gt(0);
+    status?.type === "Active" &&
+    !valueStateLoading &&
+    !!unregistered &&
+    unregistered.gt(0);
 
   return (
     <>

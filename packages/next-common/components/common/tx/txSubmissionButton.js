@@ -21,6 +21,10 @@ export default function TxSubmissionButton({
   onTxError = noop,
   onTxStart = noop,
   autoClose = true,
+  // Shown while the button is unusable. Also wins over the watch-only hint:
+  // an action-specific reason ("nothing to register") is more useful than the
+  // generic "watch-only accounts cannot sign".
+  tooltip,
 }) {
   const onClose = usePopupOnClose();
   const isWatchOnly = useIsWatchOnly();
@@ -47,7 +51,7 @@ export default function TxSubmissionButton({
       {isLoading && loadingText ? (
         <LoadingButton>{loadingText}</LoadingButton>
       ) : (
-        <WatchOnlyTooltip>
+        <WatchOnlyTooltip content={tooltip}>
           <PrimaryButton
             loading={isLoading}
             onClick={doSubmit}

@@ -127,7 +127,14 @@ function PopupContent({ curator, role }) {
     )}`;
   }, [depositChange, nativeDecimals]);
 
-  const nothingToRegister = !loading && unregistered?.lte(0);
+  // Nothing to register. `increase_value` never moves funds and the value can
+  // never be lowered again, so calling it with no unregistered money behind it
+  // only leaves the bounty backed by less than its recorded value.
+  const nothingToRegister = !loading && unregistered?.isZero();
+  // The account holds less than the recorded value accounts for (funds not yet
+  // arrived, or a child value not released). Registering anything now would
+  // widen the gap, so the reason to skip the call is different.
+  const underFunded = !loading && !!unregistered && unregistered.lt(0);
   // The call still succeeds, but the bounty is then backed by less than its
   // recorded value, so Award, Close and New Child Bounty fail until the funds
   // actually arrive. The value can never be lowered again.
@@ -136,6 +143,21 @@ function PopupContent({ curator, role }) {
     unregistered != null &&
     rawAmount.gt(unregistered)
   );
+
+  // Single source of truth for why Confirm is disabled; the button state and
+  // its tooltip are derived from it so the two never drift apart.
+  let disabledTooltip = null;
+  if (loading) {
+    disabledTooltip = "Loading the bounty account state";
+  } else if (nothingToRegister) {
+    disabledTooltip =
+      "Nothing to register: every fund on the bounty account is already part of the recorded value";
+  } else if (underFunded) {
+    disabledTooltip =
+      "The bounty account holds less than the recorded value, there is nothing to register";
+  } else if (!rawAmount) {
+    disabledTooltip = "Please fill a valid amount";
+  }
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
@@ -205,9 +227,19 @@ function PopupContent({ curator, role }) {
       )}
       {nothingToRegister && (
         <InfoMessage>
-          Nothing to register: the bounty account does not hold funds above the
-          recorded value.
+          Nothing to register: every fund on the bounty account is already part
+          of the recorded value.
         </InfoMessage>
+      )}
+      {underFunded && (
+        <WarningMessage>
+          {`The bounty account holds ${toPrecision(
+            unregistered.abs().toFixed(),
+            decimals ?? 0,
+          )} ${
+            symbol ?? ""
+          } less than the recorded value accounts for. Nothing can be registered until those funds arrive.`}
+        </WarningMessage>
       )}
       {overRegistered && (
         <WarningMessage danger>
@@ -248,7 +280,8 @@ function PopupContent({ curator, role }) {
       <TxSubmissionButton
         title="Confirm"
         getTxFunc={getTxFuncForSubmit}
-        disabled={!rawAmount}
+        disabled={!!disabledTooltip}
+        tooltip={disabledTooltip}
         onInBlock={({ events }) => {
           if (
             role?.kind === "multisig" &&
