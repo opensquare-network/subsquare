@@ -15,6 +15,9 @@ import { addressToPublicKey } from "next-common/utils/address";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { getEventData } from "next-common/utils/sendTransaction";
+import { InfoMessage } from "next-common/components/setting/styled";
+import { toPrecision } from "next-common/utils";
+import useMultiAssetBountyValueState from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountyValueState";
 
 function getBeneficiaryParam(beneficiary) {
   return {
@@ -82,11 +85,32 @@ function PopupContent({ origin, role }) {
     [api, role, connectedAddress, origin, bountyIndex, beneficiary],
   );
 
+  // Award pays the recorded value (minus the child values), so funds the
+  // curator has not registered with Increase Value are not paid out to the
+  // beneficiary.
+  const {
+    assetInfo,
+    unregistered,
+    loading: valueStateLoading,
+  } = useMultiAssetBountyValueState();
+  const showUnregisteredHint =
+    !valueStateLoading && !!unregistered && unregistered.gt(0);
+
   return (
     <>
       <UseConnectedAccountSigner />
       <SignerWithBalance noSwitchSigner />
       {beneficiarySelect}
+      {showUnregisteredHint && (
+        <InfoMessage>
+          {`The bounty account holds ${toPrecision(
+            unregistered.toFixed(),
+            assetInfo?.decimals ?? 0,
+          )} ${
+            assetInfo?.symbol ?? ""
+          } more than the recorded value. That amount is not paid out: use Increase Value to register it first.`}
+        </InfoMessage>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>

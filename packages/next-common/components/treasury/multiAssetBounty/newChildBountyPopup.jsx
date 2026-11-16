@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useMount } from "react-use";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
@@ -15,11 +15,9 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import AmountInputWithHint from "next-common/components/popup/fields/amountInputWithHint";
 import TextAreaField from "next-common/components/popup/fields/textAreaField";
-import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
 import { useContextApi } from "next-common/context/api";
-import useAssetBalance from "next-common/hooks/treasury/useAssetBalance";
-import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
+import useMultiAssetBountyValueState from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountyValueState";
 import { checkTransferAmount } from "next-common/utils/checkTransferAmount";
 import { getEventData } from "next-common/utils/sendTransaction";
 import { useRouter } from "next/router";
@@ -39,15 +37,15 @@ const metadataTabs = [
   { tabId: "metadata", tabTitle: "Metadata Hash" },
 ];
 
-function getCheckedValue({ amount, decimals, transferrable, isLoading }) {
-  if (isLoading || transferrable == null) {
-    throw new Error("Available bounty balance is loading");
+function getCheckedValue({ amount, decimals, available, isLoading }) {
+  if (isLoading || available == null) {
+    throw new Error("Available bounty value is loading");
   }
 
   return checkTransferAmount({
     transferAmount: amount,
     decimals,
-    transferrable: String(transferrable),
+    transferrable: available,
   });
 }
 
@@ -86,16 +84,22 @@ function PopupContent({ parentCurator, role }) {
     signerAccount?.proxyAddress || signerAccount?.address;
   const api = useContextApi();
   const router = useRouter();
-  const { address, bountyIndex, assetKind } = useOnchainData();
-  const { decimals: chainDecimals, symbol: chainSymbol } = useChainSettings();
-  const assetInfo = useMemo(
-    () => getAssetInfoFromAssetKind(assetKind, chainDecimals, chainSymbol),
-    [assetKind, chainDecimals, chainSymbol],
-  );
-  const { symbol, decimals } = assetInfo;
-  const { balance: transferrable, loading: isLoading } = useAssetBalance(
-    address,
+  const { bountyIndex } = useOnchainData();
+  // The pallet limits a child bounty to `value - ChildBountiesValuePerParent`,
+  // which can be lower than the account balance when funds arrived on the
+  // account without increase_value. Use that limit as "Available" so the form
+  // cannot offer amounts the call would reject with InsufficientBountyValue.
+  const {
     assetInfo,
+    balance,
+    available,
+    loading: isLoading,
+  } = useMultiAssetBountyValueState();
+  const { symbol, decimals } = assetInfo ?? {};
+  const hasUnregisteredFunds = !!(
+    balance &&
+    available != null &&
+    balance.gt(available)
   );
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
@@ -135,7 +139,7 @@ function PopupContent({ parentCurator, role }) {
         const value = getCheckedValue({
           amount,
           decimals,
-          transferrable,
+          available,
           isLoading,
         });
         if (!api?.tx.multiAssetBounties?.fundChildBounty) {
@@ -194,7 +198,7 @@ function PopupContent({ parentCurator, role }) {
       parentCurator,
       role,
       connectedAddress,
-      transferrable,
+      available,
       decimals,
       isLoading,
     ],
@@ -206,14 +210,20 @@ function PopupContent({ parentCurator, role }) {
       <AmountInputWithHint
         label="Value"
         hintLabel="Available"
-        hintTooltip="Available bounty balance"
-        maxAmount={transferrable}
+        hintTooltip="Recorded bounty value left after the values already used by child bounties"
+        maxAmount={available?.toFixed() ?? "0"}
         decimals={decimals}
         symbol={symbol}
         isLoading={isLoading}
         inputAmount={amount}
         setInputAmount={setAmount}
       />
+      {hasUnregisteredFunds && (
+        <p className="mt-2 text12Medium text-textTertiary">
+          The bounty account holds more than the recorded value allows. Use
+          Increase Value to register the extra funds first.
+        </p>
+      )}
       {curatorField}
       <Tab
         tabs={metadataTabs}

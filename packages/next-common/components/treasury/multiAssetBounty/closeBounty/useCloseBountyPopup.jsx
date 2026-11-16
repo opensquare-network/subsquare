@@ -14,6 +14,8 @@ import { InfoMessage } from "next-common/components/setting/styled";
 import { useDispatch } from "react-redux";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { getEventData } from "next-common/utils/sendTransaction";
+import { toPrecision } from "next-common/utils";
+import useMultiAssetBountyValueState from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountyValueState";
 
 function PopupContent({ origin, role }) {
   const dispatch = useDispatch();
@@ -38,6 +40,17 @@ function PopupContent({ origin, role }) {
     [api, role, connectedAddress, origin, bountyIndex],
   );
 
+  // Close refunds the recorded value only: unregistered funds stay on the
+  // account afterwards and no pallet call can move them, so they should be
+  // registered with Increase Value first.
+  const {
+    assetInfo,
+    unregistered,
+    loading: valueStateLoading,
+  } = useMultiAssetBountyValueState();
+  const showUnregisteredHint =
+    !valueStateLoading && !!unregistered && unregistered.gt(0);
+
   return (
     <>
       <UseConnectedAccountSigner />
@@ -45,6 +58,16 @@ function PopupContent({ origin, role }) {
       <InfoMessage>
         Closing this bounty will refund its funds to the treasury.
       </InfoMessage>
+      {showUnregisteredHint && (
+        <InfoMessage>
+          {`The bounty account holds ${toPrecision(
+            unregistered.toFixed(),
+            assetInfo?.decimals ?? 0,
+          )} ${
+            assetInfo?.symbol ?? ""
+          } more than the recorded value. That amount is not refunded: use Increase Value to register it first.`}
+        </InfoMessage>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFuncForFee} />
       </AdvanceSettings>
