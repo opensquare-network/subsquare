@@ -21,20 +21,28 @@ const TriggerWrapper = styled.div`
     `}
 `;
 
-// A watch-only account cannot sign at all, which outranks any reason a caller
-// passes in `content`: such an account always sees the watch-only hint.
-// `content` is therefore only shown while the connected account can sign.
-export default function WatchOnlyTooltip({ children, content }) {
+// Shows `content`, or the watch-only hint when the connected account is
+// watch-only; `watchOnlyContent` replaces the hint for non-tx buttons.
+export default function WatchOnlyTooltip({
+  children,
+  content,
+  watchOnlyContent = WATCH_ONLY_TOOLTIP_TEXT,
+}) {
   const isWatchOnly = useIsWatchOnly();
-  const tooltipContent = isWatchOnly ? WATCH_ONLY_TOOLTIP_TEXT : content;
 
-  if (!tooltipContent) {
-    return children;
+  if (isWatchOnly) {
+    return (
+      <Tooltip content={watchOnlyContent}>
+        <TriggerWrapper watchOnly>{children}</TriggerWrapper>
+      </Tooltip>
+    );
   }
 
-  return (
-    <Tooltip content={tooltipContent}>
-      <TriggerWrapper watchOnly={isWatchOnly}>{children}</TriggerWrapper>
+  return content ? (
+    <Tooltip content={content}>
+      <TriggerWrapper>{children}</TriggerWrapper>
     </Tooltip>
+  ) : (
+    children
   );
 }

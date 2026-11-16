@@ -18,6 +18,7 @@ import AdvancedForm from "next-common/components/post/advanced/form";
 import { getRealField } from "next-common/sima/actions/common";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 const Wrapper = styled(NeutralPanel)`
@@ -169,7 +170,10 @@ export default function SimaPostCreate() {
       />
 
       <ButtonWrapper>
-        <WatchOnlyTooltip content={isMuted ? MUTED_TOOLTIP_TEXT : ""}>
+        <WatchOnlyTooltip
+          content={isMuted ? MUTED_TOOLTIP_TEXT : ""}
+          watchOnlyContent={WATCH_ONLY_CREATE_POST_TOOLTIP_TEXT}
+        >
           <SplitProxyMenuButton
             action="Create"
             loading={creating}

@@ -19,6 +19,7 @@ import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { getRealField } from "next-common/sima/actions/common";
 import WatchOnlyTooltip from "next-common/components/watchOnly/tooltip";
 import { useIsWatchOnly } from "next-common/context/connectedAccount";
+import { WATCH_ONLY_COMMENT_TOOLTIP_TEXT } from "next-common/utils/watchOnly";
 import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 const Wrapper = styled.div`
@@ -201,7 +202,10 @@ function CommentEditor(
             Cancel
           </SecondaryButton>
         )}
-        <WatchOnlyTooltip content={submitTooltipContent}>
+        <WatchOnlyTooltip
+          content={submitTooltipContent}
+          watchOnlyContent={WATCH_ONLY_COMMENT_TOOLTIP_TEXT}
+        >
           <MaybeSplitCommentButton
             isSima={shouldUseSima}
             isReply={isReply}
