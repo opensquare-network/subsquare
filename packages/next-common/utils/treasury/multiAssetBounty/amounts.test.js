@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { getMultiAssetBountyAmounts } from "./amounts";
+import BigNumber from "bignumber.js";
+import { getIncreasedBountyValue, getMultiAssetBountyAmounts } from "./amounts";
 
 describe("getMultiAssetBountyAmounts", () => {
   it("registers funds held above the recorded value", () => {
@@ -52,5 +53,29 @@ describe("getMultiAssetBountyAmounts", () => {
 
     expect(amounts.available.toFixed()).toBe("0");
     expect(amounts.unregistered.toFixed()).toBe("0");
+  });
+
+  it("does not allow registering a child refund before status is checked", () => {
+    const amounts = getMultiAssetBountyAmounts({
+      value: "1000",
+      childBountiesValue: "400",
+      balance: "1000",
+      refundPending: true,
+    });
+
+    expect(amounts.unregistered.toFixed()).toBe("400");
+    expect(amounts.registerableAmount.toFixed()).toBe("0");
+  });
+});
+
+describe("getIncreasedBountyValue", () => {
+  it("waits for the recorded value to load before adding an amount", () => {
+    expect(getIncreasedBountyValue(null, new BigNumber(100))).toBeNull();
+    expect(
+      getIncreasedBountyValue(
+        new BigNumber(1000),
+        new BigNumber(100),
+      ).toFixed(),
+    ).toBe("1100");
   });
 });

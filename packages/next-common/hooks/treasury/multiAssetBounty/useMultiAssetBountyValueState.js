@@ -35,13 +35,27 @@ export default function useMultiAssetBountyValueState() {
 
   const [chainState, setChainState] = useState(null);
   const [chainStateLoading, setChainStateLoading] = useState(true);
+  const [chainStateError, setChainStateError] = useState(null);
 
   useEffect(() => {
     setChainState(null);
+    setChainStateError(null);
     setChainStateLoading(true);
 
-    const query = api?.query?.multiAssetBounties;
-    if (!query?.bounties || bountyIndex == null) {
+    if (bountyIndex == null) {
+      setChainStateError(new Error("The bounty index is unavailable"));
+      setChainStateLoading(false);
+      return;
+    }
+    // The api connects after mount; keep loading and retry when it arrives.
+    if (!api) {
+      return;
+    }
+    const query = api.query?.multiAssetBounties;
+    if (!query?.bounties) {
+      setChainStateError(
+        new Error("The chain does not expose MultiAssetBounties"),
+      );
       setChainStateLoading(false);
       return;
     }
@@ -61,6 +75,13 @@ export default function useMultiAssetBountyValueState() {
         }
 
         const onchainBounty = bounty?.isSome ? bounty.unwrap() : null;
+        if (!onchainBounty) {
+          setChainStateError(
+            new Error("Multi-asset bounty is no longer available on-chain"),
+          );
+          return;
+        }
+
         setChainState({
           value: onchainBounty?.value?.toString() ?? null,
           childBountiesValue: new BigNumber(childValue?.toString() ?? 0),
@@ -80,7 +101,12 @@ export default function useMultiAssetBountyValueState() {
           ),
         });
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        console.error("Failed to load multi-asset bounty state", error);
+        if (!cancelled) {
+          setChainStateError(error);
+        }
+      })
       .finally(() => {
         if (!cancelled) {
           setChainStateLoading(false);
@@ -102,6 +128,7 @@ export default function useMultiAssetBountyValueState() {
         value: chainState.value ?? indexedValue,
         childBountiesValue: chainState.childBountiesValue,
         balance,
+        refundPending: chainState.refundPending,
       }),
       curatorDeposit: chainState.curatorDeposit,
       refundPending: chainState.refundPending,
@@ -111,6 +138,7 @@ export default function useMultiAssetBountyValueState() {
   return {
     assetInfo,
     ...computed,
+    error: chainStateError,
     loading: balanceLoading || chainStateLoading,
   };
 }

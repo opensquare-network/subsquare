@@ -27,6 +27,7 @@ import {
   useCuratorDeposit,
 } from "next-common/components/treasury/multiAssetBounty/acceptCurator/useAcceptCuratorPopup";
 import useMultiAssetBountyValueState from "next-common/hooks/treasury/multiAssetBounty/useMultiAssetBountyValueState";
+import { getIncreasedBountyValue } from "next-common/utils/treasury/multiAssetBounty/amounts";
 
 function toRawAmount(amount, decimals) {
   if (!amount || decimals == null) {
@@ -69,9 +70,11 @@ function PopupContent({ curator, role }) {
     balance,
     value,
     unregistered,
+    registerableAmount,
     curatorDeposit,
     refundPending,
     loading,
+    error: valueStateError,
   } = useMultiAssetBountyValueState();
   const { symbol, decimals } = assetInfo ?? {};
 
@@ -96,7 +99,7 @@ function PopupContent({ curator, role }) {
     [amount, decimals],
   );
   const newValue = useMemo(
-    () => (rawAmount ? value.plus(rawAmount) : null),
+    () => getIncreasedBountyValue(value, rawAmount),
     [rawAmount, value],
   );
 
@@ -139,9 +142,10 @@ function PopupContent({ curator, role }) {
   // recorded value, so Award, Close and New Child Bounty fail until the funds
   // actually arrive. The value can never be lowered again.
   const overRegistered = !!(
+    !refundPending &&
     rawAmount &&
-    unregistered != null &&
-    rawAmount.gt(unregistered)
+    registerableAmount != null &&
+    rawAmount.gt(registerableAmount)
   );
 
   // Single source of truth for why Confirm is disabled; the button state and
@@ -149,6 +153,11 @@ function PopupContent({ curator, role }) {
   let disabledTooltip = null;
   if (loading) {
     disabledTooltip = "Loading the bounty account state";
+  } else if (valueStateError) {
+    disabledTooltip = "Unable to load the current bounty account state";
+  } else if (refundPending) {
+    disabledTooltip =
+      "Run Check Status on the pending child bounty refund before registering funds";
   } else if (nothingToRegister) {
     disabledTooltip =
       "Nothing to register: every fund on the bounty account is already part of the recorded value";
@@ -161,6 +170,24 @@ function PopupContent({ curator, role }) {
 
   const { getTxFuncForSubmit, getTxFuncForFee } = useTxBuilder(
     (toastError) => {
+      if (loading) {
+        toastError("The bounty account state is still loading");
+        return null;
+      }
+      if (valueStateError) {
+        toastError("Unable to load the current bounty account state");
+        return null;
+      }
+      if (refundPending) {
+        toastError(
+          "Run Check Status on the pending child bounty refund before registering funds",
+        );
+        return null;
+      }
+      if (value == null) {
+        toastError("The current bounty value is unavailable");
+        return null;
+      }
       if (!rawAmount) {
         toastError("Please fill a valid amount");
         return null;
@@ -177,7 +204,18 @@ function PopupContent({ curator, role }) {
       );
       return wrapTxByRole(api, { role, tx, connectedAddress, origin: curator });
     },
-    [api, bountyIndex, rawAmount, role, connectedAddress, curator],
+    [
+      api,
+      bountyIndex,
+      rawAmount,
+      loading,
+      valueStateError,
+      refundPending,
+      value,
+      role,
+      connectedAddress,
+      curator,
+    ],
   );
 
   return (
@@ -210,7 +248,9 @@ function PopupContent({ curator, role }) {
         label="Amount"
         hintLabel="Unregistered"
         hintTooltip="Funds the bounty account holds above the recorded value"
-        maxAmount={unregistered?.gt(0) ? unregistered.toFixed() : "0"}
+        maxAmount={
+          registerableAmount?.gt(0) ? registerableAmount.toFixed() : "0"
+        }
         decimals={decimals}
         symbol={symbol}
         isLoading={loading}
@@ -223,6 +263,12 @@ function PopupContent({ curator, role }) {
           A child bounty refund is still being processed. Run Check Status on
           that child bounty first so the parent value accounting catches up
           before registering funds.
+        </WarningMessage>
+      )}
+      {valueStateError && (
+        <WarningMessage>
+          Unable to load the current on-chain bounty state. Increase Value is
+          disabled; close and reopen this popup to retry.
         </WarningMessage>
       )}
       {nothingToRegister && (

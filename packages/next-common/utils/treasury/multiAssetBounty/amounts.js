@@ -11,11 +11,13 @@ export function getMultiAssetBountyAmounts({
   value,
   childBountiesValue,
   balance,
+  refundPending = false,
 }) {
   const recordedValue = new BigNumber(value ?? 0);
   const childrenValue = new BigNumber(childBountiesValue ?? 0);
   const accountBalance = new BigNumber(balance ?? 0);
   const registeredAvailable = recordedValue.minus(childrenValue);
+  const unregistered = accountBalance.minus(registeredAvailable);
 
   return {
     value: recordedValue,
@@ -27,6 +29,15 @@ export function getMultiAssetBountyAmounts({
       BigNumber.max(registeredAvailable, 0),
       accountBalance,
     ),
-    unregistered: accountBalance.minus(registeredAvailable),
+    unregistered,
+    registerableAmount: refundPending ? new BigNumber(0) : unregistered,
   };
+}
+
+export function getIncreasedBountyValue(value, amount) {
+  if (value == null || amount == null) {
+    return null;
+  }
+
+  return value.plus(amount);
 }
