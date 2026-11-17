@@ -35,6 +35,15 @@ const getTimelineData = (args = {}, method, chain) => {
       return {
         Beneficiary: renderAddressUser(args.beneficiary, chain),
       };
+    case "BountyValueIncreased":
+      return {
+        "Old Value": (
+          <AssetDisplay value={args.oldValue} assetKind={args.assetKind} />
+        ),
+        "New Value": (
+          <AssetDisplay value={args.newValue} assetKind={args.assetKind} />
+        ),
+      };
     case "BountyPayoutProcessed":
       return {
         Beneficiary: renderAddressUser(args.beneficiary, chain),
