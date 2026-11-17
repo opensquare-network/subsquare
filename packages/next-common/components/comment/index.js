@@ -8,13 +8,17 @@ import SecondaryButton from "next-common/lib/button/secondary";
 import { IS_SERVER } from "next-common/utils/constants";
 import CommentSwitch from "./switch";
 import { RootCommentItem } from "./rootComment";
+import CommentsAiSummary from "./commentsAiSummary";
 
 export default function Comments({ data: commentsData, loading }) {
   return (
     <div>
       <div className="mb-4">
         <TitleContainer className={cn("w-full !px-0")}>
-          <div className="text14Bold">Comments </div>
+          <div className="flex items-center gap-2">
+            <div className="text14Bold">Comments</div>
+            <CommentsAiSummary commentsData={commentsData} />
+          </div>
           <CommentSwitch />
           <CommentsFilter />
         </TitleContainer>
