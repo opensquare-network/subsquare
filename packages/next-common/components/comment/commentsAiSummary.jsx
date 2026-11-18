@@ -10,7 +10,7 @@ import { usePageProperties } from "next-common/context/page";
 import { useSwitchCommentTabs } from "next-common/context/post/switchComment";
 import { detailPageCategory } from "next-common/utils/consts/business/category";
 import { shouldShowCommentsAiSummary } from "next-common/utils/comment";
-import Loading from "next-common/components/loading";
+import { Skeleton } from "next-common/components/skeleton";
 
 async function fetchCommentsAiSummary({ postType, postId }) {
   const { result, error } = await backendApi.post("comments/ai-summary", {
@@ -33,18 +33,24 @@ const popupClassName = cn(
   "max-h-[70vh] overflow-y-auto scrollbar-pretty",
 );
 
+function PopupSkeleton() {
+  return (
+    <div className="flex flex-col gap-2 w-[280px] max-w-full">
+      <Skeleton className="w-full h-4 rounded-[4px]" />
+      <Skeleton className="w-full h-4 rounded-[4px]" />
+      <Skeleton className="w-2/3 h-4 rounded-[4px]" />
+    </div>
+  );
+}
+
 function PopupContent({ isLoading, isError, summary }) {
   let content;
 
   if (isLoading) {
-    content = (
-      <div className="flex items-center justify-center w-full min-w-[120px]">
-        <Loading size={16} />
-      </div>
-    );
+    content = <PopupSkeleton />;
   } else if (isError) {
     content = (
-      <div className="text-textTertiary">
+      <div role="alert" className="text-textTertiary">
         Failed to load AI summary, please try again later.
       </div>
     );
@@ -86,9 +92,9 @@ function CommentsAiSummaryPopover({ postType, postId }) {
 
   const {
     data: summary,
-    isLoading,
+    isPending,
+    isFetching,
     isError,
-    refetch,
   } = useQuery({
     queryKey: ["comments-ai-summary", postType, postId],
     queryFn: () => fetchCommentsAiSummary({ postType, postId }),
@@ -100,10 +106,11 @@ function CommentsAiSummaryPopover({ postType, postId }) {
   const handleOpen = useCallback(() => {
     cancelClose();
     setOpen(true);
-    if (isError) {
-      refetch();
-    }
-  }, [cancelClose, isError, refetch]);
+  }, [cancelClose]);
+
+  const hasData = summary !== undefined;
+  const isLoading = !hasData && (isPending || isFetching);
+  const hasError = !hasData && isError && !isLoading;
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -134,8 +141,8 @@ function CommentsAiSummaryPopover({ postType, postId }) {
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <PopupContent
-            isLoading={isLoading && !summary}
-            isError={isError && !summary}
+            isLoading={isLoading}
+            isError={hasError}
             summary={summary}
           />
         </Popover.Content>
