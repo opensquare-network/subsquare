@@ -27,6 +27,15 @@ import { usePayoutQueueIsDemo } from "./sourceContext";
 
 const PayoutActionPopup = dynamicPopup(() => import("./actionPopup"));
 
+const ACTION_BUTTON_HINTS = {
+  rotate:
+    "The payout order of this spend expired and the next spend is already mature. Rotate to move it to the back of the queue.",
+  expire:
+    "This spend is past its payout window and can no longer be paid. `check_status` removes it from the payout order and promotes the next spend.",
+  requeue:
+    "This spend is missing from the payout order. `check_status` adds it back to the queue.",
+};
+
 const statusConfig = {
   Pending: {
     Tag: ActiveTag,
@@ -92,10 +101,10 @@ function PayoutActionButton({ spend, symbol, action }) {
 
   return (
     <>
-      {action.kind === "rotate" ? (
+      {ACTION_BUTTON_HINTS[action.kind] ? (
         <Tooltip
           className="flex items-center"
-          content="The payout order of this spend expired and the next spend is already mature. Rotate to move it to the back of the queue."
+          content={ACTION_BUTTON_HINTS[action.kind]}
         >
           {button}
         </Tooltip>

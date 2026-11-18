@@ -91,7 +91,7 @@ function PayoutQueuesContent() {
   const tabs = queues.map((queueItem) => ({
     value: queueItem.id,
     label: ({ active }) => (
-      <TabTitle active={active} tooltip={queueItem.assetKind}>
+      <TabTitle active={active} tooltip={queueItem.tooltip}>
         {queueItem.label}
       </TabTitle>
     ),
