@@ -45,8 +45,12 @@ function SummaryFooter() {
 export default function TreasurySpendsLayout({ children }) {
   const router = useRouter();
   const settings = useChainSettings();
+  // The tab is hidden on chains whose runtime has no payout order yet, unless
+  // this is the demo preview.
+  const demoPayoutQueue = process.env.NEXT_PUBLIC_PAYOUT_QUEUE_DEMO === "true";
   const showPayoutQueues =
     router.pathname === "/treasury/spends/queues" ||
+    demoPayoutQueue ||
     !!settings?.modules?.treasury?.payoutQueue;
   const tabs = showPayoutQueues
     ? baseTabs

@@ -9,6 +9,7 @@ import {
   formatPayoutAmount,
   getAssetBalanceQuery,
   getAssetKindKey,
+  getAssetMetadataQuery,
   getBalanceFromStorage,
   getEntryAssetKind,
   getPapiAssetKindInfo,
@@ -51,7 +52,7 @@ function collectAssetKinds(nextPayoutEntries, payoutQueueEntries) {
   return kinds;
 }
 
-function watchEntries(storage, setEntries, setLoading) {
+function watchEntries(storage, setEntries, onError) {
   return storage.watchEntries().subscribe({
     next: ({ entries, deltas }) => {
       // The first emission always carries deltas, later no-op emissions carry null
@@ -60,49 +61,79 @@ function watchEntries(storage, setEntries, setLoading) {
       }
 
       setEntries(entries ?? []);
-      setLoading(false);
     },
     error: (error) => {
       console.error("Failed to watch treasury payout queue:", error);
-      setLoading(false);
+      onError();
     },
   });
 }
 
-function getPayoutQueueConstants(api, treasuryPallet) {
-  try {
-    const constants = api?.constants?.[treasuryPallet];
-    return {
-      capacity: constants?.MaxQueuedSpends?.() ?? null,
-      orderExpirationPeriod: constants?.OrderExpirationPeriod?.() ?? null,
-    };
-  } catch {
-    return { capacity: null, orderExpirationPeriod: null };
+function callConstant(constant) {
+  if (typeof constant !== "function") {
+    return Promise.resolve(null);
   }
+
+  return Promise.resolve()
+    .then(() => constant())
+    .catch(() => null);
 }
 
-export default function usePayoutQueuesData() {
+function toNumberOrNull(value) {
+  return isNil(value) ? null : Number(value);
+}
+
+export default function usePayoutQueuesData(latestHeight) {
   const { api, checkPallet } = useContextPapi();
   const treasuryAccount = useTreasuryAccountWithPapi(api);
   const fetchSpendPosts = useFetchSpendPosts();
   const treasuryPallet = useTreasuryPapiPallet();
   const { symbol: chainSymbol, decimals: chainDecimals } = useChainSettings();
 
-  const [nextPayoutEntries, setNextPayoutEntries] = useState([]);
-  const [payoutQueueEntries, setPayoutQueueEntries] = useState([]);
+  // `null` means the storage has not emitted yet; `[]` is a known empty value.
+  const [nextPayoutEntries, setNextPayoutEntries] = useState(null);
+  const [payoutQueueEntries, setPayoutQueueEntries] = useState(null);
   const [spends, setSpends] = useState({});
   const [balances, setBalances] = useState({});
+  const [assetMetas, setAssetMetas] = useState({});
   const [posts, setPosts] = useState({});
-  const [entriesLoading, setEntriesLoading] = useState(true);
+  const [queueError, setQueueError] = useState(false);
+  const [constants, setConstants] = useState({
+    capacity: null,
+    orderExpirationPeriod: null,
+  });
 
   const palletAvailable =
-    !!api && !!checkPallet && checkPallet(treasuryPallet, "NextPayout");
+    !!api &&
+    !!checkPallet &&
+    checkPallet(treasuryPallet, "NextPayout") &&
+    checkPallet(treasuryPallet, "PayoutQueue");
+
+  const nextPayouts = useMemo(
+    () => nextPayoutEntries ?? [],
+    [nextPayoutEntries],
+  );
+  const payoutQueues = useMemo(
+    () => payoutQueueEntries ?? [],
+    [payoutQueueEntries],
+  );
+  const entriesLoading =
+    palletAvailable && (isNil(nextPayoutEntries) || isNil(payoutQueueEntries));
 
   const spendIndexes = useMemo(
-    () => collectSpendIndexes(nextPayoutEntries, payoutQueueEntries),
-    [nextPayoutEntries, payoutQueueEntries],
+    () => collectSpendIndexes(nextPayouts, payoutQueues),
+    [nextPayouts, payoutQueues],
   );
   const spendIndexesKey = useMemo(() => spendIndexes.join(","), [spendIndexes]);
+
+  const assetKinds = useMemo(
+    () => collectAssetKinds(nextPayouts, payoutQueues),
+    [nextPayouts, payoutQueues],
+  );
+  const assetKindsKey = useMemo(
+    () => [...assetKinds.keys()].sort().join("|"),
+    [assetKinds],
+  );
 
   useEffect(() => {
     if (!api || !palletAvailable) {
@@ -112,22 +143,52 @@ export default function usePayoutQueuesData() {
     const nextPayoutStorage = api.query?.[treasuryPallet]?.NextPayout;
     const payoutQueueStorage = api.query?.[treasuryPallet]?.PayoutQueue;
     if (!nextPayoutStorage || !payoutQueueStorage) {
-      setEntriesLoading(false);
       return;
     }
 
-    setEntriesLoading(true);
+    setNextPayoutEntries(null);
+    setPayoutQueueEntries(null);
+    setQueueError(false);
+
     const subscriptions = [
-      watchEntries(nextPayoutStorage, setNextPayoutEntries, setEntriesLoading),
-      watchEntries(
-        payoutQueueStorage,
-        setPayoutQueueEntries,
-        setEntriesLoading,
+      watchEntries(nextPayoutStorage, setNextPayoutEntries, () =>
+        setQueueError(true),
+      ),
+      watchEntries(payoutQueueStorage, setPayoutQueueEntries, () =>
+        setQueueError(true),
       ),
     ];
 
     return () =>
       subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }, [api, treasuryPallet, palletAvailable]);
+
+  // PAPI constants are promises, while the queue capacity and lease period are
+  // read synchronously when building the view model.
+  useEffect(() => {
+    if (!api || !palletAvailable) {
+      return;
+    }
+
+    let cancelled = false;
+    const constantsApi = api.constants?.[treasuryPallet];
+    Promise.all([
+      callConstant(constantsApi?.MaxQueuedSpends),
+      callConstant(constantsApi?.OrderExpirationPeriod),
+    ]).then(([capacity, orderExpirationPeriod]) => {
+      if (cancelled) {
+        return;
+      }
+
+      setConstants({
+        capacity: toNumberOrNull(capacity),
+        orderExpirationPeriod: toNumberOrNull(orderExpirationPeriod),
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [api, treasuryPallet, palletAvailable]);
 
   useEffect(() => {
@@ -136,22 +197,27 @@ export default function usePayoutQueuesData() {
     }
 
     const spendsStorage = api.query?.[treasuryPallet]?.Spends;
-    if (!spendsStorage) {
+    if (!checkPallet(treasuryPallet, "Spends")) {
       return;
     }
 
     const indexes = spendIndexesKey.split(",").map(Number);
-    const subscriptions = indexes.map((index) =>
-      spendsStorage.watchValue(index).subscribe({
-        next: ({ value }) =>
-          setSpends((prev) => ({ ...prev, [index]: value ?? null })),
-        error: () => {},
-      }),
-    );
+    const subscriptions = indexes.map((index) => {
+      try {
+        return spendsStorage.watchValue(index).subscribe({
+          next: ({ value }) =>
+            setSpends((prev) => ({ ...prev, [index]: value ?? null })),
+          error: () => {},
+        });
+      } catch (error) {
+        console.error("Failed to watch treasury spend:", error);
+        return null;
+      }
+    });
 
     return () =>
-      subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }, [api, treasuryPallet, palletAvailable, spendIndexesKey]);
+      subscriptions.forEach((subscription) => subscription?.unsubscribe());
+  }, [api, treasuryPallet, palletAvailable, checkPallet, spendIndexesKey]);
 
   useEffect(() => {
     if (!api || !palletAvailable || !treasuryAccount) {
@@ -159,37 +225,38 @@ export default function usePayoutQueuesData() {
     }
 
     const subscriptions = [];
-    collectAssetKinds(nextPayoutEntries, payoutQueueEntries).forEach(
-      (assetKind, key) => {
-        const query = getAssetBalanceQuery(assetKind);
-        const storage = query && api.query?.[query.pallet]?.Account;
-        if (!storage) {
-          return;
-        }
+    assetKinds.forEach((assetKind, key) => {
+      const query = getAssetBalanceQuery(assetKind);
+      if (!query || !checkPallet(query.pallet, "Account")) {
+        return;
+      }
 
-        const info = getPapiAssetKindInfo(assetKind, {
-          chainSymbol,
-          chainDecimals,
-        });
-        try {
-          subscriptions.push(
-            storage.watchValue(...query.args, treasuryAccount).subscribe({
-              next: ({ value }) =>
-                setBalances((prev) => ({
-                  ...prev,
-                  [key]: formatPayoutAmount(
-                    getBalanceFromStorage(query.pallet, value),
-                    info.decimals,
-                  ),
-                })),
-              error: () => {},
-            }),
-          );
-        } catch (error) {
-          console.error("Failed to watch treasury asset balance:", error);
-        }
-      },
-    );
+      const storage = api.query?.[query.pallet]?.Account;
+      const info = getPapiAssetKindInfo(assetKind, {
+        chainSymbol,
+        chainDecimals,
+      });
+      const decimals = isNil(assetMetas[key]?.decimals)
+        ? info.decimals
+        : assetMetas[key].decimals;
+      try {
+        subscriptions.push(
+          storage.watchValue(...query.args, treasuryAccount).subscribe({
+            next: ({ value }) =>
+              setBalances((prev) => ({
+                ...prev,
+                [key]: formatPayoutAmount(
+                  getBalanceFromStorage(query.pallet, value),
+                  decimals,
+                ),
+              })),
+            error: () => {},
+          }),
+        );
+      } catch (error) {
+        console.error("Failed to watch treasury asset balance:", error);
+      }
+    });
 
     return () =>
       subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -198,11 +265,47 @@ export default function usePayoutQueuesData() {
     treasuryPallet,
     palletAvailable,
     treasuryAccount,
-    nextPayoutEntries,
-    payoutQueueEntries,
+    checkPallet,
+    assetKinds,
+    assetMetas,
     chainSymbol,
     chainDecimals,
   ]);
+
+  // Asset decimals are not part of the asset kind; non-native assets can use
+  // any precision, so read it from the assets pallet metadata.
+  useEffect(() => {
+    if (!api || !palletAvailable || !assetKindsKey) {
+      return;
+    }
+
+    let cancelled = false;
+    assetKinds.forEach((assetKind, key) => {
+      const query = getAssetMetadataQuery(assetKind);
+      if (!query || !checkPallet(query.pallet, "Metadata")) {
+        return;
+      }
+
+      const storage = api.query?.[query.pallet]?.Metadata;
+      Promise.resolve()
+        .then(() => storage.getValue(...query.args))
+        .then((metadata) => {
+          if (cancelled || isNil(metadata?.decimals)) {
+            return;
+          }
+
+          setAssetMetas((prev) => ({
+            ...prev,
+            [key]: { decimals: Number(metadata.decimals) },
+          }));
+        })
+        .catch(() => {});
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [api, palletAvailable, checkPallet, assetKinds, assetKindsKey]);
 
   useEffect(() => {
     if (!spendIndexesKey || !fetchSpendPosts) {
@@ -233,33 +336,34 @@ export default function usePayoutQueuesData() {
     };
   }, [spendIndexesKey, fetchSpendPosts]);
 
-  const queues = useMemo(() => {
-    const { capacity, orderExpirationPeriod } = getPayoutQueueConstants(
-      api,
-      treasuryPallet,
-    );
-    return buildPayoutQueues({
-      nextPayoutEntries,
-      payoutQueueEntries,
+  const queues = useMemo(
+    () =>
+      buildPayoutQueues({
+        nextPayoutEntries: nextPayouts,
+        payoutQueueEntries: payoutQueues,
+        spends,
+        posts,
+        balances,
+        assetMetas,
+        capacity: constants.capacity,
+        orderExpirationPeriod: constants.orderExpirationPeriod,
+        latestHeight,
+        chainSymbol,
+        chainDecimals,
+      }),
+    [
+      nextPayouts,
+      payoutQueues,
       spends,
       posts,
       balances,
-      capacity,
-      orderExpirationPeriod,
+      assetMetas,
+      constants,
+      latestHeight,
       chainSymbol,
       chainDecimals,
-    });
-  }, [
-    api,
-    treasuryPallet,
-    nextPayoutEntries,
-    payoutQueueEntries,
-    spends,
-    posts,
-    balances,
-    chainSymbol,
-    chainDecimals,
-  ]);
+    ],
+  );
 
   return {
     queues,
@@ -267,5 +371,7 @@ export default function usePayoutQueuesData() {
     // the payout queue storage resolves to `available: false` instead.
     loading: !api || (palletAvailable && entriesLoading),
     available: api ? palletAvailable : null,
+    error: queueError,
+    ready: palletAvailable && !entriesLoading && !queueError,
   };
 }

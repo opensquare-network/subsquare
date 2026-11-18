@@ -8,8 +8,11 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { useTreasuryPallet } from "next-common/context/treasury";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
+import { getPayoutTxByCall } from "next-common/components/treasury/spends/payout/chainTx";
 
 function Content({
+  call = "payout",
+  title = "Payout",
   onSubmitted = noop,
   onInBlock = noop,
   onTxError = noop,
@@ -23,9 +26,9 @@ function Content({
 
   const getTxFunc = useCallback(() => {
     if (api && !isNil(index)) {
-      return api.tx[treasuryPallet].payout(index);
+      return getPayoutTxByCall(api, treasuryPallet, call, index);
     }
-  }, [api, index, treasuryPallet]);
+  }, [api, index, treasuryPallet, call]);
 
   return (
     <>
@@ -34,7 +37,7 @@ function Content({
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
-        title="Pay"
+        title={title}
         getTxFunc={getTxFunc}
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
@@ -47,6 +50,8 @@ function Content({
 }
 
 export default function Popup({
+  call = "payout",
+  title = "Payout",
   onSubmitted,
   onInBlock,
   onTxError,
@@ -55,8 +60,10 @@ export default function Popup({
   ...props
 }) {
   return (
-    <PopupWithSigner title="Payout" {...props}>
+    <PopupWithSigner title={title} {...props}>
       <Content
+        call={call}
+        title={title}
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
         onTxError={onTxError}

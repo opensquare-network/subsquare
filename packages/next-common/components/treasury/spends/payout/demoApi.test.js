@@ -14,6 +14,8 @@ import { createDemoFetchSpendPosts, createDemoPapiApi } from "./demoApi";
 import {
   DEMO_BALANCES,
   DEMO_BLOCK_INTERVAL_MS,
+  DEMO_EXPIRED_SPEND_EXPIRE_AT,
+  DEMO_EXPIRED_SPEND_INDEX,
   DEMO_HEIGHT,
   DEMO_MAX_QUEUED_SPENDS,
   DEMO_ORDER_EXPIRATION_PERIOD,
@@ -220,7 +222,11 @@ describe("demo mock data through the payout queue pipeline", () => {
         expect(spends[index]?.asset_kind).toEqual(args[0]);
         expect(orderKey).toBeGreaterThanOrEqual(previousOrderKey);
         expect(orderKey).toBeGreaterThanOrEqual(spends[index].valid_from);
-        expect(spends[index].expire_at).toBeGreaterThan(DEMO_HEIGHT);
+        if (index === DEMO_EXPIRED_SPEND_INDEX) {
+          expect(spends[index].expire_at).toBeLessThan(DEMO_HEIGHT);
+        } else {
+          expect(spends[index].expire_at).toBeGreaterThan(DEMO_HEIGHT);
+        }
         expect(seenIndexes.has(index)).toBe(false);
         seenIndexes.add(index);
         previousOrderKey = orderKey;
@@ -245,6 +251,7 @@ describe("demo mock data through the payout queue pipeline", () => {
       balances,
       capacity: api.constants.Treasury.MaxQueuedSpends(),
       orderExpirationPeriod: api.constants.Treasury.OrderExpirationPeriod(),
+      latestHeight: DEMO_HEIGHT,
       chainSymbol: "DOT",
       chainDecimals: 10,
     });
@@ -275,7 +282,14 @@ describe("demo mock data through the payout queue pipeline", () => {
     expect(usdt.queue.map((item) => item.index)).toEqual([
       268, 269, 237, 238, 239, 240, 255, 256, 257, 263, 265,
     ]);
-    expect(usdt.toBePaid).toBe("162396");
+    expect(usdt.queue[0]).toMatchObject({
+      index: DEMO_EXPIRED_SPEND_INDEX,
+      expired: true,
+      spendExpireAt: DEMO_EXPIRED_SPEND_EXPIRE_AT,
+    });
+    expect(usdt.queue[1].expired).toBe(false);
+    // The expired spend is excluded from the payable total.
+    expect(usdt.toBePaid).toBe("141501");
 
     const usdtCountdown = getNextPayoutCountdown({
       ...usdt.nextPayout,

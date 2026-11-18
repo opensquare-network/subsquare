@@ -18,9 +18,11 @@ import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import { useChainSettings } from "next-common/context/chain";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
-import { getNextPayoutAction, getNextPayoutCountdown } from "./chainData";
-import useDemoLatestHeight from "./demoHeight";
+import {
+  getNextPayoutAction,
+  getNextPayoutCountdown,
+  getPayoutAction,
+} from "./chainData";
 import { usePayoutQueueIsDemo } from "./sourceContext";
 
 const PayoutActionPopup = dynamicPopup(() => import("./actionPopup"));
@@ -55,17 +57,34 @@ function PayoutStatusTag({ status }) {
 }
 
 function PayoutActionButton({ spend, symbol, action }) {
-  const [showPopup, setShowPopup] = useState(false);
+  // Freeze the spend and action the user confirmed: the head can change while
+  // the popup is open, and the submitted call must stay the one that was shown.
+  const [opened, setOpened] = useState(null);
+  const isDemo = usePayoutQueueIsDemo();
+
   // No action while the head is not payable yet, the countdown shows the wait
   if (!action?.call) {
     return null;
+  }
+
+  if (isDemo) {
+    return (
+      <Tooltip
+        className="flex items-center"
+        content="Demo data: transactions are disabled for these sample spends."
+      >
+        <PrimaryButton type="button" size="small" disabled>
+          {action.label}
+        </PrimaryButton>
+      </Tooltip>
+    );
   }
 
   const button = (
     <PrimaryButton
       type="button"
       size="small"
-      onClick={() => setShowPopup(true)}
+      onClick={() => setOpened({ spend, action })}
     >
       {action.label}
     </PrimaryButton>
@@ -83,12 +102,12 @@ function PayoutActionButton({ spend, symbol, action }) {
       ) : (
         button
       )}
-      {showPopup && (
+      {!!opened && (
         <PayoutActionPopup
-          spend={spend}
+          spend={opened.spend}
           symbol={symbol}
-          action={action}
-          onClose={() => setShowPopup(false)}
+          action={opened.action}
+          onClose={() => setOpened(null)}
         />
       )}
     </>
@@ -159,13 +178,8 @@ function NextPayoutBox({ spend, symbol, action, countdown, countdownText }) {
   );
 }
 
-function NextPayoutRow({ spend, symbol, firstQueuedOrderKey }) {
-  // The clock lives in this row only, so its ticks never remount the table rows
-  const isDemo = usePayoutQueueIsDemo();
-  const demoHeight = useDemoLatestHeight(isDemo);
-  const chainHeight = useAhmLatestHeight();
+function NextPayoutRow({ spend, symbol, firstQueuedOrderKey, latestHeight }) {
   const { blockTime } = useChainSettings();
-  const latestHeight = isDemo ? demoHeight : chainHeight;
 
   const action = getNextPayoutAction({
     status: spend.status,
@@ -194,7 +208,9 @@ function NextPayoutRow({ spend, symbol, firstQueuedOrderKey }) {
   const remaining = Math.max(0, countdown.remainingMs ?? 0);
   const total = Math.max(1, countdown.totalMs ?? 1);
 
-  const countdownText = leaseExpired
+  const countdownText = spend.expired
+    ? "Payout window expired"
+    : leaseExpired
     ? "Payout order expired"
     : `${
         isMature ? "Payout order expires in" : "Payable in"
@@ -205,7 +221,11 @@ function NextPayoutRow({ spend, symbol, firstQueuedOrderKey }) {
       spend={spend}
       symbol={symbol}
       action={action}
-      countdown={leaseExpired ? null : { elapsed: total - remaining, total }}
+      countdown={
+        spend.expired || leaseExpired
+          ? null
+          : { elapsed: total - remaining, total }
+      }
       countdownText={countdownText}
     />
   );
@@ -213,13 +233,16 @@ function NextPayoutRow({ spend, symbol, firstQueuedOrderKey }) {
 
 // A queued spend can be not yet mature: the queue is ordered by
 // `max(approval block, valid_from)` and includes spends that are payable later
-function SpendMaturity({ orderKey }) {
-  const isDemo = usePayoutQueueIsDemo();
-  const demoHeight = useDemoLatestHeight(isDemo);
-  const chainHeight = useAhmLatestHeight();
-  const { blockTime } = useChainSettings();
-  const latestHeight = isDemo ? demoHeight : chainHeight;
+function SpendMaturity({ spend, latestHeight, blockTime }) {
+  if (spend.expired) {
+    return (
+      <Tooltip content="Past its payout window, so it can no longer be paid. Check its status to remove it and promote the next spend.">
+        <span className="text-textTertiary">Expired</span>
+      </Tooltip>
+    );
+  }
 
+  const orderKey = spend.orderKey;
   if (isNil(orderKey) || isNil(latestHeight)) {
     return <span className="text-textTertiary">-</span>;
   }
@@ -246,16 +269,35 @@ const waitingColumns = [
   { name: "Title", className: "min-w-0 pr-4" },
   {
     name: "Maturity",
+    tooltip:
+      "Block at which the spend enters the payout order: its `valid_from`, or the block it was rotated to the back. Mature only means it may be paid once it becomes the next payout; spends are still paid one at a time in queue order.",
     style: { textAlign: "right", width: "120px", minWidth: "120px" },
   },
   {
     name: "Amount",
     style: { textAlign: "right", width: "140px", minWidth: "140px" },
   },
+  {
+    name: "Action",
+    style: { textAlign: "right", width: "120px", minWidth: "120px" },
+  },
 ];
 
-function WaitingQueue({ queue }) {
+function WaitingQueue({ queue, latestHeight }) {
+  const { blockTime } = useChainSettings();
+
   const waitingRows = queue.queue.map((spend) => {
+    // An expired or stranded queued spend still needs a permissionless
+    // `check_status` to leave the queue; other queued spends have no action.
+    const action = getPayoutAction({
+      status: spend.status,
+      validFrom: spend.validFrom,
+      spendExpireAt: spend.spendExpireAt,
+      latestHeight,
+      isHead: false,
+      inOrder: true,
+    });
+
     const row = [
       <Link
         key="index"
@@ -277,13 +319,28 @@ function WaitingQueue({ queue }) {
         </Link>
       </Tooltip>,
       <div key="maturity" className="text-right text14Medium">
-        <SpendMaturity orderKey={spend.orderKey} />
+        <SpendMaturity
+          spend={spend}
+          latestHeight={latestHeight}
+          blockTime={blockTime}
+        />
       </div>,
       isNil(spend.amount) ? (
         <span key="amount">-</span>
       ) : (
         <ValueDisplay key="amount" value={spend.amount} symbol={queue.symbol} />
       ),
+      <div key="action" className="flex justify-end">
+        {action?.call ? (
+          <PayoutActionButton
+            spend={spend}
+            symbol={queue.symbol}
+            action={action}
+          />
+        ) : (
+          <span className="text-textTertiary">-</span>
+        )}
+      </div>,
     ];
     row.key = spend.index;
     return row;
@@ -304,6 +361,7 @@ function WaitingQueue({ queue }) {
             spend={queue.nextPayout}
             symbol={queue.symbol}
             firstQueuedOrderKey={queue.queue[0]?.orderKey}
+            latestHeight={latestHeight}
           />
         ) : (
           <Item key={idx} row={rowList[idx]} />
@@ -313,7 +371,7 @@ function WaitingQueue({ queue }) {
   );
 }
 
-export default function PayoutQueueCard({ queue }) {
+export default function PayoutQueueCard({ queue, latestHeight }) {
   return (
     <div className="flex flex-col gap-4">
       <SecondaryCard>
@@ -362,7 +420,7 @@ export default function PayoutQueueCard({ queue }) {
         </span>
       </TitleContainer>
       <SecondaryCard>
-        <WaitingQueue queue={queue} />
+        <WaitingQueue queue={queue} latestHeight={latestHeight} />
       </SecondaryCard>
     </div>
   );

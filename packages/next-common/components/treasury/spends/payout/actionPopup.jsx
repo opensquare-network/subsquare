@@ -10,12 +10,15 @@ import EstimatedGas from "next-common/components/estimatedGas";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getPayoutActionLabel } from "./chainData";
 import { getPayoutActionTx, getPayoutTxByCall } from "./chainTx";
+import { usePayoutQueueIsDemo } from "./sourceContext";
 
 const ACTION_HINTS = {
   rotate:
     "The payout order of this spend expired while another queued spend is already mature. Rotating moves it to the back of the queue and promotes the next spend.",
   expire:
-    "This spend is past its payout window and can no longer be paid. Checking its status removes it from the queue and promotes the next spend.",
+    "This spend is past its payout window and can no longer be paid. Checking its status settles it: it is removed, or rotated once if its payout order also expired, and the next queued spend is promoted.",
+  requeue:
+    "This spend is not part of the payout order (it can be skipped when the queue was full). Checking its status adds it back to the queue.",
 };
 
 function SpendSummary({ spend, symbol }) {
@@ -46,13 +49,17 @@ function Content({ spend, symbol, action }) {
   const { component } = useSigner("Origin");
   const api = useContextApi();
   const treasuryPallet = useTreasuryPallet();
+  const isDemo = usePayoutQueueIsDemo();
 
   const getTxFunc = useCallback(() => {
+    if (isDemo) {
+      return null;
+    }
     if (action?.call) {
       return getPayoutTxByCall(api, treasuryPallet, action.call, spend?.index);
     }
     return getPayoutActionTx(api, treasuryPallet, spend?.status, spend?.index);
-  }, [api, treasuryPallet, spend, action]);
+  }, [api, treasuryPallet, spend, action, isDemo]);
 
   return (
     <>
@@ -63,12 +70,18 @@ function Content({ spend, symbol, action }) {
           {ACTION_HINTS[action.kind]}
         </p>
       )}
+      {isDemo && (
+        <p className="text12Medium text-textTertiary">
+          These spends are sample data. Transactions are disabled.
+        </p>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
         title={action?.label ?? getPayoutActionLabel(spend?.status)}
         getTxFunc={getTxFunc}
+        disabled={isDemo}
       />
     </>
   );

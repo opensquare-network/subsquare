@@ -65,6 +65,11 @@ const LOCAL_PAYMENT_ID = (1n << 64n) - 1n;
 export const DEMO_MAX_QUEUED_SPENDS = 100;
 export const DEMO_ORDER_EXPIRATION_PERIOD = 2 * DAY;
 
+// A queued spend whose payout window already closed, kept in the queue so the
+// demo shows the expired state and its `check_status` action.
+export const DEMO_EXPIRED_SPEND_INDEX = 268;
+export const DEMO_EXPIRED_SPEND_EXPIRE_AT = DEMO_HEIGHT - DAY;
+
 export const DEMO_PALLETS = [
   {
     name: "Treasury",
@@ -180,7 +185,9 @@ export const DEMO_SPENDS = {
   268: demoTreasurySpend({
     assetKind: USDT_ASSET_KIND,
     amount: 20895000000n,
-    validFrom: DEMO_HEIGHT - 9000,
+    // Already past `valid_from + PayoutPeriod`: it can no longer be paid while
+    // it waits in the queue, so the UI flags it and offers `check_status`.
+    validFrom: DEMO_HEIGHT - 31 * DAY,
   }),
   269: demoTreasurySpend({
     assetKind: USDT_ASSET_KIND,

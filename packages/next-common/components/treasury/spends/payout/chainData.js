@@ -29,6 +29,30 @@ const EXPIRED_ACTION = {
   call: "checkStatus",
 };
 
+const CHECK_STATUS_ACTION = {
+  kind: "checkStatus",
+  label: ACTION_LABELS.Attempted,
+  call: "checkStatus",
+};
+
+// A live spend missing from the payout order (e.g. skipped by the migration
+// because the queue was full) is re-admitted by `check_status`
+const REQUEUE_ACTION = {
+  kind: "requeue",
+  label: "Check Status",
+  call: "checkStatus",
+};
+
+const QUEUED_ACTION = {
+  kind: "queued",
+  label: "Waiting",
+  call: null,
+};
+
+function waitAction(label) {
+  return { kind: "wait", label, call: null };
+}
+
 export function getPayoutSpendStatus(status) {
   const type = typeof status === "string" ? status : status?.type;
   return SPEND_STATUSES.includes(type) ? type : null;
@@ -39,16 +63,24 @@ export function getPayoutActionLabel(status) {
   return normalized ? ACTION_LABELS[normalized] : null;
 }
 
-// The pallet only pays the `NextPayout` head; it rejects an un-matured head
-// (`EarlyPayout`), an already expired spend (`SpendExpired`) and a head whose
-// order expired while another queued spend is already mature (`NotNextPayout`).
-export function getNextPayoutAction({
+// The pallet rejects a payout of any spend that is not the `NextPayout` head of
+// its asset kind (`NotNextPayout`), an un-matured head (`EarlyPayout`), a spend
+// past its payout window (`SpendExpired`) and any spend that is not part of the
+// payout order (the migration can skip spends when the queue is full).
+//
+// The decision needs a consistent chain snapshot: while the head, the queue or
+// the block height is unknown no transaction is offered, so a payout is never
+// built against stale ordering data.
+export function getPayoutAction({
   status,
   validFrom,
   expireAt,
   spendExpireAt,
   firstQueuedOrderKey,
   latestHeight,
+  isHead = true,
+  inOrder = true,
+  orderEnabled = true,
 }) {
   const normalized = getPayoutSpendStatus(status);
   if (!normalized) {
@@ -56,29 +88,51 @@ export function getNextPayoutAction({
   }
 
   if (normalized === "Attempted") {
-    return {
-      kind: "checkStatus",
-      label: ACTION_LABELS.Attempted,
-      call: "checkStatus",
-    };
+    return CHECK_STATUS_ACTION;
   }
 
   const hasHeight = !isNil(latestHeight);
   const now = Number(latestHeight);
 
-  if (hasHeight && !isNil(validFrom) && Number(validFrom) > now) {
-    return { kind: "wait", label: ACTION_LABELS[normalized], call: null };
-  }
-
+  // At or past `expire_at` a payout is rejected (`expire_at > now` is required);
+  // `check_status` removes the spend once the block is past it.
   if (hasHeight && !isNil(spendExpireAt) && Number(spendExpireAt) <= now) {
     return EXPIRED_ACTION;
   }
 
-  const leaseExpired = hasHeight && !isNil(expireAt) && Number(expireAt) < now;
+  if (!hasHeight) {
+    return waitAction(ACTION_LABELS[normalized]);
+  }
+
+  if (!isNil(validFrom) && Number(validFrom) > now) {
+    return waitAction(ACTION_LABELS[normalized]);
+  }
+
+  if (!orderEnabled) {
+    return {
+      kind: "payout",
+      label: ACTION_LABELS[normalized],
+      call: "payout",
+    };
+  }
+
+  if (!inOrder) {
+    return REQUEUE_ACTION;
+  }
+
+  if (!isHead) {
+    return QUEUED_ACTION;
+  }
+
+  if (isNil(expireAt)) {
+    return waitAction(ACTION_LABELS[normalized]);
+  }
+
+  // A lapsed head may only be retried while nothing behind it is mature;
+  // otherwise `check_status` has to rotate it first.
+  const leaseExpired = Number(expireAt) < now;
   const nextSpendMature =
-    hasHeight &&
-    !isNil(firstQueuedOrderKey) &&
-    Number(firstQueuedOrderKey) <= now;
+    !isNil(firstQueuedOrderKey) && Number(firstQueuedOrderKey) <= now;
 
   if (leaseExpired && nextSpendMature) {
     return ROTATE_ACTION;
@@ -89,6 +143,10 @@ export function getNextPayoutAction({
     label: ACTION_LABELS[normalized],
     call: "payout",
   };
+}
+
+export function getNextPayoutAction(args) {
+  return getPayoutAction({ ...args, isHead: true, inOrder: true });
 }
 
 function getJunctions(interior) {
@@ -125,12 +183,52 @@ function getAssetIdLocation(rawAssetId) {
   return rawAssetId;
 }
 
-function parsePapiAssetKind(assetKind) {
+// `VersionedLocatableAsset.location` is the reserve location the asset lives on
+// (`Here` for assets paid locally). `asset_id` is relative to that location, so
+// the same `PalletInstance`/`GeneralIndex` pair means something different on
+// another chain's reserve.
+function isHereLocation(location) {
+  if (location === "Here") {
+    return true;
+  }
+
+  if (!location || Number(location.parents ?? 0) !== 0) {
+    return false;
+  }
+
+  const interior = location.interior;
+  return interior === "Here" || interior?.type === "Here";
+}
+
+function describeAssetKind(assetKind) {
   const inner = assetKind?.value ?? assetKind;
+  const location = inner?.location ?? null;
   const assetIdLocation = getAssetIdLocation(inner?.asset_id ?? inner?.assetId);
   const junctions = getJunctions(assetIdLocation?.interior) ?? [];
+  const isLocal = isHereLocation(location);
+  // On system parachains the native token is the relay chain's location, so a
+  // local asset id without interior junctions is the native asset.
+  const isNative = isLocal && junctions.length === 0;
+  const palletInstance = findJunctionValue(junctions, "PalletInstance");
+  const generalIndex = findJunctionValue(junctions, "GeneralIndex");
+  const isPalletAsset =
+    isLocal &&
+    Number(assetIdLocation?.parents ?? 0) === 0 &&
+    junctions.length === 2 &&
+    Number(palletInstance) === ASSET_HUB_PALLET_INSTANCE &&
+    !isNil(generalIndex);
 
-  return { assetIdLocation, junctions };
+  return {
+    location,
+    assetIdLocation,
+    junctions,
+    isLocal,
+    isNative,
+    isPalletAsset,
+    assetId: isPalletAsset ? Number(generalIndex) : null,
+    generalIndex,
+    parachainId: findJunctionValue(junctions, "Parachain"),
+  };
 }
 
 function findJunctionValue(junctions, type) {
@@ -163,34 +261,35 @@ export function getPapiAssetKindInfo(
   assetKind,
   { chainSymbol, chainDecimals } = {},
 ) {
-  const { junctions } = parsePapiAssetKind(assetKind);
-  const isNative = junctions.length === 0;
-  const palletInstance = findJunctionValue(junctions, "PalletInstance");
-  const generalIndex = findJunctionValue(junctions, "GeneralIndex");
-  const isPalletAsset =
-    Number(palletInstance) === ASSET_HUB_PALLET_INSTANCE &&
-    !isNil(generalIndex);
-  const assetId = isPalletAsset ? Number(generalIndex) : null;
-  const knownSymbol = isPalletAsset
-    ? ASSET_HUB_GENERAL_INDEX_SYMBOL[String(assetId)] ?? null
-    : null;
+  const asset = describeAssetKind(assetKind);
+  const { isLocal, isNative, isPalletAsset, assetId, generalIndex } = asset;
 
-  let symbol = chainSymbol;
+  let symbol = null;
   let label = "Asset";
+  let decimals = null;
+
   if (isNative) {
+    symbol = chainSymbol ?? null;
+    decimals = isNil(chainDecimals) ? null : Number(chainDecimals);
     label = "Native";
   } else if (isPalletAsset) {
+    const knownSymbol = ASSET_HUB_GENERAL_INDEX_SYMBOL[String(assetId)] ?? null;
     symbol = knownSymbol ?? `#${assetId}`;
+    // Unknown pallet assets may use any decimals; the amount is resolved from
+    // `Assets.Metadata` instead of being assumed to match the native token.
+    decimals = knownSymbol ? SYMBOL_DECIMALS[knownSymbol] ?? null : null;
     label = `ForeignAsset #${assetId}`;
   } else if (!isNil(generalIndex)) {
     symbol = `#${Number(generalIndex)}`;
-    label = `ForeignAsset #${Number(generalIndex)}`;
+    label = isNil(asset.parachainId)
+      ? `ForeignAsset #${Number(generalIndex)}`
+      : `ForeignAsset #${Number(generalIndex)} (parachain ${Number(
+          asset.parachainId,
+        )})`;
   }
 
-  const decimals =
-    (knownSymbol ? SYMBOL_DECIMALS[knownSymbol] : undefined) ?? chainDecimals;
-
   return {
+    isLocal,
     isNative,
     isPalletAsset,
     assetId,
@@ -202,19 +301,40 @@ export function getPapiAssetKindInfo(
 }
 
 export function getAssetBalanceQuery(assetKind) {
-  const { assetIdLocation, junctions } = parsePapiAssetKind(assetKind);
+  const { isLocal, isNative, isPalletAsset, assetId, assetIdLocation } =
+    describeAssetKind(assetKind);
 
-  if (junctions.length === 0) {
+  // A spend whose reserve is another chain is paid over XCM; the balance is not
+  // held by a pallet on this chain.
+  if (!isLocal) {
+    return null;
+  }
+
+  if (isNative) {
     return { pallet: "System", args: [] };
   }
 
-  const palletInstance = findJunctionValue(junctions, "PalletInstance");
-  const generalIndex = findJunctionValue(junctions, "GeneralIndex");
-  if (
-    Number(palletInstance) === ASSET_HUB_PALLET_INSTANCE &&
-    !isNil(generalIndex)
-  ) {
-    return { pallet: "Assets", args: [Number(generalIndex)] };
+  if (isPalletAsset) {
+    return { pallet: "Assets", args: [assetId] };
+  }
+
+  if (assetIdLocation) {
+    return { pallet: "ForeignAssets", args: [assetIdLocation] };
+  }
+
+  return null;
+}
+
+export function getAssetMetadataQuery(assetKind) {
+  const { isLocal, isNative, isPalletAsset, assetId, assetIdLocation } =
+    describeAssetKind(assetKind);
+
+  if (!isLocal || isNative) {
+    return null;
+  }
+
+  if (isPalletAsset) {
+    return { pallet: "Assets", args: [assetId] };
   }
 
   if (assetIdLocation) {
@@ -236,13 +356,18 @@ export function getBalanceFromStorage(pallet, value) {
   return value.balance ?? null;
 }
 
-export function formatPayoutAmount(amount, decimals = 0) {
-  if (isNil(amount)) {
+export function formatPayoutAmount(amount, decimals = null) {
+  if (isNil(amount) || isNil(decimals)) {
+    return null;
+  }
+
+  const precision = Number(decimals);
+  if (!Number.isFinite(precision)) {
     return null;
   }
 
   try {
-    return BigNumber(amount).dividedBy(Math.pow(10, decimals)).toString();
+    return BigNumber(amount).dividedBy(Math.pow(10, precision)).toString();
   } catch {
     return null;
   }
@@ -309,6 +434,8 @@ export function buildPayoutQueue({
   treasuryBalance = null,
   capacity = null,
   orderExpirationPeriod = null,
+  assetMeta = null,
+  latestHeight,
   chainSymbol,
   chainDecimals,
 }) {
@@ -316,16 +443,29 @@ export function buildPayoutQueue({
     chainSymbol,
     chainDecimals,
   });
+  const decimals = isNil(assetMeta?.decimals)
+    ? info.decimals
+    : Number(assetMeta.decimals);
+  const symbol = assetMeta?.symbol ?? info.symbol;
+  const now = isNil(latestHeight) ? null : Number(latestHeight);
 
   const formatSpendItem = (index, orderKey) => {
     const spend = spends[index];
+    const spendExpireAt = toNumberOrUndefined(
+      spend?.expire_at ?? spend?.expireAt,
+    );
     return {
       index,
       status: getPayoutSpendStatus(spend?.status),
       title: getPayoutSpendTitle(posts[index], index),
-      amount: formatPayoutAmount(spend?.amount, info.decimals),
+      amount: formatPayoutAmount(spend?.amount, decimals),
       // Block at which the spend becomes payable / took its place in the order
       orderKey: toNumberOrUndefined(orderKey),
+      // SpendStatus.expire_at: when the spend itself can no longer be paid
+      spendExpireAt,
+      // A queued spend can expire before it reaches the head; it then occupies
+      // a queue slot but can never be paid.
+      expired: !isNil(now) && !isNil(spendExpireAt) && spendExpireAt <= now,
     };
   };
 
@@ -340,32 +480,28 @@ export function buildPayoutQueue({
         ),
         // NextPayout[2]: when the spend's position as head expires
         expireAt: toNumberOrUndefined(nextPayout?.[2]),
-        // SpendStatus.expire_at: when the spend itself can no longer be paid
-        spendExpireAt: toNumberOrUndefined(
-          spends[headIndex]?.expire_at ?? spends[headIndex]?.expireAt,
-        ),
         orderExpirationPeriod: toNumberOrUndefined(orderExpirationPeriod),
       };
 
+  // A head and queue snapshot taken from different blocks can briefly contain
+  // the same spend in both; the head always wins.
   const waitingQueue = (queue ?? [])
-    .map(([index, orderKey]) => formatSpendItem(index, orderKey))
-    .filter((item) => !isNil(item.index));
+    .filter(([index]) => !isNil(index) && index !== headIndex)
+    .map(([index, orderKey]) => formatSpendItem(index, orderKey));
 
-  const amounts = [
-    nextPayoutSpend?.amount,
-    ...waitingQueue.map((i) => i.amount),
-  ]
-    .filter((amount) => !isNil(amount))
-    .map((amount) => BigNumber(amount));
-  const toBePaid = amounts.length
-    ? amounts
+  const payable = [nextPayoutSpend, ...waitingQueue].filter(
+    (item) => item && !item.expired && !isNil(item.amount),
+  );
+  const toBePaid = payable.length
+    ? payable
+        .map((item) => BigNumber(item.amount))
         .reduce((total, amount) => total.plus(amount), BigNumber(0))
         .toString()
     : null;
 
   return {
     key: getAssetKindKey(assetKind),
-    symbol: info.symbol,
+    symbol,
     assetKind: info.label,
     version: info.version,
     capacity,
@@ -410,8 +546,10 @@ export function buildPayoutQueues({
   spends = {},
   posts = {},
   balances = {},
+  assetMetas = {},
   capacity = null,
   orderExpirationPeriod = null,
+  latestHeight,
   chainSymbol,
   chainDecimals,
 }) {
@@ -454,8 +592,10 @@ export function buildPayoutQueues({
         spends,
         posts,
         treasuryBalance: balances[key] ?? null,
+        assetMeta: assetMetas[key] ?? null,
         capacity,
         orderExpirationPeriod,
+        latestHeight,
         chainSymbol,
         chainDecimals,
       }),

@@ -10,6 +10,7 @@ import {
   getNextPayoutAction,
   getNextPayoutCountdown,
   getPapiAssetKindInfo,
+  getPayoutAction,
   getPayoutActionLabel,
   getPayoutSpendStatus,
   getPayoutSpendTitle,
@@ -118,6 +119,7 @@ describe("getPapiAssetKindInfo", () => {
 
   it("resolves native asset", () => {
     expect(getPapiAssetKindInfo(dotAssetKind, chain)).toEqual({
+      isLocal: true,
       isNative: true,
       isPalletAsset: false,
       assetId: null,
@@ -130,6 +132,7 @@ describe("getPapiAssetKindInfo", () => {
 
   it("resolves known pallet assets", () => {
     expect(getPapiAssetKindInfo(usdtAssetKind, chain)).toEqual({
+      isLocal: true,
       isNative: false,
       isPalletAsset: true,
       assetId: 1984,
@@ -142,14 +145,21 @@ describe("getPapiAssetKindInfo", () => {
     expect(getPapiAssetKindInfo(v4UsdcAssetKind, chain).symbol).toBe("USDC");
   });
 
-  it("falls back for unknown pallet assets", () => {
+  it("does not assume native decimals for unknown assets", () => {
     const info = getPapiAssetKindInfo(
-      { type: "V5", value: { asset_id: palletAssetLocation(7777) } },
+      {
+        type: "V5",
+        value: {
+          location: HERE,
+          asset_id: palletAssetLocation(7777),
+        },
+      },
       chain,
     );
     expect(info.symbol).toBe("#7777");
     expect(info.label).toBe("ForeignAsset #7777");
-    expect(info.decimals).toBe(10);
+    expect(info.isPalletAsset).toBe(true);
+    expect(info.decimals).toBeNull();
   });
 
   it("labels foreign location assets", () => {
@@ -157,7 +167,25 @@ describe("getPapiAssetKindInfo", () => {
     expect(info.isNative).toBe(false);
     expect(info.isPalletAsset).toBe(false);
     expect(info.symbol).toBe("#222");
-    expect(info.label).toBe("ForeignAsset #222");
+    expect(info.label).toBe("ForeignAsset #222 (parachain 2034)");
+    expect(info.decimals).toBeNull();
+  });
+
+  it("does not treat another chain's asset id as a local asset", () => {
+    const remoteAssetKind = {
+      type: "V5",
+      value: {
+        location: {
+          parents: 1,
+          interior: { type: "Parachain", value: 1000 },
+        },
+        asset_id: palletAssetLocation(1984),
+      },
+    };
+    const info = getPapiAssetKindInfo(remoteAssetKind, chain);
+    expect(info.isLocal).toBe(false);
+    expect(info.isPalletAsset).toBe(false);
+    expect(info.symbol).toBe("#1984");
   });
 });
 
@@ -181,6 +209,21 @@ describe("getAssetBalanceQuery", () => {
     expect(query.pallet).toBe("ForeignAssets");
     expect(query.args).toHaveLength(1);
     expect(query.args[0].parents).toBe(1);
+  });
+
+  it("returns null when the reserve is another chain", () => {
+    expect(
+      getAssetBalanceQuery({
+        type: "V5",
+        value: {
+          location: {
+            parents: 1,
+            interior: { type: "Parachain", value: 1000 },
+          },
+          asset_id: palletAssetLocation(1984),
+        },
+      }),
+    ).toBeNull();
   });
 });
 
@@ -229,9 +272,11 @@ describe("formatPayoutAmount", () => {
     expect(formatPayoutAmount("116667123456", 6)).toBe("116667.123456");
   });
 
-  it("returns null for missing amounts", () => {
+  it("returns null for missing amounts or unknown decimals", () => {
     expect(formatPayoutAmount(undefined, 6)).toBeNull();
     expect(formatPayoutAmount(null, 6)).toBeNull();
+    expect(formatPayoutAmount(1000n)).toBeNull();
+    expect(formatPayoutAmount(1000n, null)).toBeNull();
   });
 });
 
@@ -374,8 +419,73 @@ describe("getNextPayoutAction", () => {
     ).toEqual({ kind: "expire", label: "Check Status", call: "checkStatus" });
   });
 
+  it("offers no transaction while the chain state is unknown", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        expireAt: 1400,
+      }),
+    ).toEqual({ kind: "wait", label: "Payout", call: null });
+  });
+
   it("returns null without a known status", () => {
     expect(getNextPayoutAction({ status: undefined })).toBeNull();
+  });
+});
+
+describe("getPayoutAction", () => {
+  const latestHeight = 1000;
+
+  it("does not offer a payout for a spend queued behind the head", () => {
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        spendExpireAt: 2000,
+        latestHeight,
+        isHead: false,
+        inOrder: true,
+      }),
+    ).toEqual({ kind: "queued", label: "Waiting", call: null });
+  });
+
+  it("re-admits a live spend missing from the payout order", () => {
+    expect(
+      getPayoutAction({
+        status: spendStatus("Failed"),
+        validFrom: 900,
+        spendExpireAt: 2000,
+        latestHeight,
+        isHead: false,
+        inOrder: false,
+      }),
+    ).toEqual({ kind: "requeue", label: "Check Status", call: "checkStatus" });
+  });
+
+  it("checks status for an expired queued spend", () => {
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        spendExpireAt: 1000,
+        latestHeight,
+        isHead: false,
+        inOrder: true,
+      }),
+    ).toEqual({ kind: "expire", label: "Check Status", call: "checkStatus" });
+  });
+
+  it("keeps the legacy payout path when the runtime has no payout order", () => {
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        spendExpireAt: 2000,
+        latestHeight,
+        orderEnabled: false,
+      }),
+    ).toEqual({ kind: "payout", label: "Payout", call: "payout" });
   });
 });
 
@@ -434,6 +544,8 @@ describe("buildPayoutQueue", () => {
         amount: "10",
         title: "Treasury spend 268",
         orderKey: 101,
+        spendExpireAt: undefined,
+        expired: false,
       },
       {
         index: 269,
@@ -441,9 +553,64 @@ describe("buildPayoutQueue", () => {
         amount: "20",
         title: "Treasury spend 269",
         orderKey: 102,
+        spendExpireAt: undefined,
+        expired: false,
       },
     ]);
     expect(queue.toBePaid).toBe("20925");
+  });
+
+  it("marks queued spends past their payout window as expired", () => {
+    const queue = buildPayoutQueue({
+      assetKind: usdtAssetKind,
+      nextPayout: [270, 100, 300],
+      queue: [
+        [268, 101],
+        [269, 102],
+      ],
+      spends: {
+        270: {
+          amount: 1000000n,
+          valid_from: 90,
+          expire_at: 500,
+          status: spendStatus("Pending"),
+        },
+        268: {
+          amount: 1000000n,
+          valid_from: 95,
+          expire_at: 990,
+          status: spendStatus("Pending"),
+        },
+        269: {
+          amount: 2000000n,
+          valid_from: 95,
+          expire_at: 2000,
+          status: spendStatus("Pending"),
+        },
+      },
+      latestHeight: 1000,
+      chainSymbol: "DOT",
+      chainDecimals: 10,
+    });
+
+    expect(queue.queue.map((item) => item.expired)).toEqual([true, false]);
+    expect(queue.queue[0].spendExpireAt).toBe(990);
+    // The expired spend can never be paid, so it is not part of the total.
+    expect(queue.toBePaid).toBe("2");
+  });
+
+  it("keeps a spend from appearing as both head and queue entry", () => {
+    const queue = buildPayoutQueue({
+      assetKind: usdtAssetKind,
+      nextPayout: [270, 100, 300],
+      queue: [[270, 100]],
+      spends: {},
+      chainSymbol: "DOT",
+      chainDecimals: 10,
+    });
+
+    expect(queue.nextPayout.index).toBe(270);
+    expect(queue.queue).toEqual([]);
   });
 
   it("handles a queue without a head or spend data", () => {
@@ -464,6 +631,8 @@ describe("buildPayoutQueue", () => {
         amount: null,
         title: "Treasury spend 5",
         orderKey: 10,
+        spendExpireAt: undefined,
+        expired: false,
       },
     ]);
     expect(queue.toBePaid).toBeNull();
