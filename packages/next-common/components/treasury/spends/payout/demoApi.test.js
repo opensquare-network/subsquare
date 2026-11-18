@@ -7,8 +7,10 @@ import {
   getAssetKindKey,
   getBalanceFromStorage,
   getEntryAssetKind,
+  getNextPayoutAction,
   getNextPayoutCountdown,
   getPapiAssetKindInfo,
+  getPayoutAction,
 } from "./chainData";
 import { createDemoFetchSpendPosts, createDemoPapiApi } from "./demoApi";
 import {
@@ -49,7 +51,7 @@ describe("createDemoPapiApi", () => {
       api.query.Treasury.NextPayout.watchEntries(),
     );
 
-    expect(entries).toHaveLength(3);
+    expect(entries).toHaveLength(5);
     expect(deltas).toEqual({ deleted: [], upserted: entries });
     expect(block).toEqual({
       hash: `0x${DEMO_HEIGHT.toString(16).padStart(64, "0")}`,
@@ -256,13 +258,15 @@ describe("demo mock data through the payout queue pipeline", () => {
       chainDecimals: 10,
     });
 
-    expect(queues.map((queue) => queue.symbol)).toEqual([
-      "USDT",
-      "USDC",
+    expect(queues.map((queue) => queue.id)).toEqual([
+      "USDT-V5",
+      "USDC-V5",
       "DOT",
+      "USDT-V4",
+      "USDC-V4",
     ]);
 
-    const usdt = queues.find((queue) => queue.symbol === "USDT");
+    const usdt = queues.find((queue) => queue.id === "USDT-V5");
     expect(usdt.assetKind).toBe("ForeignAsset #1984");
     expect(usdt.capacity).toBe(100);
     expect(usdt.treasuryBalance).toBe("2538420");
@@ -280,7 +284,7 @@ describe("demo mock data through the payout queue pipeline", () => {
     );
     expect(usdt.queue).toHaveLength(11);
     expect(usdt.queue.map((item) => item.index)).toEqual([
-      268, 269, 237, 238, 239, 240, 255, 256, 257, 263, 265,
+      268, 237, 238, 239, 240, 255, 256, 257, 263, 265, 269,
     ]);
     expect(usdt.queue[0]).toMatchObject({
       index: DEMO_EXPIRED_SPEND_INDEX,
@@ -288,8 +292,48 @@ describe("demo mock data through the payout queue pipeline", () => {
       spendExpireAt: DEMO_EXPIRED_SPEND_EXPIRE_AT,
     });
     expect(usdt.queue[1].expired).toBe(false);
+    expect(usdt.queue[1].status).toBe("Attempted");
+    // The last entry is not valid yet, so its row shows a maturity countdown.
+    expect(usdt.queue.at(-1)).toMatchObject({
+      index: 269,
+      status: "Pending",
+      expired: false,
+    });
+    expect(usdt.queue.at(-1).orderKey).toBeGreaterThan(DEMO_HEIGHT);
     // The expired spend is excluded from the payable total.
     expect(usdt.toBePaid).toBe("141501");
+
+    const queueItemAction = (item) =>
+      getPayoutAction({
+        status: item.status,
+        validFrom: item.validFrom,
+        spendExpireAt: item.spendExpireAt,
+        latestHeight: DEMO_HEIGHT,
+        isHead: false,
+        inOrder: true,
+      });
+
+    // Every queue-row action state has a sample: expired, attempted and none.
+    expect(queueItemAction(usdt.queue[0])).toEqual({
+      kind: "expire",
+      label: "Check Status",
+      call: "checkStatus",
+    });
+    expect(queueItemAction(usdt.queue[1])).toEqual({
+      kind: "checkStatus",
+      label: "Check Status",
+      call: "checkStatus",
+    });
+    expect(queueItemAction(usdt.queue[2])).toEqual({
+      kind: "queued",
+      label: "Waiting",
+      call: null,
+    });
+    expect(queueItemAction(usdt.queue.at(-1))).toEqual({
+      kind: "queued",
+      label: "Waiting",
+      call: null,
+    });
 
     const usdtCountdown = getNextPayoutCountdown({
       ...usdt.nextPayout,
@@ -302,12 +346,12 @@ describe("demo mock data through the payout queue pipeline", () => {
       totalBlocks: 28800,
     });
 
-    const usdc = queues.find((queue) => queue.symbol === "USDC");
+    const usdc = queues.find((queue) => queue.id === "USDC-V5");
     expect(usdc.nextPayout.status).toBe("Failed");
     expect(usdc.treasuryBalance).toBe("1204750");
     expect(usdc.toBePaid).toBe("567477");
 
-    const dot = queues.find((queue) => queue.symbol === "DOT");
+    const dot = queues.find((queue) => queue.id === "DOT");
     expect(dot.assetKind).toBe("Native");
     expect(dot.treasuryBalance).toBe("1876300");
     expect(dot.nextPayout.status).toBe("Attempted");
@@ -319,6 +363,50 @@ describe("demo mock data through the payout queue pipeline", () => {
         blockTime: 6000,
       }),
     ).toMatchObject({ mode: "lease", remainingBlocks: 27600 });
+
+    const headAction = (queue) =>
+      getNextPayoutAction({
+        status: queue.nextPayout.status,
+        validFrom: queue.nextPayout.validFrom,
+        expireAt: queue.nextPayout.expireAt,
+        spendExpireAt: queue.nextPayout.spendExpireAt,
+        firstQueuedOrderKey: queue.queue[0]?.orderKey,
+        latestHeight: DEMO_HEIGHT,
+      });
+
+    // Every head action state has a sample as well: pay, retry, check status,
+    // rotate an expired order and wait for maturity.
+    expect(headAction(usdt)).toEqual({
+      kind: "payout",
+      label: "Payout",
+      call: "payout",
+    });
+    expect(headAction(usdc)).toEqual({
+      kind: "payout",
+      label: "Retry Payment",
+      call: "payout",
+    });
+    expect(headAction(dot)).toEqual({
+      kind: "checkStatus",
+      label: "Check Status",
+      call: "checkStatus",
+    });
+
+    const usdtV4 = queues.find((queue) => queue.id === "USDT-V4");
+    expect(usdtV4.nextPayout.index).toBe(300);
+    expect(headAction(usdtV4)).toEqual({
+      kind: "rotate",
+      label: "Rotate",
+      call: "checkStatus",
+    });
+
+    const usdcV4 = queues.find((queue) => queue.id === "USDC-V4");
+    expect(usdcV4.nextPayout.index).toBe(302);
+    expect(headAction(usdcV4)).toEqual({
+      kind: "wait",
+      label: "Payout",
+      call: null,
+    });
   });
 
   it("models a payable Attempted head with the LocalPay payment id", () => {

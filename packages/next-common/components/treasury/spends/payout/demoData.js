@@ -31,6 +31,18 @@ const USDC_ASSET_KIND = {
   value: { location: HERE, asset_id: palletAssetLocation(1337) },
 };
 
+// The same assets encoded with XCM v4 keep a separate payout order until
+// polkadot-sdk#13461 canonicalizes the asset kind.
+const USDT_V4_ASSET_KIND = {
+  type: "V4",
+  value: { location: HERE, asset_id: palletAssetLocation(1984) },
+};
+
+const USDC_V4_ASSET_KIND = {
+  type: "V4",
+  value: { location: HERE, asset_id: palletAssetLocation(1337) },
+};
+
 const DOT_ASSET_KIND = {
   type: "V5",
   value: { location: HERE, asset_id: RELAY_NATIVE },
@@ -91,6 +103,7 @@ function demoTreasurySpend({
   validFrom,
   type = "Pending",
   payoutAt,
+  paymentId = LOCAL_PAYMENT_ID,
 }) {
   return {
     asset_kind: assetKind,
@@ -100,7 +113,7 @@ function demoTreasurySpend({
     expire_at: (payoutAt ?? validFrom) + PAYOUT_PERIOD,
     status:
       type === "Attempted"
-        ? { type, value: { id: LOCAL_PAYMENT_ID } }
+        ? { type, value: { id: paymentId } }
         : { type, value: undefined },
   };
 }
@@ -126,6 +139,25 @@ export const DEMO_NEXT_PAYOUTS = [
       DEMO_HEIGHT - 1200 + DEMO_ORDER_EXPIRATION_PERIOD,
     ],
   },
+  {
+    // The head's order lease already lapsed while the next spend is mature:
+    // the UI offers `check_status` to rotate it.
+    args: [USDT_V4_ASSET_KIND],
+    value: [
+      300,
+      DEMO_HEIGHT - 40000,
+      DEMO_HEIGHT - 40000 + DEMO_ORDER_EXPIRATION_PERIOD,
+    ],
+  },
+  {
+    // The head is not valid yet (`valid_from` in the future).
+    args: [USDC_V4_ASSET_KIND],
+    value: [
+      302,
+      DEMO_HEIGHT + 3 * DAY,
+      DEMO_HEIGHT + 3 * DAY + DEMO_ORDER_EXPIRATION_PERIOD,
+    ],
+  },
 ];
 
 export const DEMO_PAYOUT_QUEUES = [
@@ -133,7 +165,6 @@ export const DEMO_PAYOUT_QUEUES = [
     args: [USDT_ASSET_KIND],
     value: [
       [268, DEMO_HEIGHT - 9000],
-      [269, DEMO_HEIGHT - 8800],
       [237, DEMO_HEIGHT - 8000],
       [238, DEMO_HEIGHT - 7800],
       [239, DEMO_HEIGHT - 7600],
@@ -143,6 +174,8 @@ export const DEMO_PAYOUT_QUEUES = [
       [257, DEMO_HEIGHT - 5600],
       [263, DEMO_HEIGHT - 4000],
       [265, DEMO_HEIGHT - 3000],
+      // Not valid yet: the row shows a maturity countdown.
+      [269, DEMO_HEIGHT + 2 * DAY],
     ],
   },
   {
@@ -162,6 +195,14 @@ export const DEMO_PAYOUT_QUEUES = [
       [291, DEMO_HEIGHT + 45000],
       [295, DEMO_HEIGHT + 50000],
     ],
+  },
+  {
+    args: [USDT_V4_ASSET_KIND],
+    value: [[301, DEMO_HEIGHT - 9000]],
+  },
+  {
+    args: [USDC_V4_ASSET_KIND],
+    value: [[303, DEMO_HEIGHT + 4 * DAY]],
   },
 ];
 
@@ -192,12 +233,16 @@ export const DEMO_SPENDS = {
   269: demoTreasurySpend({
     assetKind: USDT_ASSET_KIND,
     amount: 20895000000n,
-    validFrom: DEMO_HEIGHT - 8800,
+    // Not valid yet, so its row shows a maturity countdown.
+    validFrom: DEMO_HEIGHT + 2 * DAY,
   }),
   237: demoTreasurySpend({
     assetKind: USDT_ASSET_KIND,
     amount: 18000000000n,
     validFrom: DEMO_HEIGHT - 8000,
+    // An in-flight payment can be resolved with `check_status`.
+    type: "Attempted",
+    paymentId: LOCAL_PAYMENT_ID - 1n,
   }),
   238: demoTreasurySpend({
     assetKind: USDT_ASSET_KIND,
@@ -293,6 +338,26 @@ export const DEMO_SPENDS = {
     amount: 75000000000000n,
     validFrom: DEMO_HEIGHT + 50000,
   }),
+  300: demoTreasurySpend({
+    assetKind: USDT_V4_ASSET_KIND,
+    amount: 5000000000n,
+    validFrom: DEMO_HEIGHT - 20 * DAY,
+  }),
+  301: demoTreasurySpend({
+    assetKind: USDT_V4_ASSET_KIND,
+    amount: 5000000000n,
+    validFrom: DEMO_HEIGHT - 9000,
+  }),
+  302: demoTreasurySpend({
+    assetKind: USDC_V4_ASSET_KIND,
+    amount: 3000000000n,
+    validFrom: DEMO_HEIGHT + 3 * DAY,
+  }),
+  303: demoTreasurySpend({
+    assetKind: USDC_V4_ASSET_KIND,
+    amount: 3000000000n,
+    validFrom: DEMO_HEIGHT + 4 * DAY,
+  }),
 };
 
 export const DEMO_BALANCES = {
@@ -336,4 +401,8 @@ export const DEMO_POSTS = {
   },
   291: { index: 291, title: "Validator onboarding workshops 2026" },
   295: { index: 295, title: "Open-source Polkadot SDK tooling grant" },
+  300: { index: 300, title: OPEN_SQUARE },
+  301: { index: 301, title: OPEN_SQUARE },
+  302: { index: 302, title: CHAINFLIP },
+  303: { index: 303, title: CHAINFLIP },
 };
