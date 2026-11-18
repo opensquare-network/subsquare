@@ -48,7 +48,7 @@ function PayoutQueuesContent() {
   const { queue = "" } = router.query;
   const activeQueue =
     queues.find(
-      (item) => item.symbol.toLowerCase() === String(queue).toLowerCase(),
+      (item) => item.id.toLowerCase() === String(queue).toLowerCase(),
     ) || queues[0];
 
   if (loading && !queues.length) {
@@ -64,10 +64,10 @@ function PayoutQueuesContent() {
   }
 
   const tabs = queues.map((queueItem) => ({
-    value: queueItem.symbol,
+    value: queueItem.id,
     label: ({ active }) => (
       <TabTitle active={active} tooltip={queueItem.assetKind}>
-        {queueItem.symbol}
+        {queueItem.label}
       </TabTitle>
     ),
     activeCount: queueItem.queue.length,
@@ -78,7 +78,7 @@ function PayoutQueuesContent() {
     <div className="flex flex-col gap-4">
       <Tabs
         tabs={tabs}
-        activeTabValue={activeQueue.symbol}
+        activeTabValue={activeQueue.id}
         onTabClick={(tab) =>
           updateSearchParams({ queue: tab.value?.toLowerCase?.() })
         }

@@ -19,7 +19,7 @@ import dynamicPopup from "next-common/lib/dynamic/popup";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 import { useChainSettings } from "next-common/context/chain";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
-import { getNextPayoutCountdown, getPayoutActionLabel } from "./chainData";
+import { getNextPayoutAction, getNextPayoutCountdown } from "./chainData";
 import useDemoLatestHeight from "./demoHeight";
 import { usePayoutQueueIsDemo } from "./sourceContext";
 
@@ -54,26 +54,40 @@ function PayoutStatusTag({ status }) {
   );
 }
 
-function PayoutActionButton({ spend, symbol }) {
+function PayoutActionButton({ spend, symbol, action }) {
   const [showPopup, setShowPopup] = useState(false);
-  const label = getPayoutActionLabel(spend?.status);
-  if (!label) {
+  // No action while the head is not payable yet, the countdown shows the wait
+  if (!action?.call) {
     return null;
   }
 
+  const button = (
+    <PrimaryButton
+      type="button"
+      size="small"
+      onClick={() => setShowPopup(true)}
+    >
+      {action.label}
+    </PrimaryButton>
+  );
+
   return (
     <>
-      <PrimaryButton
-        type="button"
-        size="small"
-        onClick={() => setShowPopup(true)}
-      >
-        {label}
-      </PrimaryButton>
+      {action.kind === "rotate" ? (
+        <Tooltip
+          className="flex items-center"
+          content="The payout order of this spend expired and the next spend is already mature. Rotate to move it to the back of the queue."
+        >
+          {button}
+        </Tooltip>
+      ) : (
+        button
+      )}
       {showPopup && (
         <PayoutActionPopup
           spend={spend}
           symbol={symbol}
+          action={action}
           onClose={() => setShowPopup(false)}
         />
       )}
@@ -81,7 +95,7 @@ function PayoutActionButton({ spend, symbol }) {
   );
 }
 
-function NextPayoutBox({ spend, symbol, countdown, countdownText }) {
+function NextPayoutBox({ spend, symbol, action, countdown, countdownText }) {
   return (
     <div role="listitem" className="py-4">
       <div className="flex flex-col gap-3 rounded-xl border border-theme500 bg-theme100 p-4">
@@ -105,7 +119,12 @@ function NextPayoutBox({ spend, symbol, countdown, countdownText }) {
                 />
               </Tooltip>
             )}
-            <PayoutActionButton spend={spend} symbol={symbol} />
+            {!countdown && countdownText && (
+              <span className="text12Medium text-textTertiary">
+                {countdownText}
+              </span>
+            )}
+            <PayoutActionButton spend={spend} symbol={symbol} action={action} />
           </div>
         </div>
 
@@ -140,41 +159,82 @@ function NextPayoutBox({ spend, symbol, countdown, countdownText }) {
   );
 }
 
-function NextPayoutRow({ spend, symbol }) {
+function NextPayoutRow({ spend, symbol, firstQueuedOrderKey }) {
   // The clock lives in this row only, so its ticks never remount the table rows
   const isDemo = usePayoutQueueIsDemo();
   const demoHeight = useDemoLatestHeight(isDemo);
   const chainHeight = useAhmLatestHeight();
   const { blockTime } = useChainSettings();
+  const latestHeight = isDemo ? demoHeight : chainHeight;
+
+  const action = getNextPayoutAction({
+    status: spend.status,
+    validFrom: spend.validFrom,
+    expireAt: spend.expireAt,
+    spendExpireAt: spend.spendExpireAt,
+    firstQueuedOrderKey,
+    latestHeight,
+  });
 
   const countdown = getNextPayoutCountdown({
     validFrom: spend.validFrom,
     orderKey: spend.orderKey,
     expireAt: spend.expireAt,
     orderExpirationPeriod: spend.orderExpirationPeriod,
-    latestHeight: isDemo ? demoHeight : chainHeight,
+    latestHeight,
     blockTime,
   });
 
   if (!countdown) {
-    return <NextPayoutBox spend={spend} symbol={symbol} />;
+    return <NextPayoutBox spend={spend} symbol={symbol} action={action} />;
   }
 
   const isMature = countdown.mode !== "maturity";
+  const leaseExpired = isMature && (countdown.remainingBlocks ?? 0) <= 0;
   const remaining = Math.max(0, countdown.remainingMs ?? 0);
   const total = Math.max(1, countdown.totalMs ?? 1);
 
-  const countdownText = `${
-    isMature ? "Sort lease expires in" : "Payable in"
-  } ${formatTimeDuration(remaining)}`;
+  const countdownText = leaseExpired
+    ? "Payout order expired"
+    : `${
+        isMature ? "Payout order expires in" : "Payable in"
+      } ${formatTimeDuration(remaining)}`;
 
   return (
     <NextPayoutBox
       spend={spend}
       symbol={symbol}
-      countdown={{ elapsed: total - remaining, total }}
+      action={action}
+      countdown={leaseExpired ? null : { elapsed: total - remaining, total }}
       countdownText={countdownText}
     />
+  );
+}
+
+// A queued spend can be not yet mature: the queue is ordered by
+// `max(approval block, valid_from)` and includes spends that are payable later
+function SpendMaturity({ orderKey }) {
+  const isDemo = usePayoutQueueIsDemo();
+  const demoHeight = useDemoLatestHeight(isDemo);
+  const chainHeight = useAhmLatestHeight();
+  const { blockTime } = useChainSettings();
+  const latestHeight = isDemo ? demoHeight : chainHeight;
+
+  if (isNil(orderKey) || isNil(latestHeight)) {
+    return <span className="text-textTertiary">-</span>;
+  }
+
+  const remainingBlocks = Number(orderKey) - Number(latestHeight);
+  if (remainingBlocks <= 0) {
+    return <span className="text-textSecondary">Mature</span>;
+  }
+
+  return (
+    <Tooltip content={`Mature at block #${Number(orderKey).toLocaleString()}`}>
+      <span className="text-textTertiary">
+        {formatTimeDuration(remainingBlocks * (Number(blockTime) || 0))}
+      </span>
+    </Tooltip>
   );
 }
 
@@ -184,6 +244,10 @@ const waitingColumns = [
     style: { textAlign: "left", width: "80px", minWidth: "80px" },
   },
   { name: "Title", className: "min-w-0 pr-4" },
+  {
+    name: "Maturity",
+    style: { textAlign: "right", width: "120px", minWidth: "120px" },
+  },
   {
     name: "Amount",
     style: { textAlign: "right", width: "140px", minWidth: "140px" },
@@ -212,6 +276,9 @@ function WaitingQueue({ queue }) {
           {spend.title}
         </Link>
       </Tooltip>,
+      <div key="maturity" className="text-right text14Medium">
+        <SpendMaturity orderKey={spend.orderKey} />
+      </div>,
       isNil(spend.amount) ? (
         <span key="amount">-</span>
       ) : (
@@ -236,6 +303,7 @@ function WaitingQueue({ queue }) {
             key="next-payout"
             spend={queue.nextPayout}
             symbol={queue.symbol}
+            firstQueuedOrderKey={queue.queue[0]?.orderKey}
           />
         ) : (
           <Item key={idx} row={rowList[idx]} />

@@ -13,8 +13,7 @@ export function getPayoutActionCall(status) {
   return normalized ? ACTION_CALLS[normalized] : null;
 }
 
-export function getPayoutActionTx(api, treasuryPallet, status, index) {
-  const call = getPayoutActionCall(status);
+export function getPayoutTxByCall(api, treasuryPallet, call, index) {
   if (!api || !treasuryPallet || !call || isNil(index)) {
     return null;
   }
@@ -25,4 +24,13 @@ export function getPayoutActionTx(api, treasuryPallet, status, index) {
   }
 
   return txFunc(index);
+}
+
+export function getPayoutActionTx(api, treasuryPallet, status, index) {
+  return getPayoutTxByCall(
+    api,
+    treasuryPallet,
+    getPayoutActionCall(status),
+    index,
+  );
 }

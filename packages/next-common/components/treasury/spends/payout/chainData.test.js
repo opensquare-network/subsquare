@@ -7,6 +7,7 @@ import {
   getAssetKindKey,
   getBalanceFromStorage,
   getEntryAssetKind,
+  getNextPayoutAction,
   getNextPayoutCountdown,
   getPapiAssetKindInfo,
   getPayoutActionLabel,
@@ -54,6 +55,11 @@ const hollarAssetKind = {
       },
     },
   },
+};
+
+const v5UsdcAssetKind = {
+  type: "V5",
+  value: { location: HERE, asset_id: palletAssetLocation(1337) },
 };
 
 const v4UsdcAssetKind = {
@@ -118,6 +124,7 @@ describe("getPapiAssetKindInfo", () => {
       symbol: "DOT",
       decimals: 10,
       label: "Native",
+      version: "V5",
     });
   });
 
@@ -129,6 +136,7 @@ describe("getPapiAssetKindInfo", () => {
       symbol: "USDT",
       decimals: 6,
       label: "ForeignAsset #1984",
+      version: "V5",
     });
 
     expect(getPapiAssetKindInfo(v4UsdcAssetKind, chain).symbol).toBe("USDC");
@@ -290,6 +298,87 @@ describe("getNextPayoutCountdown", () => {
   });
 });
 
+describe("getNextPayoutAction", () => {
+  const latestHeight = 1000;
+
+  it("waits while the head is not mature yet", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 1200,
+        expireAt: 1400,
+        latestHeight,
+      }),
+    ).toEqual({ kind: "wait", label: "Payout", call: null });
+  });
+
+  it("pays a mature head whose order is still alive", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Failed"),
+        validFrom: 900,
+        expireAt: 1400,
+        firstQueuedOrderKey: 950,
+        latestHeight,
+      }),
+    ).toEqual({ kind: "payout", label: "Retry Payment", call: "payout" });
+  });
+
+  it("rotates an expired head once another queued spend is mature", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        expireAt: 999,
+        firstQueuedOrderKey: 950,
+        latestHeight,
+      }),
+    ).toEqual({ kind: "rotate", label: "Rotate", call: "checkStatus" });
+  });
+
+  it("keeps paying an expired head while no queued spend is mature", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        expireAt: 999,
+        firstQueuedOrderKey: 1001,
+        latestHeight,
+      }),
+    ).toEqual({ kind: "payout", label: "Payout", call: "payout" });
+  });
+
+  it("checks status for an attempted head", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Attempted", { id: 1n }),
+        latestHeight,
+      }),
+    ).toEqual({
+      kind: "checkStatus",
+      label: "Check Status",
+      call: "checkStatus",
+    });
+  });
+
+  it("checks status for a head already past its payout window", () => {
+    expect(
+      getNextPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 800,
+        expireAt: 999,
+        spendExpireAt: 1000,
+        firstQueuedOrderKey: 950,
+        latestHeight,
+      }),
+    ).toEqual({ kind: "expire", label: "Check Status", call: "checkStatus" });
+  });
+
+  it("returns null without a known status", () => {
+    expect(getNextPayoutAction({ status: undefined })).toBeNull();
+  });
+});
+
 describe("buildPayoutQueue", () => {
   it("builds a queue view model from papi storage values", () => {
     const queue = buildPayoutQueue({
@@ -303,6 +392,7 @@ describe("buildPayoutQueue", () => {
         270: {
           amount: 20895000000n,
           valid_from: 90,
+          expire_at: 500,
           status: spendStatus("Pending"),
         },
         268: {
@@ -334,6 +424,7 @@ describe("buildPayoutQueue", () => {
       validFrom: 90,
       orderKey: 100,
       expireAt: 300,
+      spendExpireAt: 500,
       orderExpirationPeriod: 200,
     });
     expect(queue.queue).toEqual([
@@ -342,12 +433,14 @@ describe("buildPayoutQueue", () => {
         status: "Attempted",
         amount: "10",
         title: "Treasury spend 268",
+        orderKey: 101,
       },
       {
         index: 269,
         status: null,
         amount: "20",
         title: "Treasury spend 269",
+        orderKey: 102,
       },
     ]);
     expect(queue.toBePaid).toBe("20925");
@@ -370,6 +463,7 @@ describe("buildPayoutQueue", () => {
         status: null,
         amount: null,
         title: "Treasury spend 5",
+        orderKey: 10,
       },
     ]);
     expect(queue.toBePaid).toBeNull();
@@ -399,6 +493,7 @@ describe("buildPayoutQueues", () => {
         270: {
           amount: 20895000000n,
           valid_from: 90,
+          expire_at: 500,
           status: spendStatus("Pending"),
         },
         268: {
@@ -430,6 +525,7 @@ describe("buildPayoutQueues", () => {
     expect(queues).toHaveLength(2);
 
     const usdt = queues.find((item) => item.symbol === "USDT");
+    expect(usdt.id).toBe("USDT");
     expect(usdt.capacity).toBe(100);
     expect(usdt.treasuryBalance).toBe("2538420");
     expect(usdt.nextPayout.index).toBe(270);
@@ -443,6 +539,23 @@ describe("buildPayoutQueues", () => {
     expect(dot.nextPayout.orderExpirationPeriod).toBe(28800);
     expect(dot.nextPayout.expireAt).toBe(400);
     expect(dot.toBePaid).toBe("120");
+  });
+
+  it("keeps queue ids unique for one asset under two XCM versions", () => {
+    const queues = buildPayoutQueues({
+      nextPayoutEntries: [
+        { args: [v4UsdcAssetKind], value: [10, 100, 200] },
+        { args: [v5UsdcAssetKind], value: [11, 100, 200] },
+      ],
+      chainSymbol: "DOT",
+      chainDecimals: 10,
+    });
+
+    expect(queues.map((item) => item.id)).toEqual(["USDC-V4", "USDC-V5"]);
+    expect(queues.map((item) => item.label)).toEqual([
+      "USDC (V4)",
+      "USDC (V5)",
+    ]);
   });
 
   it("skips entries without a value and unknown asset kinds", () => {

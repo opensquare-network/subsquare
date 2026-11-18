@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { getPayoutActionCall, getPayoutActionTx } from "./chainTx";
+import {
+  getPayoutActionCall,
+  getPayoutActionTx,
+  getPayoutTxByCall,
+} from "./chainTx";
 
 describe("getPayoutActionCall", () => {
   it("maps spend status to @polkadot/api call names", () => {
@@ -38,6 +42,17 @@ describe("getPayoutActionTx", () => {
       call: "checkStatus",
       index: 9,
     });
+  });
+
+  it("builds a tx from a resolved call, e.g. rotating via checkStatus", () => {
+    const checkStatus = vi.fn((index) => ({ call: "checkStatus", index }));
+    const api = { tx: { treasury: { checkStatus } } };
+
+    expect(getPayoutTxByCall(api, "treasury", "checkStatus", 12)).toEqual({
+      call: "checkStatus",
+      index: 12,
+    });
+    expect(getPayoutTxByCall(api, "treasury", null, 12)).toBeNull();
   });
 
   it("returns null when the call is not available on the runtime", () => {

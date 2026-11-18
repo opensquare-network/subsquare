@@ -14,6 +14,21 @@ const ACTION_LABELS = {
   Failed: "Retry Payment",
 };
 
+// The head is rotated by `check_status`, so rotation reuses that call
+const ROTATE_ACTION = {
+  kind: "rotate",
+  label: "Rotate",
+  call: "checkStatus",
+};
+
+// A spend past its own `expire_at` can never be paid, only `check_status` can
+// clean it up (which removes it and promotes the next queued spend)
+const EXPIRED_ACTION = {
+  kind: "expire",
+  label: "Check Status",
+  call: "checkStatus",
+};
+
 export function getPayoutSpendStatus(status) {
   const type = typeof status === "string" ? status : status?.type;
   return SPEND_STATUSES.includes(type) ? type : null;
@@ -22,6 +37,58 @@ export function getPayoutSpendStatus(status) {
 export function getPayoutActionLabel(status) {
   const normalized = getPayoutSpendStatus(status);
   return normalized ? ACTION_LABELS[normalized] : null;
+}
+
+// The pallet only pays the `NextPayout` head; it rejects an un-matured head
+// (`EarlyPayout`), an already expired spend (`SpendExpired`) and a head whose
+// order expired while another queued spend is already mature (`NotNextPayout`).
+export function getNextPayoutAction({
+  status,
+  validFrom,
+  expireAt,
+  spendExpireAt,
+  firstQueuedOrderKey,
+  latestHeight,
+}) {
+  const normalized = getPayoutSpendStatus(status);
+  if (!normalized) {
+    return null;
+  }
+
+  if (normalized === "Attempted") {
+    return {
+      kind: "checkStatus",
+      label: ACTION_LABELS.Attempted,
+      call: "checkStatus",
+    };
+  }
+
+  const hasHeight = !isNil(latestHeight);
+  const now = Number(latestHeight);
+
+  if (hasHeight && !isNil(validFrom) && Number(validFrom) > now) {
+    return { kind: "wait", label: ACTION_LABELS[normalized], call: null };
+  }
+
+  if (hasHeight && !isNil(spendExpireAt) && Number(spendExpireAt) <= now) {
+    return EXPIRED_ACTION;
+  }
+
+  const leaseExpired = hasHeight && !isNil(expireAt) && Number(expireAt) < now;
+  const nextSpendMature =
+    hasHeight &&
+    !isNil(firstQueuedOrderKey) &&
+    Number(firstQueuedOrderKey) <= now;
+
+  if (leaseExpired && nextSpendMature) {
+    return ROTATE_ACTION;
+  }
+
+  return {
+    kind: "payout",
+    label: ACTION_LABELS[normalized],
+    call: "payout",
+  };
 }
 
 function getJunctions(interior) {
@@ -84,6 +151,14 @@ export function getEntryAssetKind(entry) {
   return entry?.args?.[0] ?? entry?.keyArgs?.[0] ?? null;
 }
 
+// The asset kind is a `VersionedLocatableAsset`; the map is keyed by the raw
+// (versioned) value until polkadot-sdk#13461 canonicalizes it, so the same asset
+// can show up as a V4 and a V5 entry with separate orders.
+export function getAssetKindVersion(assetKind) {
+  const type = assetKind?.type;
+  return typeof type === "string" && /^V\d+$/.test(type) ? type : null;
+}
+
 export function getPapiAssetKindInfo(
   assetKind,
   { chainSymbol, chainDecimals } = {},
@@ -115,7 +190,15 @@ export function getPapiAssetKindInfo(
   const decimals =
     (knownSymbol ? SYMBOL_DECIMALS[knownSymbol] : undefined) ?? chainDecimals;
 
-  return { isNative, isPalletAsset, assetId, symbol, decimals, label };
+  return {
+    isNative,
+    isPalletAsset,
+    assetId,
+    symbol,
+    decimals,
+    label,
+    version: getAssetKindVersion(assetKind),
+  };
 }
 
 export function getAssetBalanceQuery(assetKind) {
@@ -234,13 +317,15 @@ export function buildPayoutQueue({
     chainDecimals,
   });
 
-  const formatSpendItem = (index) => {
+  const formatSpendItem = (index, orderKey) => {
     const spend = spends[index];
     return {
       index,
       status: getPayoutSpendStatus(spend?.status),
       title: getPayoutSpendTitle(posts[index], index),
       amount: formatPayoutAmount(spend?.amount, info.decimals),
+      // Block at which the spend becomes payable / took its place in the order
+      orderKey: toNumberOrUndefined(orderKey),
     };
   };
 
@@ -248,18 +333,22 @@ export function buildPayoutQueue({
   const nextPayoutSpend = isNil(headIndex)
     ? null
     : {
-        ...formatSpendItem(headIndex),
+        ...formatSpendItem(headIndex, nextPayout?.[1]),
         // Countdown inputs, resolved against the latest height by the UI
         validFrom: toNumberOrUndefined(
           spends[headIndex]?.valid_from ?? spends[headIndex]?.validFrom,
         ),
-        orderKey: toNumberOrUndefined(nextPayout?.[1]),
+        // NextPayout[2]: when the spend's position as head expires
         expireAt: toNumberOrUndefined(nextPayout?.[2]),
+        // SpendStatus.expire_at: when the spend itself can no longer be paid
+        spendExpireAt: toNumberOrUndefined(
+          spends[headIndex]?.expire_at ?? spends[headIndex]?.expireAt,
+        ),
         orderExpirationPeriod: toNumberOrUndefined(orderExpirationPeriod),
       };
 
   const waitingQueue = (queue ?? [])
-    .map(([index]) => formatSpendItem(index))
+    .map(([index, orderKey]) => formatSpendItem(index, orderKey))
     .filter((item) => !isNil(item.index));
 
   const amounts = [
@@ -275,14 +364,44 @@ export function buildPayoutQueue({
     : null;
 
   return {
+    key: getAssetKindKey(assetKind),
     symbol: info.symbol,
     assetKind: info.label,
+    version: info.version,
     capacity,
     treasuryBalance,
     nextPayout: nextPayoutSpend,
     queue: waitingQueue,
     toBePaid,
   };
+}
+
+// The same asset can be queued under more than one XCM version until
+// polkadot-sdk#13461 canonicalizes the asset kind, so tab ids must stay unique
+function assignQueueIds(queues) {
+  const symbolCounts = new Map();
+  queues.forEach(({ symbol }) =>
+    symbolCounts.set(symbol, (symbolCounts.get(symbol) ?? 0) + 1),
+  );
+
+  const usedIds = new Set();
+  return queues.map((queue, index) => {
+    const suffix =
+      symbolCounts.get(queue.symbol) > 1 && queue.version
+        ? queue.version
+        : null;
+    let id = `${queue.symbol}${suffix ? `-${suffix}` : ""}`;
+    if (usedIds.has(id)) {
+      id = `${id}-${index + 1}`;
+    }
+    usedIds.add(id);
+
+    return {
+      ...queue,
+      id,
+      label: suffix ? `${queue.symbol} (${suffix})` : queue.symbol,
+    };
+  });
 }
 
 export function buildPayoutQueues({
@@ -326,7 +445,7 @@ export function buildPayoutQueues({
     }),
   );
 
-  return [...kinds.values()]
+  const queues = [...kinds.values()]
     .map(({ key, assetKind, nextPayout, queue }) =>
       buildPayoutQueue({
         assetKind,
@@ -342,4 +461,6 @@ export function buildPayoutQueues({
       }),
     )
     .filter((item) => item.nextPayout || item.queue.length);
+
+  return assignQueueIds(queues);
 }

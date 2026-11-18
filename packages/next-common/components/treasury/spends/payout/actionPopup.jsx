@@ -9,7 +9,14 @@ import AdvanceSettings from "next-common/components/summary/newProposalQuickStar
 import EstimatedGas from "next-common/components/estimatedGas";
 import ValueDisplay from "next-common/components/valueDisplay";
 import { getPayoutActionLabel } from "./chainData";
-import { getPayoutActionTx } from "./chainTx";
+import { getPayoutActionTx, getPayoutTxByCall } from "./chainTx";
+
+const ACTION_HINTS = {
+  rotate:
+    "The payout order of this spend expired while another queued spend is already mature. Rotating moves it to the back of the queue and promotes the next spend.",
+  expire:
+    "This spend is past its payout window and can no longer be paid. Checking its status removes it from the queue and promotes the next spend.",
+};
 
 function SpendSummary({ spend, symbol }) {
   if (!spend) {
@@ -35,38 +42,45 @@ function SpendSummary({ spend, symbol }) {
   );
 }
 
-function Content({ spend, symbol }) {
+function Content({ spend, symbol, action }) {
   const { component } = useSigner("Origin");
   const api = useContextApi();
   const treasuryPallet = useTreasuryPallet();
 
-  const getTxFunc = useCallback(
-    () => getPayoutActionTx(api, treasuryPallet, spend?.status, spend?.index),
-    [api, treasuryPallet, spend],
-  );
+  const getTxFunc = useCallback(() => {
+    if (action?.call) {
+      return getPayoutTxByCall(api, treasuryPallet, action.call, spend?.index);
+    }
+    return getPayoutActionTx(api, treasuryPallet, spend?.status, spend?.index);
+  }, [api, treasuryPallet, spend, action]);
 
   return (
     <>
       {component}
       <SpendSummary spend={spend} symbol={symbol} />
+      {!!ACTION_HINTS[action?.kind] && (
+        <p className="text12Medium text-textTertiary">
+          {ACTION_HINTS[action.kind]}
+        </p>
+      )}
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
-        title={getPayoutActionLabel(spend?.status)}
+        title={action?.label ?? getPayoutActionLabel(spend?.status)}
         getTxFunc={getTxFunc}
       />
     </>
   );
 }
 
-export default function PayoutActionPopup({ spend, symbol, ...props }) {
+export default function PayoutActionPopup({ spend, symbol, action, ...props }) {
   return (
     <PopupWithSigner
-      title={getPayoutActionLabel(spend?.status) ?? "Payout"}
+      title={action?.label ?? getPayoutActionLabel(spend?.status) ?? "Payout"}
       {...props}
     >
-      <Content spend={spend} symbol={symbol} />
+      <Content spend={spend} symbol={symbol} action={action} />
     </PopupWithSigner>
   );
 }
