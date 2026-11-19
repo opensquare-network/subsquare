@@ -17,6 +17,8 @@ import normalizeBountyListItem from "next-common/utils/viewfuncs/treasury/normal
 import normalizeMultiAssetBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeMultiAssetBountyListItem";
 import ProjectBountiesList from "../projectDetailPopup/bountiesList";
 import ProjectMultiAssetBountiesList from "../projectDetailPopup/multiAssetBountiesList";
+import ProjectMultiAssetChildBountiesList from "../projectDetailPopup/multiAssetChildBountiesList";
+import normalizeMultiAssetChildBountyListItem from "next-common/utils/viewfuncs/treasury/normalizeMultiAssetChildBountyListItem";
 import { getAssetInfoFromAssetKind } from "next-common/utils/treasury/multiAssetBounty/assetKind";
 
 const STABLECOIN_SYMBOLS = new Set(["USDC", "USDT", "HOLLAR"]);
@@ -28,6 +30,7 @@ export const TAB_VALUES = {
   tips: "tips",
   bounties: "bounties",
   multiAssetBounties: "multiAssetBounties",
+  multiAssetChildBounties: "multiAssetChildBounties",
 };
 
 export default function usePopupDetailTabs({
@@ -37,6 +40,7 @@ export default function usePopupDetailTabs({
   tipList,
   bountyList,
   multiAssetBountyList,
+  multiAssetChildBountyList,
 }) {
   const normalizedProposalList = useMemo(
     () => proposalList ?? [],
@@ -53,6 +57,10 @@ export default function usePopupDetailTabs({
     () => multiAssetBountyList ?? [],
     [multiAssetBountyList],
   );
+  const normalizedMultiAssetChildBountyList = useMemo(
+    () => multiAssetChildBountyList ?? [],
+    [multiAssetChildBountyList],
+  );
 
   const {
     proposalIndexes,
@@ -61,6 +69,7 @@ export default function usePopupDetailTabs({
     tipIndexes,
     bountyIndexes,
     multiAssetBountyIndexes,
+    multiAssetChildBountyIndexes,
   } = useFormatIndexes({
     proposalList: normalizedProposalList,
     spendList: normalizedSpendList,
@@ -68,6 +77,7 @@ export default function usePopupDetailTabs({
     tipList: normalizedTipList,
     bountyList: normalizedBountyList,
     multiAssetBountyList: normalizedMultiAssetBountyList,
+    multiAssetChildBountyList: normalizedMultiAssetChildBountyList,
   });
 
   const { items: proposals, loading: proposalsLoading } = useTreasuryItems({
@@ -101,13 +111,20 @@ export default function usePopupDetailTabs({
     normalizeItem: normalizeBountyListItem,
   });
 
+  const { items: multiAssetBounties, loading: multiAssetBountiesLoading } =
+    useTreasuryItems({
+      indexes: multiAssetBountyIndexes,
+      apiPath: "/treasury/multi-asset-bounties",
+      normalizeItem: normalizeMultiAssetBountyListItem,
+    });
+
   const {
-    items: multiAssetBounties,
-    loading: multiAssetBountiesLoading,
+    items: multiAssetChildBounties,
+    loading: multiAssetChildBountiesLoading,
   } = useTreasuryItems({
-    indexes: multiAssetBountyIndexes,
-    apiPath: "/treasury/multi-asset-bounties",
-    normalizeItem: normalizeMultiAssetBountyListItem,
+    indexes: multiAssetChildBountyIndexes,
+    apiPath: "/treasury/multi-asset-child-bounties",
+    normalizeItem: normalizeMultiAssetChildBountyListItem,
   });
 
   const normalizedProposals = useMemo(
@@ -147,6 +164,15 @@ export default function usePopupDetailTabs({
         normalizedMultiAssetBountyList,
       ),
     [multiAssetBounties, normalizedMultiAssetBountyList],
+  );
+
+  const normalizedMultiAssetChildBounties = useMemo(
+    () =>
+      normalizeMultiAssetChildBounties(
+        multiAssetChildBounties,
+        normalizedMultiAssetChildBountyList,
+      ),
+    [multiAssetChildBounties, normalizedMultiAssetChildBountyList],
   );
 
   const tabs = useMemo(
@@ -215,6 +241,17 @@ export default function usePopupDetailTabs({
             />
           ),
         },
+        normalizedMultiAssetChildBountyList?.length > 0 && {
+          value: TAB_VALUES.multiAssetChildBounties,
+          label: "Multi-Asset Child Bounties",
+          activeCount: normalizedMultiAssetChildBountyList.length,
+          content: (
+            <ProjectMultiAssetChildBountiesList
+              childBounties={normalizedMultiAssetChildBounties}
+              loading={multiAssetChildBountiesLoading}
+            />
+          ),
+        },
       ].filter(Boolean),
     [
       normalizedProposals,
@@ -235,6 +272,9 @@ export default function usePopupDetailTabs({
       normalizedMultiAssetBountyList,
       normalizedMultiAssetBounties,
       multiAssetBountiesLoading,
+      normalizedMultiAssetChildBountyList,
+      normalizedMultiAssetChildBounties,
+      multiAssetChildBountiesLoading,
     ],
   );
 
@@ -247,6 +287,7 @@ export default function usePopupDetailTabs({
     tips: normalizedTips,
     bounties: normalizedBounties,
     multiAssetBounties: normalizedMultiAssetBounties,
+    multiAssetChildBounties: normalizedMultiAssetChildBounties,
     // indexes
     proposalIndexes,
     spendIndexes,
@@ -254,6 +295,7 @@ export default function usePopupDetailTabs({
     tipIndexes,
     bountyIndexes,
     multiAssetBountyIndexes,
+    multiAssetChildBountyIndexes,
     // loading
     proposalsLoading,
     spendsLoading,
@@ -261,6 +303,7 @@ export default function usePopupDetailTabs({
     tipsLoading,
     bountiesLoading,
     multiAssetBountiesLoading,
+    multiAssetChildBountiesLoading,
   };
 }
 
@@ -312,6 +355,27 @@ function normalizeMultiAssetBounties(items, itemList) {
   });
 }
 
+function normalizeMultiAssetChildBounties(items, itemList) {
+  if (!items) {
+    return items;
+  }
+
+  const proportionMap = new Map(
+    itemList?.map((item) => [item.id, item.proportion]),
+  );
+
+  return items.map((item) => {
+    const proportion = proportionMap.get(item.index) ?? 1;
+    const fiatAtFinal = getMultiAssetBountyFiatValue(item);
+
+    return {
+      ...item,
+      proportion,
+      fiatAtFinal,
+    };
+  });
+}
+
 function getMultiAssetBountyFiatValue(item) {
   const { assetKind, price } = item.onchainData ?? {};
   const chainSettings = getChainSettings(CHAIN);
@@ -327,9 +391,7 @@ function getMultiAssetBountyFiatValue(item) {
   }
 
   if (assetType === "native" || assetType === "crosschainNative") {
-    return amount
-      .times(price?.final ?? price?.current ?? 0)
-      .toFixed(2);
+    return amount.times(price?.final ?? price?.current ?? 0).toFixed(2);
   }
 
   return "0";
@@ -378,6 +440,7 @@ function useFormatIndexes({
   tipList,
   bountyList,
   multiAssetBountyList,
+  multiAssetChildBountyList,
 }) {
   return useMemo(() => {
     return {
@@ -387,6 +450,9 @@ function useFormatIndexes({
       tipIndexes: tipList?.map((tip) => tip.hash),
       bountyIndexes: bountyList?.map((bounty) => bounty.id),
       multiAssetBountyIndexes: multiAssetBountyList?.map((bounty) => bounty.id),
+      multiAssetChildBountyIndexes: multiAssetChildBountyList?.map(
+        (childBounty) => childBounty.id,
+      ),
     };
   }, [
     proposalList,
@@ -395,6 +461,7 @@ function useFormatIndexes({
     tipList,
     bountyList,
     multiAssetBountyList,
+    multiAssetChildBountyList,
   ]);
 }
 
