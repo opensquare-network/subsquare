@@ -58,6 +58,12 @@ const MultiAssetBountyTitleColumnsDef = createTitleColumnDef({
   getTitle: (bounty) => bounty.title,
 });
 
+const MultiAssetChildBountyTitleColumnsDef = createTitleColumnDef({
+  getDetailLink: (childBounty) => childBounty.detailLink,
+  getIndex: (childBounty) => childBounty.index,
+  getTitle: (childBounty) => childBounty.title,
+});
+
 const TipTitleColumnsDef = {
   name: "Title",
   style: { textAlign: "left" },
@@ -102,6 +108,11 @@ export const bountyColumnsDef = [BountyTitleColumnsDef, RequestColumnsDef];
 export const multiAssetBountyColumnsDef = [
   MultiAssetBountyTitleColumnsDef,
   MultiAssetBountyRequestColumnsDef,
+];
+
+export const multiAssetChildBountyColumnsDef = [
+  MultiAssetChildBountyTitleColumnsDef,
+  RequestColumnsDef,
 ];
 
 export const tipColumnsDef = [TipTitleColumnsDef, RequestColumnsDef];
