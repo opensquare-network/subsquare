@@ -373,6 +373,20 @@ export function formatPayoutAmount(amount, decimals = null) {
   }
 }
 
+// `LocalPay` transfers from the treasury account, so a payout above the balance
+// fails with `PayoutError` and only costs fees.
+export function isPayoutBalanceInsufficient(treasuryBalance, amount) {
+  if (isNil(treasuryBalance) || isNil(amount)) {
+    return false;
+  }
+
+  try {
+    return BigNumber(treasuryBalance).lt(amount);
+  } catch {
+    return false;
+  }
+}
+
 export function getPayoutSpendTitle(post, index) {
   const title = post?.title?.trim?.();
   return title || `Treasury spend ${index}`;

@@ -25,7 +25,9 @@ function useSpendPayoutAction(index) {
   const latestHeight = useAhmLatestHeight();
 
   const action = useMemo(() => {
-    if (!onchainSpend || loading || order.orderLoading) {
+    // Without the payout order a spend looks like an orphan, so do not offer
+    // any call until it has been read.
+    if (!onchainSpend || loading || order.orderLoading || order.orderError) {
       return null;
     }
 
@@ -45,6 +47,7 @@ function useSpendPayoutAction(index) {
     loading,
     latestHeight,
     order.orderLoading,
+    order.orderError,
     order.leaseExpireAt,
     order.firstQueuedOrderKey,
     order.isHead,
@@ -80,6 +83,10 @@ function getHint({
 
   if (!action) {
     return "Can not find on chain info.";
+  }
+
+  if (action.kind === "checkStatus") {
+    return "A payout was submitted. Checking its status finalizes it: the spend is removed on success, or marked failed so it can be retried.";
   }
 
   if (action.kind === "queued") {
@@ -158,7 +165,10 @@ export default function TreasurySpendPay() {
   const state = usePostState();
   const payout = useSpendPayoutAction(index);
 
-  if (["Paid", "Processed"].includes(state)) {
+  // The indexer marks a spend `Paid` as soon as the payout is submitted, while
+  // on chain it is still `Attempted` (needs `check_status`) or `Failed` (can be
+  // retried). Only `Processed` means it is gone from chain storage.
+  if (state === "Processed" || (state === "Paid" && !payout.action?.call)) {
     return null;
   }
 

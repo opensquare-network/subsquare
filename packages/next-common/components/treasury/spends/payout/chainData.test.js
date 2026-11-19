@@ -14,6 +14,7 @@ import {
   getPayoutActionLabel,
   getPayoutSpendStatus,
   getPayoutSpendTitle,
+  isPayoutBalanceInsufficient,
 } from "./chainData";
 
 const HERE = { parents: 0, interior: { type: "Here" } };
@@ -277,6 +278,19 @@ describe("formatPayoutAmount", () => {
     expect(formatPayoutAmount(null, 6)).toBeNull();
     expect(formatPayoutAmount(1000n)).toBeNull();
     expect(formatPayoutAmount(1000n, null)).toBeNull();
+  });
+});
+
+describe("isPayoutBalanceInsufficient", () => {
+  it("compares formatted balances and amounts", () => {
+    expect(isPayoutBalanceInsufficient("2538420", "20895")).toBe(false);
+    expect(isPayoutBalanceInsufficient("1000", "20895")).toBe(true);
+    expect(isPayoutBalanceInsufficient("20895", "20895")).toBe(false);
+  });
+
+  it("does not block when a value is unknown", () => {
+    expect(isPayoutBalanceInsufficient(null, "20895")).toBe(false);
+    expect(isPayoutBalanceInsufficient("1000", null)).toBe(false);
   });
 });
 

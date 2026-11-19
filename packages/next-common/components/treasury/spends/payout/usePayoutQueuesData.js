@@ -148,6 +148,11 @@ export default function usePayoutQueuesData(latestHeight) {
 
     setNextPayoutEntries(null);
     setPayoutQueueEntries(null);
+    // Spend data, balances and metadata are keyed by index/asset kind, so drop
+    // the previous chain's values when the API changes.
+    setSpends({});
+    setBalances({});
+    setAssetMetas({});
     setQueueError(false);
 
     const subscriptions = [

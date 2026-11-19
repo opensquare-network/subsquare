@@ -22,6 +22,7 @@ import {
   getNextPayoutAction,
   getNextPayoutCountdown,
   getPayoutAction,
+  isPayoutBalanceInsufficient,
 } from "./chainData";
 import { usePayoutQueueIsDemo } from "./sourceContext";
 
@@ -65,7 +66,7 @@ function PayoutStatusTag({ status }) {
   );
 }
 
-function PayoutActionButton({ spend, symbol, action }) {
+function PayoutActionButton({ spend, symbol, action, blocked, blockedHint }) {
   // Freeze the spend and action the user confirmed: the head can change while
   // the popup is open, and the submitted call must stay the one that was shown.
   const [opened, setOpened] = useState(null);
@@ -76,12 +77,15 @@ function PayoutActionButton({ spend, symbol, action }) {
     return null;
   }
 
-  if (isDemo) {
+  const disabledHint = isDemo
+    ? "Demo data: transactions are disabled for these sample spends."
+    : blocked
+    ? blockedHint
+    : null;
+
+  if (disabledHint) {
     return (
-      <Tooltip
-        className="flex items-center"
-        content="Demo data: transactions are disabled for these sample spends."
-      >
+      <Tooltip className="flex items-center" content={disabledHint}>
         <PrimaryButton type="button" size="small" disabled>
           {action.label}
         </PrimaryButton>
@@ -123,7 +127,14 @@ function PayoutActionButton({ spend, symbol, action }) {
   );
 }
 
-function NextPayoutBox({ spend, symbol, action, countdown, countdownText }) {
+function NextPayoutBox({
+  spend,
+  symbol,
+  action,
+  blocked,
+  countdown,
+  countdownText,
+}) {
   return (
     <div role="listitem" className="py-4">
       <div className="flex flex-col gap-3 rounded-xl border border-theme500 bg-theme100 p-4">
@@ -152,7 +163,13 @@ function NextPayoutBox({ spend, symbol, action, countdown, countdownText }) {
                 {countdownText}
               </span>
             )}
-            <PayoutActionButton spend={spend} symbol={symbol} action={action} />
+            <PayoutActionButton
+              spend={spend}
+              symbol={symbol}
+              action={action}
+              blocked={blocked}
+              blockedHint="The treasury balance is lower than this payout, so the call would fail. Top up the treasury first."
+            />
           </div>
         </div>
 
@@ -187,7 +204,13 @@ function NextPayoutBox({ spend, symbol, action, countdown, countdownText }) {
   );
 }
 
-function NextPayoutRow({ spend, symbol, firstQueuedOrderKey, latestHeight }) {
+function NextPayoutRow({
+  spend,
+  symbol,
+  firstQueuedOrderKey,
+  latestHeight,
+  treasuryBalance,
+}) {
   const { blockTime } = useChainSettings();
 
   const action = getNextPayoutAction({
@@ -208,8 +231,21 @@ function NextPayoutRow({ spend, symbol, firstQueuedOrderKey, latestHeight }) {
     blockTime,
   });
 
+  // A payout above the treasury balance reverts with `PayoutError`; rotating or
+  // checking the status does not need funds and stays available.
+  const insufficientBalance =
+    action?.kind === "payout" &&
+    isPayoutBalanceInsufficient(treasuryBalance, spend.amount);
+
   if (!countdown) {
-    return <NextPayoutBox spend={spend} symbol={symbol} action={action} />;
+    return (
+      <NextPayoutBox
+        spend={spend}
+        symbol={symbol}
+        action={action}
+        blocked={insufficientBalance}
+      />
+    );
   }
 
   const isMature = countdown.mode !== "maturity";
@@ -230,6 +266,7 @@ function NextPayoutRow({ spend, symbol, firstQueuedOrderKey, latestHeight }) {
       spend={spend}
       symbol={symbol}
       action={action}
+      blocked={insufficientBalance}
       countdown={
         spend.expired || leaseExpired
           ? null
@@ -279,7 +316,7 @@ const waitingColumns = [
   {
     name: "Maturity",
     tooltip:
-      "Block at which the spend enters the payout order: its `valid_from`, or the block it was rotated to the back. Mature only means it may be paid once it becomes the next payout; spends are still paid one at a time in queue order.",
+      "Block at which the spend becomes mature: its `valid_from` (or the block it was rotated back to the queue). Mature only means the waiting period is over; the spend still has to become the next payout, and spends are paid one at a time in queue order.",
     style: { textAlign: "right", width: "120px", minWidth: "120px" },
   },
   {
@@ -371,6 +408,7 @@ function WaitingQueue({ queue, latestHeight }) {
             symbol={queue.symbol}
             firstQueuedOrderKey={queue.queue[0]?.orderKey}
             latestHeight={latestHeight}
+            treasuryBalance={queue.treasuryBalance}
           />
         ) : (
           <Item key={idx} row={rowList[idx]} />
