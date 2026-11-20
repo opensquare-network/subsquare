@@ -14,6 +14,8 @@ import { usePayoutQueueIsDemo } from "next-common/components/treasury/spends/pay
 function Content({
   call = "payout",
   title = "Payout",
+  disabled = false,
+  tooltip,
   onSubmitted = noop,
   onInBlock = noop,
   onTxError = noop,
@@ -44,6 +46,8 @@ function Content({
       </AdvanceSettings>
       <TxSubmissionButton
         title={title}
+        disabled={disabled}
+        tooltip={tooltip}
         getTxFunc={getTxFunc}
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
@@ -58,6 +62,8 @@ function Content({
 export default function Popup({
   call = "payout",
   title = "Payout",
+  disabled = false,
+  tooltip,
   onSubmitted,
   onInBlock,
   onTxError,
@@ -70,6 +76,8 @@ export default function Popup({
       <Content
         call={call}
         title={title}
+        disabled={disabled}
+        tooltip={tooltip}
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
         onTxError={onTxError}

@@ -131,6 +131,7 @@ function NextPayoutBox({
     isHead: true,
     inOrder: true,
     validFrom: spend.validFrom,
+    spendExpireAt: spend.spendExpireAt,
     latestHeight,
     blockTime,
   });
@@ -394,6 +395,7 @@ function WaitingQueue({ queue, latestHeight }) {
               isHead: false,
               inOrder: true,
               validFrom: spend.validFrom,
+              spendExpireAt: spend.spendExpireAt,
               latestHeight,
               blockTime,
             })}

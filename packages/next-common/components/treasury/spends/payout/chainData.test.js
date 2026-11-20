@@ -321,6 +321,12 @@ describe("isPayoutBalanceInsufficient", () => {
     expect(isPayoutBalanceInsufficient(null, "20895")).toBe(false);
     expect(isPayoutBalanceInsufficient("1000", null)).toBe(false);
   });
+
+  it("compares the raw on-chain values of the detail page", () => {
+    expect(isPayoutBalanceInsufficient(20895000000n, 20895000000n)).toBe(false);
+    expect(isPayoutBalanceInsufficient(100n, 20895000000n)).toBe(true);
+    expect(isPayoutBalanceInsufficient(0n, 1n)).toBe(true);
+  });
 });
 
 describe("getPayoutSpendTitle", () => {
@@ -455,7 +461,7 @@ describe("getNextPayoutAction", () => {
         status: spendStatus("Pending"),
         validFrom: 800,
         expireAt: 999,
-        spendExpireAt: 1000,
+        spendExpireAt: 999,
         firstQueuedOrderKey: 950,
         latestHeight,
       }),
@@ -511,12 +517,78 @@ describe("getPayoutAction", () => {
       getPayoutAction({
         status: spendStatus("Pending"),
         validFrom: 900,
-        spendExpireAt: 1000,
+        spendExpireAt: 999,
         latestHeight,
         isHead: false,
         inOrder: true,
       }),
     ).toEqual({ kind: "expire", label: "Check Status", call: "checkStatus" });
+  });
+
+  it("does not settle a spend in the block of its own expire_at", () => {
+    // `payout` already requires `expire_at > now` and `check_status` only
+    // removes the spend once `now > expire_at`, so nothing can be done yet.
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        spendExpireAt: 1000,
+        latestHeight,
+        isHead: true,
+        inOrder: true,
+      }),
+    ).toEqual({ kind: "wait", label: "Payout", call: null });
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        spendExpireAt: 1000,
+        latestHeight,
+        isHead: false,
+        inOrder: true,
+      }),
+    ).toEqual({ kind: "queued", label: "Waiting", call: null });
+  });
+
+  it("still rotates the head in the block of its own expire_at", () => {
+    // Rotation does not need the spend to expire first, it only needs the next
+    // queued spend to be mature.
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        expireAt: 999,
+        spendExpireAt: 1000,
+        firstQueuedOrderKey: 950,
+        latestHeight,
+      }),
+    ).toEqual({ kind: "rotate", label: "Rotate", call: "checkStatus" });
+  });
+
+  it("re-admits a spend missing from the order before it matures", () => {
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 1200,
+        spendExpireAt: 2000,
+        latestHeight,
+        isHead: false,
+        inOrder: false,
+      }),
+    ).toEqual({ kind: "requeue", label: "Check Status", call: "checkStatus" });
+  });
+
+  it("does not re-admit a spend in the block of its own expire_at", () => {
+    expect(
+      getPayoutAction({
+        status: spendStatus("Pending"),
+        validFrom: 900,
+        spendExpireAt: 1000,
+        latestHeight,
+        isHead: false,
+        inOrder: false,
+      }),
+    ).toEqual({ kind: "wait", label: "Payout", call: null });
   });
 
   it("keeps the legacy payout path when the runtime has no payout order", () => {
@@ -636,6 +708,18 @@ describe("getPayoutActionHint", () => {
     expect(
       getPayoutActionHint({ action: queuedAction, loading: true }),
     ).toBeNull();
+  });
+
+  it("explains the expire_at block itself", () => {
+    expect(
+      getPayoutActionHint({
+        action: waitAction,
+        spendExpireAt: 100,
+        latestHeight: 100,
+      }),
+    ).toBe(
+      "This is the last block of its payout window. Checking its status settles the spend from the next block.",
+    );
   });
 });
 

@@ -94,15 +94,24 @@ export function getPayoutAction({
 
   const hasHeight = !isNil(latestHeight);
   const now = Number(latestHeight);
+  const spendExpireBlock = isNil(spendExpireAt) ? null : Number(spendExpireAt);
 
-  // At or past `expire_at` a payout is rejected (`expire_at > now` is required);
-  // `check_status` removes the spend once the block is past it.
-  if (hasHeight && !isNil(spendExpireAt) && Number(spendExpireAt) <= now) {
+  // `payout` requires `expire_at > now`, while `check_status` only removes the
+  // spend once the block is past it: in the `expire_at` block itself neither
+  // settles the spend.
+  if (hasHeight && !isNil(spendExpireBlock) && spendExpireBlock < now) {
     return EXPIRED_ACTION;
   }
+  const expiryBlock = hasHeight && spendExpireBlock === now;
 
   if (!hasHeight) {
     return waitAction(ACTION_LABELS[normalized]);
+  }
+
+  // A spend missing from the payout order can never be paid, whatever its
+  // maturity, and `check_status` re-admits it at `max(now, valid_from)`.
+  if (orderEnabled && !inOrder) {
+    return expiryBlock ? waitAction(ACTION_LABELS[normalized]) : REQUEUE_ACTION;
   }
 
   if (!isNil(validFrom) && Number(validFrom) > now) {
@@ -110,15 +119,9 @@ export function getPayoutAction({
   }
 
   if (!orderEnabled) {
-    return {
-      kind: "payout",
-      label: ACTION_LABELS[normalized],
-      call: "payout",
-    };
-  }
-
-  if (!inOrder) {
-    return REQUEUE_ACTION;
+    return expiryBlock
+      ? waitAction(ACTION_LABELS[normalized])
+      : { kind: "payout", label: ACTION_LABELS[normalized], call: "payout" };
   }
 
   if (!isHead) {
@@ -137,6 +140,12 @@ export function getPayoutAction({
 
   if (leaseExpired && nextSpendMature) {
     return ROTATE_ACTION;
+  }
+
+  // A rotation is the only call that still does something in the `expire_at`
+  // block, anything else has to wait for the next one.
+  if (expiryBlock) {
+    return waitAction(ACTION_LABELS[normalized]);
   }
 
   return {
@@ -178,6 +187,7 @@ export function getPayoutActionHint({
   inOrder = true,
   queueAhead = 0,
   validFrom,
+  spendExpireAt,
   latestHeight,
   blockTime,
 }) {
@@ -227,6 +237,15 @@ export function getPayoutActionHint({
 
   // `wait`: the head or a queued spend is not payable yet
   if (action.kind === "wait") {
+    // The `expire_at` block itself: `payout` is already rejected and
+    // `check_status` can not settle the spend before the next block.
+    if (
+      !isNil(spendExpireAt) &&
+      !isNil(latestHeight) &&
+      Number(spendExpireAt) === Number(latestHeight)
+    ) {
+      return "This is the last block of its payout window. Checking its status settles the spend from the next block.";
+    }
     if (eta) {
       return isQueued
         ? [ahead, `Matures at block ${eta}.`].filter(Boolean).join(" ")

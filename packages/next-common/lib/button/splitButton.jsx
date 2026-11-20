@@ -43,20 +43,38 @@ export default function SplitButton({
       disabled={disabled}
       {...props}
       onClick={onClick}
-      className={cn(props?.className, fullWidth && "w-full")}
+      className={cn(
+        props?.className,
+        fullWidth && "w-full",
+        // A disabled button swallows pointer events, which would hide the
+        // tooltip explaining why it cannot be clicked
+        mainTooltip && disabled && "pointer-events-none",
+      )}
     >
       {children}
     </ButtonComponent>
   );
 
+  // The tooltip explains a disabled action, so it has to survive the fallbacks
+  // to a single button as well.
+  const withMainTooltip = (button, className) =>
+    mainTooltip ? (
+      <Tooltip className={className} content={mainTooltip}>
+        {button}
+      </Tooltip>
+    ) : (
+      button
+    );
+  const plainButtonClassName = cn(fullWidth && "w-full");
+
   if (!hasDropdown && !hasRightAction) {
-    return plainButton;
+    return withMainTooltip(plainButton, plainButtonClassName);
   }
 
   // The split layout cannot show a loading spinner on the main part only, so
   // fall back to the plain button while the action is being resolved.
   if (loading) {
-    return plainButton;
+    return withMainTooltip(plainButton, plainButtonClassName);
   }
 
   const mainButton = (
