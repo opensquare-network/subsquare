@@ -14,7 +14,7 @@ import {
   getEntryAssetKind,
   getPapiAssetKindInfo,
 } from "./chainData";
-import useFetchSpendPosts from "./spendPostsContext";
+import { useFetchSpendPosts } from "./spendPostsContext";
 
 function collectSpendIndexes(nextPayoutEntries, payoutQueueEntries) {
   const indexes = new Set();

@@ -22,20 +22,11 @@ import {
   getNextPayoutAction,
   getNextPayoutCountdown,
   getPayoutAction,
+  getPayoutActionHint,
   isPayoutBalanceInsufficient,
 } from "./chainData";
-import { usePayoutQueueIsDemo } from "./sourceContext";
 
 const PayoutActionPopup = dynamicPopup(() => import("./actionPopup"));
-
-const ACTION_BUTTON_HINTS = {
-  rotate:
-    "The payout order of this spend expired and the next spend is already mature. Rotate to move it to the back of the queue.",
-  expire:
-    "This spend is past its payout window and can no longer be paid. `check_status` removes it from the payout order and promotes the next spend.",
-  requeue:
-    "This spend is missing from the payout order. `check_status` adds it back to the queue.",
-};
 
 const statusConfig = {
   Pending: {
@@ -66,26 +57,27 @@ function PayoutStatusTag({ status }) {
   );
 }
 
-function PayoutActionButton({ spend, symbol, action, blocked, blockedHint }) {
+function PayoutActionButton({
+  spend,
+  symbol,
+  action,
+  hint,
+  blocked,
+  blockedHint,
+}) {
   // Freeze the spend and action the user confirmed: the head can change while
   // the popup is open, and the submitted call must stay the one that was shown.
   const [opened, setOpened] = useState(null);
-  const isDemo = usePayoutQueueIsDemo();
 
   // No action while the head is not payable yet, the countdown shows the wait
   if (!action?.call) {
     return null;
   }
 
-  const disabledHint = isDemo
-    ? "Demo data: transactions are disabled for these sample spends."
-    : blocked
-    ? blockedHint
-    : null;
-
-  if (disabledHint) {
+  // A payout above the treasury balance would revert, so it cannot be opened.
+  if (blocked) {
     return (
-      <Tooltip className="flex items-center" content={disabledHint}>
+      <Tooltip className="flex items-center" content={blockedHint}>
         <PrimaryButton type="button" size="small" disabled>
           {action.label}
         </PrimaryButton>
@@ -105,11 +97,8 @@ function PayoutActionButton({ spend, symbol, action, blocked, blockedHint }) {
 
   return (
     <>
-      {ACTION_BUTTON_HINTS[action.kind] ? (
-        <Tooltip
-          className="flex items-center"
-          content={ACTION_BUTTON_HINTS[action.kind]}
-        >
+      {hint ? (
+        <Tooltip className="flex items-center" content={hint}>
           {button}
         </Tooltip>
       ) : (
@@ -134,7 +123,18 @@ function NextPayoutBox({
   blocked,
   countdown,
   countdownText,
+  latestHeight,
+  blockTime,
 }) {
+  const hint = getPayoutActionHint({
+    action,
+    isHead: true,
+    inOrder: true,
+    validFrom: spend.validFrom,
+    latestHeight,
+    blockTime,
+  });
+
   return (
     <div role="listitem" className="py-4">
       <div className="flex flex-col gap-3 rounded-xl border border-theme500 bg-theme100 p-4">
@@ -167,6 +167,7 @@ function NextPayoutBox({
               spend={spend}
               symbol={symbol}
               action={action}
+              hint={hint}
               blocked={blocked}
               blockedHint="The treasury balance is lower than this payout, so the call would fail. Top up the treasury first."
             />
@@ -244,6 +245,8 @@ function NextPayoutRow({
         symbol={symbol}
         action={action}
         blocked={insufficientBalance}
+        latestHeight={latestHeight}
+        blockTime={blockTime}
       />
     );
   }
@@ -273,6 +276,8 @@ function NextPayoutRow({
           : { elapsed: total - remaining, total }
       }
       countdownText={countdownText}
+      latestHeight={latestHeight}
+      blockTime={blockTime}
     />
   );
 }
@@ -282,7 +287,7 @@ function NextPayoutRow({
 function SpendMaturity({ spend, latestHeight, blockTime }) {
   if (spend.expired) {
     return (
-      <Tooltip content="Past its payout window, so it can no longer be paid. Check its status to remove it and promote the next spend.">
+      <Tooltip content="Payout window closed; check status to remove it.">
         <span className="text-textTertiary">Expired</span>
       </Tooltip>
     );
@@ -295,11 +300,15 @@ function SpendMaturity({ spend, latestHeight, blockTime }) {
 
   const remainingBlocks = Number(orderKey) - Number(latestHeight);
   if (remainingBlocks <= 0) {
-    return <span className="text-textSecondary">Mature</span>;
+    return (
+      <Tooltip content="Payable once it reaches the queue head.">
+        <span className="text-textSecondary">Mature</span>
+      </Tooltip>
+    );
   }
 
   return (
-    <Tooltip content={`Mature at block #${Number(orderKey).toLocaleString()}`}>
+    <Tooltip content={`Mature at #${Number(orderKey).toLocaleString()}`}>
       <span className="text-textTertiary">
         {formatTimeDuration(remainingBlocks * (Number(blockTime) || 0))}
       </span>
@@ -315,8 +324,6 @@ const waitingColumns = [
   { name: "Title", className: "min-w-0 pr-4" },
   {
     name: "Maturity",
-    tooltip:
-      "Block at which the spend becomes mature: its `valid_from` (or the block it was rotated back to the queue). Mature only means the waiting period is over; the spend still has to become the next payout, and spends are paid one at a time in queue order.",
     style: { textAlign: "right", width: "120px", minWidth: "120px" },
   },
   {
@@ -382,6 +389,14 @@ function WaitingQueue({ queue, latestHeight }) {
             spend={spend}
             symbol={queue.symbol}
             action={action}
+            hint={getPayoutActionHint({
+              action,
+              isHead: false,
+              inOrder: true,
+              validFrom: spend.validFrom,
+              latestHeight,
+              blockTime,
+            })}
           />
         ) : (
           <span className="text-textTertiary">-</span>

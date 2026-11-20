@@ -12,8 +12,13 @@ import {
   getPapiAssetKindInfo,
   getPayoutAction,
 } from "./chainData";
-import { createDemoFetchSpendPosts, createDemoPapiApi } from "./demoApi";
 import {
+  createDemoFetchSpendPosts,
+  createDemoFetchSpendsList,
+  createDemoPapiApi,
+} from "./demoApi";
+import {
+  getDemoSpendPost,
   DEMO_BALANCES,
   DEMO_BLOCK_INTERVAL_MS,
   DEMO_EXPIRED_SPEND_EXPIRE_AT,
@@ -51,7 +56,7 @@ describe("createDemoPapiApi", () => {
       api.query.Treasury.NextPayout.watchEntries(),
     );
 
-    expect(entries).toHaveLength(5);
+    expect(entries).toHaveLength(7);
     expect(deltas).toEqual({ deleted: [], upserted: entries });
     expect(block).toEqual({
       hash: `0x${DEMO_HEIGHT.toString(16).padStart(64, "0")}`,
@@ -75,6 +80,29 @@ describe("createDemoPapiApi", () => {
       DEMO_HEIGHT - 25080,
       DEMO_HEIGHT + 3720,
     ]);
+  });
+
+  it("reads the payout order of one asset kind through watchValue", () => {
+    const api = createDemoPapiApi({ emitIntervalMs: 0 });
+    const { entries } = collectFirst(
+      api.query.Treasury.NextPayout.watchEntries(),
+    );
+    const usdtAssetKind = getEntryAssetKind(entries[0]);
+
+    const head = collectFirst(
+      api.query.Treasury.NextPayout.watchValue(usdtAssetKind),
+    );
+    expect(head.value).toEqual(entries[0].value);
+
+    const queue = collectFirst(
+      api.query.Treasury.PayoutQueue.watchValue(usdtAssetKind),
+    );
+    expect(queue.value.length).toBeGreaterThan(0);
+
+    const missing = collectFirst(
+      api.query.Treasury.NextPayout.watchValue({ type: "V5", value: {} }),
+    );
+    expect(missing.value).toBeUndefined();
   });
 
   it("emits null deltas on later emissions and stops on unsubscribe", () => {
@@ -261,9 +289,11 @@ describe("demo mock data through the payout queue pipeline", () => {
     expect(queues.map((queue) => queue.id)).toEqual([
       "USDT-V5",
       "USDC-V5",
-      "DOT",
+      "DOT-V5",
       "USDT-V4",
       "USDC-V4",
+      "DOT-V4",
+      "USDC-V3",
     ]);
 
     const usdt = queues.find((queue) => queue.id === "USDT-V5");
@@ -351,7 +381,7 @@ describe("demo mock data through the payout queue pipeline", () => {
     expect(usdc.treasuryBalance).toBe("1204750");
     expect(usdc.toBePaid).toBe("567477");
 
-    const dot = queues.find((queue) => queue.id === "DOT");
+    const dot = queues.find((queue) => queue.id === "DOT-V5");
     expect(dot.assetKind).toBe("Native");
     expect(dot.treasuryBalance).toBe("1876300");
     expect(dot.nextPayout.status).toBe("Attempted");
@@ -375,7 +405,8 @@ describe("demo mock data through the payout queue pipeline", () => {
       });
 
     // Every head action state has a sample as well: pay, retry, check status,
-    // rotate an expired order and wait for maturity.
+    // rotate an expired order, wait for maturity, a lapsed order that can still
+    // be paid because nothing behind it is mature, and a closed payout window.
     expect(headAction(usdt)).toEqual({
       kind: "payout",
       label: "Payout",
@@ -407,6 +438,29 @@ describe("demo mock data through the payout queue pipeline", () => {
       label: "Payout",
       call: null,
     });
+
+    // The order lease lapsed but the queued successor is not mature yet, so the
+    // head stays payable: `check_status` would have nothing to promote.
+    const dotV4 = queues.find((queue) => queue.id === "DOT-V4");
+    expect(dotV4.nextPayout).toMatchObject({ index: 304, status: "Pending" });
+    expect(dotV4.nextPayout.expireAt).toBeLessThan(DEMO_HEIGHT);
+    expect(dotV4.queue[0].orderKey).toBeGreaterThan(DEMO_HEIGHT);
+    expect(headAction(dotV4)).toEqual({
+      kind: "payout",
+      label: "Payout",
+      call: "payout",
+    });
+
+    // The head is past its own payout window: it can never be paid again, only
+    // `check_status` settles it.
+    const usdcV3 = queues.find((queue) => queue.id === "USDC-V3");
+    expect(usdcV3.nextPayout).toMatchObject({ index: 306, expired: true });
+    expect(usdcV3.toBePaid).toBe("1800");
+    expect(headAction(usdcV3)).toEqual({
+      kind: "expire",
+      label: "Check Status",
+      call: "checkStatus",
+    });
   });
 
   it("models a payable Attempted head with the LocalPay payment id", () => {
@@ -430,5 +484,53 @@ describe("demo mock data through the payout queue pipeline", () => {
       type: "AccountId32",
       value: { network: undefined, id: `0x${"00".repeat(32)}` },
     });
+  });
+});
+
+describe("demo spend posts", () => {
+  it("builds a spend detail post the detail page can render", () => {
+    const post = getDemoSpendPost("270");
+
+    expect(post.index).toBe(270);
+    expect(post.title).toBeTruthy();
+    expect(post.onchainData).toMatchObject({
+      index: 270,
+      state: { state: "Approved" },
+      meta: { validFrom: expect.any(Number), expireAt: expect.any(Number) },
+    });
+    expect(post.onchainData.extracted.assetKind.symbol).toBe("USDT");
+    expect(post.onchainData.extracted.beneficiary.chain).toBe("assethub");
+    expect(getDemoSpendPost("999999")).toBeNull();
+  });
+
+  it("marks a spend with a submitted payout as paid", () => {
+    // 237 is `Attempted` on chain, so `check_status` settles it
+    expect(getDemoSpendPost(237).onchainData.state.state).toBe("Paid");
+  });
+
+  it("serves a paginated spend list without a backend", async () => {
+    const fetchSpendsList = createDemoFetchSpendsList();
+
+    const first = await fetchSpendsList({ page: 1, pageSize: 5 });
+    expect(first.items).toHaveLength(5);
+    expect(first.total).toBeGreaterThan(5);
+    expect(first.page).toBe(1);
+    expect(first.pageSize).toBe(5);
+    // Newest first, like the backend list
+    expect(first.items[0].index).toBeGreaterThan(first.items[1].index);
+    // The list receives flattened chain fields, not `onchainData`
+    expect(typeof first.items[0].state).toBe("string");
+    expect(first.items[0].extracted.assetKind.symbol).toBeTruthy();
+    expect(first.items[0].indexer.blockHeight).toBeGreaterThanOrEqual(0);
+    expect(first.items[0].lastActivityAt).toBeTruthy();
+
+    const usdt = await fetchSpendsList({ pageSize: 100, symbol: "USDT" });
+    expect(usdt.items.length).toBeGreaterThan(0);
+    expect(
+      usdt.items.every((item) => item.extracted.assetKind.symbol === "USDT"),
+    ).toBe(true);
+
+    const byIds = await fetchSpendsList({ ids: "270,271" });
+    expect(byIds.items.map((item) => item.index).sort()).toEqual([270, 271]);
   });
 });

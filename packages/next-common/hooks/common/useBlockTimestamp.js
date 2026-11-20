@@ -1,3 +1,4 @@
+import { isNil } from "lodash-es";
 import { useSelector } from "react-redux";
 import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { useContextApi } from "next-common/context/api";
@@ -5,6 +6,10 @@ import { useEffect, useMemo, useState } from "react";
 import { getBlockTimeByHeight } from "next-common/utils/blockTime";
 import BigNumber from "bignumber.js";
 import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import {
+  demoBlockTimeAtHeight,
+  isPayoutQueueDemoEnabled,
+} from "next-common/utils/payoutQueueDemo";
 
 export default function useBlockTimestamp(height, specifiedApi = null) {
   const contextApi = useContextApi();
@@ -16,8 +21,19 @@ export default function useBlockTimestamp(height, specifiedApi = null) {
   const [isLoading, setIsLoading] = useState(false);
 
   const isBlockLoaded = chainHeight >= height;
+  // Demo chain data uses its own block time, the real chain times do not apply.
+  const demoTime =
+    isPayoutQueueDemoEnabled() && !isNil(height)
+      ? demoBlockTimeAtHeight(height)
+      : null;
 
   useEffect(() => {
+    if (demoTime) {
+      setTimestamp(demoTime);
+      setIsEstimated(false);
+      return;
+    }
+
     if (isBlockLoaded && api) {
       return;
     }
@@ -30,10 +46,10 @@ export default function useBlockTimestamp(height, specifiedApi = null) {
         .toNumber(),
     );
     setIsEstimated(true);
-  }, [api, height, chainHeight, isBlockLoaded, oneBlockTime]);
+  }, [api, height, chainHeight, isBlockLoaded, oneBlockTime, demoTime]);
 
   useEffect(() => {
-    if (!isBlockLoaded || !api) {
+    if (demoTime || !isBlockLoaded || !api) {
       return;
     }
 
@@ -41,7 +57,7 @@ export default function useBlockTimestamp(height, specifiedApi = null) {
     getBlockTimeByHeight(api, height)
       .then((v) => setTimestamp(v))
       .finally(() => setIsLoading(false));
-  }, [api, height, isBlockLoaded]);
+  }, [api, height, isBlockLoaded, demoTime]);
 
   return {
     timestamp,

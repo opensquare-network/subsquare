@@ -11,7 +11,9 @@ import {
   getNextPayoutCountdown,
   getPapiAssetKindInfo,
   getPayoutAction,
+  getPayoutActionHint,
   getPayoutActionLabel,
+  getPayoutQueueId,
   getPayoutSpendStatus,
   getPayoutSpendTitle,
   isPayoutBalanceInsufficient,
@@ -187,6 +189,33 @@ describe("getPapiAssetKindInfo", () => {
     expect(info.isLocal).toBe(false);
     expect(info.isPalletAsset).toBe(false);
     expect(info.symbol).toBe("#1984");
+  });
+});
+
+describe("getPayoutQueueId", () => {
+  const chain = { chainSymbol: "DOT", chainDecimals: 10 };
+
+  it("names the queue tab after the asset kind, matching the tab id", () => {
+    expect(getPayoutQueueId(dotAssetKind, chain)).toBe("DOT-V5");
+    expect(getPayoutQueueId(usdtAssetKind, chain)).toBe("USDT-V5");
+    expect(getPayoutQueueId(v4UsdcAssetKind, chain)).toBe("USDC-V4");
+  });
+
+  it("returns null when the asset kind has no symbol", () => {
+    expect(getPayoutQueueId(null, chain)).toBeNull();
+    // Reserved on another chain: the local symbol is unknown
+    expect(
+      getPayoutQueueId(
+        {
+          type: "V5",
+          value: {
+            location: { parents: 1, interior: { type: "Here" } },
+            asset_id: { parents: 1, interior: { type: "Here" } },
+          },
+        },
+        chain,
+      ),
+    ).toBeNull();
   });
 });
 
@@ -500,6 +529,113 @@ describe("getPayoutAction", () => {
         orderEnabled: false,
       }),
     ).toEqual({ kind: "payout", label: "Payout", call: "payout" });
+  });
+});
+
+describe("getPayoutActionHint", () => {
+  const queuedAction = { kind: "queued", label: "Waiting", call: null };
+  const waitAction = { kind: "wait", label: "Payout", call: null };
+
+  it("describes the queue position and maturity of a queued spend", () => {
+    expect(
+      getPayoutActionHint({
+        action: queuedAction,
+        isHead: false,
+        inOrder: true,
+        queueAhead: 2,
+        validFrom: 5,
+        latestHeight: 0,
+        blockTime: 6000,
+      }),
+    ).toBe(
+      "2 spend(s) ahead in the payout order. Matures at block #5 (about 30s).",
+    );
+  });
+
+  it("does not report maturity for a queued spend that is already mature", () => {
+    expect(
+      getPayoutActionHint({
+        action: queuedAction,
+        isHead: false,
+        inOrder: true,
+        queueAhead: 0,
+        validFrom: 90,
+        latestHeight: 100,
+        blockTime: 6000,
+      }),
+    ).toBe("Waiting in the payout order.");
+  });
+
+  it("reports when the next payout becomes payable", () => {
+    expect(
+      getPayoutActionHint({
+        action: waitAction,
+        isHead: true,
+        queueAhead: 0,
+        validFrom: 5,
+        latestHeight: 0,
+        blockTime: 6000,
+      }),
+    ).toBe("Payable from block #5 (about 30s).");
+    expect(
+      getPayoutActionHint({
+        action: waitAction,
+        validFrom: 5,
+        latestHeight: 0,
+      }),
+    ).toBe("Payable from block #5.");
+  });
+
+  it("keeps the queue context for a queued spend that is not mature yet", () => {
+    expect(
+      getPayoutActionHint({
+        action: waitAction,
+        isHead: false,
+        inOrder: true,
+        queueAhead: 1,
+        validFrom: 5,
+        latestHeight: 0,
+        blockTime: 6000,
+      }),
+    ).toBe(
+      "1 spend(s) ahead in the payout order. Matures at block #5 (about 30s).",
+    );
+  });
+
+  it("explains that a permissionless check_status settles a payout", () => {
+    expect(
+      getPayoutActionHint({
+        action: {
+          kind: "checkStatus",
+          label: "Check Status",
+          call: "checkStatus",
+        },
+      }),
+    ).toContain("Checking its status finalizes it");
+  });
+
+  it("does not add a hint to a payable next payout", () => {
+    expect(
+      getPayoutActionHint({
+        action: { kind: "payout", label: "Payout", call: "payout" },
+        isHead: true,
+        validFrom: 90,
+        latestHeight: 100,
+        blockTime: 6000,
+      }),
+    ).toBeNull();
+  });
+
+  it("waits for chain data instead of claiming the spend is payable", () => {
+    expect(getPayoutActionHint({ action: waitAction, latestHeight: 100 })).toBe(
+      "Waiting for the latest chain state.",
+    );
+    expect(getPayoutActionHint({ action: null })).toBe(
+      "Can not find on chain info.",
+    );
+    expect(
+      getPayoutActionHint({ action: queuedAction, loading: true }),
+    ).toBeNull();
   });
 });
 

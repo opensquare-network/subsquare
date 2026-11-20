@@ -9,6 +9,7 @@ import { useTreasuryPallet } from "next-common/context/treasury";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 import { getPayoutTxByCall } from "next-common/components/treasury/spends/payout/chainTx";
+import { usePayoutQueueIsDemo } from "next-common/components/treasury/spends/payout/sourceContext";
 
 function Content({
   call = "payout",
@@ -23,12 +24,17 @@ function Content({
   const api = useContextApi();
   const { index } = useOnchainData() || {};
   const treasuryPallet = useTreasuryPallet();
+  const isDemo = usePayoutQueueIsDemo();
 
   const getTxFunc = useCallback(() => {
+    // Demo spends are sample data, never build a real call for them
+    if (isDemo) {
+      return null;
+    }
     if (api && !isNil(index)) {
       return getPayoutTxByCall(api, treasuryPallet, call, index);
     }
-  }, [api, index, treasuryPallet, call]);
+  }, [api, index, treasuryPallet, call, isDemo]);
 
   return (
     <>

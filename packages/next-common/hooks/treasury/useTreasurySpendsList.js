@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
-import nextApi from "next-common/services/nextApi";
 import { defaultPageSize, EmptyList } from "next-common/utils/constants";
 import { upperFirst } from "lodash-es";
 import { usePendingSpendsFromContext } from "next-common/components/treasury/spends/pendingContext";
+import { useFetchSpendsList } from "next-common/components/treasury/spends/payout/spendPostsContext";
 import { useEffect, useState } from "react";
 
 export default function useTreasurySpendsList() {
   const router = useRouter();
+  const fetchSpendsList = useFetchSpendsList();
   const { claimable = [], loading: pendingSpendsLoading } =
     usePendingSpendsFromContext();
   const {
@@ -59,7 +60,7 @@ export default function useTreasurySpendsList() {
         params.ids = claimableIds;
       }
 
-      const { result } = await nextApi.fetch("treasury/spends", params);
+      const result = await fetchSpendsList(params);
       setSpends(result ?? EmptyList);
       setLoading(false);
     }
@@ -74,6 +75,7 @@ export default function useTreasurySpendsList() {
     validOnly,
     shouldWaitPendingSpends,
     claimableIds,
+    fetchSpendsList,
   ]);
 
   return {

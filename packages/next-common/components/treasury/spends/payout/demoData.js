@@ -2,6 +2,14 @@
 // decodes for the pallets in polkadot-sdk#11603, see chainData.js.
 // Block numbers are relative to DEMO_HEIGHT (6s block time).
 
+import { getAssetKindKey } from "./chainData";
+import {
+  DEMO_HEIGHT,
+  demoBlockTimeAtHeight,
+} from "next-common/utils/payoutQueueDemo";
+
+export { DEMO_HEIGHT };
+
 const HERE = { parents: 0, interior: { type: "Here", value: undefined } };
 const RELAY_NATIVE = {
   parents: 1,
@@ -48,6 +56,20 @@ const DOT_ASSET_KIND = {
   value: { location: HERE, asset_id: RELAY_NATIVE },
 };
 
+// The native asset encoded with XCM v4 keeps a payout order of its own. Its head
+// order lease is already lapsed while the next queued spend is not mature yet.
+const DOT_V4_ASSET_KIND = {
+  type: "V4",
+  value: { location: HERE, asset_id: RELAY_NATIVE },
+};
+
+// An older XCM v3 encoding of USDC. Its head is past its own payout window, so
+// it can no longer be paid and only `check_status` can clean it up.
+const USDC_V3_ASSET_KIND = {
+  type: "V3",
+  value: { location: HERE, asset_id: palletAssetLocation(1337) },
+};
+
 const BENEFICIARY = {
   type: "V5",
   value: {
@@ -65,7 +87,6 @@ const BENEFICIARY = {
   },
 };
 
-export const DEMO_HEIGHT = 21_000_000;
 export const DEMO_BLOCK_INTERVAL_MS = 1000;
 
 const MINUTE = 10;
@@ -158,6 +179,27 @@ export const DEMO_NEXT_PAYOUTS = [
       DEMO_HEIGHT + 3 * DAY + DEMO_ORDER_EXPIRATION_PERIOD,
     ],
   },
+  {
+    // The head's order lease lapsed while the next queued spend is not mature
+    // yet: the head can still be paid and `check_status` would have nothing to
+    // promote.
+    args: [DOT_V4_ASSET_KIND],
+    value: [
+      304,
+      DEMO_HEIGHT - 40000,
+      DEMO_HEIGHT - 40000 + DEMO_ORDER_EXPIRATION_PERIOD,
+    ],
+  },
+  {
+    // The head is past its own payout window (`SpendStatus.expire_at`), so it
+    // can never be paid again and only `check_status` can remove it.
+    args: [USDC_V3_ASSET_KIND],
+    value: [
+      306,
+      DEMO_HEIGHT - 31 * DAY,
+      DEMO_HEIGHT - 31 * DAY + DEMO_ORDER_EXPIRATION_PERIOD,
+    ],
+  },
 ];
 
 export const DEMO_PAYOUT_QUEUES = [
@@ -203,6 +245,15 @@ export const DEMO_PAYOUT_QUEUES = [
   {
     args: [USDC_V4_ASSET_KIND],
     value: [[303, DEMO_HEIGHT + 4 * DAY]],
+  },
+  {
+    args: [DOT_V4_ASSET_KIND],
+    // Not mature yet, so the expired head cannot be rotated
+    value: [[305, DEMO_HEIGHT + 3 * DAY]],
+  },
+  {
+    args: [USDC_V3_ASSET_KIND],
+    value: [[307, DEMO_HEIGHT - 10000]],
   },
 ];
 
@@ -358,6 +409,29 @@ export const DEMO_SPENDS = {
     amount: 3000000000n,
     validFrom: DEMO_HEIGHT + 4 * DAY,
   }),
+  304: demoTreasurySpend({
+    assetKind: DOT_V4_ASSET_KIND,
+    amount: 7000000000000n,
+    // Mature long ago: its head order lease already expired
+    validFrom: DEMO_HEIGHT - 40000,
+  }),
+  305: demoTreasurySpend({
+    assetKind: DOT_V4_ASSET_KIND,
+    amount: 9000000000000n,
+    // The next queued spend, not mature yet
+    validFrom: DEMO_HEIGHT + 3 * DAY,
+  }),
+  306: demoTreasurySpend({
+    assetKind: USDC_V3_ASSET_KIND,
+    amount: 2500000000n,
+    // Past `valid_from + PayoutPeriod`: the payout window is closed
+    validFrom: DEMO_HEIGHT - 31 * DAY,
+  }),
+  307: demoTreasurySpend({
+    assetKind: USDC_V3_ASSET_KIND,
+    amount: 1800000000n,
+    validFrom: DEMO_HEIGHT - 20 * DAY,
+  }),
 };
 
 export const DEMO_BALANCES = {
@@ -405,4 +479,201 @@ export const DEMO_POSTS = {
   301: { index: 301, title: OPEN_SQUARE },
   302: { index: 302, title: CHAINFLIP },
   303: { index: 303, title: CHAINFLIP },
+  304: { index: 304, title: "Polkadot Developer DAO - Q4 2026 operations" },
+  305: { index: 305, title: "Open-source Polkadot SDK tooling grant" },
+  306: { index: 306, title: "Polkadot community meetups - 2026 edition" },
+  307: { index: 307, title: "Substrate documentation translation program" },
 };
+
+// Post data for the spend list and the spend detail page, so the demo covers
+// the whole flow: list -> detail -> payout queue.
+const DEMO_PROPOSER = "15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5";
+const DEMO_BENEFICIARY_ADDRESS =
+  "16VcQSRcMFy6ZHVjBvosKmo7FKqTb8ZATChDYo8ibutzLnos";
+const DEMO_CHAIN_SYMBOL = "DOT";
+
+const DEMO_ASSET_INFO = {
+  [getAssetKindKey(USDT_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "assets",
+    symbol: "USDT",
+  },
+  [getAssetKindKey(USDC_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "assets",
+    symbol: "USDC",
+  },
+  [getAssetKindKey(USDT_V4_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "assets",
+    symbol: "USDT",
+  },
+  [getAssetKindKey(USDC_V4_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "assets",
+    symbol: "USDC",
+  },
+  [getAssetKindKey(DOT_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "native",
+    symbol: DEMO_CHAIN_SYMBOL,
+  },
+  [getAssetKindKey(DOT_V4_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "native",
+    symbol: DEMO_CHAIN_SYMBOL,
+  },
+  [getAssetKindKey(USDC_V3_ASSET_KIND)]: {
+    chain: "assethub",
+    type: "assets",
+    symbol: "USDC",
+  },
+};
+
+function demoTimeAtHeight(height) {
+  return new Date(demoBlockTimeAtHeight(height)).toISOString();
+}
+
+// The indexer marks a spend `Paid` as soon as a payout is submitted and
+// `Expired` once its payout window closed; the on-chain status is only settled
+// by `check_status`.
+function getDemoPostState(spend) {
+  if (spend.status?.type === "Attempted") {
+    return "Paid";
+  }
+
+  return Number(spend.expire_at) <= DEMO_HEIGHT ? "Expired" : "Approved";
+}
+
+function getDemoSpendMeta(index) {
+  const spend = DEMO_SPENDS[index];
+  const post = DEMO_POSTS[index];
+  if (!spend || !post) {
+    return null;
+  }
+
+  const assetKind = DEMO_ASSET_INFO[getAssetKindKey(spend.asset_kind)];
+  if (!assetKind) {
+    return null;
+  }
+
+  const validFrom = Number(spend.valid_from);
+  const expireAt = Number(spend.expire_at);
+  const proposalHeight = Math.max(validFrom - 2400, 0);
+  const createdAt = demoTimeAtHeight(proposalHeight);
+
+  return {
+    index: Number(index),
+    title: post.title,
+    state: getDemoPostState(spend),
+    validFrom,
+    expireAt,
+    createdAt,
+    indexer: { blockHeight: proposalHeight, blockTime: createdAt },
+    meta: { validFrom, expireAt },
+    extracted: {
+      amount: spend.amount.toString(),
+      assetKind,
+      beneficiary: {
+        chain: "assethub",
+        address: DEMO_BENEFICIARY_ADDRESS,
+      },
+    },
+  };
+}
+
+function getDemoSpendPostBase(meta) {
+  return {
+    _id: String(meta.index),
+    index: meta.index,
+    title: meta.title,
+    content: "",
+    proposer: DEMO_PROPOSER,
+    createdAt: meta.createdAt,
+    updatedAt: meta.createdAt,
+    lastActivityAt: meta.createdAt,
+    commentsCount: 0,
+  };
+}
+
+// Detail page payload: the backend returns the post with the chain spend as
+// `onchainData`
+export function getDemoSpendPost(index) {
+  const meta = getDemoSpendMeta(index);
+  if (!meta) {
+    return null;
+  }
+
+  return {
+    ...getDemoSpendPostBase(meta),
+    state: meta.state,
+    onchainData: {
+      index: meta.index,
+      state: { state: meta.state, indexer: meta.indexer },
+      proposer: DEMO_PROPOSER,
+      meta: meta.meta,
+      indexer: meta.indexer,
+      extracted: meta.extracted,
+      timeline: [],
+    },
+  };
+}
+
+// List page payload: the backend flattens the chain spend fields into the post
+export function getDemoSpendListItem(index) {
+  const meta = getDemoSpendMeta(index);
+  if (!meta) {
+    return null;
+  }
+
+  return {
+    ...getDemoSpendPostBase(meta),
+    state: meta.state,
+    indexer: meta.indexer,
+    meta: meta.meta,
+    extracted: meta.extracted,
+  };
+}
+
+export function getDemoSpendsList({
+  page = 1,
+  pageSize = 20,
+  status,
+  symbol,
+  ids,
+} = {}) {
+  let items = Object.keys(DEMO_SPENDS)
+    .map((index) => getDemoSpendListItem(index))
+    .filter(Boolean);
+
+  // The list is ordered newest first, like the backend does
+  items.sort((a, b) => b.index - a.index);
+
+  if (status) {
+    items = items.filter((item) => item.state === status);
+  }
+
+  if (symbol) {
+    items = items.filter((item) => item.extracted.assetKind.symbol === symbol);
+  }
+
+  if (ids) {
+    const selected = new Set(
+      String(ids)
+        .split(",")
+        .map((id) => Number(id.trim())),
+    );
+    items = items.filter((item) => selected.has(item.index));
+  }
+
+  const currentPage = Number(page) > 0 ? Number(page) : 1;
+  const size = Number(pageSize) > 0 ? Number(pageSize) : 20;
+  const start = (currentPage - 1) * size;
+
+  return {
+    items: items.slice(start, start + size),
+    page: currentPage,
+    pageSize: size,
+    total: items.length,
+  };
+}

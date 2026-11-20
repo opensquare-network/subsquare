@@ -54,10 +54,19 @@ function PayoutQueuesContent() {
     usePayoutQueuesData(latestHeight);
 
   const { queue = "" } = router.query;
+  // A spend links with its queue tab, e.g. `usdt-v5`. The tab keeps the symbol
+  // alone for assets that live under one encoding only, so the version is also
+  // matched on its own.
+  const queueParam = String(queue).toLowerCase();
   const activeQueue =
+    queues.find((item) => item.id.toLowerCase() === queueParam) ||
     queues.find(
-      (item) => item.id.toLowerCase() === String(queue).toLowerCase(),
-    ) || queues[0];
+      (item) =>
+        item.version &&
+        `${item.symbol}-${item.version}`.toLowerCase() === queueParam,
+    ) ||
+    queues.find((item) => item.symbol.toLowerCase() === queueParam) ||
+    queues[0];
 
   if (error) {
     return (

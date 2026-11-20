@@ -20,3 +20,8 @@ export async function fetchTreasurySpendPosts(indexes = []) {
 
   return results.flat().filter((item) => !isNil(item?.index));
 }
+
+export async function fetchTreasurySpendsList(params = {}) {
+  const { result } = await nextApi.fetch("treasury/spends", params);
+  return result ?? null;
+}

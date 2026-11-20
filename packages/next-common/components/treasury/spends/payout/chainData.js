@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { isNil } from "lodash-es";
 import { ASSET_HUB_GENERAL_INDEX_SYMBOL } from "next-common/asset";
 import { SYMBOL_DECIMALS } from "next-common/utils/consts/asset";
+import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 
 // pallet-assets instance id in the Asset Hub runtime
 const ASSET_HUB_PALLET_INSTANCE = 50;
@@ -147,6 +148,94 @@ export function getPayoutAction({
 
 export function getNextPayoutAction(args) {
   return getPayoutAction({ ...args, isHead: true, inOrder: true });
+}
+
+// "block #123 (about 2 hr)" for the block a spend becomes payable at
+function getPayoutEtaText(validFrom, latestHeight, blockTime) {
+  if (isNil(validFrom) || isNil(latestHeight)) {
+    return null;
+  }
+
+  const remainingBlocks = Number(validFrom) - Number(latestHeight);
+  if (remainingBlocks <= 0) {
+    return null;
+  }
+
+  const block = `#${Number(validFrom).toLocaleString()}`;
+  const blockMs = Number(blockTime) || 0;
+  const duration =
+    blockMs > 0 ? formatTimeDuration(remainingBlocks * blockMs) : null;
+  return duration ? `${block} (about ${duration})` : block;
+}
+
+// Explains an action to the user: why a payout is not payable yet (queue
+// position, maturity) and what a permissionless `check_status` settles.
+export function getPayoutActionHint({
+  action,
+  loading = false,
+  error = false,
+  isHead = true,
+  inOrder = true,
+  queueAhead = 0,
+  validFrom,
+  latestHeight,
+  blockTime,
+}) {
+  if (loading) {
+    return null;
+  }
+
+  if (error) {
+    return "Failed to read the payout order from the chain.";
+  }
+
+  if (!action) {
+    return "Can not find on chain info.";
+  }
+
+  if (action.kind === "checkStatus") {
+    return "A payout was submitted. Checking its status finalizes it: the spend is removed on success, or marked failed so it can be retried.";
+  }
+
+  if (action.kind === "expire") {
+    return "This spend is past its payout window and can no longer be paid. Checking its status settles it and promotes the next queued spend.";
+  }
+
+  if (action.kind === "rotate") {
+    return "Its payout order expired while another spend is already mature. Rotate it to let the next spend be paid.";
+  }
+
+  if (action.kind === "requeue") {
+    return "This spend is missing from the payout order. Checking its status adds it back to the queue.";
+  }
+
+  const eta = getPayoutEtaText(validFrom, latestHeight, blockTime);
+  const isQueued = !isHead && inOrder;
+  const ahead =
+    isQueued && queueAhead > 0
+      ? `${queueAhead} spend(s) ahead in the payout order.`
+      : null;
+
+  if (action.kind === "queued") {
+    return [
+      ahead ?? "Waiting in the payout order.",
+      eta ? `Matures at block ${eta}.` : null,
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
+
+  // `wait`: the head or a queued spend is not payable yet
+  if (action.kind === "wait") {
+    if (eta) {
+      return isQueued
+        ? [ahead, `Matures at block ${eta}.`].filter(Boolean).join(" ")
+        : `Payable from block ${eta}.`;
+    }
+    return "Waiting for the latest chain state.";
+  }
+
+  return null;
 }
 
 function getJunctions(interior) {
@@ -298,6 +387,24 @@ export function getPapiAssetKindInfo(
     label,
     version: getAssetKindVersion(assetKind),
   };
+}
+
+// Id of the queue tab a spend belongs to, e.g. "USDT-V5". The queue page keeps
+// the symbol alone for assets that exist under a single encoding, so it also
+// matches on symbol + version.
+export function getPayoutQueueId(
+  assetKind,
+  { chainSymbol, chainDecimals } = {},
+) {
+  const { symbol, version } = getPapiAssetKindInfo(assetKind, {
+    chainSymbol,
+    chainDecimals,
+  });
+  if (!symbol) {
+    return null;
+  }
+
+  return version ? `${symbol}-${version}` : symbol;
 }
 
 export function getAssetBalanceQuery(assetKind) {

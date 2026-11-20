@@ -2,7 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import { isNil } from "lodash-es";
 import { useContextPapi } from "next-common/context/papi";
 import { useTreasuryPapiPallet } from "next-common/context/treasury";
-import { getAssetKindKey } from "next-common/components/treasury/spends/payout/chainData";
+import { useChainSettings } from "next-common/context/chain";
+import {
+  getAssetKindKey,
+  getPayoutQueueId,
+} from "next-common/components/treasury/spends/payout/chainData";
 
 function toNumberOrUndefined(value) {
   return isNil(value) ? undefined : Number(value);
@@ -14,6 +18,7 @@ function toNumberOrUndefined(value) {
 export default function useSpendPayoutOrder(index, onchainSpend) {
   const { api, checkPallet } = useContextPapi();
   const treasuryPallet = useTreasuryPapiPallet();
+  const { symbol: chainSymbol, decimals: chainDecimals } = useChainSettings();
   const orderEnabled =
     !!api &&
     checkPallet(treasuryPallet, "NextPayout") &&
@@ -21,6 +26,9 @@ export default function useSpendPayoutOrder(index, onchainSpend) {
 
   const assetKind = onchainSpend?.asset_kind;
   const assetKindKey = isNil(assetKind) ? null : getAssetKindKey(assetKind);
+  const queueId = isNil(assetKind)
+    ? null
+    : getPayoutQueueId(assetKind, { chainSymbol, chainDecimals });
   // The decoded spend is a new object on every block; keep the subscription
   // keyed by the asset kind value instead of its object identity.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,6 +108,8 @@ export default function useSpendPayoutOrder(index, onchainSpend) {
     isHead,
     inQueue,
     inOrder,
+    // Tab id of the payout queue of the spend's asset kind, e.g. "USDT-V5"
+    queueId,
     // Spends paid before this one reaches the head
     queueAhead: inQueue
       ? queueIndex + (isNil(headIndex) || order.loading ? 0 : 1)

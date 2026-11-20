@@ -1,28 +1,35 @@
 import { useMemo, useState } from "react";
-import { isNil } from "lodash-es";
+import { useRouter } from "next/router";
+import { ArrowExternalLink } from "@osn/icons/subsquare";
 import { useOnchainData, usePostState } from "next-common/context/post";
-import PrimaryButton from "next-common/lib/button/primary";
 import dynamicPopup from "next-common/lib/dynamic/popup";
+import SplitButton from "next-common/lib/button/splitButton";
 import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasurySpend";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
-import Tooltip from "next-common/components/tooltip";
-import { getPayoutAction } from "next-common/components/treasury/spends/payout/chainData";
+import { useChainSettings } from "next-common/context/chain";
+import {
+  getPayoutAction,
+  getPayoutActionHint,
+  getPayoutActionLabel,
+} from "next-common/components/treasury/spends/payout/chainData";
+import useSpendLatestHeight from "next-common/hooks/treasury/spend/useSpendLatestHeight";
 import useSpendPayoutOrder from "./useSpendPayoutOrder";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
-const ACTION_TITLES = {
-  payout: "Payout",
-  checkStatus: "Check Status",
-  rotate: "Rotate Payout Order",
-  expire: "Check Status",
-  requeue: "Check Status",
-};
+// The button always names the payout action; why it is not clickable is
+// explained by the tooltip instead of the label
+function getActionLabel(action, status) {
+  if (action?.call) {
+    return action.label;
+  }
+
+  return getPayoutActionLabel(status) ?? "Payout";
+}
 
 function useSpendPayoutAction(index) {
   const { spend: onchainSpend, loading } = useSubTreasurySpend(index);
   const order = useSpendPayoutOrder(index, onchainSpend);
-  const latestHeight = useAhmLatestHeight();
+  const latestHeight = useSpendLatestHeight();
 
   const action = useMemo(() => {
     // Without the payout order a spend looks like an orphan, so do not offer
@@ -60,65 +67,14 @@ function useSpendPayoutAction(index) {
     loading: loading || order.orderLoading,
     error: order.orderError,
     queueAhead: order.queueAhead,
+    isHead: order.isHead,
+    inOrder: order.inOrder,
+    orderEnabled: order.orderEnabled,
+    queueId: order.queueId,
+    status: onchainSpend?.status,
     validFrom: onchainSpend?.valid_from,
     latestHeight,
   };
-}
-
-function getHint({
-  action,
-  loading,
-  error,
-  queueAhead,
-  validFrom,
-  latestHeight,
-}) {
-  if (loading) {
-    return null;
-  }
-
-  if (error) {
-    return "Failed to read the payout order from the chain.";
-  }
-
-  if (!action) {
-    return "Can not find on chain info.";
-  }
-
-  if (action.kind === "checkStatus") {
-    return "A payout was submitted. Checking its status finalizes it: the spend is removed on success, or marked failed so it can be retried.";
-  }
-
-  if (action.kind === "queued") {
-    return queueAhead > 0
-      ? `Waiting in the payout order: ${queueAhead} spend(s) ahead. Only the next payout can be paid.`
-      : "Waiting in the payout order. Only the next payout can be paid.";
-  }
-
-  if (action.kind === "wait") {
-    if (
-      !isNil(validFrom) &&
-      !isNil(latestHeight) &&
-      Number(validFrom) > Number(latestHeight)
-    ) {
-      return `Payable from block #${Number(validFrom).toLocaleString()}.`;
-    }
-    return "Waiting for the latest chain state.";
-  }
-
-  if (action.kind === "expire") {
-    return "This spend is past its payout window and can no longer be paid. Checking its status settles it and promotes the next queued spend.";
-  }
-
-  if (action.kind === "rotate") {
-    return "Its payout order expired while another spend is already mature. Rotate it to let the next spend be paid.";
-  }
-
-  if (action.kind === "requeue") {
-    return "This spend is missing from the payout order. Checking its status adds it back to the queue.";
-  }
-
-  return null;
 }
 
 function PayoutContent({
@@ -126,33 +82,60 @@ function PayoutContent({
   loading,
   error,
   queueAhead,
+  isHead,
+  inOrder,
+  orderEnabled,
+  queueId,
+  status,
   validFrom,
   latestHeight,
   onOpen,
 }) {
-  const hint = getHint({
+  const router = useRouter();
+  const { blockTime } = useChainSettings();
+  const hint = getPayoutActionHint({
     action,
     loading,
     error,
+    isHead,
+    inOrder,
     queueAhead,
     validFrom,
     latestHeight,
+    blockTime,
   });
-  const label = (action?.call && ACTION_TITLES[action.kind]) || "Payout";
+  const label = getActionLabel(action, status);
+  const disabled = loading || !action?.call;
+  // The queue page is only meaningful on runtimes that have the payout order
+  const queueUrl =
+    orderEnabled && queueId
+      ? {
+          pathname: "/treasury/spends/queues",
+          query: { queue: queueId.toLowerCase() },
+        }
+      : null;
 
   return (
     <div className="flex flex-col gap-2">
-      <Tooltip content={hint}>
-        <PrimaryButton
-          className="w-full"
-          loading={loading}
-          disabled={loading || !action?.call}
-          onClick={onOpen}
-        >
-          {label}
-        </PrimaryButton>
-      </Tooltip>
-      {!!hint && <p className="text12Medium text-textTertiary">{hint}</p>}
+      <SplitButton
+        fullWidth
+        loading={loading}
+        disabled={disabled}
+        mainTooltip={hint}
+        onClick={onOpen}
+        rightIcon={
+          queueUrl ? <ArrowExternalLink width={24} height={24} /> : undefined
+        }
+        rightLabel="View payout queue"
+        // The queue can be browsed while the payout itself is not payable
+        rightDisabled={false}
+        onRightClick={queueUrl ? () => router.push(queueUrl) : undefined}
+      >
+        {label}
+      </SplitButton>
+      {!!hint && !!action?.call && (
+        <p className="text12Medium text-textTertiary">{hint}</p>
+      )}
     </div>
   );
 }
@@ -173,7 +156,7 @@ export default function TreasurySpendPay() {
   }
 
   const call = payout.action?.call;
-  const title = (call && ACTION_TITLES[payout.action.kind]) || "Payout";
+  const title = getActionLabel(payout.action, payout.status);
 
   return (
     <>
