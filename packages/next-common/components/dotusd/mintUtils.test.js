@@ -85,8 +85,11 @@ describe("computeMintQuote", () => {
   it("scales across a decimals difference", () => {
     // External with fewer decimals multiplies up.
     expect(
-      computeMintQuote({ ...base, externalAmount: 10_000n, externalDecimals: 4 })
-        .internalEquivalent,
+      computeMintQuote({
+        ...base,
+        externalAmount: 10_000n,
+        externalDecimals: 4,
+      }).internalEquivalent,
     ).toBe(1_000_000n);
 
     // More decimals floor-divides, and dust below one internal unit rounds away.
@@ -206,13 +209,19 @@ describe("getMintDisabledReason", () => {
       }),
     ).toBe("Swaps are disabled for this asset");
     expect(
-      getMintDisabledReason({ ...ready, external: { ...external, status: null } }),
+      getMintDisabledReason({
+        ...ready,
+        external: { ...external, status: null },
+      }),
     ).toBe("Minting availability is unknown");
   });
 
   it("checks the amount before the balance", () => {
     expect(
-      getMintDisabledReason({ ...ready, amount: { amount: null, isEmpty: true } }),
+      getMintDisabledReason({
+        ...ready,
+        amount: { amount: null, isEmpty: true },
+      }),
     ).toBe("Please enter an amount");
     expect(
       getMintDisabledReason({

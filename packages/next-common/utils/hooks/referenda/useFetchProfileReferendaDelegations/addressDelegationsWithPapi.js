@@ -12,7 +12,10 @@ function calcDelegationVotes(balance, conviction) {
     .toString();
 }
 
-export default async function getAddressTrackDelegationsWithPapi(papi, address) {
+export default async function getAddressTrackDelegationsWithPapi(
+  papi,
+  address,
+) {
   // PAPI queries the finalized block by default. The list is refreshed on the
   // in-block event of our own transactions, so read the best block instead -
   // otherwise the just-included delegate/undelegate is only visible after the

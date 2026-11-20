@@ -6,12 +6,12 @@ import CountDown from "next-common/components/_CountDown";
 import Malicious from "next-common/components/detail/malicious";
 import useBlockTimestamp from "next-common/hooks/common/useBlockTimestamp";
 import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import useSpendLatestHeight from "next-common/hooks/treasury/spend/useSpendLatestHeight";
 
 export default function TreasurySpendExpireCountdown() {
   const { meta, indexer } = useOnchainData() || {};
   const { expireAt, validFrom } = meta || {};
-  const latestHeight = useAhmLatestHeight();
+  const latestHeight = useSpendLatestHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(expireAt - latestHeight);
   const { timestamp } = useBlockTimestamp(expireAt);
   const state = usePostState();

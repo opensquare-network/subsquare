@@ -25,7 +25,9 @@ export default function useDotUsdBalance({ address, assetId }) {
     // The api may still be connecting, and a client for a chain without pallet-assets would
     // throw on the read; both are "nothing to show" rather than an error.
     const canWatch =
-      !!papi?.query?.Assets?.Account?.watchValue && !isNil(assetId) && !!address;
+      !!papi?.query?.Assets?.Account?.watchValue &&
+      !isNil(assetId) &&
+      !!address;
 
     if (!canWatch) {
       setState(EMPTY);

@@ -12,17 +12,15 @@ describe("isCrawlerUserAgent", () => {
     expect(isCrawlerUserAgent("Mozilla/5.0 (compatible; Googlebot/2.1)")).toBe(
       true,
     );
-    expect(
-      isCrawlerUserAgent("Mozilla/5.0 (compatible; bingbot/2.0)"),
-    ).toBe(true);
+    expect(isCrawlerUserAgent("Mozilla/5.0 (compatible; bingbot/2.0)")).toBe(
+      true,
+    );
   });
 
   it("detects previewers and headless browsers", () => {
     expect(isCrawlerUserAgent("facebookexternalhit/1.1")).toBe(true);
     expect(
-      isCrawlerUserAgent(
-        "Mozilla/5.0 HeadlessChrome/137.0.0.0 Safari/537.36",
-      ),
+      isCrawlerUserAgent("Mozilla/5.0 HeadlessChrome/137.0.0.0 Safari/537.36"),
     ).toBe(true);
     expect(isCrawlerUserAgent("curl/8.4.0")).toBe(true);
   });

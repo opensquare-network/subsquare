@@ -1,165 +1,149 @@
-import { useOnchainData, usePostState } from "next-common/context/post";
-import PrimaryButton from "next-common/lib/button/primary";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { usePostState } from "next-common/context/post";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import useSubTreasurySpend from "next-common/hooks/treasury/spend/useSubTreasurySpend";
-import { isNil } from "lodash-es";
-import { cn } from "next-common/utils";
-import { noop } from "@polkadot/util";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import PrimaryButton from "next-common/lib/button/primary";
+import Link from "next-common/components/link";
 import Tooltip from "next-common/components/tooltip";
-import { useTreasuryPallet } from "next-common/context/treasury";
+import { cn } from "next-common/utils";
+import { useChainSettings } from "next-common/context/chain";
+import {
+  getPayoutActionHint,
+  getPayoutActionLabel,
+} from "next-common/components/treasury/spends/payout/chainData";
 
 const Popup = dynamicPopup(() => import("./popup"));
 
-export default function TreasurySpendPay() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [payoutLoading, setPayoutLoading] = useState(false);
-  const [payoutDone, setPayoutDone] = useState(false);
-  const flowStartedRef = useRef(false);
-  const state = usePostState();
-  const pallet = useTreasuryPallet();
-  const { index } = useOnchainData() || {};
+const BALANCE_BLOCKED_HINT =
+  "The treasury balance is lower than this payout, so the call would fail. Top up the treasury first.";
+const STALE_ACTION_HINT =
+  "The payout order changed after this dialog was opened. Close it and confirm the new action.";
 
-  if (["Paid", "Processed"].includes(state)) {
-    return null;
+// The button always names the payout action; why it is not clickable is
+// explained by the tooltip instead of the label
+function getActionLabel(action, status) {
+  if (action?.call) {
+    return action.label;
   }
 
-  const onOpen = () => {
-    setShowPopup(true);
-  };
+  return getPayoutActionLabel(status) ?? "Payout";
+}
 
-  const onClose = () => {
-    setShowPopup(false);
-    if (!flowStartedRef.current) {
-      setPayoutLoading(false);
-    }
-  };
-
-  const stopPayoutLoading = () => {
-    flowStartedRef.current = false;
-    setPayoutLoading(false);
-  };
-
-  const onPayoutInBlock = ({ events = [] } = {}) => {
-    stopPayoutLoading();
-
-    // `onInBlock` also fires when a multisig approval is included without
-    // executing the payout, so only react to the actual Paid event.
-    const paid = events.some(
-      ({ event }) =>
-        event.section === pallet &&
-        event.method === "Paid" &&
-        Number(event.data[0]?.toString()) === Number(index),
-    );
-
-    if (paid) {
-      // The spend is removed from on-chain storage in this block, but it takes
-      // a moment for the subscription (and the scanner) to reflect that.
-      // Disable the button right away so it can not be clicked again after a
-      // successful payout.
-      setPayoutDone(true);
-    }
-  };
-
+// Text link styled like the beneficiary link, the queue page is a separate view
+function PayoutQueueLink({ queueId }) {
   return (
-    <>
-      <ExpiredGuard onOpen={onOpen} payoutDone={payoutDone}>
-        <PayoutContent
-          onOpen={onOpen}
-          payoutLoading={payoutLoading}
-          payoutDone={payoutDone}
-        />
-      </ExpiredGuard>
-      {showPopup && (
-        <Popup
-          onClose={onClose}
-          onTxStart={() => {
-            flowStartedRef.current = true;
-            setPayoutLoading(true);
-          }}
-          onInBlock={onPayoutInBlock}
-          onTxError={stopPayoutLoading}
-          onCancelled={stopPayoutLoading}
-        />
-      )}
-    </>
+    <Link
+      href={{
+        pathname: "/treasury/spends/queues",
+        query: { queue: queueId.toLowerCase() },
+      }}
+      className="text12Medium text-sapphire500 hover:!no-underline"
+    >
+      View payout queue
+      <span className="text-textTertiary ml-1 relative -top-[1px]">↗</span>
+    </Link>
   );
 }
 
-function ExpiredGuard({ children, onOpen = noop, payoutDone = false }) {
-  const latestHeight = useAhmLatestHeight();
-  const { meta } = useOnchainData() || {};
-  const { expireAt } = meta || {};
-
-  if (expireAt && latestHeight >= expireAt) {
-    if (payoutDone) {
-      return (
-        <div className="text14Medium text-textSecondary">
-          This treasury spend has been paid.
-        </div>
-      );
-    }
-
-    return (
-      <div className="text14Medium text-textSecondary">
-        This treasury spend is expired,{" "}
-        <span
-          className={cn("text-theme500 cursor-pointer font-bold")}
-          onClick={onOpen}
-        >
-          still payout.
-        </span>
-      </div>
-    );
-  } else {
-    return children;
-  }
-}
-
 function PayoutContent({
-  onOpen = noop,
-  payoutLoading = false,
-  payoutDone = false,
+  action,
+  balanceBlocked,
+  loading,
+  error,
+  queueAhead,
+  isHead,
+  inOrder,
+  orderEnabled,
+  queueId,
+  status,
+  validFrom,
+  spendExpireAt,
+  latestHeight,
+  onOpen,
 }) {
-  const { index, meta } = useOnchainData() || {};
-  const latestHeight = useAhmLatestHeight();
-  const { spend: onchainStatus, loading } = useSubTreasurySpend(index);
-  const { validFrom } = meta || {};
-
-  const isQueryDone = !isNil(onchainStatus) && !loading;
-
-  let tooltipContent;
-  let isDisabled = !isQueryDone;
-
-  if (payoutDone) {
-    isDisabled = true;
-    tooltipContent = "This treasury spend has been paid";
-  } else if (isNil(onchainStatus) && !loading) {
-    isDisabled = true;
-    tooltipContent = "Can not find on chain info";
-  } else if (isQueryDone && latestHeight < validFrom) {
-    isDisabled = true;
-    tooltipContent = "This spend is still not valid";
-  }
-
-  const onAttemptPayout = () => {
-    if (isDisabled) {
-      return;
-    }
-    onOpen();
-  };
+  const { blockTime } = useChainSettings();
+  const hint = getPayoutActionHint({
+    action,
+    loading,
+    error,
+    isHead,
+    inOrder,
+    queueAhead,
+    validFrom,
+    spendExpireAt,
+    latestHeight,
+    blockTime,
+  });
+  const label = getActionLabel(action, status);
+  const disabled = loading || !action?.call || balanceBlocked;
+  const tooltip = balanceBlocked ? BALANCE_BLOCKED_HINT : hint;
+  // The queue page is only meaningful on runtimes that have the payout order
+  const showQueueLink = orderEnabled && !!queueId;
 
   return (
-    <Tooltip content={tooltipContent}>
-      <PrimaryButton
-        className="w-full"
-        loading={loading || payoutLoading}
-        disabled={isDisabled}
-        onClick={onAttemptPayout}
-      >
-        Payout
-      </PrimaryButton>
-    </Tooltip>
+    <div className="flex flex-col gap-2">
+      <Tooltip className="w-full" content={tooltip}>
+        <PrimaryButton
+          className={cn(
+            "w-full",
+            // A disabled button swallows pointer events, which would hide the
+            // tooltip explaining why it cannot be clicked
+            disabled && "pointer-events-none",
+          )}
+          loading={loading}
+          disabled={disabled}
+          onClick={onOpen}
+        >
+          {label}
+        </PrimaryButton>
+      </Tooltip>
+      {!!tooltip && !!action?.call && (
+        <p className="text12Medium text-textTertiary">{tooltip}</p>
+      )}
+      {showQueueLink && <PayoutQueueLink queueId={queueId} />}
+    </div>
+  );
+}
+
+export default function TreasurySpendPay({ payout }) {
+  // Freeze the action confirmed by the user: chain state can change while the
+  // popup is open and the signed call must be the one that was shown.
+  const [openedAction, setOpenedAction] = useState(null);
+  const state = usePostState();
+  const call = payout.action?.call;
+
+  // The indexer marks a spend `Paid` as soon as the payout is submitted, while
+  // on chain it is still `Attempted` (needs `check_status`) or `Failed` (can be
+  // retried, possibly from the queue). Only `Processed`, or a spend that is
+  // gone from chain storage, means it is finished.
+  const finished =
+    state === "Processed" ||
+    (!payout.spendLoading && !payout.spendExists) ||
+    // Do not flash a payout button while a `Paid` spend's chain state is read
+    (state === "Paid" && payout.spendLoading);
+
+  if (finished) {
+    return null;
+  }
+
+  // A frozen action that the chain no longer accepts must not be signed
+  const stale = !!openedAction && !payout.loading && call !== openedAction.call;
+  const title = getActionLabel(payout.action, payout.status);
+
+  return (
+    <>
+      <PayoutContent
+        {...payout}
+        onOpen={() => setOpenedAction({ call, title })}
+      />
+      {!!openedAction && (
+        <Popup
+          call={openedAction.call}
+          title={openedAction.title}
+          disabled={stale}
+          tooltip={stale ? STALE_ACTION_HINT : undefined}
+          onClose={() => setOpenedAction(null)}
+        />
+      )}
+    </>
   );
 }

@@ -8,8 +8,14 @@ import TxSubmissionButton from "next-common/components/common/tx/txSubmissionBut
 import { useTreasuryPallet } from "next-common/context/treasury";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
+import { getPayoutTxByCall } from "next-common/components/treasury/spends/payout/chainTx";
+import { usePayoutQueueIsDemo } from "next-common/components/treasury/spends/payout/sourceContext";
 
 function Content({
+  call = "payout",
+  title = "Payout",
+  disabled = false,
+  tooltip,
   onSubmitted = noop,
   onInBlock = noop,
   onTxError = noop,
@@ -20,12 +26,17 @@ function Content({
   const api = useContextApi();
   const { index } = useOnchainData() || {};
   const treasuryPallet = useTreasuryPallet();
+  const isDemo = usePayoutQueueIsDemo();
 
   const getTxFunc = useCallback(() => {
-    if (api && !isNil(index)) {
-      return api.tx[treasuryPallet].payout(index);
+    // Demo spends are sample data, never build a real call for them
+    if (isDemo) {
+      return null;
     }
-  }, [api, index, treasuryPallet]);
+    if (api && !isNil(index)) {
+      return getPayoutTxByCall(api, treasuryPallet, call, index);
+    }
+  }, [api, index, treasuryPallet, call, isDemo]);
 
   return (
     <>
@@ -34,7 +45,9 @@ function Content({
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
       <TxSubmissionButton
-        title="Pay"
+        title={title}
+        disabled={disabled}
+        tooltip={tooltip}
         getTxFunc={getTxFunc}
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
@@ -47,6 +60,10 @@ function Content({
 }
 
 export default function Popup({
+  call = "payout",
+  title = "Payout",
+  disabled = false,
+  tooltip,
   onSubmitted,
   onInBlock,
   onTxError,
@@ -55,8 +72,12 @@ export default function Popup({
   ...props
 }) {
   return (
-    <PopupWithSigner title="Payout" {...props}>
+    <PopupWithSigner title={title} {...props}>
       <Content
+        call={call}
+        title={title}
+        disabled={disabled}
+        tooltip={tooltip}
         onSubmitted={onSubmitted}
         onInBlock={onInBlock}
         onTxError={onTxError}

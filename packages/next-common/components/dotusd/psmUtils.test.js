@@ -133,7 +133,10 @@ describe("parsePalletsOrigin", () => {
       parsePalletsOrigin({ type: "system", value: { type: "Root" } }),
     ).toEqual({ type: "origin", label: "system · Root" });
     expect(
-      parsePalletsOrigin({ type: "Origins", value: { type: "ProsperityEmergency" } }),
+      parsePalletsOrigin({
+        type: "Origins",
+        value: { type: "ProsperityEmergency" },
+      }),
     ).toEqual({ type: "origin", label: "Origins · ProsperityEmergency" });
   });
 
@@ -141,7 +144,10 @@ describe("parsePalletsOrigin", () => {
     const account = "13UVJyLkBsKdkhA6hcHAA9jmz4hJe7iRJ6r9ZUwQheobW7cL";
 
     expect(
-      parsePalletsOrigin({ type: "system", value: { type: "Signed", value: account } }),
+      parsePalletsOrigin({
+        type: "system",
+        value: { type: "Signed", value: account },
+      }),
     ).toEqual({ type: "account", account });
     expect(
       parsePalletsOrigin({
@@ -233,7 +239,10 @@ describe("buildPsmData", () => {
       },
     ],
     externalEntries: [
-      { keyArgs: [internal, external], value: { status: { type: "AllEnabled" }, decimals: 6 } },
+      {
+        keyArgs: [internal, external],
+        value: { status: { type: "AllEnabled" }, decimals: 6 },
+      },
     ],
     weightEntries: [{ keyArgs: [internal, external], value: 1000000 }],
     debtEntries: [{ keyArgs: [internal, external], value: 2996624883933n }],
@@ -244,7 +253,10 @@ describe("buildPsmData", () => {
         keyArgs: [internal],
         value: {
           full_admin: { type: "system", value: { type: "Root" } },
-          emergency_admin: { type: "Origins", value: { type: "ProsperityEmergency" } },
+          emergency_admin: {
+            type: "Origins",
+            value: { type: "ProsperityEmergency" },
+          },
         },
       },
     ],
@@ -352,7 +364,10 @@ describe("isLocalAssetLocation", () => {
       isLocalAssetLocation({ parents: 1, interior: usdtLocation.interior }),
     ).toBe(false);
     expect(
-      isLocalAssetLocation({ parents: 0, interior: { type: "Here", value: [] } }),
+      isLocalAssetLocation({
+        parents: 0,
+        interior: { type: "Here", value: [] },
+      }),
     ).toBe(false);
     expect(
       isLocalAssetLocation({
@@ -369,7 +384,10 @@ describe("isLocalAssetLocation", () => {
     expect(
       isLocalAssetLocation({
         parents: 0,
-        interior: { type: "X1", value: [{ type: "PalletInstance", value: 50 }] },
+        interior: {
+          type: "X1",
+          value: [{ type: "PalletInstance", value: 50 }],
+        },
       }),
     ).toBe(false);
   });
@@ -405,7 +423,9 @@ describe("parseAssetAmount", () => {
       error: "Invalid amount",
     });
     expect(parseAssetAmount("0", 6)).toMatchObject({ error: "Invalid amount" });
-    expect(parseAssetAmount("-1", 6)).toMatchObject({ error: "Invalid amount" });
+    expect(parseAssetAmount("-1", 6)).toMatchObject({
+      error: "Invalid amount",
+    });
   });
 
   it("scales to planck", () => {

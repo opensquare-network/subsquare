@@ -24,7 +24,9 @@ export function symbolOf(metadata) {
   }
 
   // Asset metadata stores the symbol as raw bytes.
-  return typeof symbol === "string" ? symbol : u8aToString(Uint8Array.from(symbol));
+  return typeof symbol === "string"
+    ? symbol
+    : u8aToString(Uint8Array.from(symbol));
 }
 
 // Permill is parts per million: 1_000_000 = 100%
@@ -212,7 +214,9 @@ export function buildPsmData({
       // Kept raw alongside the display percent: psm.mint and psm.redeem take their max_fee as a
       // Permill and the chain compares it against these exact values, so neither may round-trip
       // through a float.
-      mintingFeePermill: isNil(pair.mintingFee) ? null : Number(pair.mintingFee),
+      mintingFeePermill: isNil(pair.mintingFee)
+        ? null
+        : Number(pair.mintingFee),
       redemptionFee: permillToPercent(pair.redemptionFee),
       redemptionFeePermill: isNil(pair.redemptionFee)
         ? null
@@ -449,7 +453,5 @@ export function pickDefaultExternal(externals = [], selectedIndex) {
     }
   }
 
-  return (
-    externals.find((item) => item.status === "AllEnabled") ?? externals[0]
-  );
+  return externals.find((item) => item.status === "AllEnabled") ?? externals[0];
 }
