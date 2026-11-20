@@ -10,6 +10,7 @@ import Chainspolyfill from "../consts/settingsPolyfill/chainsPolyfill";
 export const BridgeParaId = 1002;
 export const PeopleParaId = 1004;
 export const CoretimeParaId = 1005;
+export const BulletinParaId = 1010;
 
 export function getParachain(ParachainId) {
   if (isPolkadotChain(CHAIN)) {
@@ -21,6 +22,8 @@ export function getParachain(ParachainId) {
       return Chains.polkadotCoretime;
     } else if (ParachainId === BridgeParaId) {
       return Chainspolyfill.polkadotBridge;
+    } else if (ParachainId === BulletinParaId) {
+      return Chainspolyfill.polkadotBulletin;
     }
   } else if (isKusamaChain(CHAIN)) {
     if (ParachainId === AssetHubParaId) {

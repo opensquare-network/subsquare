@@ -5,6 +5,7 @@ import {
 import { extractTransactCallBytesArr } from "./relayChainCall";
 import {
   BridgeParaId,
+  BulletinParaId,
   CoretimeParaId,
   PeopleParaId,
 } from "./relayToParachainDecodeSupport";
@@ -53,13 +54,18 @@ export function isBridgeCall(parachainId) {
   return parachainId?.toNumber() === BridgeParaId;
 }
 
+export function isBulletinCall(parachainId) {
+  return parachainId?.toNumber() === BulletinParaId;
+}
+
 export function isSupportedParachainCall(parachainId) {
   return (
     isCollectivesCall(parachainId) ||
     isPolkadotAssetHubCall(parachainId) ||
     isPeopleCall(parachainId) ||
     isCoretimeCall(parachainId) ||
-    isBridgeCall(parachainId)
+    isBridgeCall(parachainId) ||
+    isBulletinCall(parachainId)
   );
 }
 
