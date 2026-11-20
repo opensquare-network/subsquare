@@ -657,11 +657,7 @@ function assignQueueIds(queues) {
       ...queue,
       id,
       label: suffix ? `${queue.symbol} (${suffix})` : queue.symbol,
-      // The payout order is keyed by the raw versioned asset kind on chain, so
-      // each encoding gets its own queue until the asset kind is canonicalized.
-      tooltip: suffix
-        ? `${queue.assetKind} · XCM ${suffix} encoding. The payout order is keyed by the encoded asset kind, so an equivalent encoding of the same asset gets its own queue and is not ordered against the others until polkadot-sdk#13461 canonicalizes it.`
-        : queue.assetKind,
+      tooltip: suffix ? `${queue.assetKind} · XCM ${suffix}` : queue.assetKind,
     };
   });
 }
