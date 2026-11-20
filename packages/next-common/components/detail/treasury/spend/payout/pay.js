@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-import { ArrowExternalLink } from "@osn/icons/subsquare";
 import { usePostState } from "next-common/context/post";
 import dynamicPopup from "next-common/lib/dynamic/popup";
-import SplitButton from "next-common/lib/button/splitButton";
+import PrimaryButton from "next-common/lib/button/primary";
+import Link from "next-common/components/link";
+import Tooltip from "next-common/components/tooltip";
+import { cn } from "next-common/utils";
 import { useChainSettings } from "next-common/context/chain";
 import {
   getPayoutActionHint,
@@ -27,6 +28,22 @@ function getActionLabel(action, status) {
   return getPayoutActionLabel(status) ?? "Payout";
 }
 
+// Text link styled like the beneficiary link, the queue page is a separate view
+function PayoutQueueLink({ queueId }) {
+  return (
+    <Link
+      href={{
+        pathname: "/treasury/spends/queues",
+        query: { queue: queueId.toLowerCase() },
+      }}
+      className="text12Medium text-sapphire500 hover:!no-underline"
+    >
+      View payout queue
+      <span className="text-textTertiary ml-1 relative -top-[1px]">↗</span>
+    </Link>
+  );
+}
+
 function PayoutContent({
   action,
   balanceBlocked,
@@ -43,7 +60,6 @@ function PayoutContent({
   latestHeight,
   onOpen,
 }) {
-  const router = useRouter();
   const { blockTime } = useChainSettings();
   const hint = getPayoutActionHint({
     action,
@@ -61,35 +77,29 @@ function PayoutContent({
   const disabled = loading || !action?.call || balanceBlocked;
   const tooltip = balanceBlocked ? BALANCE_BLOCKED_HINT : hint;
   // The queue page is only meaningful on runtimes that have the payout order
-  const queueUrl =
-    orderEnabled && queueId
-      ? {
-          pathname: "/treasury/spends/queues",
-          query: { queue: queueId.toLowerCase() },
-        }
-      : null;
+  const showQueueLink = orderEnabled && !!queueId;
 
   return (
     <div className="flex flex-col gap-2">
-      <SplitButton
-        fullWidth
-        loading={loading}
-        disabled={disabled}
-        mainTooltip={tooltip}
-        onClick={onOpen}
-        rightIcon={
-          queueUrl ? <ArrowExternalLink width={24} height={24} /> : undefined
-        }
-        rightLabel="View payout queue"
-        // The queue can be browsed while the payout itself is not payable
-        rightDisabled={false}
-        onRightClick={queueUrl ? () => router.push(queueUrl) : undefined}
-      >
-        {label}
-      </SplitButton>
+      <Tooltip className="w-full" content={tooltip}>
+        <PrimaryButton
+          className={cn(
+            "w-full",
+            // A disabled button swallows pointer events, which would hide the
+            // tooltip explaining why it cannot be clicked
+            disabled && "pointer-events-none",
+          )}
+          loading={loading}
+          disabled={disabled}
+          onClick={onOpen}
+        >
+          {label}
+        </PrimaryButton>
+      </Tooltip>
       {!!tooltip && !!action?.call && (
         <p className="text12Medium text-textTertiary">{tooltip}</p>
       )}
+      {showQueueLink && <PayoutQueueLink queueId={queueId} />}
     </div>
   );
 }
