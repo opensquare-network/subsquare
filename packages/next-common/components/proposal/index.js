@@ -198,8 +198,7 @@ export function convertProposalForJsonView(proposal, chain) {
             return arg.value;
           }
           case "Compact<Balance>": {
-            const value = new BigNumber(arg.value).toString();
-            return [arg.name, value];
+            return new BigNumber(arg.value).toString();
           }
           default: {
             return arg.value;
@@ -218,6 +217,7 @@ export default function Proposal({
   proposalIndex,
   motionIndex,
   referendumIndex,
+  customJsonView,
 }) {
   const chain = useChain();
   const [detailPopupVisible, setDetailPopupVisible] = useState(false);
@@ -278,6 +278,7 @@ export default function Proposal({
           jsonViewData={jsonViewData}
           hasTreeViewData={!!preImageHash}
           setShow={setDetailPopupVisible}
+          customJsonView={customJsonView}
         />
       )}
     </Wrapper>

@@ -7,6 +7,7 @@ import { useAssetHubChain } from "next-common/hooks/useAssetHubChain";
 import { useChainSettings } from "next-common/context/chain";
 import Chains from "next-common/utils/consts/chains";
 import {
+  buildBalanceQuery,
   computeNativeQuotePrice,
   computePoolTvl,
   decodeSymbol,
@@ -14,6 +15,7 @@ import {
   getLocationHash,
   getPoolAssetId,
   parseTokenLocation,
+  readReserveBalance,
   stringifyLocation,
   toTokenUnits,
 } from "./utils";
@@ -66,26 +68,6 @@ function normalizeToken(
     decimals: meta.decimals ?? 0,
     hasName: !!meta.symbol,
   };
-}
-
-export function readReserveBalance(result, tokenType) {
-  if (!result) {
-    return new BigNumber(0);
-  }
-
-  if (tokenType === "native") {
-    const free = new BigNumber(result.data.free.toString());
-    const frozen = new BigNumber(result.data.frozen.toString());
-    const available = free.minus(frozen);
-    return available.isNegative() ? new BigNumber(0) : available;
-  }
-
-  const isLiquid = result.status?.type === "Liquid";
-  if (!isLiquid) {
-    return new BigNumber(0);
-  }
-
-  return new BigNumber(result.balance.toString());
 }
 
 // Fetch all chain entries the liquidity pools list needs, in parallel.
@@ -231,16 +213,6 @@ function buildPools(
   return pools;
 }
 
-export function buildBalanceQuery(papi, token, address) {
-  if (token.type === "native") {
-    return papi.query.System.Account.getValue(address);
-  }
-  if (token.type === "asset") {
-    return papi.query.Assets.Account.getValue(token.assetId, address);
-  }
-  return papi.query.ForeignAssets.Account.getValue(token.location, address);
-}
-
 // Fetch a single pool's reserve balances ([reserve1, reserve2]) as BigNumbers.
 async function fetchPoolReserves(papi, pool) {
   const tokens = [pool.token1, pool.token2];
@@ -277,7 +249,7 @@ function compareTvlDesc(a, b, anchor) {
 // Format a single pool into its display row: reserves and TVL (in the anchor
 // token) in token units. The token pair price is computed at render time by the
 // caller.
-function formatPoolRow(pool, anchor) {
+function formatPoolRow(pool, anchor, lpFee) {
   const [reserve1, reserve2] = pool.reserves;
 
   const tvlPlancks = computePoolTvl(
@@ -297,6 +269,7 @@ function formatPoolRow(pool, anchor) {
       ? formatAmount(toTokenUnits(tvlPlancks, anchor.decimals))
       : null,
     tvlSymbol: anchor.symbol,
+    lpFee,
   };
 }
 
@@ -304,12 +277,16 @@ async function fetchLiquidPools(
   papi,
   { isUsdcAnchor, nativeSymbol, nativeDecimals },
 ) {
+  const [poolEntries, lpFee] = await Promise.all([
+    fetchPoolEntries(papi),
+    papi.constants.AssetConversion.LPFee(),
+  ]);
   const {
     poolsEntries,
     poolAssetsEntries,
     assetsMetadataEntries,
     foreignAssetsMetadataEntries,
-  } = await fetchPoolEntries(papi);
+  } = poolEntries;
 
   const assetsMetadata = buildAssetsMetadata(assetsMetadataEntries);
   const foreignAssetsMetadata = buildForeignAssetsMetadata(
@@ -358,7 +335,7 @@ async function fetchLiquidPools(
   // Sort by TVL descending; pools without a computable TVL last.
   return [...poolsWithReserves]
     .sort((a, b) => compareTvlDesc(a, b, anchor))
-    .map((pool) => formatPoolRow(pool, anchor));
+    .map((pool) => formatPoolRow(pool, anchor, lpFee));
 }
 
 export default function useLiquidPools() {

@@ -10,6 +10,8 @@ export default function PendingSpendsProvider({ children }) {
     expiringSoonCount,
     validSoonCount,
     claimableCount,
+    expiringSoon,
+    validSoon,
     claimable,
     loading,
   } = usePendingSpends();
@@ -20,6 +22,8 @@ export default function PendingSpendsProvider({ children }) {
         expiringSoonCount,
         validSoonCount,
         claimableCount,
+        expiringSoon,
+        validSoon,
         claimable,
         loading,
       }}

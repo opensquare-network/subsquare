@@ -15,12 +15,17 @@ export default function useSubTreasurySpend(index) {
     }
 
     setLoading(true);
-    const sub = papi.query[treasuryPallet].Spends.watchValue(index).subscribe(
-      ({ value }) => {
-        setSpend(value ?? null);
-        setLoading(false);
-      },
-    );
+    // `payout` removes the spend from storage in the block it is executed in.
+    // Watch the best block instead of the default finalized block: PAPI handles
+    // re-orgs for us, and the deletion shows up ~1 block after the tx lands,
+    // instead of keeping the Payout button enabled until finalization (or until
+    // the scanner updates the post state).
+    const sub = papi.query[treasuryPallet].Spends.watchValue(index, {
+      at: "best",
+    }).subscribe(({ value }) => {
+      setSpend(value ?? null);
+      setLoading(false);
+    });
 
     return () => {
       sub?.unsubscribe?.();

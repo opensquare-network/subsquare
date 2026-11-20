@@ -12,6 +12,9 @@ import ProfileLayout from "next-common/components/layout/ProfileLayout";
 import AvatarPermissionsProvider from "./header/context/avatarPermissionsContext";
 import ProfileUserInfoProvider from "./header/context/profileUserInfoContext";
 import ProfileMultisigsActiveProvider from "next-common/components/profile/multisigs/context/profileMultisigsActiveContext";
+import ReviveEvmProfile from "next-common/components/profile/reviveEvm";
+import { usePageProps } from "next-common/context/page";
+import isReviveEvmAddress from "next-common/utils/isRevive";
 import NoData from "../noData";
 
 function ProfilePageImpl() {
@@ -37,12 +40,19 @@ function ProfilePageImpl() {
 }
 
 export default function ProfilePage() {
+  const { id } = usePageProps();
   const address = useProfileAddress();
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setProfileTransfers(null));
     dispatch(setProfileIdentityTimeline(null));
   }, [dispatch, address]);
+
+  if (isReviveEvmAddress(id)) {
+    return <ReviveEvmProfile />;
+  }
+
   return (
     <ProfileMultisigsActiveProvider>
       <ProfilePageImpl />

@@ -1,5 +1,5 @@
 import { Line } from "react-chartjs-2";
-import "next-common/components/summary/centrifugeOverviewSummary/priceCard/chart";
+import "next-common/components/charts/globalConfig";
 import dayjs from "dayjs";
 import { noop } from "lodash-es";
 import { useWindowWidthContext } from "next-common/context/windowSize";

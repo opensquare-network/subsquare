@@ -1,6 +1,7 @@
 import TaskColumn from "../table/taskColumn";
 import TimeColumn from "../table/timeColumn";
 import ActionColumn from "../table/actionColumn";
+import RenewalColumn from "../table/renewalColumn";
 import CoretimeCoresTag from "next-common/components/tags/state/coretimeCores";
 import { useMemo } from "react";
 import { useSwitchTime } from "../context/switchTimeContext";
@@ -47,8 +48,14 @@ export function useColumnsDef() {
       {
         name: "Type",
         key: "type",
-        className: "w-[180px] text-right",
+        className: "w-[180px]",
         render: (item) => <CoretimeCoresTag state={item.occupancyType} />,
+      },
+      {
+        name: "Renewal",
+        key: "renewal",
+        className: "w-[190px]",
+        render: (item) => <RenewalColumn item={item} />,
       },
       {
         name: "Actions",

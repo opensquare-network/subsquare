@@ -70,7 +70,7 @@ function PriceCell({ item }) {
   const quoteSymbol = inverted ? item.token1.symbol : item.token2.symbol;
 
   return (
-    <div className="flex items-center justify-end gap-1">
+    <div className="flex items-center justify-start gap-1">
       <span className="text14Medium text-textPrimary">
         1 <span className="text-textTertiary">{baseSymbol}</span> ≈ {value}{" "}
         <span className="text-textTertiary">{quoteSymbol}</span>
@@ -81,6 +81,6 @@ function PriceCell({ item }) {
 
 export const colPrice = {
   name: <PriceColumnHeader />,
-  style: { textAlign: "right", width: "260px", minWidth: "260px" },
+  style: { textAlign: "left", width: "260px", minWidth: "260px" },
   render: (item) => <PriceCell item={item} />,
 };

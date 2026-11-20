@@ -23,11 +23,18 @@ const isStakingSupported = !!getChainSettings(CHAIN).modules?.staking;
 
 function MyStaking() {
   const { poolMember, loading: isMyPoolLoading } = useMyPool();
-  const { nominators, loading: isMyStakingLedgerLoading } =
-    useMyStakingLedger();
+  const {
+    ledger,
+    nominators,
+    loading: isMyStakingLedgerLoading,
+  } = useMyStakingLedger();
   const width = useWindowWidthContext();
 
   const loading = isMyPoolLoading || isMyStakingLedgerLoading || !width;
+
+  // A chilled or fully unbonded nominator no longer has a `nominators` entry,
+  // but its staking ledger may still hold balances to withdraw or unbond.
+  const hasNominatorStake = !!nominators || !!ledger;
 
   if (loading) {
     return (
@@ -37,23 +44,25 @@ function MyStaking() {
     );
   }
 
-  if (poolMember && !nominators) {
+  if (poolMember && !hasNominatorStake) {
     return (
       <ActiveEraStakersProvider>
         <AccountStaking />
+        <AccountNominationEmpty />
       </ActiveEraStakersProvider>
     );
   }
 
-  if (nominators && !poolMember) {
+  if (hasNominatorStake && !poolMember) {
     return (
       <ActiveEraStakersProvider>
         <AccountNomination />
+        <AccountStakingEmpty />
       </ActiveEraStakersProvider>
     );
   }
 
-  if (poolMember && nominators) {
+  if (poolMember && hasNominatorStake) {
     return (
       <ActiveEraStakersProvider>
         <AccountNomination />

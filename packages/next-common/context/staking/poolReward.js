@@ -6,9 +6,9 @@ const MyPoolRewardContext = createContext(null);
 export default MyPoolRewardContext;
 
 export function MyPoolRewardProvider({ children }) {
-  const { claimable, loading } = useRewardClaimable();
+  const { claimable, loading, refresh } = useRewardClaimable();
   return (
-    <MyPoolRewardContext.Provider value={{ claimable, loading }}>
+    <MyPoolRewardContext.Provider value={{ claimable, loading, refresh }}>
       {children}
     </MyPoolRewardContext.Provider>
   );

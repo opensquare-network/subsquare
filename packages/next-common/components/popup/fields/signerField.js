@@ -5,7 +5,6 @@ import PopupLabelWithBalance from "next-common/components/popup/balanceLabel";
 import { useChainSettings } from "next-common/context/chain";
 import PopupLabel from "../label";
 import MaybeProxySigner, { ConnectedAccountSigner } from "../../signer";
-import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 
 function SignerWrapper({
   title = "Origin",
@@ -21,10 +20,6 @@ function SignerWrapper({
 
   return (
     <div>
-      <div className="flex flex-col mb-4">
-        <ExtensionUpdatePrompt isWithCache={false} />
-      </div>
-
       {noBalance ? (
         <PopupLabel text={title || "Origin"} />
       ) : (

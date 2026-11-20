@@ -7,7 +7,6 @@ import {
   referendumColumn,
   voteRetainColumn,
 } from "../memberPromotionPopup/columns";
-import ExtensionUpdatePrompt from "../../../extensionUpdatePrompt";
 
 const columnsDef = [
   rankColumn,
@@ -34,7 +33,6 @@ export default function MemberRetentionPopup({ retentions, onClose }) {
       title="Member Retention"
       onClose={onClose}
     >
-      <ExtensionUpdatePrompt isWithCache={false} />
       <MemberRetentionsContent retentions={retentions} />
     </PopupWithSigner>
   );

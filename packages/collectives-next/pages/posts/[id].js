@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { anyOf, isNumericId, isObjectId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -42,26 +43,30 @@ export default function PostDetailPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  const { result: detail = null } = await backendApi.fetch(`posts/${id}`);
+    const { result: detail = null } = await backendApi.fetch(`posts/${id}`);
 
-  const tracksProps = await fetchOpenGovTracksProps();
-  const { votes, myVote } = await getPostVotesAndMine(detail, context);
+    const tracksProps = await fetchOpenGovTracksProps();
+    const { votes, myVote } = await getPostVotesAndMine(detail, context);
 
-  const comments = detail
-    ? await fetchDetailComments(`posts/${detail?._id}/comments`, context)
-    : null;
+    const comments = detail
+      ? await fetchDetailComments(`posts/${detail?._id}/comments`, context)
+      : null;
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      votes,
-      myVote: myVote ?? null,
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        votes,
+        myVote: myVote ?? null,
 
-      ...tracksProps,
-    },
-  };
-});
+        ...tracksProps,
+      },
+    };
+  },
+  // A discussion is addressed by its numeric post uid, or by its post id.
+  { validateParams: { id: anyOf(isNumericId, isObjectId) } },
+);

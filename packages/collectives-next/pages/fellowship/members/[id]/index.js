@@ -7,7 +7,10 @@ export const getServerSideProps = async (context) => {
 
   return {
     redirect: {
-      destination: `/user/${id}/fellowship`,
+      // The id arrives decoded, so anything that is not URL-safe has to go back through
+      // encodeURIComponent: a path a visitor pasted with Chinese text glued to it produced a
+      // Location header the server refuses, which surfaced as a 500 instead of a redirect.
+      destination: `/user/${encodeURIComponent(id)}/fellowship`,
       permanent: false,
     },
   };

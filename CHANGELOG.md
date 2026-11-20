@@ -2,6 +2,135 @@
 
 All notable changes to this project will be documented in this file.
 
+# 6.10.0
+
+Date:
+2026-10-31. [Code diff](https://github.com/opensquare-network/subsquare/compare/53d8a36eedcb042f95ec2e3882a8d87cf744ffd5...d001e89bc3a7e5481fafddbd1814126525230ecc).
+
+- [Big] dotUSD on Polkadot: add the dotUSD page with the account panel and external asset balances, minting,
+  redeeming and swapping. Add mint/redeem records, 24h stats, swap pool list, holders and issuance charts to the
+  overview, watch balances on best blocks, and mark approximated amounts in swap summaries. The related backend
+  APIs (PSM events, 24h stats and holders/issuance) and scan jobs (PSM events and backfill, holders/issuance
+  statistics and the supply history fix) are included.
+- [Medium] Coretime:
+  - Add a renewal column showing the renewal due date or auto-renewal information.
+  - Add my coretime to the overview.
+  - Add the pool page with pool size chart, contributions, claim revenue and on-demand data.
+- [Medium] DAP: add the Dynamic Allocation Pool page with supply, allocation, supply history and supply projection.
+  It is backed by a new total issuance API and scan job.
+- [Medium] Treasury:
+  - Add the asset filter to the treasury spends list, enabled on Polkadot, with the backing backend API.
+  - Fix the expired spend counter, and show a tooltip when hovering the spends notification counter.
+  - Serve invalid spend ids as missing posts and stop reporting the resulting 404s.
+- [Medium] Staking:
+  - Show the solo nominating panel when the account has ledger data.
+  - Keep selected validators in the list but disable them, and show empty states for nomination and staking.
+  - Refresh the pool unclaim reward after claiming, fix staking pool name decoding, and show the extension
+    metadata update notice in staking popups.
+- [Medium] Profile and identity:
+  - Support EVM (Revive) addresses on the Polkadot profile page and link them to the original substrate account.
+  - Add the DotNS web IDs page for Polkadot, including label store details.
+  - Click the avatar to switch between identicon and custom avatar, and render the default banner before the custom
+    banner finishes loading.
+  - Hide the relatives transfer view.
+- [Medium] Content and discussions:
+  - Show revision history for posts, appendants and comments, backed by a new backend API.
+  - Allow muting users so they cannot create or edit content, including backend enforcement.
+  - Render delegation announcements whose content is not plain text.
+- [Medium] Referenda and delegation:
+  - Split large delegation/undelegation and clear-expired-votes batches by block weight, submit the transactions
+    sequentially, and refresh my delegations at the best block right after a transaction is in block.
+  - Fix the PAPI migration of currency locked by vesting, and the V5/para-relay call decoding.
+  - Improve whitelist call parsing/logging and the linking between OpenGov and fellowship referenda in scan.
+- Call data: add a call tree style JSON view and improve preimage decoding performance.
+- UI/UX:
+  - Make popups non-modal to avoid the Radix body style crash.
+  - Encode ids used to build redirect destinations.
+  - Remove the Polkassembly link icon from post detail pages.
+  - Show the extension update reminder at the top of signer popups.
+- Performance:
+  - Keep ethers and the Polkadot Vault QR libraries out of the first load.
+  - Load the Hydration treasury stats widget on demand with its own error boundary.
+  - Optimize dotUSD summary loading.
+  - Reduce intime scan memory usage with paged voting reads, streamed vote refresh, a bounded block API cache and
+    garbage collection during refreshes.
+- Reliability:
+  - Add a canvas measureText fallback for chart.js so pages do not break on headless browsers (e.g. Lightpanda).
+  - Skip sidebar animations where SVGElement is missing, and skip client error reports from crawlers.
+  - Fix general v5 transaction decoding in the intime scan, and restart a slow scan after a runtime upgrade.
+- Bug fixes:
+  - Fix the multi-asset bounty curator rendering crash.
+  - Fix the number formatter that mangled amounts below 100,000.
+  - Fix a crash when leaving the signup page, and guard invalid proposal ids.
+  - Fix the Polkadot key registration check.
+- Security and hardening:
+  - Fix Dependabot alerts and upgrade dompurify, next, sharp, sanitize-html, follow-redirects, vite, source-map-js,
+    decode-uri-component, fast-uri and zod; vendor a patched deepmerge.
+  - Rate limit auth email sending per recipient, email type and IP.
+- Chain maintenance: remove moonriver/moonbeam, centrifuge, ajuna and zeitgeist chain code from the frontend and
+  backend.
+- Upgrade dependencies.
+
+# 6.9.0
+
+Date:
+2026-09-30. [Code diff](https://github.com/opensquare-network/subsquare/compare/4da9a545c0e473bd2ff3e4bcb195b6b458952761...53d8a36eedcb042f95ec2e3882a8d87cf744ffd5).
+
+- [Big] Full text search on Polkadot: integrate full-text search into the header search popup, covering referenda,
+  democracy referenda, referenda comments, bounties, child bounties, tips, treasury proposals and spends, fellowship
+  referenda, identities and treasury-funded projects, with keyword highlighting and grouped sections. Related backend
+  API is included.
+- [Medium] NFT assets:
+  - Show NFT collections and items on the user profile page.
+  - Add an NFT list to the AssetHub page and show NFT on-chain data on the assets page.
+  - Support transferring NFTs, and refresh the list after a transfer.
+  - Enhance the collection tree with show all/show less.
+  - Resolve NFT metadata through the new `NEXT_PUBLIC_IPFS_GATEWAY` config.
+- [Medium] Multi-asset bounties:
+  - Add the accept curator action, including pure proxy multisig and multisig selection, and warn about duplicate
+    pending multisigs.
+  - Support creating child bounties with metadata hash, and add child bounty curator proposal and check-status actions.
+  - Support award, close and payment actions for multi-asset bounties and child bounties based on on-chain live status.
+  - Add a referenda template to fund a multi-asset bounty, decode its preimage metadata and show a preimage popup.
+  - Scan marks a newly created child bounty as active instead of funded when the child curator is the parent curator.
+- [Medium] Coretime:
+  - Add a regions page and account prompt.
+  - Support coretime purchase renewal and region actions: partition, interlace, pool assign and transfer, with filters.
+  - Show account information and coretime transfers on the coretime page.
+  - Improve the coretime history tab order and fix the chart dot order.
+- [Medium] Watch-only accounts: support adding a watch-only address on all chains. Actions that require a signer are
+  disabled with hints, and the eye icon and metadata warning are adjusted for watch-only accounts.
+- [Medium] EVM accounts: support EVM accounts with the existing WalletConnect connector on Hydration, including network
+  switching and sending EVM transactions.
+- [Medium] Comments:
+  - Show comment edit history. Related backend API is included.
+  - Allow the referenda proposer to save the comment filter as the default for all visitors, with a confirmation popup.
+    Related backend API is included.
+- [Medium] Referenda and preimages:
+  - Correct preimage decoding and show text preimages in the preimage list.
+  - Fix preimage call details on account preimages and the my-deposits filter.
+  - Fix referenda call decoding for polkadot index 1944 in both the frontend and scan.
+- Treasury:
+  - Improve treasury spend payout button state management.
+  - Reorder treasury proposal templates.
+- UI/UX:
+  - Change the Hydration block explorer to Neckwork.
+  - Update Polkadot social links: new Discord URL and add Telegram.
+  - Opt out of machine translation and merge adjacent text nodes to avoid Google Translate breaking React DOM updates.
+  - Add a link to the account assets page and remove a useless address label.
+- Performance: lazy load referendum statistics and the curve chart.
+- Bug fixes:
+  - Fix DV pages crash caused by a missing referenda pallet provider.
+  - Fix null find error in fellowship salary.
+  - Fix the outlabels plugin affecting unrelated charts.
+- Backend: add `.nvmrc` to pin the Node version.
+- Scan:
+  - Fix decoding of v5 general extrinsics with versioned transaction extensions.
+  - Improve VerifyMultiSignature handling in general extrinsics.
+  - Add a script to mark treasury proposals as removed.
+  - PAPI: fix the `System.Events` query error at block 18407475.
+- Upgrade dependencies.
+
 # 6.8.0
 
 Date:

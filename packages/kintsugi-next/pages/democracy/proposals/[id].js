@@ -1,5 +1,6 @@
 import DetailItem from "components/detailItem";
 import { withCommonProps } from "next-common/lib";
+import { anyOf, isNumericId, isObjectId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import Timeline from "components/publicProposal/timeline";
@@ -126,39 +127,43 @@ export default function DemocracyProposalPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  const { result: detail } = await backendApi.fetch(
-    `democracy/proposals/${id}`,
-  );
-
-  if (!detail) {
-    return getNullDetailProps(id, { referendum: null });
-  }
-
-  let referendum;
-  if (!isNil(detail.referendumIndex)) {
-    const { result } = await backendApi.fetch(
-      `democracy/referendums/${detail.referendumIndex}`,
+    const { result: detail } = await backendApi.fetch(
+      `democracy/proposals/${id}`,
     );
-    referendum = result;
-  }
 
-  const comments = await fetchDetailComments(
-    `democracy/proposals/${detail._id}/comments`,
-    context,
-  );
+    if (!detail) {
+      return getNullDetailProps(id, { referendum: null });
+    }
 
-  const { result: summary } = await backendApi.fetch("overview/summary");
+    let referendum;
+    if (!isNil(detail.referendumIndex)) {
+      const { result } = await backendApi.fetch(
+        `democracy/referendums/${detail.referendumIndex}`,
+      );
+      referendum = result;
+    }
 
-  return {
-    props: {
-      id,
-      detail: detail ?? null,
-      referendum: referendum ?? null,
-      comments: comments ?? EmptyList,
-      summary: summary ?? {},
-    },
-  };
-});
+    const comments = await fetchDetailComments(
+      `democracy/proposals/${detail._id}/comments`,
+      context,
+    );
+
+    const { result: summary } = await backendApi.fetch("overview/summary");
+
+    return {
+      props: {
+        id,
+        detail: detail ?? null,
+        referendum: referendum ?? null,
+        comments: comments ?? EmptyList,
+        summary: summary ?? {},
+      },
+    };
+  },
+  // A public proposal is addressed by its numeric proposal index, or by its post id.
+  { validateParams: { id: anyOf(isNumericId, isObjectId) } },
+);

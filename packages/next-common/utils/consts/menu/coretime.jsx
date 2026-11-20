@@ -5,6 +5,7 @@ import {
   MenuHistory,
   MenuTracks,
   MenuAdvanced,
+  MenuMarket,
 } from "@osn/icons/subsquare";
 import { NAV_MENU_TYPE } from "next-common/utils/constants";
 
@@ -40,6 +41,12 @@ export const coretimeMenu = {
       value: "regions",
       pathname: "/coretime/regions",
       icon: <MenuAdvanced />,
+    },
+    {
+      name: "Pool",
+      value: "pool",
+      pathname: "/coretime/pool",
+      icon: <MenuMarket />,
     },
   ],
 };

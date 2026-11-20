@@ -12,8 +12,6 @@ import hydradx from "./consts/settings/hydradx";
 import development from "./consts/settings/development";
 // import rococo from "./consts/settings/rococo";
 import collectives from "./consts/settings/collectives";
-// import moonbeam from "./consts/settings/moonbeam";
-// import moonriver from "./consts/settings/moonriver";
 import bifrostPolkadot from "./consts/settings/bifrostPolkadot";
 import vara from "./consts/settings/vara";
 import westend from "./consts/settings/westend";
@@ -27,7 +25,6 @@ import astar from "next-common/utils/consts/settings/astar";
 import zkverify from "./consts/settings/zkverify";
 import zkverifyTestnet from "./consts/settings/zkverifyTestnet";
 import paseo from "./consts/settings/paseo";
-// import ajuna from "./consts/settings/ajuna";
 import laos from "./consts/settings/laos";
 // import paseoAssetHub from "./consts/settings/paseoAssetHub";
 import paseoPeople from "./consts/settings/paseoPeople";
@@ -47,7 +44,6 @@ export const nodes = [
   kusamaPeople,
   acala,
   // acurast,
-  // ajuna,
   astar,
   basilisk,
   bifrost,
@@ -67,8 +63,6 @@ export const nodes = [
   // kintsugi,
   laos,
   litentry,
-  // moonbeam,
-  // moonriver,
   // polkadex,
   // rococo,
   // shibuya,

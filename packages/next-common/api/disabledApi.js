@@ -8,7 +8,6 @@ const disabledApiRoutes = [
   { route: /^\/api\/tech-comm/ }, // Technical Committee
   { route: /^\/api\/alliance/ }, // Alliance
   { route: /^\/api\/financial-motions/ },
-  { route: /^\/api\/advisory-motions/ },
   { route: /^\/api\/polkassembly-discussions/ },
   { route: /^\/api\/fellowship/ },
   { route: /^\/api\/overview/ },

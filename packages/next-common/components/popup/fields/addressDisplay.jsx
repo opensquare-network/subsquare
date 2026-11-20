@@ -35,7 +35,7 @@ const Wrapper = styled(GreyPanel)`
   gap: 16px;
 `;
 
-export default function AddressDisplay({ address }) {
+export default function AddressDisplay({ address, className = "" }) {
   const { identity, hasIdentity, isLoading } = useIdentityInfo(address);
   const normalized = normalizeAddress(address);
   const displayAddress = tryConvertToEvmAddress(normalized);
@@ -43,14 +43,14 @@ export default function AddressDisplay({ address }) {
 
   if (isLoading) {
     return (
-      <Wrapper>
+      <Wrapper className={className}>
         <AddressInfoLoading address={normalized} />
       </Wrapper>
     );
   }
 
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <div className="flex items-center gap-3">
         <AvatarWrapper>
           <AddressAvatar address={normalized} size={40} />

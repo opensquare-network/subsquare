@@ -3,7 +3,6 @@ import PopupWithSigner from "next-common/components/popupWithSigner";
 import PopupLabel from "next-common/components/popup/label";
 import Loading from "next-common/components/loading";
 import { InfoMessage } from "next-common/components/setting/styled";
-import Tooltip from "next-common/components/tooltip";
 import CurrencyInput from "next-common/components/currencyInput";
 import { useChainSettings } from "next-common/context/chain";
 import { useOnchainData } from "next-common/context/post";
@@ -72,8 +71,12 @@ export function useAcceptCuratorPopup(bountyIndex, curator) {
 //   2. native_amount = floor(bounty.value * conversionRateToNative / 10^18)
 //   3. deposit = clamp(floor(native_amount * CuratorDepositMultiplier), min, max)
 //   4. The deposit is held in the NATIVE token (e.g. DOT), not the bounty asset.
-export function useCuratorDeposit() {
-  const { assetKind, value } = useOnchainData();
+// `valueOverride` lets a form preview the hold for another bounty value, e.g.
+// Increase Value computing it for `value + amount`. Without it the recorded
+// value from the indexed data is used.
+export function useCuratorDeposit(valueOverride) {
+  const { assetKind, value: onchainValue } = useOnchainData();
+  const value = valueOverride ?? onchainValue;
   const { symbol: nativeSymbol, decimals: nativeDecimals } = useChainSettings();
   const api = useContextApi();
 
@@ -299,27 +302,24 @@ function PopupContent({ bountyIndex, curator, role }) {
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>
-      <Tooltip content={tooltipContent}>
-        <div className="flex justify-end">
-          <TxSubmissionButton
-            title="Confirm"
-            getTxFunc={getTxFunc}
-            disabled={!submitReady}
-            onInBlock={({ events }) => {
-              if (
-                role?.kind === "multisig" &&
-                getEventData(events, "multisig", "NewMultisig")
-              ) {
-                dispatch(
-                  newSuccessToast(
-                    "Multisig transaction submitted. Waiting for other signatories.",
-                  ),
-                );
-              }
-            }}
-          />
-        </div>
-      </Tooltip>
+      <TxSubmissionButton
+        title="Confirm"
+        getTxFunc={getTxFunc}
+        disabled={!submitReady}
+        tooltip={tooltipContent}
+        onInBlock={({ events }) => {
+          if (
+            role?.kind === "multisig" &&
+            getEventData(events, "multisig", "NewMultisig")
+          ) {
+            dispatch(
+              newSuccessToast(
+                "Multisig transaction submitted. Waiting for other signatories.",
+              ),
+            );
+          }
+        }}
+      />
     </>
   );
 }

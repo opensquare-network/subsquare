@@ -29,6 +29,13 @@ export const UserWrapper = styled(Flex)`
         `}
 `;
 
+export const AvatarToggleWrapper = styled.span`
+  display: inline-flex;
+  cursor: pointer;
+  /* Keep the avatar clickable inside wrappers that disable pointer events, e.g. noEvent user displays */
+  pointer-events: auto;
+`;
+
 export const AvatarImg = styled.img`
   border-radius: 50%;
   width: ${(p) => cssSize(p.size)};

@@ -94,12 +94,24 @@ export function Proposal({
   setShowArgumentsDetail,
 }) {
   if (proposalError) {
-    return <span className="text-red500 font-medium">{proposalError}</span>;
+    return (
+      <span
+        className="block truncate text-red500 font-medium"
+        title={proposalError}
+      >
+        {proposalError}
+      </span>
+    );
   }
 
   if (proposalWarning) {
     return (
-      <span className="text-orange500 font-medium">{proposalWarning}</span>
+      <span
+        className="block truncate text-orange500 font-medium"
+        title={proposalWarning}
+      >
+        {proposalWarning}
+      </span>
     );
   }
 
@@ -124,15 +136,19 @@ export function Proposal({
   }
 
   return (
-    <div className="flex flex-col max-md:overflow-hidden">
+    <div className="flex min-w-0 flex-col max-md:overflow-hidden">
       <div>
         <span
-          className="text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
+          className="block truncate text-textPrimary font-medium leading-[20px] hover:underline cursor-pointer max-md:text-[16px] max-md:leading-[24px]"
+          title={`${section}.${method}`}
           onClick={() => setShowArgumentsDetail(proposal)}
         >{`${section}.${method}`}</span>
       </div>
       {doc ? (
-        <span className="text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:whitespace-nowrap max-md:overflow-hidden max-md:text-ellipsis max-md:leading-[20px]">
+        <span
+          className="block truncate text-textSecondary text-[12px] leading-[16px] max-md:text-[14px] max-md:leading-[20px]"
+          title={doc}
+        >
           {doc}
         </span>
       ) : null}

@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { toPrecision } from "next-common/utils";
-import { useQueryAssetHubTreasuryFree } from "next-common/context/treasury/polkadotTreasury/hooks/useQueryAssetHubTreasuryFree";
+import { useTreasuryAssetBalance } from "next-common/hooks/treasury/useAssetBalance";
 import { useChainSettings } from "next-common/context/chain";
 import CurrencyInput from "next-common/components/currencyInput";
 import PopupLabel from "next-common/components/popup/label";
-import { StatemintTreasuryAccount } from "next-common/hooks/treasury/useAssetHubTreasuryBalance";
+import { TreasuryProvider } from "next-common/context/treasury";
 import { TreasuryBalance } from "./useUSDxBalanceField";
 
 function AssetHubDotBalance({ inputBalance, setInputBalance }) {
-  const { symbol, decimals } = useChainSettings();
-  const { free: treasuryBalance, isLoading: isTreasuryBalanceLoading } =
-    useQueryAssetHubTreasuryFree(StatemintTreasuryAccount);
+  const { symbol } = useChainSettings();
+  const {
+    balance: treasuryBalance,
+    decimals: treasuryBalanceDecimals,
+    loading: isTreasuryBalanceLoading,
+  } = useTreasuryAssetBalance(symbol);
 
   return (
     <div>
@@ -20,7 +23,10 @@ function AssetHubDotBalance({ inputBalance, setInputBalance }) {
           <TreasuryBalance
             isLoading={isTreasuryBalanceLoading}
             symbol={symbol}
-            treasuryBalance={toPrecision(treasuryBalance, decimals)}
+            treasuryBalance={toPrecision(
+              treasuryBalance,
+              treasuryBalanceDecimals,
+            )}
           />
         }
       />
@@ -39,10 +45,12 @@ export default function useAssetHubDotBalanceField() {
   return {
     value: inputBalance,
     component: (
-      <AssetHubDotBalance
-        inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-      />
+      <TreasuryProvider>
+        <AssetHubDotBalance
+          inputBalance={inputBalance}
+          setInputBalance={setInputBalance}
+        />
+      </TreasuryProvider>
     ),
   };
 }

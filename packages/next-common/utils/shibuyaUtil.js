@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { checksumAddress } from "./evm/checksumAddress";
 import { addressToEvm, evmToAddress } from "@polkadot/util-crypto";
 import { getContextConnectedAccount } from "next-common/context/connectedAccount";
 import getChainSettings from "./consts/settings";
@@ -27,7 +27,7 @@ export function substrateToEvmAddress(address) {
     return connectedAccount?.evmAddress;
   }
 
-  return ethers.getAddress(
+  return checksumAddress(
     "0x" + Buffer.from(addressToEvm(address)).toString("hex"),
   );
 }

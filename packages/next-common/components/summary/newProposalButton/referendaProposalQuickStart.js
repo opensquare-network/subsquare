@@ -12,9 +12,7 @@ import { ChoiceButton } from "next-common/components/summary/newProposalButton/c
 import { NewRemarkReferendumInnerPopupContent } from "../newProposalQuickStart/createSystemRemarkProposalPopup";
 import { CancelReferendumInnerPopupContent } from "../newProposalQuickStart/cancelReferendumInnerPopup";
 import { KillReferendumInnerPopupContent } from "../newProposalQuickStart/killReferendumInnerPopup";
-import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasuryProposalPopup";
 import { NewUSDxTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createUSDxTreasuryProposalPopup";
-import { SpendDotOnAssetHubReferendumInnerPopupContent } from "../newProposalQuickStart/spendDotOnAssetHubPopup";
 import { NewTreasurySpendReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasurySpendReferendumInnerPopupContent";
 import { isHydrationChain, isZkverifyChain } from "next-common/utils/chain";
 import {
@@ -23,21 +21,28 @@ import {
 } from "../newProposalQuickStart/batchTreasurySpendsPopup";
 import { NewHOLLARTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createHOLLARTreasuryReferendumInnerPopupContent";
 import FundMultiAssetBountyReferendumInnerPopupContent from "../newProposalQuickStart/fundMultiAssetBountyPopup";
+import { NewTreasuryReferendumInnerPopupContent } from "../newProposalQuickStart/createTreasuryProposalPopup";
+import { LocatableAccountTreasuryReferendumContent } from "../newProposalQuickStart/locatableAccountTreasuryProposal";
+import {
+  TREASURY_SPEND_FORMS,
+  getTreasurySpendForm,
+} from "next-common/utils/treasury/spendForm";
 
 const useQuickStartItems = () => {
+  const settings = useChainSettings();
   const {
     treasuryProposalTracks,
+    symbol,
     newProposalQuickStart: {
       usdxTreasuryProposal,
       batchUsdxTreasurySpendsProposal,
-      spendDotOnAssetHubProposal,
       cancelReferendum,
       killReferendum,
       treasurySpendProposal,
       batchTreasurySpendsProposal,
       fundMultiAssetBounty,
     } = {},
-  } = useChainSettings();
+  } = settings;
 
   const chain = useChain();
 
@@ -82,13 +87,6 @@ const useQuickStartItems = () => {
         content: BatchNativeTreasurySpendsReferendumInnerPopupContent,
       });
     }
-    if (treasuryProposalTracks && spendDotOnAssetHubProposal) {
-      items.push({
-        name: "Spend DOT on AssetHub",
-        description: "Create a treasury spend with DOT asset on AssetHub",
-        content: SpendDotOnAssetHubReferendumInnerPopupContent,
-      });
-    }
     if (fundMultiAssetBounty) {
       items.push({
         name: "Multi-asset bounty proposal",
@@ -97,12 +95,34 @@ const useQuickStartItems = () => {
         content: FundMultiAssetBountyReferendumInnerPopupContent,
       });
     }
-    items.push({
-      name: "Treasury proposal",
-      description:
-        "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
-      content: NewTreasuryReferendumInnerPopupContent,
-    });
+    switch (getTreasurySpendForm(chain, settings)) {
+      case TREASURY_SPEND_FORMS.locatableAccount:
+        items.push({
+          name: `${symbol} treasury proposal`,
+          description: `Create a treasury spend of ${symbol}`,
+          content: LocatableAccountTreasuryReferendumContent,
+        });
+        break;
+      case TREASURY_SPEND_FORMS.unitAsset:
+        items.push({
+          name: `${symbol} treasury proposal`,
+          description: `Create a treasury spend of ${symbol}`,
+          content: NewTreasurySpendReferendumInnerPopupContent,
+        });
+        break;
+      case TREASURY_SPEND_FORMS.unsupported:
+        break;
+      case TREASURY_SPEND_FORMS.spendLocal:
+        items.push({
+          name: "Treasury proposal",
+          description:
+            "Approve a treasury proposal and funds will be paid out automatically by treasury award period",
+          content: NewTreasuryReferendumInnerPopupContent,
+        });
+        break;
+      default:
+        break;
+    }
     items.push({
       name: isZkverifyChain(chain) ? "Remark (Wish for Change)" : "Remark",
       description: "Create a remark proposal",
@@ -131,9 +151,10 @@ const useQuickStartItems = () => {
   }, [
     cancelReferendum,
     chain,
+    settings,
+    symbol,
     batchTreasurySpendsProposal,
     killReferendum,
-    spendDotOnAssetHubProposal,
     treasuryProposalTracks,
     treasurySpendProposal,
     usdxTreasuryProposal,

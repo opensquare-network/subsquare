@@ -1,4 +1,3 @@
-// import CheckSimaSpec from "next-common/components/checkSimaSpec";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";

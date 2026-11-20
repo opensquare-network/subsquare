@@ -18,10 +18,12 @@ import {
 } from "next-common/components/treasury/bounty/balance";
 import { useMemo } from "react";
 import NewChildBountyButton from "next-common/components/treasury/multiAssetBounty/newChildBountyButton";
+import MultiAssetBountyIncreaseValue from "next-common/components/treasury/multiAssetBounty/increaseValue";
 import MultiAssetBountyAward from "next-common/components/treasury/multiAssetBounty/award";
 import MultiAssetBountyCloseBounty from "next-common/components/treasury/multiAssetBounty/closeBounty";
 import MultiAssetBountyPaymentAction from "next-common/components/treasury/multiAssetBounty/paymentAction";
 import SplitMoreContent from "next-common/components/splitMoreContent";
+import UnassignCurator from "next-common/components/treasury/multiAssetBounty/unassignCurator";
 
 function MultiAssetBountySidebarBalance() {
   const { address, assetKind } = useOnchainData();
@@ -86,12 +88,15 @@ function MultiAssetBountySidebar() {
       <SplitMoreContent
         more={
           <>
+            <MultiAssetBountyIncreaseValue />
             <MultiAssetBountyAward />
             <MultiAssetBountyCloseBounty />
+            <UnassignCurator phase="Active" />
           </>
         }
       >
         <MultiAssetBountyAcceptCuratorButton />
+        <UnassignCurator phase="Funded" />
         <NewChildBountyButton />
         <MultiAssetBountyPaymentAction />
       </SplitMoreContent>

@@ -5,6 +5,7 @@ import { Binary } from "polkadot-api";
 import {
   decodeCallTree,
   getBlockMetadata,
+  getMetadata,
 } from "next-common/utils/callDecoder/decoder.mjs";
 import { useConditionalContextPapi } from "../migration/conditionalPapi";
 
@@ -35,26 +36,45 @@ async function fetchPreimage(papi, preimageHash) {
   }
 }
 
+async function decodeCallTreeWithFallback(client, bytes, blockHash) {
+  if (blockHash) {
+    try {
+      const blockMetadata = await getBlockMetadata(client, blockHash);
+      if (blockMetadata) {
+        return decodeCallTree(bytes, blockMetadata);
+      }
+    } catch (e) {
+      console.warn("Failed to decode call with block metadata:", e);
+    }
+  }
+
+  try {
+    const metadata = await getMetadata(client);
+    if (metadata) {
+      return decodeCallTree(bytes, metadata);
+    }
+  } catch (e) {
+    console.warn("Failed to decode call with latest metadata:", e);
+  }
+
+  return null;
+}
+
 async function getPreimageCall(client, papi, preimageHash, blockHash) {
   const preimage = await fetchPreimage(papi, preimageHash);
   if (!preimage) {
     return null;
   }
-  const bytes = preimage;
-  const metadata = await getBlockMetadata(client, blockHash);
-  if (!metadata) {
-    return null;
-  }
-  return decodeCallTree(bytes, metadata);
+  return decodeCallTreeWithFallback(client, preimage, blockHash);
 }
 
 async function decodeInlineCallHex(client, blockHash, inlineCallHex) {
   const bytes = Binary.fromHex(inlineCallHex);
-  const metadata = await getBlockMetadata(client, blockHash);
-  if (!metadata) {
-    throw new Error("Cannot get block metadata");
+  const callTree = await decodeCallTreeWithFallback(client, bytes, blockHash);
+  if (!callTree) {
+    throw new Error("Cannot decode inline call");
   }
-  return decodeCallTree(bytes, metadata);
+  return callTree;
 }
 
 function useReferendumCall() {

@@ -1,7 +1,7 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import { useSignerAccount } from "next-common/components/popupWithSigner/context";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import AddressComboWithContactsField from "next-common/components/addressComboWithContacts/field";
 import { useContextApi } from "next-common/context/api";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useCallback, useState, useEffect } from "react";
@@ -98,8 +98,7 @@ function PopupContent() {
     symbol,
     isLoading: loading,
   });
-  const { value: transferToAddress, component: transferToAddressField } =
-    useAddressComboField({ title: "To" });
+  const [transferToAddress, setTransferToAddress] = useState("");
 
   const showDestinationWarning = useDestinationWarningCheck(
     transferAmount,
@@ -133,7 +132,11 @@ function PopupContent() {
   return (
     <>
       <SignerWithBalance api={api} />
-      {transferToAddressField}
+      <AddressComboWithContactsField
+        title="To"
+        address={transferToAddress}
+        setAddress={setTransferToAddress}
+      />
       {transferAmountField}
       {showDestinationWarning && <DestinationTransferWarning />}
       <AdvanceSettings>

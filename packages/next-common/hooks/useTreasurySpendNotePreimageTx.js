@@ -24,8 +24,8 @@ export function useTreasurySpendNotePreimageTx(
       return {};
     }
 
-    if (!api.tx?.treasury?.spend) {
-      throw new Error("api treasury spend tx is not supported");
+    if (!api?.tx?.treasury?.spend) {
+      return {};
     }
 
     try {

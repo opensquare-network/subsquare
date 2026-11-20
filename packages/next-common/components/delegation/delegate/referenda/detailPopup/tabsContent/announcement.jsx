@@ -1,5 +1,6 @@
 import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
 import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
+import { announcementText } from "../../../common/announcementText";
 
 export default function ReferendaDelegateeDetailPopupAnnouncement({
   delegate,
@@ -9,17 +10,17 @@ export default function ReferendaDelegateeDetailPopupAnnouncement({
   let content = "";
   let contentType = "markdown";
 
-  if (announcement) {
+  if (announcementText(announcement)) {
     content = announcement;
     contentType = announcementContentType;
   } else {
     switch (manifesto?.source) {
       case "nova":
       case "sima":
-        content = manifesto?.longDescription || "";
+        content = announcementText(manifesto?.longDescription) || "";
         break;
       case "parity":
-        content = manifesto?.manifesto || "";
+        content = announcementText(manifesto?.manifesto) || "";
         break;
     }
   }

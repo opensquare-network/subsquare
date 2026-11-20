@@ -16,6 +16,7 @@ export default function ProjectContent({ project }) {
     tips: tipList,
     bounties: bountyList,
     multiAssetBounties: multiAssetBountyList,
+    multiAssetChildBounties: multiAssetChildBountyList,
   } = project;
   const {
     tabs,
@@ -31,6 +32,8 @@ export default function ProjectContent({ project }) {
     bountiesLoading,
     multiAssetBounties,
     multiAssetBountiesLoading,
+    multiAssetChildBounties,
+    multiAssetChildBountiesLoading,
   } = usePopupDetailTabs({
     proposalList,
     spendList,
@@ -38,6 +41,7 @@ export default function ProjectContent({ project }) {
     tipList,
     bountyList,
     multiAssetBountyList,
+    multiAssetChildBountyList,
   });
 
   return (
@@ -56,12 +60,15 @@ export default function ProjectContent({ project }) {
         bountiesLoading={bountiesLoading}
         multiAssetBounties={multiAssetBounties}
         multiAssetBountiesLoading={multiAssetBountiesLoading}
+        multiAssetChildBounties={multiAssetChildBounties}
+        multiAssetChildBountiesLoading={multiAssetChildBountiesLoading}
         spendList={spendList}
         proposalList={proposalList}
         childBountyList={childBountyList}
         tipList={tipList}
         bountyList={bountyList}
         multiAssetBountyList={multiAssetBountyList}
+        multiAssetChildBountyList={multiAssetChildBountyList}
       />
       <ProjectTabsList tabs={tabs} />
     </>
@@ -101,6 +108,8 @@ function ProjectSummary({
   bountiesLoading,
   multiAssetBounties,
   multiAssetBountiesLoading,
+  multiAssetChildBounties,
+  multiAssetChildBountiesLoading,
   spendList,
   proposalList,
   childBountyList,
@@ -109,6 +118,7 @@ function ProjectSummary({
   tipList,
   bountyList,
   multiAssetBountyList,
+  multiAssetChildBountyList,
 }) {
   const proposalsTotal = useMemo(() => calcTotal(proposals), [proposals]);
   const spendsTotal = useMemo(() => calcTotal(spends), [spends]);
@@ -121,6 +131,10 @@ function ProjectSummary({
   const multiAssetBountiesTotal = useMemo(
     () => calcTotal(multiAssetBounties),
     [multiAssetBounties],
+  );
+  const multiAssetChildBountiesTotal = useMemo(
+    () => calcTotal(multiAssetChildBounties),
+    [multiAssetChildBounties],
   );
 
   const summaryItems = [
@@ -158,6 +172,11 @@ function ProjectSummary({
       title: "Multi-Asset Bounties",
       value: multiAssetBountiesTotal,
       loading: multiAssetBountiesLoading,
+    },
+    multiAssetChildBountyList?.length > 0 && {
+      title: "Multi-Asset Child Bounties",
+      value: multiAssetChildBountiesTotal,
+      loading: multiAssetChildBountiesLoading,
     },
   ].filter(Boolean);
 

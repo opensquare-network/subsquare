@@ -41,8 +41,6 @@ export const fellowshipReferendaMaxIndexApi = "fellowship/referenda/max-index";
 export const getFellowshipReferendumUrl = (id) => `${fellowshipReferenda}${id}`;
 export const getFellowshipReferendumCommentsUrl = (id) =>
   `${getFellowshipReferendumUrl(id)}/comments`;
-export const getFellowshipReferendumVoteCallsApi = (id) =>
-  `${fellowshipReferenda}${id}/vote-calls`;
 
 // fellowship tracks
 export const fellowshipTracksApi = "fellowship/tracks";
@@ -219,7 +217,6 @@ export const overviewApi = {
   financialMotions: "overview/financial-motions",
   allianceMotions: "overview/alliance-motions",
   allianceAnnouncements: "overview/alliance-announcements",
-  advisoryMotions: "overview/advisory-motions",
   communityMotions: "overview/community-motions",
   communityTreasuryProposals: "overview/community-treasury-proposals",
   fellowshipTreasurySpends: "overview/fellowship/treasury-spends",

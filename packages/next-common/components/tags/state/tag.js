@@ -54,20 +54,11 @@ const categoryTagMap = {
   [businessCategory.tcProposals]: CollectiveTag,
   [detailPageCategory.TECH_COMM_MOTION]: CollectiveTag,
 
-  [businessCategory.advisoryMotions]: CollectiveTag,
-  [detailPageCategory.ADVISORY_MOTION]: CollectiveTag,
-
   [businessCategory.allianceMotions]: CollectiveTag,
   [detailPageCategory.ALLIANCE_MOTION]: CollectiveTag,
 
   [businessCategory.financialMotions]: CollectiveTag,
   [detailPageCategory.FINANCIAL_MOTION]: CollectiveTag,
-
-  [businessCategory.treasuryCouncilMotions]: CollectiveTag,
-  [detailPageCategory.TREASURY_COUNCIL_MOTION]: CollectiveTag,
-
-  [businessCategory.openTechCommitteeProposals]: CollectiveTag,
-  [detailPageCategory.OPEN_TECH_COMM_PROPOSAL]: CollectiveTag,
 
   [businessCategory.collective]: CollectiveTag,
 

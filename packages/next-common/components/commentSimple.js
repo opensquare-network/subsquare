@@ -219,14 +219,6 @@ const getCommentSource = (comment) => {
       `/fellowship/referenda/${referendumIndex}`,
     ];
   }
-  if (comment?.advisoryCommitteeMotion) {
-    const motionId = getMotionId(comment?.advisoryCommitteeMotion);
-    return [
-      "Advisory Committee Motions",
-      comment?.advisoryCommitteeMotion?.title || `Motion #${motionId}`,
-      `/advisory-committee/motions/${motionId}`,
-    ];
-  }
   if (comment?.allianceMotion) {
     const motionId = getMotionId(comment?.allianceMotion);
     return [
@@ -244,15 +236,6 @@ const getCommentSource = (comment) => {
       `/alliance/announcements/${comment?.allianceAnnouncement?.indexer.blockHeight}_${cid}`,
     ];
   }
-  if (comment?.openTechCommittee) {
-    const motionId = getMotionId(comment?.openTechCommittee);
-    return [
-      "Open Tech. Comm. Proposals",
-      comment?.openTechCommittee?.title || `Proposal #${motionId}`,
-      `/open-techcomm/proposals/${motionId}`,
-    ];
-  }
-
   return ["Unknown"];
 };
 

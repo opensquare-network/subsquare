@@ -25,6 +25,7 @@ export const accountMenu = {
   pathname: getAccountUrl(),
   extraMatchNavMenuActivePathnames: [
     "/account/been-delegated",
+    "/account/contacts",
     "/account/delegations",
     "/account/deposits",
     "/account/help-recover",

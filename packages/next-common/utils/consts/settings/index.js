@@ -13,9 +13,7 @@ import kintsugi from "./kintsugi";
 import polkadex from "./polkadex";
 import turing from "./turing";
 import crust from "./crust";
-import centrifuge from "./centrifuge";
 import litmus from "./litmus";
-import zeitgeist from "./zeitgeist";
 import hydradx from "./hydradx";
 import hydradxTestnet from "./hydradxTestnet";
 import development from "./development";
@@ -25,8 +23,6 @@ import westendCollectives from "./westendCollectives";
 import westend from "./westend";
 import collectives from "./collectives";
 import darwinia2 from "./darwinia";
-import moonriver from "./moonriver";
-import moonbeam from "./moonbeam";
 import bifrostPolkadot from "./bifrostPolkadot";
 import vara from "./vara";
 import polkadotAssetHub from "./polkadotAssetHub";
@@ -40,7 +36,6 @@ import zkverify from "./zkverify";
 import zkverifyTestnet from "./zkverifyTestnet";
 import paseo from "./paseo";
 import paseoAssetHub from "./paseoAssetHub";
-import ajuna from "./ajuna";
 import kusamaCoretime from "./kusamaCoretime";
 import polkadotCoretime from "./polkadotCoretime";
 import laos from "./laos";
@@ -68,7 +63,6 @@ const settingsMap = {
   basilisk,
   bifrost,
   calamari,
-  centrifuge,
   collectives,
   crab,
   crust,
@@ -85,12 +79,9 @@ const settingsMap = {
   [laosTestnet.value]: laosTestnet,
   litentry,
   litmus,
-  moonbeam,
-  moonriver,
   phala,
   polkadex,
   turing,
-  zeitgeist,
   rococo,
   westend,
   [westendCollectives.value]: westendCollectives,
@@ -104,7 +95,6 @@ const settingsMap = {
   [zkverifyTestnet.value]: zkverifyTestnet,
   paseo,
   [paseoAssetHub.value]: paseoAssetHub,
-  ajuna,
   [polkadotCoretime.value]: polkadotCoretime,
   [polkadotPeople.value]: polkadotPeople,
   [kusamaCoretime.value]: kusamaCoretime,
@@ -115,7 +105,7 @@ const settingsMap = {
 };
 
 /**
- * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof moonriver & typeof centrifuge & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
+ * @returns {typeof kusama & typeof polkadot & typeof kintsugi & typeof collectives & typeof hydradx & typeof zkverifyTestnet}
  */
 export default function getChainSettings(chain, blockHeight = null) {
   let settings = settingsMap[chain];

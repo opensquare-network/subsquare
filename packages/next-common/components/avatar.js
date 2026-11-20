@@ -36,7 +36,11 @@ const ImgWrapper = styled.img`
   border-radius: 50%;
 `;
 
-export default function Avatar({ address, size = "24px" }) {
+export default function Avatar({
+  address,
+  size = "24px",
+  showCustomAvatar = true,
+}) {
   const themeObj = useThemeSetting();
   const theme = "polkadot";
   const addressAvatarMap = useAddressAvatarMap();
@@ -45,7 +49,7 @@ export default function Avatar({ address, size = "24px" }) {
 
   const [avatarCid] = useAvatarInfo(address);
 
-  if (avatarCid) {
+  if (showCustomAvatar && avatarCid) {
     return <AvatarImg src={getStorageLink(avatarCid)} size={size} />;
   }
 

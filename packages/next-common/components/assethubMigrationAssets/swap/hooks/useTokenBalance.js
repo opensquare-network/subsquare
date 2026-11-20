@@ -1,14 +1,15 @@
 import { useAsync } from "react-use";
 import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
-import {
-  buildBalanceQuery,
-  readReserveBalance,
-} from "../../liquidPools/useLiquidPools";
+import { buildBalanceQuery, readReserveBalance } from "../../liquidPools/utils";
 
 export default function useTokenBalance({ address, token }) {
   const papi = useAssetHubPapi();
   const canLoad = !!papi && !!address && !!token;
-  const { value: balance = null, loading, error } = useAsync(async () => {
+  const {
+    value: balance = null,
+    loading,
+    error,
+  } = useAsync(async () => {
     if (!canLoad) {
       return null;
     }

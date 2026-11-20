@@ -1,4 +1,11 @@
 import { withCommonProps } from "next-common/lib";
+import {
+  anyOf,
+  isBlockHashId,
+  isBlockHeightHashId,
+  isNumericId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import { PostProvider, usePost } from "next-common/context/post";
@@ -43,24 +50,33 @@ export default function MotionPage({ motion }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: motion } = await backendApi.fetch(`alliance/motions/${id}`);
-  if (!motion) {
-    return getNullDetailProps(id, { motion: null });
-  }
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: motion } = await backendApi.fetch(`alliance/motions/${id}`);
+    if (!motion) {
+      return getNullDetailProps(id, { motion: null });
+    }
 
-  const comments = await fetchDetailComments(
-    `alliance/motions/${motion._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `alliance/motions/${motion._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      ...tracksProps,
-      motion: motion ?? null,
-      comments: comments ?? EmptyList,
+    return {
+      props: {
+        ...tracksProps,
+        motion: motion ?? null,
+        comments: comments ?? EmptyList,
+      },
+    };
+  },
+  // A motion is addressed by its motion index, by `<blockHeight>_<hash>`, by its hash,
+  // or by its post id.
+  {
+    validateParams: {
+      id: anyOf(isNumericId, isBlockHeightHashId, isBlockHashId, isObjectId),
     },
-  };
-});
+  },
+);

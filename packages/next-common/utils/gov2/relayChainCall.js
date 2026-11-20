@@ -2,7 +2,10 @@ export function isXcmCall(call) {
   return call?.section === "polkadotXcm" && call?.method === "send";
 }
 export function isFromParaToRelayChain(xcmLocation) {
-  if (xcmLocation.isV4) {
+  if (xcmLocation.isV5) {
+    const V5Location = xcmLocation.asV5;
+    return V5Location?.parents.toNumber() === 1 && V5Location?.interior.isHere;
+  } else if (xcmLocation.isV4) {
     const V4Location = xcmLocation.asV4;
     return V4Location?.parents.toNumber() === 1 && V4Location?.interior.isHere;
   } else if (xcmLocation.isV3) {

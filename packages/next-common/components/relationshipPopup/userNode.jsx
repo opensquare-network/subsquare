@@ -14,7 +14,7 @@ import {
 } from "next-common/context/address";
 import { useCallback } from "react";
 import useFetchUserInfo from "next-common/hooks/profile/useFetchUserInfo";
-import { getBannerUrl } from "next-common/utils/banner";
+import useBannerUrl from "next-common/hooks/profile/banner/useBannerUrl";
 
 const NodeWrap = styled.div`
   box-shadow: var(--shadow100);
@@ -82,7 +82,7 @@ function AddressLabel({ data }) {
 function SelfNode({ data }) {
   const { user } = useFetchUserInfo(data?.address);
   const defaultBannerUrl = useProfileBannerUrlWithDefault();
-  const bannerUrl = getBannerUrl(user?.bannerCid) || defaultBannerUrl;
+  const bannerUrl = useBannerUrl(user?.bannerCid, defaultBannerUrl);
 
   return (
     <div className="flex flex-col items-center justify-center">

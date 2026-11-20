@@ -4,6 +4,7 @@ import DemocracyDelegationCardSummary from "../summary";
 import AddressUser from "next-common/components/user/addressUser";
 import { DelegateAvatar } from "../../referenda/avatar";
 import DemocracyDelegateeDetailPopupTabsContent from "./tabsContent";
+import { announcementText } from "../../common/announcementText";
 // import DetailButtons from "../../common/detailButtons";
 
 export default function DemocracyDelegateeDetailPopup({
@@ -11,6 +12,7 @@ export default function DemocracyDelegateeDetailPopup({
   setDetailOpen,
 }) {
   const { address, manifesto } = delegate;
+  const shortDescription = announcementText(manifesto?.shortDescription);
 
   return (
     <Popup
@@ -34,10 +36,8 @@ export default function DemocracyDelegateeDetailPopup({
         </div>
       </div>
 
-      {manifesto?.shortDescription && (
-        <div className="text-textTertiary text14Medium">
-          {manifesto.shortDescription}
-        </div>
+      {shortDescription && (
+        <div className="text-textTertiary text14Medium">{shortDescription}</div>
       )}
 
       <div>

@@ -27,6 +27,10 @@ const AccountInfo = dynamicClientOnly(() =>
   import("next-common/components/overview/accountInfo"),
 );
 
+const CoretimeMyCoretimePanel = dynamicClientOnly(() =>
+  import("next-common/components/coretime/myCoretime"),
+);
+
 const isCoretimeSupported = !!getChainSettings(CHAIN).modules?.coretime;
 
 let chain;
@@ -74,6 +78,7 @@ function CoretimeOverviewPageImpl() {
       <div className="space-y-6">
         <PapiProvider>
           <AccountInfo />
+          <CoretimeMyCoretimePanel />
         </PapiProvider>
         <CoretimeSalePanel />
         <CoretimeSalesHistorySection />

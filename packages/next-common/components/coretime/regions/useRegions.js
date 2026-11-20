@@ -5,11 +5,18 @@ import { useContextPapiApi } from "next-common/context/papi";
 import useCoretimeStatus from "next-common/context/coretime/status";
 import { formatRegionEntry } from "./utils";
 
+// PAPI exposes the entry key of `watchEntries` as `args`; `keyArgs` is only
+// returned by `getEntries`.
+const sameEntryKey = (a, b) => {
+  const aArgs = a.args ?? a.keyArgs ?? [];
+  const bArgs = b.args ?? b.keyArgs ?? [];
+  return (
+    aArgs.length === bArgs.length && aArgs.every((arg, i) => arg === bArgs[i])
+  );
+};
+
 const isSameEntry = (a, b) =>
-  a === b ||
-  (a.keyArgs.length === b.keyArgs.length &&
-    a.keyArgs.every((arg, i) => arg === b.keyArgs[i]) &&
-    a.value === b.value);
+  a === b || (sameEntryKey(a, b) && a.value === b.value);
 
 export default function useRegions() {
   const api = useContextPapiApi();

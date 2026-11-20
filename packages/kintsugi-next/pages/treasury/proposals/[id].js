@@ -11,6 +11,7 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import DetailMultiTabs from "next-common/components/detail/detailMultiTabs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
@@ -80,25 +81,32 @@ export default function Proposal({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: detail } = await backendApi.fetch(`treasury/proposals/${id}`);
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    const { result: detail } = await backendApi.fetch(
+      `treasury/proposals/${id}`,
+    );
 
-  const comments = await fetchDetailComments(
-    `treasury/proposals/${detail._id}/comments`,
-    context,
-  );
-  const { result: summary } = await backendApi.fetch("overview/summary");
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      summary: summary ?? {},
-    },
-  };
-});
+    const comments = await fetchDetailComments(
+      `treasury/proposals/${detail._id}/comments`,
+      context,
+    );
+    const { result: summary } = await backendApi.fetch("overview/summary");
+
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        summary: summary ?? {},
+      },
+    };
+  },
+  // /treasury/proposals/summary is a backend stats endpoint, not a proposal.
+  { validateParams: { id: isNumericId } },
+);

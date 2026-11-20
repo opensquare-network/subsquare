@@ -1,28 +1,19 @@
 import { withCommonProps } from "next-common/lib";
 import { useChain, useChainSettings } from "next-common/context/chain";
-import {
-  isAssetHubChain,
-  isCentrifugeChain,
-  isCollectivesChain,
-} from "next-common/utils/chain";
+import { isAssetHubChain, isCollectivesChain } from "next-common/utils/chain";
 import ListLayout from "next-common/components/layout/ListLayout";
 import OverviewSummary from "next-common/components/summary/overviewSummary";
 import AllianceOverviewSummary from "next-common/components/summary/allianceOverviewSummary";
-import CentrifugeOverviewSummary from "next-common/components/summary/centrifugeOverviewSummary";
 import OffChainVoting from "next-common/components/summary/externalInfo/offChainVoting";
 import { hasDefinedBounties } from "next-common/utils/summaryExternalInfo";
 import { HeadContent, TitleExtra } from "next-common/components/overview";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { fetchRecentProposalsProps } from "next-common/services/serverSide/recentProposals";
 import Overview from "next-common/components/overview/overview";
-import CentrifugeOverview from "next-common/components/overview/centrifugeOverview";
 import {
   fetchForumCategories,
   fetchForumLatestTopics,
 } from "next-common/services/serverSide/forum";
-import { BasicDataProvider } from "next-common/context/centrifuge/basicData";
-import { DailyExtrinsicsProvider } from "next-common/context/centrifuge/DailyExtrinsics";
-import { TokenPricesProvider } from "next-common/context/centrifuge/tokenPrices";
 import { backendApi } from "next-common/services/nextApi";
 import dynamicClientOnly from "next-common/lib/dynamic/clientOnly";
 import { votingSpace } from "next-common/utils/opensquareVoting";
@@ -71,29 +62,6 @@ function DefaultOverviewPage() {
       exactMatch: false,
     },
   ];
-
-  if (isCentrifugeChain(chain)) {
-    return (
-      <BasicDataProvider>
-        <DailyExtrinsicsProvider>
-          <TokenPricesProvider>
-            <ListLayout
-              title={chainSettings.name}
-              titleExtra={<TitleExtra />}
-              seoInfo={{ title: "" }}
-              description={chainSettings.description}
-              headContent={<HeadContent />}
-              summary={<CentrifugeOverviewSummary />}
-              summaryFooter={<ExternalInfo />}
-              tabs={tabs}
-            >
-              <CentrifugeOverview />
-            </ListLayout>
-          </TokenPricesProvider>
-        </DailyExtrinsicsProvider>
-      </BasicDataProvider>
-    );
-  }
 
   return (
     <ListLayout

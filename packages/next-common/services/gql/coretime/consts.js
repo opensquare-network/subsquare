@@ -47,6 +47,60 @@ export const GET_CORETIME_SALE_RENEWALS = gql`
   }
 `;
 
+export const GET_MY_CORETIME_PAID_CORES = gql`
+  query MyQuery(
+    $saleId: Int!
+    $prevSaleId: Int!
+    $limit: Int!
+    $hasPrevSale: Boolean!
+  ) {
+    renewals: coretimeSaleRenewals(limit: $limit, offset: 0, saleId: $saleId) {
+      items {
+        core
+        begin
+        who
+      }
+    }
+    purchases: coretimeSalePurchases(
+      limit: $limit
+      offset: 0
+      saleId: $saleId
+    ) {
+      items {
+        who
+        regionId {
+          begin
+          core
+        }
+      }
+    }
+    prevRenewals: coretimeSaleRenewals(
+      limit: $limit
+      offset: 0
+      saleId: $prevSaleId
+    ) @include(if: $hasPrevSale) {
+      items {
+        core
+        begin
+        who
+      }
+    }
+    prevPurchases: coretimeSalePurchases(
+      limit: $limit
+      offset: 0
+      saleId: $prevSaleId
+    ) @include(if: $hasPrevSale) {
+      items {
+        who
+        regionId {
+          begin
+          core
+        }
+      }
+    }
+  }
+`;
+
 export const GET_CORETIME_HISTORY_SALES = gql`
   query MyQuery($limit: Int!, $offset: Int!) {
     coretimeHistorySales(limit: $limit, offset: $offset) {

@@ -64,6 +64,7 @@ export function getTreasuryMenu(summary) {
         name: Names.proposals,
         pathname: "/treasury/proposals",
         extraMatchNavMenuActivePathnames: ["/treasury/proposals/[id]"],
+        archived: treasury?.proposals?.archived,
         activeCount: activeTreasuryProposals,
       },
       treasury?.bounties && {

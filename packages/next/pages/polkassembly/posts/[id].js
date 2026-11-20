@@ -2,6 +2,7 @@ import DetailItem from "next-common/components/polkassembly/detailItem";
 import PolkassemblyComments from "next-common/components/polkassembly/comment";
 import { usePolkassemblyPostData } from "next-common/hooks/polkassembly/usePolkassemblyPostData";
 import { withCommonProps } from "next-common/lib";
+import { isNumericId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
 import DetailLayout from "next-common/components/layout/DetailLayout";
@@ -59,18 +60,22 @@ function PostsPageImpl({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const [{ result: detail = null }] = await Promise.all([
-    backendApi.fetch(`polkassembly-discussions/${id}`),
-  ]);
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const [{ result: detail = null }] = await Promise.all([
+      backendApi.fetch(`polkassembly-discussions/${id}`),
+    ]);
 
-  const tracksProps = await fetchOpenGovTracksProps();
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      detail,
-      ...tracksProps,
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        ...tracksProps,
+      },
+    };
+  },
+  // A polkassembly discussion is addressed by its numeric polkassembly id.
+  { validateParams: { id: isNumericId } },
+);

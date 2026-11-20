@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { isTrackId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import {
   fellowshipReferendumsTrackApi,
@@ -88,47 +89,51 @@ export default function TrackPage({
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { page = 1, page_size: pageSize = 50, id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { page = 1, page_size: pageSize = 50, id } = context.query;
 
-  const tracksProps = await fetchOpenGovTracksProps();
-  const { fellowshipTracks, summary } = tracksProps;
-  let track = fellowshipTracks.find(
-    (trackItem) => trackItem.id === parseInt(id),
-  );
-  if (!track) {
-    track = fellowshipTracks.find((item) => item.name === id);
-  }
+    const tracksProps = await fetchOpenGovTracksProps();
+    const { fellowshipTracks, summary } = tracksProps;
+    let track = fellowshipTracks.find(
+      (trackItem) => trackItem.id === parseInt(id),
+    );
+    if (!track) {
+      track = fellowshipTracks.find((item) => item.name === id);
+    }
 
-  const [
-    { result: posts },
-    { result: trackReferendaSummary },
-    { result: period },
-    { result: fellowshipTracksDetail },
-  ] = await Promise.all([
-    track
-      ? backendApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
-          page,
-          pageSize,
-          simple: true,
-        })
-      : {},
-    track
-      ? backendApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id))
-      : {},
-    track ? backendApi.fetch(fellowshipReferendumsTracksApi(track?.id)) : {},
-    backendApi.fetch(fellowshipTracksApi),
-  ]);
+    const [
+      { result: posts },
+      { result: trackReferendaSummary },
+      { result: period },
+      { result: fellowshipTracksDetail },
+    ] = await Promise.all([
+      track
+        ? backendApi.fetch(fellowshipReferendumsTrackApi(track?.id), {
+            page,
+            pageSize,
+            simple: true,
+          })
+        : {},
+      track
+        ? backendApi.fetch(fellowshipReferendumsTracksSummaryApi(track?.id))
+        : {},
+      track ? backendApi.fetch(fellowshipReferendumsTracksApi(track?.id)) : {},
+      backendApi.fetch(fellowshipTracksApi),
+    ]);
 
-  return {
-    props: {
-      posts: posts ?? EmptyList,
-      title: "Fellowship " + startCase(track?.name),
-      summary: summary ?? {},
-      ...tracksProps,
-      trackReferendaSummary: trackReferendaSummary ?? {},
-      period: period ?? {},
-      fellowshipTracksDetail: fellowshipTracksDetail ?? null,
-    },
-  };
-});
+    return {
+      props: {
+        posts: posts ?? EmptyList,
+        title: "Fellowship " + startCase(track?.name),
+        summary: summary ?? {},
+        ...tracksProps,
+        trackReferendaSummary: trackReferendaSummary ?? {},
+        period: period ?? {},
+        fellowshipTracksDetail: fellowshipTracksDetail ?? null,
+      },
+    };
+  },
+  // A track is addressed by its numeric id, or by its on-chain name.
+  { validateParams: { id: isTrackId } },
+);

@@ -1,15 +1,21 @@
-import { useReferendaAppendantsContext } from "next-common/context/referendaAppendants";
-import EditAppendantPopup from "../common/editPopup";
+import { usePost } from "next-common/context/post";
+import { useArticleActions } from "next-common/sima/context/articleActions";
+import LegacyEditAppendantPopup from "./legacyEditPopup";
+import SimaEditAppendantPopup from "./simaEditPopup";
 
 export default function ReferendaEditAppendantPopup({ onClose, editData }) {
-  const { update } = useReferendaAppendantsContext();
+  const post = usePost();
+  const { supportSima } = useArticleActions();
 
-  return (
-    <EditAppendantPopup
-      onClose={onClose}
-      editData={editData}
-      onSuccess={update}
-      description="You are editing an appendant as authors."
-    />
-  );
+  const isSimaAppendant =
+    supportSima &&
+    editData?.dataSource === "sima" &&
+    !!editData?.cid &&
+    post?.refToPost?.postType === "referendaReferendum";
+
+  if (isSimaAppendant) {
+    return <SimaEditAppendantPopup onClose={onClose} editData={editData} />;
+  }
+
+  return <LegacyEditAppendantPopup onClose={onClose} editData={editData} />;
 }

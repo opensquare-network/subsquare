@@ -16,6 +16,7 @@ import NotFound from "next-common/components/notFound";
 import Influence from "next-common/components/referenda/dv/influence";
 import CohortInfoPanel from "next-common/components/referenda/dv/cohort/cohortInfoPanel";
 import { ReferendaPalletProvider } from "next-common/context/referenda/pallet";
+import { isNumericId } from "next-common/utils/routeParams";
 
 function NilCohortPage() {
   const seoInfo = {
@@ -87,25 +88,29 @@ function DelegatesSection() {
   );
 }
 
-export const getServerSideProps = withReferendaCommonProps(async (context) => {
-  const { id } = context.query;
-  const baseUrl = `/dv/cohorts/${id}`;
+export const getServerSideProps = withReferendaCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const baseUrl = `/dv/cohorts/${id}`;
 
-  const { result: cohort } = await backendApi.fetch(baseUrl);
-  if (isNil(cohort)) {
+    const { result: cohort } = await backendApi.fetch(baseUrl);
+    if (isNil(cohort)) {
+      return {
+        props: {
+          id,
+        },
+      };
+    }
+
+    const { result: votes } = await backendApi.fetch(`${baseUrl}/votes`);
     return {
       props: {
         id,
+        cohort,
+        votes,
       },
     };
-  }
-
-  const { result: votes } = await backendApi.fetch(`${baseUrl}/votes`);
-  return {
-    props: {
-      id,
-      cohort,
-      votes,
-    },
-  };
-});
+  },
+  // A cohort is addressed by its numeric index.
+  { validateParams: { id: isNumericId } },
+);

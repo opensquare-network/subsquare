@@ -1,17 +1,14 @@
 import { usePost } from "../context/post";
 import { useChain, useChainSettings } from "../context/chain";
-import {
-  PolkassemblyChains,
-  getPolkassemblyLink,
-} from "next-common/utils/polkassembly";
 import { useDetailType } from "../context/page";
 import ExternalLink from "./externalLink";
 import { getSubscanLink } from "next-common/utils/subscan";
 import { getNeckworkPostLink } from "next-common/utils/neckwork";
+import { getVaraExplorerPostLink } from "next-common/utils/varaExplorer";
 import {
-  LinkPolkassembly,
   LinkSubscan,
   LinkNeckwork,
+  ProjectIconVaraLight,
 } from "@osn/icons/subsquare";
 import { cn } from "next-common/utils";
 
@@ -20,15 +17,9 @@ export default function PostDataSource() {
   const type = useDetailType();
   const chain = useChain();
   const chainSettings = useChainSettings();
-  const { usePolkassemblyBackupData } = chainSettings;
-  const { subscan, neckwork } = chainSettings.integrations || {};
+  const { subscan, neckwork, varaExplorer } = chainSettings.integrations || {};
 
   const sources = [
-    !usePolkassemblyBackupData && {
-      label: <LinkPolkassembly />,
-      when: PolkassemblyChains.includes(chain),
-      link: getPolkassemblyLink(type, post),
-    },
     {
       label: <LinkSubscan />,
       when: subscan,
@@ -38,6 +29,11 @@ export default function PostDataSource() {
       label: <LinkNeckwork />,
       when: neckwork,
       link: getNeckworkPostLink(chain, type, post),
+    },
+    {
+      label: <ProjectIconVaraLight />,
+      when: varaExplorer,
+      link: getVaraExplorerPostLink(chain, type, post),
     },
   ].filter((source) => source && source.when && source.link);
 

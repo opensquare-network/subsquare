@@ -4,6 +4,7 @@ import { isEmpty } from "lodash-es";
 import SubScanLink from "./subscanLink";
 import StatescanLink from "./statescanLink";
 import NeckworkLink from "./neckworkLink";
+import VaraExplorerLink from "./varaExplorerLink";
 import Flex from "../styled/flex";
 import { useChainSettings } from "next-common/context/chain";
 
@@ -28,6 +29,8 @@ export default function ExplorerLink({
     LinkComponent = StatescanLink;
   } else if (integrations?.neckwork) {
     LinkComponent = NeckworkLink;
+  } else if (integrations?.varaExplorer) {
+    LinkComponent = VaraExplorerLink;
   } else if (integrations?.subscan) {
     LinkComponent = SubScanLink;
   }

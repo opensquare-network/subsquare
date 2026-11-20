@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import PopupWithSigner from "next-common/components/popupWithSigner";
 import {
@@ -6,7 +6,7 @@ import {
   useSignerAccount,
 } from "next-common/components/popupWithSigner/context";
 import Signer from "next-common/components/popup/fields/signerField";
-import useAddressComboField from "next-common/components/preImages/createPreimagePopup/fields/useAddressComboField";
+import AddressComboWithContactsField from "next-common/components/addressComboWithContacts/field";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
@@ -22,8 +22,7 @@ function PopupContent() {
   const address = signerAccount?.realAddress;
   const dispatch = useDispatch();
 
-  const { value: transferToAddress, component: transferToAddressField } =
-    useAddressComboField({ title: "To" });
+  const [transferToAddress, setTransferToAddress] = useState("");
 
   const getTxFunc = useCallback(() => {
     if (!api) {
@@ -57,7 +56,11 @@ function PopupContent() {
         Collection #{collectionId} · Item #{itemId}
       </div>
       <Signer />
-      {transferToAddressField}
+      <AddressComboWithContactsField
+        title="To"
+        address={transferToAddress}
+        setAddress={setTransferToAddress}
+      />
       <AdvanceSettings>
         <EstimatedGas getTxFunc={getTxFunc} />
       </AdvanceSettings>

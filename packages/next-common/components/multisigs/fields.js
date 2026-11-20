@@ -7,6 +7,7 @@ import AddressUser from "next-common/components/user/addressUser";
 import { sortAddresses } from "@polkadot/util-crypto";
 import { useCallPopup } from "./context/callPopupContext";
 import { isNil } from "lodash-es";
+import { getVaraExplorerBaseUrl } from "next-common/utils/varaExplorer";
 
 export function When({ height, index }) {
   const chain = useChain();
@@ -15,6 +16,7 @@ export function When({ height, index }) {
   if (
     (!integrations?.statescan &&
       !integrations?.subscan &&
+      !integrations?.varaExplorer &&
       !integrations?.neckwork) ||
     isNil(height) ||
     isNil(index)
@@ -35,6 +37,8 @@ export function When({ height, index }) {
     baseUrl = `https://${domain}.statescan.io/#/extrinsics`;
   } else if (integrations?.neckwork?.domain) {
     baseUrl = `https://${integrations.neckwork.domain}.neckwork.net/extrinsic`;
+  } else if (integrations?.varaExplorer) {
+    baseUrl = `${getVaraExplorerBaseUrl(chain)}/extrinsic`;
   } else if (integrations?.subscan) {
     baseUrl = `https://${
       integrations?.subscan?.domain || chain

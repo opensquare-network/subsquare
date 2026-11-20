@@ -13,10 +13,6 @@ export function isCollectivesChain(chain) {
   return [Chains.collectives, Chains.westendCollectives].includes(chain);
 }
 
-export function isCentrifugeChain(chain) {
-  return Chains.centrifuge === chain;
-}
-
 export function isKintsugiChain(chain) {
   return [Chains.kintsugi, Chains.interlay].includes(chain);
 }
@@ -60,10 +56,6 @@ export function isAssetHubChain(chain) {
     Chains.kusamaAssetHub,
     Chains.paseoAssetHub,
   ].includes(chain);
-}
-
-export function isAjunaChain(chain) {
-  return [Chains.ajuna].includes(chain);
 }
 
 export function isShibuyaChain(chain) {

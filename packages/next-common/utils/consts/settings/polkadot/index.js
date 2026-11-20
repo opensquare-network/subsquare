@@ -11,6 +11,7 @@ import polkadotCommonCfg, {
   polkadotAssethubMigration,
 } from "next-common/utils/consts/settings/polkadot/common";
 import { polkadotAssethubPreimageSettings } from "next-common/utils/consts/settings/common/preimage/polkadot";
+import { polkadotDotnsDeployment } from "next-common/utils/consts/settings/common/dotns";
 import polkadotAssetHubNodes from "next-common/utils/consts/settings/polkadotAssetHub/endpoints";
 import {
   ProjectLogoPolkadotDark as ProjectIconPolkadotDark,
@@ -56,6 +57,8 @@ const polkadot = {
     },
   },
   hasMultisig: true,
+  // pallet-revive, the EVM runtime running on the Asset Hub.
+  hasRevive: true,
   multisigApiPrefix: "ahp-gh-api",
   relayChainMultisigApiPrefix: "dot-multisig-api",
   useVoteCall: true,
@@ -73,6 +76,12 @@ const polkadot = {
     treasury: {
       status: true,
       spends: true,
+      proposals: {
+        archived: false,
+      },
+      // The treasury migration is not live yet, keep the legacy approvals
+      // flow. Set to false to switch this chain to the new AssetHub spend flow.
+      approvals: true,
       childBounties: true,
       multiAssetBounties: true,
       tips: {
@@ -92,7 +101,11 @@ const polkadot = {
     vesting: true,
     whitelist: true,
     staking: true,
+    dap: true,
+    dotusd: true,
+    dotns: true,
   }),
+  dotns: polkadotDotnsDeployment,
   integrations: {
     doTreasury: true,
     statescan: true,
@@ -113,7 +126,6 @@ const polkadot = {
     fundMultiAssetBounty: true,
     usdxTreasuryProposal: true,
     batchUsdxTreasurySpendsProposal: true,
-    spendDotOnAssetHubProposal: false,
     cancelReferendum: true,
     killReferendum: true,
   },

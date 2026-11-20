@@ -1,11 +1,9 @@
 import React from "react";
 import { useComment } from "next-common/components/comment/context";
 import { useCommentActions } from "next-common/sima/context/commentActions";
-import CommentEditedHistoryDropdown from "next-common/sima/components/commentEditedHistoryDropdown";
-
-function PlainCommentEditedMarker() {
-  return <div className="mt-2 text12Medium text-textTertiary">Edited</div>;
-}
+import EditedHistoryDropdown, {
+  PlainEditedMarker,
+} from "next-common/sima/components/editedHistory/editedHistoryDropdown";
 
 export default function CommentEditedMarker() {
   const comment = useComment();
@@ -18,8 +16,14 @@ export default function CommentEditedMarker() {
     !!comment?.hasEditHistory;
 
   if (!hasHistory) {
-    return <PlainCommentEditedMarker />;
+    return <PlainEditedMarker className="mt-2" />;
   }
 
-  return <CommentEditedHistoryDropdown commentCid={comment.cid} />;
+  return (
+    <EditedHistoryDropdown
+      historyUrl={`sima/comments/${comment.cid}/history`}
+      popupTitle="Comment Revision"
+      className="mt-2"
+    />
+  );
 }

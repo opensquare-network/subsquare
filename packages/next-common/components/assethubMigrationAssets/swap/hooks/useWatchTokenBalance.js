@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAssetHubPapi } from "next-common/hooks/chain/useAssetHubApi";
-import { readReserveBalance } from "../../liquidPools/useLiquidPools";
+import { readReserveBalance } from "../../liquidPools/utils";
 
 function watchTokenAccount(papi, token, address) {
   if (token.type === "native") {

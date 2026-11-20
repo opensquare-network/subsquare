@@ -62,13 +62,9 @@ export function FundMultiAssetBountyButton({ onClick }) {
   );
 }
 
-export function SpendDotOnAssetHubButton({ onClick }) {
+export function TreasuryProposalButton({ name, description, onClick }) {
   return (
-    <ChoiceButton
-      name="Spend DOT on AssetHub"
-      description="Create a treasury spend with DOT asset on AssetHub"
-      onClick={onClick}
-    />
+    <ChoiceButton name={name} description={description} onClick={onClick} />
   );
 }
 

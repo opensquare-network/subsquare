@@ -1,4 +1,3 @@
-// import CheckSimaSpec from "next-common/components/checkSimaSpec";
 import { useUploadToS3 } from "next-common/hooks/useUploadToS3";
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -119,7 +118,6 @@ function Content() {
   return (
     <>
       <ConnectedSigner title="Signer" />
-      {/* <CheckSimaSpec /> */}
       <div className="flex justify-end">
         <LoadingPrimaryButton
           loading={isLoading}

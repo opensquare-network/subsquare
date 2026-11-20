@@ -23,7 +23,6 @@ import DemocracyReferendumExecutedContent from "./democracyReferendumExecutedCon
 import DemocracyReferendumNotExecutedContent from "./democracyReferendumNoExecutedContent";
 import CouncilMotionContent from "./councilMotionContent";
 import TechCommMotionContent from "./techCommMotionContent";
-import AdvisoryCommitteeContent from "./advisoryCommitteeContent";
 import MultiAssetBountyValueContent from "./multiAssetBountyValueContent";
 import MultiAssetBountyCuratorContent from "./multiAssetBountyCuratorContent";
 import MultiAssetBountyAwardedContent from "./multiAssetBountyAwardedContent";
@@ -31,7 +30,6 @@ import MultiAssetChildBountyValueContent from "./multiAssetChildBountyValueConte
 import MultiAssetChildBountyCuratorContent from "./multiAssetChildBountyCuratorContent";
 import MultiAssetChildBountyAwardedContent from "./multiAssetChildBountyAwardedContent";
 import {
-  advisoryCommitteeBaseUrl,
   bountyBaseUrl,
   childBountyBaseUrl,
   councilMotionBaseUrl,
@@ -139,11 +137,6 @@ export const EventType = {
   FellowshipTimedout: "fellowship_timedout",
   FellowshipRejected: "fellowship_rejected",
   FellowshipExecuted: "fellowship_executed",
-
-  // Zeitgeist advisory
-  AdvisoryCommitteeProposed: "advisory_committee_proposed",
-  AdvisoryCommitteeApproved: "advisory_committee_approved",
-  AdvisoryCommitteeDisApproved: "advisory_committee_dis_approved",
 };
 
 export const EventTypeToComponent = {
@@ -195,10 +188,6 @@ export const EventTypeToComponent = {
   [EventType.TcMotionApproved]: TechCommMotionContent,
   [EventType.TcMotionDisApproved]: TechCommMotionContent,
   [EventType.TcMotionExecuted]: TechCommMotionContent,
-
-  [EventType.AdvisoryCommitteeProposed]: AdvisoryCommitteeContent,
-  [EventType.AdvisoryCommitteeApproved]: AdvisoryCommitteeContent,
-  [EventType.AdvisoryCommitteeDisApproved]: AdvisoryCommitteeContent,
 
   [EventType.DemocracyProposalProposed]: DemocracyProposalProposedContent,
   [EventType.DemocracyProposalCanceled]: DemocracyProposalCanceledContent,
@@ -286,10 +275,6 @@ export const EventTypePostBaseUrl = {
   [EventType.TcMotionDisApproved]: techCommMotionBaseUrl,
   [EventType.TcMotionExecuted]: techCommMotionBaseUrl,
 
-  [EventType.AdvisoryCommitteeProposed]: advisoryCommitteeBaseUrl,
-  [EventType.AdvisoryCommitteeApproved]: advisoryCommitteeBaseUrl,
-  [EventType.AdvisoryCommitteeDisApproved]: advisoryCommitteeBaseUrl,
-
   [EventType.DemocracyProposalProposed]: democracyProposalBaseUrl,
   [EventType.DemocracyProposalCanceled]: democracyProposalBaseUrl,
 
@@ -338,8 +323,6 @@ export function getPostUrlsByEvent(event = {}) {
   const motionTargetUrl = event?.data?.motion?.index || event?.motionHash;
   const councilMotionPostUrl = councilMotionBaseUrl + `/${motionTargetUrl}`;
   const techCommMotionPostUrl = techCommMotionBaseUrl + `/${motionTargetUrl}`;
-  const advisoryCommitteePostUrl =
-    advisoryCommitteeBaseUrl + `/${motionTargetUrl}`;
   const democracyProposalPostUrl =
     democracyProposalBaseUrl + `/${event?.proposalIndex}`;
   const democracyReferendumPostUrl =
@@ -397,10 +380,6 @@ export function getPostUrlsByEvent(event = {}) {
     [EventType.TcMotionApproved]: techCommMotionPostUrl,
     [EventType.TcMotionDisApproved]: techCommMotionPostUrl,
     [EventType.TcMotionExecuted]: techCommMotionPostUrl,
-
-    [EventType.AdvisoryCommitteeProposed]: advisoryCommitteePostUrl,
-    [EventType.AdvisoryCommitteeApproved]: advisoryCommitteePostUrl,
-    [EventType.AdvisoryCommitteeDisApproved]: advisoryCommitteePostUrl,
 
     [EventType.DemocracyProposalProposed]: democracyProposalPostUrl,
     [EventType.DemocracyProposalCanceled]: democracyProposalPostUrl,

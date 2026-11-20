@@ -2,6 +2,7 @@ import React from "react";
 import { withCommonProps } from "next-common/lib";
 import { backendApi } from "next-common/services/nextApi";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchDetailComments } from "next-common/services/detail";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import { EmptyList } from "next-common/utils/constants";
@@ -39,27 +40,32 @@ export default function SpendPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: detail } = await backendApi.fetch(
-    `fellowship/treasury/spends/${id}`,
-  );
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    const { result: detail } = await backendApi.fetch(
+      `fellowship/treasury/spends/${id}`,
+    );
 
-  const comments = await fetchDetailComments(
-    `fellowship/treasury/spends/${detail._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-    },
-  };
-});
+    const comments = await fetchDetailComments(
+      `fellowship/treasury/spends/${detail._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
+
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // /treasury/spends/summary is a backend stats endpoint, not a spend.
+  { validateParams: { id: isNumericId } },
+);

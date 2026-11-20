@@ -1,4 +1,5 @@
 import { withCommonProps } from "next-common/lib";
+import { anyOf, isNumericId, isObjectId } from "next-common/utils/routeParams";
 import { backendApi } from "next-common/services/nextApi";
 import { EmptyList } from "next-common/utils/constants";
 import getMetaDesc from "next-common/utils/post/getMetaDesc";
@@ -44,24 +45,28 @@ export default function FellowshipApplicationDetailPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
-  const { result: detail = null } = await backendApi.fetch(
-    `fellowship/applications/${id}`,
-  );
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
+    const { result: detail = null } = await backendApi.fetch(
+      `fellowship/applications/${id}`,
+    );
 
-  const tracksProps = await fetchOpenGovTracksProps();
-  const comments = detail
-    ? await fetchDetailComments(
-        `fellowship/applications/${detail?._id}/comments`,
-        context,
-      )
-    : null;
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-    },
-  };
-});
+    const tracksProps = await fetchOpenGovTracksProps();
+    const comments = detail
+      ? await fetchDetailComments(
+          `fellowship/applications/${detail?._id}/comments`,
+          context,
+        )
+      : null;
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // An application is addressed by its numeric uid, or by its post id.
+  { validateParams: { id: anyOf(isNumericId, isObjectId) } },
+);

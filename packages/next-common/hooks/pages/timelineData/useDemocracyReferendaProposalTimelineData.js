@@ -38,7 +38,6 @@ function makeReferendumTimelineData(timeline) {
   });
 }
 
-// Logic sourced from components/referenda/timeline
 export default function useDemocracyReferendaProposalTimelineData() {
   const timeline = useTimelineData();
   return useMemo(() => makeReferendumTimelineData(timeline), [timeline]);

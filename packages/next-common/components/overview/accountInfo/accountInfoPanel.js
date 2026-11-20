@@ -20,6 +20,7 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { OnlyChains } from "next-common/components/common/onlyChain";
 import Chains from "next-common/utils/consts/chains";
+import transferEnabledChains from "next-common/utils/consts/transferEnabledChains";
 import { RelayChainApiProvider } from "next-common/context/relayChain";
 import useAccountUrl from "next-common/hooks/account/useAccountUrl";
 import { useWindowWidthContext } from "next-common/context/windowSize";
@@ -30,10 +31,7 @@ import Link from "next/link";
 import { IconButton } from "next-common/components/styled/iconButton";
 import AccountPanelQuickAccess from "./components/accountPanelQuickAccess";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
-import Avatar from "next-common/components/avatar";
-import getStorageLink from "next-common/utils/env/storageLink";
-import { AvatarImg } from "next-common/components/user/styled";
-import Gravatar from "next-common/components/gravatar";
+import { AvatarDisplay } from "next-common/components/user/avatarDisplay";
 import AccountPanelJudgementScrollPrompt from "./components/accountPanelJudgementScrollPrompt";
 import { useChainSettings } from "next-common/context/chain";
 import CoretimeRegionsAccountPrompt from "next-common/components/coretime/regions/accountPrompt";
@@ -71,16 +69,17 @@ const SystemTransfer = dynamic(
 
 const DisplayUserAvatar = () => {
   const user = useUser();
-  if (user?.proxyAddress) {
-    return <Avatar address={user?.proxyAddress} size={40} />;
-  }
-  if (user?.avatarCid) {
-    return <AvatarImg src={getStorageLink(user?.avatarCid)} size={40} />;
-  }
-  if (user?.address) {
-    return <Avatar address={user?.address} size={40} />;
-  }
-  return <Gravatar emailMd5={user?.emailMd5} size={40} />;
+  const address = user?.proxyAddress ?? user?.address;
+
+  return (
+    <AvatarDisplay
+      address={address}
+      avatarCid={user?.proxyAddress ? undefined : user?.avatarCid}
+      emailMd5={user?.emailMd5}
+      size={40}
+      toggleable
+    />
+  );
 };
 
 const DisplayUser = () => {
@@ -251,18 +250,6 @@ function ParaChainTeleportOnRelayChainButton() {
     </>
   );
 }
-
-const transferEnabledChains = [
-  Chains.polkadot,
-  Chains.kusama,
-  Chains.westend,
-  Chains.rococo,
-  Chains.paseo,
-  Chains.hyperBridge,
-  Chains.hydradx,
-  Chains.polkadotCoretime,
-  Chains.kusamaCoretime,
-];
 
 const paraChainTeleportEnabledChains = [Chains.collectives, Chains.hydradx];
 

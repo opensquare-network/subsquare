@@ -59,6 +59,7 @@ export function AddressUserWrapper({
   noEvent = false,
   link = "",
   needHref = true,
+  toggleable = true,
   children,
 }) {
   const displayAddress = tryConvertToEvmAddress(address);
@@ -70,6 +71,7 @@ export function AddressUserWrapper({
             address={displayAddress}
             avatarCid={avatar}
             size={avatarSize || `${20 / 14}em`}
+            toggleable={toggleable}
           />
         </AvatarWrapper>
       )}
@@ -97,6 +99,7 @@ export function AddressUserImpl({
   identityIconClassName = "",
   username = "",
   showBountyIdentity = true,
+  toggleable = true,
 }) {
   const displayAddress = tryConvertToEvmAddress(address);
   const showIdentity = useMemo(() => {
@@ -158,12 +161,13 @@ export function AddressUserImpl({
     <AddressUserWrapper
       className={className}
       address={address}
-      avata={avatar}
+      avatar={avatar}
       showAvatar={showAvatar}
       avatarSize={avatarSize}
       noEvent={noEvent}
       link={link}
       needHref={needHref}
+      toggleable={toggleable}
     >
       {userIdentity}
     </AddressUserWrapper>
@@ -184,6 +188,7 @@ function AddressUserComp({
   avatarSize = "",
   username = "",
   showBountyIdentity = true,
+  toggleable = true,
 }) {
   const address = add;
   const { identity, hasIdentity } = useIdentityInfo(address);
@@ -216,6 +221,7 @@ function AddressUserComp({
       className={cn(inlineClassName, className)}
       username={username}
       showBountyIdentity={showBountyIdentity}
+      toggleable={toggleable}
     />
   );
 }

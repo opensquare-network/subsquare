@@ -1,12 +1,26 @@
 import PrimaryButton from "next-common/lib/button/primary";
 import Tooltip from "next-common/components/tooltip";
+import useIsMuted, { MUTED_TOOLTIP_TEXT } from "next-common/hooks/useIsMuted";
 
 function SubmitButton({ onClick, loading, content, buttonText }) {
   const isEmpty = content === "" || content === "<p><br></p>";
+  const isMuted = useIsMuted();
 
   return (
-    <Tooltip content={isEmpty ? "Cannot submit empty content" : ""}>
-      <PrimaryButton loading={loading} onClick={onClick} disabled={isEmpty}>
+    <Tooltip
+      content={
+        isMuted
+          ? MUTED_TOOLTIP_TEXT
+          : isEmpty
+          ? "Cannot submit empty content"
+          : ""
+      }
+    >
+      <PrimaryButton
+        loading={loading}
+        onClick={onClick}
+        disabled={isEmpty || isMuted}
+      >
         {buttonText}
       </PrimaryButton>
     </Tooltip>

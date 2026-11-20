@@ -13,6 +13,7 @@ import { formatTimeAgo } from "next-common/utils/viewfuncs/formatTimeAgo";
 import Tooltip from "next-common/components/tooltip";
 import useIsAppendantAuthor from "../useIsAppendantAuthor";
 import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
+import AppendantEditedMarker from "next-common/sima/components/appendantEditedMarker";
 
 function SplitDot() {
   return <span className="text-textTertiary text12Medium mx-2">·</span>;
@@ -54,6 +55,21 @@ function Header({ index, data }) {
       <Activity data={data} />
     </div>
   );
+}
+
+function getTimeValue(value) {
+  if (!value) {
+    return null;
+  }
+  const time =
+    value instanceof Date ? value.getTime() : new Date(value).getTime();
+  return Number.isNaN(time) ? null : time;
+}
+
+function isAppendantEdited(data) {
+  const createdAt = getTimeValue(data?.createdAt);
+  const updatedAt = getTimeValue(data?.updatedAt);
+  return createdAt !== null && updatedAt !== null && updatedAt !== createdAt;
 }
 
 function Content({ data }) {
@@ -100,6 +116,11 @@ export default function AppendantItem({ index, data, MoreActions }) {
           {isAuthor && MoreActions && <MoreActions data={data} />}
         </div>
         <Content data={data} />
+        {isAppendantEdited(data) &&
+          data?.dataSource === "sima" &&
+          data?.cid && (
+            <AppendantEditedMarker appendant={data} className="mt-2" />
+          )}
       </div>
     </>
   );

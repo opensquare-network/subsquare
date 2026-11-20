@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import useSubscribePostDetail from "next-common/hooks/useSubscribePostDetail";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import { isNumericId } from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
@@ -88,27 +89,31 @@ export default function DemocracyReferendumPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  const { result: detail } = await backendApi.fetch(
-    `democracy/referendums/${id}`,
-  );
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    const { result: detail } = await backendApi.fetch(
+      `democracy/referendums/${id}`,
+    );
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  const comments = await fetchDetailComments(
-    `democracy/referendums/${detail?._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `democracy/referendums/${detail?._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
-      ...tracksProps,
-    },
-  };
-});
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
+        ...tracksProps,
+      },
+    };
+  },
+  // A democracy referendum is addressed by its referendum index.
+  { validateParams: { id: isNumericId } },
+);

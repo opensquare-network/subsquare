@@ -4,7 +4,6 @@ export const PostLabel = {
   Democracy: "Democracy",
   TechComm: "Tech.Comm.",
   Financial: "Financial",
-  Advisory: "Advisory",
   Motion: "Motion",
   Announcement: "Announcement",
 };

@@ -4,8 +4,7 @@ import { useTxBuilder } from "next-common/hooks/useTxBuilder";
 import { useChainSettings } from "next-common/context/chain";
 import { toPrecision } from "next-common/utils";
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
 import SecondaryButton from "next-common/lib/button/secondary";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
@@ -172,10 +171,8 @@ function ClaimPopupContent() {
 
 export default function ClaimPopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Claim Rewards" onClose={onClose}>
-        <ClaimPopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Claim Rewards" onClose={onClose}>
+      <ClaimPopupContent />
+    </PopupWithSigner>
   );
 }

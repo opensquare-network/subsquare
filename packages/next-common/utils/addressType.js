@@ -30,3 +30,17 @@ export function isUnsupportedAddress(address) {
   }
   return !isSubstrate;
 }
+
+export function getUnsupportedAddressMessage(address) {
+  // An empty or malformed address is reported as invalid input, not as an
+  // unsupported address type
+  if (!address || !isUnsupportedAddress(address)) {
+    return null;
+  }
+
+  if (getChainAddressType() === ChainTypes.ETHEREUM) {
+    return "Only EVM addresses are supported on this chain.";
+  }
+
+  return "EVM addresses are not supported on this chain.";
+}

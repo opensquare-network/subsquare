@@ -1,6 +1,5 @@
 import TxSubmissionButton from "next-common/components/common/tx/txSubmissionButton";
-import Popup from "next-common/components/popup/wrapper/Popup";
-import SignerPopupWrapper from "next-common/components/popupWithSigner/signerPopupWrapper";
+import PopupWithSigner from "next-common/components/popupWithSigner";
 import Signer from "next-common/components/popup/fields/signerField";
 import { useContextApi } from "next-common/context/api";
 import { useState, useEffect, useMemo } from "react";
@@ -200,10 +199,8 @@ function PayeePopupContent() {
 
 export default function PayeePopup({ onClose }) {
   return (
-    <SignerPopupWrapper onClose={onClose}>
-      <Popup title="Set Payee Destination" onClose={onClose}>
-        <PayeePopupContent />
-      </Popup>
-    </SignerPopupWrapper>
+    <PopupWithSigner title="Set Payee Destination" onClose={onClose}>
+      <PayeePopupContent />
+    </PopupWithSigner>
   );
 }

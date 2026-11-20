@@ -1,11 +1,12 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Loading from "next-common/components/loading";
 import PopupContainer from "next-common/components/popup/wrapper/container";
+import PopupDialogRoot from "next-common/components/popup/wrapper/root";
 import dynamicClientOnly from "./clientOnly";
 
 const defaultOptions = {
   loading: () => (
-    <Dialog.Root open>
+    <PopupDialogRoot>
       <Dialog.Portal>
         <Dialog.Overlay />
         <Dialog.Content asChild>
@@ -14,7 +15,7 @@ const defaultOptions = {
           </PopupContainer>
         </Dialog.Content>
       </Dialog.Portal>
-    </Dialog.Root>
+    </PopupDialogRoot>
   ),
   ssr: false,
 };

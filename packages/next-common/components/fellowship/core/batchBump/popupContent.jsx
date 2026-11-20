@@ -6,7 +6,6 @@ import { rankColumn, memberColumn } from "./columns";
 import { MapSelectableList } from "next-common/components/dataList/selectableList";
 import { newSuccessToast } from "next-common/store/reducers/toastSlice";
 import { useDispatch } from "react-redux";
-import ExtensionUpdatePrompt from "next-common/components/overview/accountInfo/components/extensionUpdatePrompt";
 import AdvanceSettings from "next-common/components/summary/newProposalQuickStart/common/advanceSettings";
 import EstimatedGas from "next-common/components/estimatedGas";
 
@@ -60,8 +59,6 @@ function PopupContent({ expiredMembers, isLoading, onInBlock, onFinalized }) {
   return (
     <>
       <div className="max-h-[450px]">
-        <ExtensionUpdatePrompt isWithCache={false} />
-
         <MapSelectableList
           columnsDef={columnsDef}
           data={expiredMembers}

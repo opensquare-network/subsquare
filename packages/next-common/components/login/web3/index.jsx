@@ -1,12 +1,18 @@
 import { noop } from "lodash-es";
+import dynamic from "next/dynamic";
 import { useWeb3WalletView } from "next-common/hooks/connect/useWeb3WalletView";
 import LoginWeb3EVM from "./evm";
 import LoginWeb3Substrate from "./substrate";
 import { useUnmount } from "react-use";
 import LoginWeb3WalletConnect from "./walletconnect";
-import LoginWeb3PolkadotVault from "./polkadotVault";
 import LoginWeb3WatchOnly from "./watchOnly";
 import { useChainSettings } from "next-common/context/chain";
+
+// The vault view imports @polkadot/react-qr (a 600KB+ QR decoding library), only
+// needed when the user picks this login option, so load it on demand.
+const LoginWeb3PolkadotVault = dynamic(() => import("./polkadotVault"), {
+  ssr: false,
+});
 
 export default function LoginWeb3({ setIsWeb3 = noop }) {
   const chainSettings = useChainSettings();

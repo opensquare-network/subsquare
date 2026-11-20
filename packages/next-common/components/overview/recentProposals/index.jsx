@@ -10,7 +10,6 @@ import { useRecentProposalCouncil } from "./council";
 import { useRecentProposalTechComm } from "./tc";
 import { useRecentProposalFinancialCouncil } from "./financialCouncil";
 import { useRecentProposalAlliance } from "./alliance";
-import { useRecentProposalAdvisoryCommittee } from "./advisoryCommittee";
 import Chains from "next-common/utils/consts/chains";
 import { partition } from "lodash-es";
 import EmptyRecentProposals from "./empty";
@@ -34,7 +33,6 @@ export default function RecentProposals() {
   const tc = useRecentProposalTechComm();
   const financialCouncil = useRecentProposalFinancialCouncil();
   const alliance = useRecentProposalAlliance();
-  const advisoryCommittee = useRecentProposalAdvisoryCommittee();
   const communityCouncil = useRecentProposalCommunityCouncil();
   const communityTreasury = useRecentProposalCommunityTreasury();
   const fellowshipTreasury = useRecentProposalFellowshipTreasury();
@@ -52,7 +50,6 @@ export default function RecentProposals() {
     !isPolkadotChain && tc,
     financialCouncil,
     alliance,
-    advisoryCommittee,
     communityCouncil,
     communityTreasury,
     (modules?.discussions || chainSettings.integrations?.discourseForum) &&

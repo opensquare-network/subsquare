@@ -4,7 +4,6 @@ import { getTreasuryMenu } from "./treasury";
 import { getCouncilMenu } from "./council";
 import { getTechCommMenu } from "./tc";
 import { getFinancialCouncilMenu } from "./financialCouncil";
-import { getAdvisoryCommitteeMenu } from "./advisoryCouncil";
 import { getAllianceMenu } from "./alliance";
 import { getFellowshipMenu } from "./fellowship";
 import { getAmbassadorMenu } from "next-common/utils/consts/menu/ambassador";
@@ -20,6 +19,8 @@ import getArchivedMenu from "./archived";
 import { coretimeMenu } from "./coretime";
 import { getPeopleMenu } from "./people";
 import { stakingMenu } from "./staking";
+import dapMenu from "./dap";
+import dotUsdMenu from "./dotusd";
 import whitelist from "./whitelist";
 import getDataMenu from "./data";
 import vesting from "./vesting";
@@ -31,6 +32,7 @@ import { isAssetHubMigrated } from "next-common/utils/consts/isAssetHubMigrated"
 import { calendarMenu } from "./calendar";
 import { votingMenu } from "./voting";
 import { navigationMenu } from "./navigation";
+import { dotNsWebIdsMenu } from "./dotNsWebIds";
 import { votingSpace } from "next-common/utils/opensquareVoting";
 import { isPolkadotChain } from "next-common/utils/chain";
 import { polkadotFellowshipMenu } from "./polkadotFellowship";
@@ -58,7 +60,6 @@ export function getHomeMenu({
     modules?.council && getCouncilMenu(summary),
     modules?.technicalCommittee && getTechCommMenu(summary),
     modules?.financialCouncil && getFinancialCouncilMenu(summary),
-    modules?.advisoryCommittee && getAdvisoryCommitteeMenu(summary),
     modules?.alliance && getAllianceMenu(summary),
     modules?.communityCouncil && getCommunityCouncilMenu(summary),
     modules?.staking && stakingMenu,
@@ -72,6 +73,9 @@ export function getHomeMenu({
         modules?.scheduler && scheduler,
         modules?.whitelist && whitelist,
         (modules?.proxy || hasMultisig) && getDataMenu(),
+        modules?.dap && dapMenu,
+        modules?.dotusd && dotUsdMenu,
+        modules?.dotns && dotNsWebIdsMenu,
         calendarMenu,
         isPolkadotChain(CHAIN) && polkadotFellowshipMenu,
         votingSpace && votingMenu,

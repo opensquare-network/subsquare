@@ -12,6 +12,12 @@ import DetailLayout from "next-common/components/layout/DetailLayout";
 import { isPolkadotAddress } from "next-common/utils/viewfuncs";
 import { fetchDetailComments } from "next-common/services/detail";
 import { getNullDetailProps } from "next-common/services/detail/nullDetail";
+import {
+  anyOf,
+  isBlockHashId,
+  isBlockHeightHashId,
+  isObjectId,
+} from "next-common/utils/routeParams";
 import { fetchOpenGovTracksProps } from "next-common/services/serverSide";
 import ContentWithComment from "next-common/components/detail/common/contentWithComment";
 import { usePageProps } from "next-common/context/page";
@@ -92,32 +98,40 @@ export default function TipPage({ detail }) {
   );
 }
 
-export const getServerSideProps = withCommonProps(async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = withCommonProps(
+  async (context) => {
+    const { id } = context.query;
 
-  const { result: detail } = await backendApi.fetch(`treasury/tips/${id}`);
+    const { result: detail } = await backendApi.fetch(`treasury/tips/${id}`);
 
-  if (!detail) {
-    return getNullDetailProps(id);
-  }
+    if (!detail) {
+      return getNullDetailProps(id);
+    }
 
-  //TODO: remove the dirty fix
-  detail.authors = detail.authors?.filter((author) =>
-    isPolkadotAddress(author),
-  );
+    //TODO: remove the dirty fix
+    detail.authors = detail.authors?.filter((author) =>
+      isPolkadotAddress(author),
+    );
 
-  const comments = await fetchDetailComments(
-    `treasury/tips/${detail._id}/comments`,
-    context,
-  );
-  const tracksProps = await fetchOpenGovTracksProps();
+    const comments = await fetchDetailComments(
+      `treasury/tips/${detail._id}/comments`,
+      context,
+    );
+    const tracksProps = await fetchOpenGovTracksProps();
 
-  return {
-    props: {
-      detail,
-      comments: comments ?? EmptyList,
+    return {
+      props: {
+        detail,
+        comments: comments ?? EmptyList,
 
-      ...tracksProps,
+        ...tracksProps,
+      },
+    };
+  },
+  // A tip post is looked up by `<height>_<hash>`, by its block hash, or by the post id.
+  {
+    validateParams: {
+      id: anyOf(isBlockHeightHashId, isBlockHashId, isObjectId),
     },
-  };
-});
+  },
+);
