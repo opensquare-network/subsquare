@@ -96,8 +96,8 @@
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
     "@types/marked": "^6.0.0",
-    "eslint": "^10.2.1",
+    "eslint": "^10.15.0",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.0"
+    "eslint-plugin-react-hooks": "^7.1.1"
   }
 }

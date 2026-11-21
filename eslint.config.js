@@ -90,4 +90,27 @@ module.exports = [
     },
     ignores,
   },
+  // eslint-plugin-react-hooks 7.1 的 recommended 新增了一批 compiler 规则
+  // （7.0.1 只有 rules-of-hooks + exhaustive-deps）。这里保持升级前的规则集，
+  // 是否启用这些新规则单独评估，避免和依赖升级混在一起。
+  {
+    files: nextAppFiles.concat(nextCommonFiles),
+    rules: {
+      "react-hooks/config": "off",
+      "react-hooks/error-boundaries": "off",
+      "react-hooks/gating": "off",
+      "react-hooks/globals": "off",
+      "react-hooks/immutability": "off",
+      "react-hooks/incompatible-library": "off",
+      "react-hooks/preserve-manual-memoization": "off",
+      "react-hooks/purity": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/set-state-in-render": "off",
+      "react-hooks/static-components": "off",
+      "react-hooks/unsupported-syntax": "off",
+      "react-hooks/use-memo": "off",
+    },
+    ignores,
+  },
 ];

@@ -41,8 +41,8 @@
   "devDependencies": {
     "@osn/eslint-config": "^1.0.2",
     "@types/lodash-es": "^4.17.12",
-    "eslint": "^10.2.1",
-    "eslint-config-next": "^16.3.4",
+    "eslint": "^10.15.0",
+    "eslint-config-next": "^16.4.6",
     "raw-loader": "^4.0.2",
     "webpack": "^5.91.0"
   }
