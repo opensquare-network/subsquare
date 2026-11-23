@@ -26,6 +26,7 @@ const gov2ReferendaTagMap = {
 
   DecisionStarted: PositiveTag,
   DecisionDepositPlaced: PositiveTag,
+  DepositSlashed: NegativeTag,
   ConfirmStarted: PositiveTag,
   ConfirmAborted: NegativeTag,
   Confirmed: PositiveTag,
@@ -48,6 +49,7 @@ const tooltipTextMap = {
   [gov2State.Rejected]: "Vote failed and referendum not pass",
   DecisionStarted: "Voting process has officially begun",
   DecisionDepositPlaced: "Required deposit submitted to initiate voting",
+  DepositSlashed: "Submission or decision deposit has been slashed",
   ConfirmStarted: "Final checks in progress after successful vote",
   ConfirmAborted: "Final checks failed or were manually stopped",
   Confirmed: "All checks passed; ready for execution",

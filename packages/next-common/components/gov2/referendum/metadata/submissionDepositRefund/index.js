@@ -23,7 +23,7 @@ export default function SubmissionDepositRefund({ pallet = "referenda" }) {
   const [, deposit] = possibleValue;
   if (isNil(deposit)) {
     return <RefundWrapper>Refunded</RefundWrapper>;
-  } else if (new BigNumber(deposit).eq(0)) {
+  } else if (new BigNumber(deposit?.amount).eq(0)) {
     return null;
   }
 

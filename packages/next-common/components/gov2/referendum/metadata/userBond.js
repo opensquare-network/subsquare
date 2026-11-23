@@ -7,6 +7,7 @@ import Flex from "../../../styled/flex";
 import { useDecimals, useVoteSymbol } from "../../../../context/chain";
 import DecisionDepositRefund from "next-common/components/gov2/referendum/metadata/decisionDepositRefund";
 import SubmissionDepositRefund from "./submissionDepositRefund";
+import SubmissionDepositSlash from "./submissionDepositSlash";
 import AddressUser from "next-common/components/user/addressUser";
 
 const BondValueWrapper = styled(Flex)`
@@ -55,6 +56,7 @@ export function SubmissionUserBond({ address, bond, pallet = "referenda" }) {
   return (
     <UserBond address={address} bond={bond}>
       <SubmissionDepositRefund pallet={pallet} />
+      <SubmissionDepositSlash pallet={pallet} />
     </UserBond>
   );
 }

@@ -19,7 +19,8 @@ const getTimelineData = (args, method, trackInfo) => {
           args.proposalHash,
       };
     }
-    case "DecisionDepositPlaced": {
+    case "DecisionDepositPlaced":
+    case "DepositSlashed": {
       return {
         Depositor: <AddressUser add={args.who} />,
         Deposit: <SymbolBalance value={args.amount} />,
