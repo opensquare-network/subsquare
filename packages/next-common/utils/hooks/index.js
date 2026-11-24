@@ -85,18 +85,28 @@ export function useEstimateTimeFromNowToBlockHeight(blockHeight) {
   return result;
 }
 
-export function useEstimateBlocksTimeWithBlockTime(blocks, blockTime) {
+export function useEstimateBlocksTimeWithBlockTime(
+  blocks,
+  blockTime,
+  dropInsignificant = false,
+) {
   const [estimatedTime, setEstimatedTime] = useState("");
 
   useEffect(() => {
-    setEstimatedTime(estimateBlocksTime(blocks, blockTime));
-  }, [blockTime, blocks]);
+    setEstimatedTime(
+      estimateBlocksTime(blocks, blockTime, { dropInsignificant }),
+    );
+  }, [blockTime, blocks, dropInsignificant]);
 
   return estimatedTime;
 }
 
-export function useEstimateBlocksTime(blocks) {
+export function useEstimateBlocksTime(blocks, dropInsignificant = false) {
   const blockTime = useSelector(blockTimeSelector);
 
-  return useEstimateBlocksTimeWithBlockTime(blocks, blockTime);
+  return useEstimateBlocksTimeWithBlockTime(
+    blocks,
+    blockTime,
+    dropInsignificant,
+  );
 }

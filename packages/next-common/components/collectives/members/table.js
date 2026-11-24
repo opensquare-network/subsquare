@@ -14,6 +14,7 @@ import {
 } from "next-common/components/collectives/members/periodWithProgress.jsx";
 import { useSalaryAsset } from "next-common/hooks/fellowship/salary/useSalaryAsset";
 import { useCollectivesContext } from "next-common/context/collectives/collectives";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import Period from "next-common/components/fellowship/params/period";
 
 export function AddressCol({ address }) {
@@ -34,6 +35,7 @@ export default function CollectivesMemberTable({
     offboardTimeout,
   } = params ?? {};
   const { symbol, decimals } = useSalaryAsset();
+  const blockTime = useCoreFellowshipBlockTime();
 
   const isLoading = isNil(members) || !isAllLoaded;
 
@@ -62,7 +64,11 @@ export default function CollectivesMemberTable({
           blocks={demotionBlocks}
         />
       ) : (
-        <Period key={`demotion-period-${idx}`} blocks={demotionBlocks} />
+        <Period
+          key={`demotion-period-${idx}`}
+          blocks={demotionBlocks}
+          blockTime={blockTime}
+        />
       ),
       section === "fellowship" ? (
         <FellowshipPromotionPeriodWithProgress
@@ -75,6 +81,7 @@ export default function CollectivesMemberTable({
         <Period
           key={`min-promotion-period-${idx}`}
           blocks={minPromotionPeriod[rank] || 0}
+          blockTime={blockTime}
         />
       ),
     ];

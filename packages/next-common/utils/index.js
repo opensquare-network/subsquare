@@ -145,13 +145,16 @@ export function abbreviateBigNumber(x, fixed = 2) {
   return new BigNumber(n.dividedBy(divideBy).toFixed(fixed)).toFormat(fmt);
 }
 
-export const estimateBlocksTime = (blocks, blockTime) => {
+export const estimateBlocksTime = (blocks, blockTime, formatOptions) => {
   if (!blockTime) {
     return null;
   }
 
   const value = new BigNumber(blockTime).multipliedBy(blocks).toNumber();
-  return formatTimeDuration(value, { withUnitSpace: true });
+  return formatTimeDuration(value, {
+    withUnitSpace: true,
+    ...formatOptions,
+  });
 };
 
 export {

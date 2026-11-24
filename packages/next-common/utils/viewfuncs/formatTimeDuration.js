@@ -5,6 +5,20 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
 
+// Unit sizes used by dayjs duration internally.
+const UNIT_MS = {
+  yr: 365 * 24 * 60 * 60 * 1000,
+  mo: 30 * 24 * 60 * 60 * 1000,
+  d: 24 * 60 * 60 * 1000,
+  hr: 60 * 60 * 1000,
+  min: 60 * 1000,
+  s: 1000,
+};
+
+// A trailing unit contributing less than this share of the total duration is
+// rounding noise and can be hidden, e.g. "1 yr 6 hrs" => "1 yr".
+const INSIGNIFICANT_SHARE = 0.02;
+
 export function formatTimeDuration(
   input,
   {
@@ -12,6 +26,7 @@ export function formatTimeDuration(
     withUnitSpace = false,
     showMonths = true,
     showSeconds = true,
+    dropInsignificant = false,
   } = {},
 ) {
   if (input === 0) {
@@ -39,18 +54,36 @@ export function formatTimeDuration(
     slice = Math.max(slice, 2);
   }
 
-  const result = [
-    buildTimeUnit(yr, "yr", { withUnitSpace }),
-    buildTimeUnit(mo, "mo", { withUnitSpace }),
-    buildTimeUnit(d, "d", { withUnitSpace, withPluralSuffix: false }),
-    buildTimeUnit(hr, "hr", { withUnitSpace }),
-    buildTimeUnit(min, "min", { withUnitSpace }),
-    showSeconds
-      ? buildTimeUnit(s, "s", { withUnitSpace, withPluralSuffix: false })
-      : null,
-  ]
-    .filter(Boolean)
+  let units = [
+    { value: yr, unit: "yr" },
+    { value: mo, unit: "mo" },
+    { value: d, unit: "d" },
+    { value: hr, unit: "hr" },
+    { value: min, unit: "min" },
+    showSeconds ? { value: s, unit: "s" } : null,
+  ].filter((unit) => unit?.value > 0);
+
+  if (dropInsignificant && units.length > 1) {
+    const total = Math.abs(input);
+    const dropFrom = units.findIndex(
+      (unit, index) =>
+        index > 0 &&
+        (unit.value * UNIT_MS[unit.unit]) / total < INSIGNIFICANT_SHARE,
+    );
+    if (dropFrom > 0) {
+      units = units.slice(0, dropFrom);
+    }
+  }
+
+  const result = units
     .slice(0, slice)
+    .map(({ value, unit }) =>
+      buildTimeUnit(value, unit, {
+        withUnitSpace,
+        withPluralSuffix: !["d", "s"].includes(unit),
+      }),
+    )
+    .filter(Boolean)
     .join(" ");
 
   return result;

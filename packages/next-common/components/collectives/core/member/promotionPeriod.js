@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { isNil } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import Tooltip from "next-common/components/tooltip";
@@ -14,8 +15,12 @@ import {
 import { cn } from "next-common/utils";
 
 export function usePromotionPeriod({ lastPromotion, rank, params = {} }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCoreFellowshipLatestHeight();
   return useMemo(() => {
+    if (isNil(latestHeight)) {
+      return null;
+    }
+
     const promotionPeriod = getPromotionPeriod(rank, params);
     const gone = latestHeight - lastPromotion;
     const percentageValue = getGoneBlocksPercentage(gone, promotionPeriod);
@@ -38,12 +43,14 @@ export default function CoreFellowshipMemberPromotionPeriod({
   titleClassName = "",
   progressClassName = "",
 }) {
-  const { percentageValue, remainingBlocks, promotionPeriod } =
-    usePromotionPeriod({ lastPromotion, rank, params });
+  const progress = usePromotionPeriod({ lastPromotion, rank, params });
+  const blockTime = useCoreFellowshipBlockTime();
 
-  if (isNil(promotionPeriod)) {
+  if (isNil(progress?.promotionPeriod)) {
     return null;
   }
+
+  const { percentageValue, remainingBlocks } = progress;
 
   const fgColor =
     percentageValue === 100 ? "var(--green500)" : "var(--neutral500)";
@@ -58,7 +65,12 @@ export default function CoreFellowshipMemberPromotionPeriod({
       <Tooltip
         className="block"
         content={
-          <Remaining blocks={remainingBlocks} percentage={percentageValue} />
+          <Remaining
+            blocks={remainingBlocks}
+            percentage={percentageValue}
+            blockTime={blockTime}
+            dropInsignificant
+          />
         }
       >
         <Progress

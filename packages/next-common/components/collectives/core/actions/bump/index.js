@@ -1,25 +1,33 @@
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
 import { useMemo, useState } from "react";
 import BumpFellowshipMemberPopup from "./popup";
 import { useCoreFellowshipParams } from "next-common/context/collectives/collectives";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import Button from "next-common/lib/button";
+import { isNil } from "lodash-es";
 
 export function useCanBump(member) {
   const { rank, status: { lastProof } = {} } = member || {};
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCoreFellowshipLatestHeight();
   const params = useCoreFellowshipParams();
   const demotionPeriod = useMemo(() => {
     return rank <= 0
       ? params.offboardTimeout
       : params.demotionPeriod[rankToIndex(rank)];
   }, [rank, params]);
+  if (isNil(latestHeight)) {
+    return null;
+  }
+
   return demotionPeriod > 0 && latestHeight >= lastProof + demotionPeriod;
 }
 
 export function CoreFellowshipBumpButton({ member, onClick }) {
   const canBump = useCanBump(member);
   const { rank } = member || {};
+  if (isNil(canBump)) {
+    return null;
+  }
 
   return (
     <Button

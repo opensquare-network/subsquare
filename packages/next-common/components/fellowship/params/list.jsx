@@ -5,6 +5,7 @@ import { toPrecision } from "next-common/utils";
 import Period, {
   PromotionPeriod,
 } from "next-common/components/fellowship/params/period";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 
 const columns = [
@@ -39,6 +40,7 @@ export default function FellowshipParamsList({ rank, params }) {
   } = params ?? {};
 
   const { symbol, decimals } = useSalaryAsset();
+  const blockTime = useCoreFellowshipBlockTime();
 
   const rows = activeSalary?.map?.((_, idx) => {
     return [
@@ -53,10 +55,15 @@ export default function FellowshipParamsList({ rank, params }) {
         value={toPrecision(passiveSalary[idx], decimals)}
         symbol={symbol}
       />,
-      <Period key={`demotion-period-${idx}`} blocks={demotionPeriod[idx]} />,
+      <Period
+        key={`demotion-period-${idx}`}
+        blocks={demotionPeriod[idx]}
+        blockTime={blockTime}
+      />,
       <PromotionPeriod
         key={`min-promotion-period-${idx}`}
         blocks={minPromotionPeriod[idx]}
+        blockTime={blockTime}
       />,
     ];
   });

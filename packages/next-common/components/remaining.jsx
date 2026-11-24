@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { isNil } from "lodash-es";
 import { formatTimeDuration } from "next-common/utils/viewfuncs/formatTimeDuration";
 
-export function useRemainingTime(blocks) {
-  const blockTime = useSelector(blockTimeSelector);
-  const ms = blockTime * blocks;
+export function useRemainingTime(blocks, blockTime, dropInsignificant = false) {
+  const chainBlockTime = useSelector(blockTimeSelector);
+  const finalBlockTime = blockTime ?? chainBlockTime;
+  const ms = finalBlockTime * blocks;
   const [duration, setDuration] = useState();
 
   useEffect(() => {
@@ -15,15 +16,20 @@ export function useRemainingTime(blocks) {
     }
 
     if (ms) {
-      setDuration(formatTimeDuration(ms) + " remaining");
+      setDuration(formatTimeDuration(ms, { dropInsignificant }) + " remaining");
     }
-  }, [ms, blocks]);
+  }, [ms, blocks, dropInsignificant]);
 
   return duration;
 }
 
-export default function Remaining({ blocks = 0, percentage }) {
-  const remaining = useRemainingTime(blocks);
+export default function Remaining({
+  blocks = 0,
+  percentage,
+  blockTime,
+  dropInsignificant = false,
+}) {
+  const remaining = useRemainingTime(blocks, blockTime, dropInsignificant);
   if (percentage && blocks > 0) {
     return `${percentage}%, ${remaining}`;
   } else if (percentage && blocks <= 0) {

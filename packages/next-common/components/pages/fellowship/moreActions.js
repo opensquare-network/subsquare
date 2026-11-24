@@ -24,6 +24,7 @@ import { cn, isSameAddress } from "next-common/utils";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { createContext, useContext, useRef, useState } from "react";
 import { useClickAway } from "react-use";
+import { isNil } from "lodash-es";
 
 export const ContextMenuStateContext = createContext();
 
@@ -34,12 +35,13 @@ export function useIsMe(address) {
 
 export function PromoteMenuItem({ member, params, setShowPromotePopup }) {
   const { setShowContextMenu } = useContext(ContextMenuStateContext);
-  const { canPromote, reason } = useCanPromote(member, params);
+  const eligibility = useCanPromote(member, params);
   const shouldShow = useShouldShowPromoteButton(member);
-  if (!shouldShow) {
+  if (!shouldShow || !eligibility) {
     return null;
   }
 
+  const { canPromote, reason } = eligibility;
   if (!canPromote) {
     return (
       <OptionItem>
@@ -98,6 +100,9 @@ export function BumpMenuItem({ member, setShowBumpPopup }) {
   const { setShowContextMenu } = useContext(ContextMenuStateContext);
   const canBump = useCanBump(member);
   const { rank } = member || {};
+  if (isNil(canBump)) {
+    return null;
+  }
 
   return (
     <OptionItem

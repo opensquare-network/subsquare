@@ -1,10 +1,23 @@
 import CountDown from "next-common/components/_CountDown";
 import { useRemainingTime } from "next-common/components/remaining";
-import { useEstimateBlocksTime } from "next-common/utils/hooks";
+import { useEstimateBlocksTimeWithBlockTime } from "next-common/utils/hooks";
+import { useSelector } from "react-redux";
+import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 
-function Remaining({ totalBlocks = 0, blocks = 0, percentage }) {
-  const total = useEstimateBlocksTime(totalBlocks);
-  const remaining = useRemainingTime(blocks);
+function Remaining({
+  totalBlocks = 0,
+  blocks = 0,
+  percentage,
+  blockTime,
+  dropInsignificant = false,
+}) {
+  const chainBlockTime = useSelector(blockTimeSelector);
+  const total = useEstimateBlocksTimeWithBlockTime(
+    totalBlocks,
+    blockTime ?? chainBlockTime,
+    dropInsignificant,
+  );
+  const remaining = useRemainingTime(blocks, blockTime, dropInsignificant);
 
   if (!totalBlocks) {
     return `${percentage}%`;
@@ -27,6 +40,8 @@ export default function RemainLabel({
   total,
   remain,
   text,
+  blockTime,
+  dropInsignificant = false,
 }) {
   return (
     <div className="flex items-center text12Medium">
@@ -38,6 +53,8 @@ export default function RemainLabel({
             totalBlocks={total}
             blocks={remain}
             percentage={percentage}
+            blockTime={blockTime}
+            dropInsignificant={dropInsignificant}
           />
         }
         backgroundColor="var(--theme100)"

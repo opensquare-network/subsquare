@@ -9,8 +9,7 @@ import { useEvidenceOnlySwitchInDropdown } from "./useEvidenceOnlySwitch";
 import useEvidenceOnlyFilterFn, {
   useWishTypeFilterFn,
 } from "./useEvidenceOnlyFilterFn";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useSelector } from "react-redux";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import useLatestHeightSnapshot from "next-common/components/fellowship/collective/hook/useLatestHeightSnapshot";
 import {
   filterDemotionAboutToExpireFn,
@@ -37,7 +36,7 @@ export default function useCandidatesFilter(members) {
   const wishTypeFilterFn = useWishTypeFilterFn();
 
   const params = useCoreFellowshipParams();
-  const blockTime = useSelector(blockTimeSelector);
+  const blockTime = useCoreFellowshipBlockTime();
 
   const { latestHeight, isLoading } = useLatestHeightSnapshot();
 

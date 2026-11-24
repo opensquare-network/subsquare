@@ -12,8 +12,7 @@ import {
   useCoreFellowshipPallet,
   useCoreFellowshipParams,
 } from "next-common/context/collectives/collectives";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
-import { useSelector } from "react-redux";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import useLatestHeightSnapshot from "./useLatestHeightSnapshot";
 import {
   filterDemotionAboutToExpireFn,
@@ -121,7 +120,7 @@ export default function useFellowshipCoreMembersFilter(membersWithStatus) {
   const ranks = [...new Set(membersWithStatus.map((m) => m.rank))];
   const { rank, component: RankFilterComponent } = useRouterRankFilter(ranks);
   const params = useCoreFellowshipParams();
-  const blockTime = useSelector(blockTimeSelector);
+  const blockTime = useCoreFellowshipBlockTime();
 
   const { latestHeight, isLoading } = useLatestHeightSnapshot();
 

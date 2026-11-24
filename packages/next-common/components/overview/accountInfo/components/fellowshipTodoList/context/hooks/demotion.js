@@ -1,10 +1,12 @@
+import { isNil } from "lodash-es";
 import { useContextCoreParams } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/coreParams";
 import {
   getDemotionPeriod,
   getRemainingBlocks,
 } from "next-common/utils/collective/demotionAndPromotion";
-import useChainOrScanHeight from "next-common/hooks/height";
-import { FELLOWSHIP_DEMOTION_WARNING_BLOCKS } from "next-common/utils/consts/fellowship/demotion";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
+import { FELLOWSHIP_DEMOTION_WARNING_TIME } from "next-common/utils/consts/fellowship/demotion";
 import { useContextMyCoreMember } from "next-common/components/overview/accountInfo/components/fellowshipTodoList/context/hooks/mine";
 
 export function useDemotionCommonData() {
@@ -21,8 +23,8 @@ export function useDemotionCommonData() {
 
 export function useIsDemotionExpired() {
   const { demotionPeriod, lastProof } = useDemotionCommonData();
-  const nowHeight = useChainOrScanHeight();
-  if (demotionPeriod <= 0) {
+  const nowHeight = useCoreFellowshipLatestHeight();
+  if (isNil(nowHeight) || demotionPeriod <= 0) {
     return false;
   }
 
@@ -32,14 +34,14 @@ export function useIsDemotionExpired() {
 
 export function useIsDemotionClosing() {
   const { demotionPeriod, lastProof } = useDemotionCommonData();
-  const nowHeight = useChainOrScanHeight();
-  if (demotionPeriod <= 0) {
+  const nowHeight = useCoreFellowshipLatestHeight();
+  const blockTime = useCoreFellowshipBlockTime();
+  if (isNil(nowHeight) || demotionPeriod <= 0) {
     return false;
   }
 
   const gone = nowHeight - lastProof;
   const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
-  return (
-    remainingBlocks < FELLOWSHIP_DEMOTION_WARNING_BLOCKS && remainingBlocks > 0
-  );
+  const warningBlocks = FELLOWSHIP_DEMOTION_WARNING_TIME / blockTime;
+  return remainingBlocks < warningBlocks && remainingBlocks > 0;
 }

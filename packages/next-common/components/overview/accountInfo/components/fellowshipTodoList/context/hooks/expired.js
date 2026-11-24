@@ -8,7 +8,7 @@ import {
 function useDemotionExpired({ members, isMembersLoading }) {
   const { params, isLoading: isParamsLoading } = useContextCoreParams();
 
-  const expiredMembers = useFilterExpiredMembers({
+  const { expiredMembers, isLoading } = useFilterExpiredMembers({
     members,
     isMembersLoading,
     params,
@@ -17,7 +17,7 @@ function useDemotionExpired({ members, isMembersLoading }) {
 
   return {
     members: expiredMembers,
-    isLoading: isMembersLoading || isParamsLoading,
+    isLoading,
   };
 }
 

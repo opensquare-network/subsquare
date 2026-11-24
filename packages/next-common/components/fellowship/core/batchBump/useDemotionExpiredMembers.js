@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import useFellowshipCoreMembersWithRank from "next-common/hooks/fellowship/core/useFellowshipCoreMembersWithRank";
-import { partition } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
+import { isNil, partition } from "lodash-es";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
 import useCoreFellowshipParams from "next-common/hooks/fellowship/core/useCoreFellowshipParams";
 import { isDemotionExpired } from "next-common/utils/collective/demotionAndPromotion";
 import useObjectMemo from "next-common/hooks/useObjectMemo";
@@ -12,10 +12,11 @@ export function useFilterExpiredMembers({
   params,
   isParamsLoading,
 }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCoreFellowshipLatestHeight();
+  const isLoading = isMembersLoading || isParamsLoading || isNil(latestHeight);
 
   const expiredMembers = useMemo(() => {
-    if (isMembersLoading || isParamsLoading) {
+    if (isLoading) {
       return [];
     }
 
@@ -27,9 +28,9 @@ export function useFilterExpiredMembers({
 
       return isDemotionExpired({ lastProof, rank, params, latestHeight });
     });
-  }, [members, params, isMembersLoading, isParamsLoading, latestHeight]);
+  }, [members, params, isLoading, latestHeight]);
 
-  return useObjectMemo(expiredMembers);
+  return { expiredMembers: useObjectMemo(expiredMembers), isLoading };
 }
 
 export default function useDemotionExpiredMembers({
@@ -46,15 +47,10 @@ export default function useDemotionExpiredMembers({
 
   const { params, isLoading: isParamsLoading } = useCoreFellowshipParams();
 
-  const expiredMembers = useFilterExpiredMembers({
+  return useFilterExpiredMembers({
     members,
     isMembersLoading,
     params,
     isParamsLoading,
   });
-
-  return {
-    expiredMembers,
-    isLoading: isMembersLoading || isParamsLoading,
-  };
 }

@@ -8,6 +8,7 @@ import Period from "./period";
 import Flex from "next-common/components/styled/flex";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { getRankSalary } from "next-common/utils/fellowship/getRankSalary";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 
 const MenuParameter = dynamic(() =>
   import("@osn/icons/subsquare/MenuParameter"),
@@ -15,20 +16,21 @@ const MenuParameter = dynamic(() =>
 
 const canBePromoteAnytime = "Can be promoted to a higher rank at anytime.";
 
-function getCandidateInfoItems(params) {
+function getCandidateInfoItems(params, blockTime) {
   const { offboardTimeout } = params ?? {};
 
   return [
     <Flex key="offboard-period">
       Can be offboarded after &nbsp;
-      <Period blocks={offboardTimeout} /> &nbsp;stay at rank 0.
+      <Period blocks={offboardTimeout} blockTime={blockTime} /> &nbsp;stay at
+      rank 0.
     </Flex>,
     canBePromoteAnytime,
     "No salary.",
   ];
 }
 
-function getMemberInfoItems({ rank, params, decimals, symbol }) {
+function getMemberInfoItems({ rank, params, decimals, symbol, blockTime }) {
   const {
     activeSalary = [],
     passiveSalary = [],
@@ -43,8 +45,9 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
       "Cannot be demoted."
     ) : (
       <Flex key="demotion-period">
-        Can be demoted after&nbsp; <Period blocks={demotionPeriod[idx]} />{" "}
-        &nbsp;stay at current rank.
+        Can be demoted after&nbsp;{" "}
+        <Period blocks={demotionPeriod[idx]} blockTime={blockTime} /> &nbsp;stay
+        at current rank.
       </Flex>
     ),
     minPromotionPeriod[rank] === 0 ? (
@@ -52,7 +55,8 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
     ) : (
       <Flex key="promotion-period">
         Can be promoted to rank {rank + 1} after&nbsp;{" "}
-        <Period blocks={minPromotionPeriod[rank]} /> &nbsp;stay at current rank.
+        <Period blocks={minPromotionPeriod[rank]} blockTime={blockTime} />{" "}
+        &nbsp;stay at current rank.
       </Flex>
     ),
     <Flex key="active-salary">
@@ -74,7 +78,7 @@ function getMemberInfoItems({ rank, params, decimals, symbol }) {
   ];
 }
 
-function useRankInfoItems(rank, params) {
+function useRankInfoItems(rank, params, blockTime) {
   const { symbol, decimals } = useSalaryAsset();
 
   if (!isNumber(rank)) {
@@ -82,14 +86,15 @@ function useRankInfoItems(rank, params) {
   }
 
   if (rank === 0) {
-    return getCandidateInfoItems(params);
+    return getCandidateInfoItems(params, blockTime);
   }
 
-  return getMemberInfoItems({ rank, params, decimals, symbol });
+  return getMemberInfoItems({ rank, params, decimals, symbol, blockTime });
 }
 
 export default function CollectiveParamsDescriptions({ rank, params }) {
-  const infoItems = useRankInfoItems(rank, params);
+  const blockTime = useCoreFellowshipBlockTime();
+  const infoItems = useRankInfoItems(rank, params, blockTime);
   return (
     <BillBoardPanel
       icon={<MenuParameter className="[&_path]:fill-theme500" />}

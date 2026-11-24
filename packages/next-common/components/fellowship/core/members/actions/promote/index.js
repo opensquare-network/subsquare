@@ -1,15 +1,14 @@
-import { useSelector } from "react-redux";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import Tooltip from "next-common/components/tooltip";
 import { useState } from "react";
 import dynamicPopup from "next-common/lib/dynamic/popup";
 import rankToIndex from "next-common/utils/fellowship/rankToIndex";
 import { useFellowshipCollectiveMembers } from "next-common/hooks/fellowship/core/useFellowshipCollectiveMembers";
-import { find, noop } from "lodash-es";
+import { find, isNil, noop } from "lodash-es";
 import { CollectivesPromoteTracks } from "next-common/components/fellowship/core/members/actions/promote/constants";
 import useRelatedPromotionReferenda from "next-common/hooks/fellowship/useRelatedPromotionReferenda";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
 import { estimateBlocksTime } from "next-common/utils";
 
 const PromoteFellowshipMemberPopup = dynamicPopup(() => import("./popup"));
@@ -40,8 +39,12 @@ export function useCanPromote(member, params) {
 
   const { members = [] } = useFellowshipCollectiveMembers();
 
-  const latestHeight = useChainOrScanHeight();
-  const blockTime = useSelector(blockTimeSelector);
+  const latestHeight = useCoreFellowshipLatestHeight();
+  const blockTime = useCoreFellowshipBlockTime();
+
+  if (isNil(latestHeight)) {
+    return null;
+  }
 
   const me = find(members, { address });
   const myRankOk = me && me.rank >= 3;
@@ -53,7 +56,9 @@ export function useCanPromote(member, params) {
   const promotionPeriodComplete = gone >= promotionPeriod;
   const isReferendaExisted = relatedReferenda.length === 0;
   const canPromote = promotionPeriodComplete && myRankOk && isReferendaExisted;
-  const estimatedTime = estimateBlocksTime(promotionPeriod - gone, blockTime);
+  const estimatedTime = estimateBlocksTime(promotionPeriod - gone, blockTime, {
+    dropInsignificant: true,
+  });
 
   let reason = "";
   if (!myRankOk) {
@@ -75,8 +80,12 @@ export function CoreFellowshipPromoteButton({
   params,
   onClick = noop,
 }) {
-  const { canPromote, reason } = useCanPromote(member, params);
+  const eligibility = useCanPromote(member, params);
+  if (!eligibility) {
+    return null;
+  }
 
+  const { canPromote, reason } = eligibility;
   if (!canPromote) {
     return (
       <Tooltip content={reason}>

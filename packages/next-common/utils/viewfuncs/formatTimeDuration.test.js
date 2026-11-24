@@ -50,6 +50,42 @@ describe("formatTimeDuration", () => {
     expect(formatTimeDuration(input)).toBe("12s");
   });
 
+  it("drops insignificant trailing units", () => {
+    const oneYearSixHours = dayjs
+      .duration({ years: 1, hours: 6 })
+      .asMilliseconds();
+    expect(
+      formatTimeDuration(oneYearSixHours, { dropInsignificant: true }),
+    ).toBe("1yr");
+    expect(
+      formatTimeDuration(oneYearSixHours, {
+        withUnitSpace: true,
+        dropInsignificant: true,
+      }),
+    ).toBe("1 yr");
+
+    const sixMonthsTwoDays = dayjs
+      .duration({ months: 6, days: 2 })
+      .asMilliseconds();
+    expect(
+      formatTimeDuration(sixMonthsTwoDays, { dropInsignificant: true }),
+    ).toBe("6mos");
+
+    const nineMonthsTwentyTwoDays = dayjs
+      .duration({ months: 9, days: 22 })
+      .asMilliseconds();
+    expect(
+      formatTimeDuration(nineMonthsTwentyTwoDays, { dropInsignificant: true }),
+    ).toBe("9mos 22d");
+  });
+
+  it("keeps significant trailing units", () => {
+    const input = dayjs.duration({ days: 3, hours: 4 }).asMilliseconds();
+    expect(formatTimeDuration(input, { dropInsignificant: true })).toBe(
+      "3d 4hrs",
+    );
+  });
+
   it("32d 1hr", () => {
     const input = dayjs
       .duration({ months: 1, days: 2, hours: 1 })
@@ -62,6 +98,8 @@ describe("formatTimeDuration", () => {
       .duration({ year: 1, months: 1, days: 2, hours: 1, minutes: 23 })
       .asMilliseconds();
     expect(formatTimeDuration(input, { showMonths: false })).toBe("397d 1hr");
-    expect(formatTimeDuration(input, { showMonths: false, slice: 3 })).toBe("397d 1hr 23mins");
+    expect(formatTimeDuration(input, { showMonths: false, slice: 3 })).toBe(
+      "397d 1hr 23mins",
+    );
   });
 });

@@ -2,12 +2,14 @@ import { isNil } from "lodash-es";
 import { usePromotionPeriod } from "next-common/components/collectives/core/member/promotionPeriod";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
 import { useRemainingTime } from "next-common/components/remaining";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 
 export default function PromotionRemainLabel({ lastPromotion, rank, params }) {
   const { percentageValue, remainingBlocks, promotionPeriod } =
-    usePromotionPeriod({ rank, lastPromotion, params });
+    usePromotionPeriod({ rank, lastPromotion, params }) ?? {};
 
-  const remaining = useRemainingTime(remainingBlocks);
+  const blockTime = useCoreFellowshipBlockTime();
+  const remaining = useRemainingTime(remainingBlocks, blockTime, true);
 
   if (isNil(promotionPeriod)) {
     return null;
@@ -29,6 +31,8 @@ export default function PromotionRemainLabel({ lastPromotion, rank, params }) {
       total={promotionPeriod}
       remain={remainingBlocks}
       text={text}
+      blockTime={blockTime}
+      dropInsignificant
     />
   );
 }

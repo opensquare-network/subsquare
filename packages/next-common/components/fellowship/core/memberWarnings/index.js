@@ -1,9 +1,8 @@
 import { isNil, partition } from "lodash-es";
 import useEvidencesCombineReferenda from "next-common/hooks/useEvidencesCombineReferenda";
 import { useEffect, useMemo, useState } from "react";
-import useChainOrScanHeight from "next-common/hooks/height";
-import { useSelector } from "react-redux";
-import { blockTimeSelector } from "next-common/store/reducers/chainSlice";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import {
   useCollectivesContext,
   useCoreFellowshipParams,
@@ -27,7 +26,7 @@ import pluralize from "pluralize";
 const MenuHorn = dynamic(() => import("@osn/icons/subsquare/MenuHorn"));
 
 function useAvailablePromotionCount() {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCoreFellowshipLatestHeight();
   const { members: coreMembers, loading: isLoading } =
     useFellowshipCoreMembersWithRank();
   const params = useCoreFellowshipParams();
@@ -47,12 +46,15 @@ function useAvailablePromotionCount() {
     }, 0);
   }, [coreMembers, latestHeight, params]);
 
-  return { availablePromotionCount, isLoading };
+  return {
+    availablePromotionCount,
+    isLoading: isLoading || isNil(latestHeight),
+  };
 }
 
 export function useDemotionExpiringCount(members) {
-  const latestHeight = useChainOrScanHeight();
-  const blockTime = useSelector(blockTimeSelector);
+  const latestHeight = useCoreFellowshipLatestHeight();
+  const blockTime = useCoreFellowshipBlockTime();
   const params = useCoreFellowshipParams();
 
   return useMemo(() => {
@@ -101,7 +103,7 @@ export function getDemotionExpiredCount({ members, latestHeight, params }) {
 }
 
 export function useDemotionExpiredCount(members) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCoreFellowshipLatestHeight();
   const params = useCoreFellowshipParams();
 
   return useMemo(

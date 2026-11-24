@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { isNil } from "lodash-es";
-import useChainOrScanHeight from "next-common/hooks/height";
+import useCoreFellowshipLatestHeight from "next-common/hooks/fellowship/core/useCoreFellowshipLatestHeight";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 import CoreFellowshipMemberInfoWrapper from "next-common/components/collectives/core/member/infoWrapper";
 import CoreFellowshipMemberInfoTitle from "next-common/components/collectives/core/member/title";
 import Tooltip from "next-common/components/tooltip";
@@ -13,7 +14,6 @@ import {
 } from "next-common/utils/collective/demotionAndPromotion";
 import { ONE_DAY } from "next-common/utils/constants";
 import BigNumber from "bignumber.js";
-import { useChainSettings } from "next-common/context/chain";
 import { cn } from "next-common/utils";
 
 const days20 = 20 * ONE_DAY;
@@ -25,6 +25,10 @@ export function getDemotionPeriodProgress({
   params,
   latestHeight,
 }) {
+  if (isNil(latestHeight)) {
+    return null;
+  }
+
   const demotionPeriod = getDemotionPeriod(rank, params);
   if (demotionPeriod <= 0) {
     return {
@@ -46,7 +50,7 @@ export function getDemotionPeriodProgress({
 }
 
 export function useDemotionPeriod({ rank, lastProof, params }) {
-  const latestHeight = useChainOrScanHeight();
+  const latestHeight = useCoreFellowshipLatestHeight();
   return useMemo(
     () => getDemotionPeriodProgress({ rank, lastProof, params, latestHeight }),
     [rank, lastProof, params, latestHeight],
@@ -81,12 +85,13 @@ export default function CoreFellowshipMemberDemotionPeriod({
   titleClassName = "",
   progressClassName = "",
 }) {
-  const { percentageValue, remainingBlocks, demotionPeriod } =
-    useDemotionPeriod({ rank, lastProof, params });
+  const progress = useDemotionPeriod({ rank, lastProof, params });
 
-  if (isNil(demotionPeriod)) {
+  if (isNil(progress?.demotionPeriod)) {
     return null;
   }
+
+  const { percentageValue, remainingBlocks, demotionPeriod } = progress;
 
   return (
     <CoreFellowshipMemberDemotionPeriodImpl
@@ -112,7 +117,7 @@ function CoreFellowshipMemberDemotionPeriodImpl({
   titleClassName = "",
   progressClassName = "",
 }) {
-  const { blockTime } = useChainSettings();
+  const blockTime = useCoreFellowshipBlockTime();
   const fgColor = useMemo(() => {
     return _getProgressBarColor(
       rank,
@@ -133,7 +138,12 @@ function CoreFellowshipMemberDemotionPeriodImpl({
         className="block"
         content={
           remainingBlocks > 0 && (
-            <Remaining blocks={remainingBlocks} percentage={percentageValue} />
+            <Remaining
+              blocks={remainingBlocks}
+              percentage={percentageValue}
+              blockTime={blockTime}
+              dropInsignificant
+            />
           )
         }
       >

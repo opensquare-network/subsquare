@@ -1,9 +1,10 @@
 import BigNumber from "bignumber.js";
-import { ONE_DAY } from "../constants";
+import { isNil } from "lodash-es";
+import { DAY } from "../consts/time";
 import rankToIndex from "../fellowship/rankToIndex";
 
-const days20 = 20 * ONE_DAY;
-const days30 = 30 * ONE_DAY;
+const days20 = 20 * DAY;
+const days30 = 30 * DAY;
 
 export function getDemotionPeriod(rank, params) {
   return rank <= 0
@@ -44,6 +45,10 @@ export function isDemotionAboutToExpire({
   blockTime,
   latestHeight,
 }) {
+  if (isNil(latestHeight)) {
+    return false;
+  }
+
   const demotionPeriod = getDemotionPeriod(rank, params);
   const gone = latestHeight - lastProof;
   const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
@@ -58,6 +63,10 @@ export function isDemotionAboutToExpire({
 }
 
 export function isDemotionExpired({ lastProof, rank, params, latestHeight }) {
+  if (isNil(latestHeight)) {
+    return false;
+  }
+
   const demotionPeriod = getDemotionPeriod(rank, params);
   const gone = latestHeight - lastProof;
   const remainingBlocks = getRemainingBlocks(gone, demotionPeriod);
@@ -66,6 +75,10 @@ export function isDemotionExpired({ lastProof, rank, params, latestHeight }) {
 }
 
 export function isPromotable({ lastPromotion, rank, latestHeight, params }) {
+  if (isNil(latestHeight)) {
+    return false;
+  }
+
   const promotionPeriod = getPromotionPeriod(rank, params);
   const gone = latestHeight - lastPromotion;
   const remainingBlocks = getRemainingBlocks(gone, promotionPeriod);

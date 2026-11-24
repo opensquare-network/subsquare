@@ -2,11 +2,13 @@ import { isNil } from "lodash-es";
 import { useDemotionPeriod } from "next-common/components/collectives/core/member/demotionPeriod";
 import RemainLabel from "next-common/components/fellowship/salary/cycles/summary/remainLabel";
 import { useRemainingTime } from "next-common/components/remaining";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 
 export default function DemotionRemainLabel({ lastProof, rank, params }) {
   const { percentageValue, remainingBlocks, demotionPeriod } =
-    useDemotionPeriod({ rank, lastProof, params });
-  const remaining = useRemainingTime(remainingBlocks);
+    useDemotionPeriod({ rank, lastProof, params }) ?? {};
+  const blockTime = useCoreFellowshipBlockTime();
+  const remaining = useRemainingTime(remainingBlocks, blockTime, true);
 
   if (isNil(demotionPeriod)) {
     return null;
@@ -28,6 +30,8 @@ export default function DemotionRemainLabel({ lastProof, rank, params }) {
       total={demotionPeriod}
       remain={remainingBlocks}
       text={text}
+      blockTime={blockTime}
+      dropInsignificant
     />
   );
 }

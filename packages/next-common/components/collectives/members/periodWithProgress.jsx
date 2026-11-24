@@ -9,6 +9,7 @@ import {
   useCollectivesContext,
   useCoreFellowshipPallet,
 } from "next-common/context/collectives/collectives";
+import useCoreFellowshipBlockTime from "next-common/hooks/fellowship/core/useCoreFellowshipBlockTime";
 
 function NotInCoreManagementSystem() {
   return (
@@ -67,6 +68,7 @@ function PromotionPeriodProgress({ memberStatus, rank }) {
 
 function FellowshipDemotionPeriodWithProgressImpl({ address, rank, blocks }) {
   const corePallet = useCoreFellowshipPallet();
+  const blockTime = useCoreFellowshipBlockTime();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
@@ -74,7 +76,7 @@ function FellowshipDemotionPeriodWithProgressImpl({ address, rank, blocks }) {
 
   return (
     <div className="max-sm:text-right">
-      <Period blocks={blocks} />
+      <Period blocks={blocks} blockTime={blockTime} />
       <div className="py-[6px] max-sm:w-32">
         <DemotionPeriodProgress rank={rank} memberStatus={memberStatus} />
       </div>
@@ -101,6 +103,7 @@ export function FellowshipDemotionPeriodWithProgress({
 
 function FellowshipPromotionPeriodWithProgressImpl({ address, rank, blocks }) {
   const corePallet = useCoreFellowshipPallet();
+  const blockTime = useCoreFellowshipBlockTime();
   const { member: memberStatus } = useSubCoreCollectivesMember(
     address,
     corePallet,
@@ -108,7 +111,7 @@ function FellowshipPromotionPeriodWithProgressImpl({ address, rank, blocks }) {
 
   return (
     <div className="max-sm:text-right">
-      <Period blocks={blocks} />
+      <Period blocks={blocks} blockTime={blockTime} />
       <div className="py-[6px] max-sm:w-32">
         <PromotionPeriodProgress rank={rank} memberStatus={memberStatus} />
       </div>
