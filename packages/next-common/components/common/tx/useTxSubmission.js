@@ -75,8 +75,7 @@ export default function useTxSubmission({
     async (txs) => {
       // Signet only submits the transaction to the multisig service, it never
       // reports an in-block event.
-      const waitForInBlock =
-        signerAccount?.meta?.source !== WalletTypes.SIGNET;
+      const waitForInBlock = signerAccount?.meta?.source !== WalletTypes.SIGNET;
 
       for (const tx of txs) {
         // Stop prompting for the next signature once the popup is closed.

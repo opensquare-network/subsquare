@@ -230,7 +230,10 @@ describe("getRedeemDisabledReason", () => {
 
   it("checks the amount before the balance", () => {
     expect(
-      getRedeemDisabledReason({ ...ready, amount: { amount: null, isEmpty: true } }),
+      getRedeemDisabledReason({
+        ...ready,
+        amount: { amount: null, isEmpty: true },
+      }),
     ).toBe("Please enter an amount");
     expect(
       getRedeemDisabledReason({

@@ -19,7 +19,7 @@ export default function useSubscribePostDetail(postId) {
   }, [postDispatch, type, postId]);
 
   useEffect(() => {
-    if (isNil(isFinished) || isFinished || !blockTime) {
+    if (isNil(postId) || isNil(isFinished) || isFinished || !blockTime) {
       return;
     }
 

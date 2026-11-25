@@ -22,19 +22,31 @@ import {
 import MaybeSimaContent from "next-common/components/detail/maybeSimaContent";
 import TreasurySpendsDetailMultiTabs from "next-common/components/pages/components/tabs/treasurySpendsDetailMultiTabs";
 import { PapiProvider } from "next-common/context/papi";
+import DemoPapiProvider from "next-common/components/treasury/spends/payout/demoPapiProvider";
+import { usePayoutQueueIsDemo } from "next-common/components/treasury/spends/payout/sourceContext";
+import { getDemoSpendPost } from "next-common/components/treasury/spends/payout/demoData";
+
+const demoEnabled = process.env.NEXT_PUBLIC_PAYOUT_QUEUE_DEMO === "true";
 
 function TreasurySpendContent() {
   const detail = usePost();
-  useSubscribePostDetail(detail?.index);
+  const isDemo = usePayoutQueueIsDemo();
+  // Demo posts are static, there is no backend document to poll
+  useSubscribePostDetail(isDemo ? null : detail?.index);
+
+  const content = (
+    <>
+      <TreasurySpendDetail />
+      <TreasurySpendPayout />
+      <TreasurySpendsDetailMultiTabs />
+    </>
+  );
 
   return (
     <MaybeSimaContent>
       <ContentWithComment>
-        <PapiProvider>
-          <TreasurySpendDetail />
-          <TreasurySpendPayout />
-          <TreasurySpendsDetailMultiTabs />
-        </PapiProvider>
+        {/* The demo provider supplies the mocked chain api */}
+        {isDemo ? content : <PapiProvider>{content}</PapiProvider>}
       </ContentWithComment>
     </MaybeSimaContent>
   );
@@ -91,7 +103,7 @@ export function CommonSpendPageWrapper({
 }
 
 export default function SpendPage({ detail }) {
-  return (
+  const content = (
     <CommonSpendPageWrapper
       post={detail}
       pallet="treasury"
@@ -100,11 +112,32 @@ export default function SpendPage({ detail }) {
       <TreasurySpendContent />
     </CommonSpendPageWrapper>
   );
+
+  return demoEnabled ? <DemoPapiProvider>{content}</DemoPapiProvider> : content;
 }
 
 export const getServerSideProps = withCommonProps(
   async (context) => {
     const { id } = context.query;
+    const tracksProps = await fetchOpenGovTracksProps();
+
+    if (demoEnabled) {
+      const demoDetail = getDemoSpendPost(id);
+
+      // Demo spends are the only source of truth in demo mode, there is no
+      // backend or chain document to fall back to
+      if (!demoDetail) {
+        return { notFound: true };
+      }
+
+      return {
+        props: {
+          detail: demoDetail,
+          comments: EmptyList,
+          ...tracksProps,
+        },
+      };
+    }
 
     const { result: detail } = await backendApi.fetch(`treasury/spends/${id}`);
 
@@ -116,7 +149,6 @@ export const getServerSideProps = withCommonProps(
       `treasury/spends/${detail._id}/comments`,
       context,
     );
-    const tracksProps = await fetchOpenGovTracksProps();
 
     return {
       props: {

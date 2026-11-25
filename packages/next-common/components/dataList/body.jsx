@@ -1,32 +1,34 @@
 import { cn } from "next-common/utils";
 import DataListItem from "./item";
-import { createContext, forwardRef, useContext, useMemo } from "react";
-import { isNil } from "lodash-es";
+import { createContext, forwardRef, useContext } from "react";
 import TreeDataListBody from "./treeList/body";
 
 export default forwardRef(DataListBody);
 
+export const defaultRenderItem = (DataListItem, idx, rows) => (
+  <DataListItem key={idx} row={rows[idx]} />
+);
+
 const DataListRowContext = createContext({});
 
-function DataListRow({ row, index }) {
-  const { rows, columnClassNames, columnStyles, columns, highlightedIndexes } =
-    useContext(DataListRowContext);
-  const rowIndex = isNil(index) ? (rows ?? []).indexOf(row) : index;
+// A stable component type for `renderItem`: creating it inline on every render
+// would remount every row (and reset their local state, e.g. an open tooltip)
+// whenever the list's parent re-renders.
+function DataListRow({ row: rowProp }) {
+  const context = useContext(DataListRowContext);
+  // Renderers may pass a row they build themselves; fall back to the list row.
+  const row = rowProp ?? context.row;
 
   return (
     <DataListItem
       row={row}
-      columnClassNames={columnClassNames}
-      columnStyles={columnStyles}
-      columns={columns}
-      highlighted={rowIndex >= 0 && !!highlightedIndexes?.includes(rowIndex)}
+      columnClassNames={context.columnClassNames}
+      columnStyles={context.columnStyles}
+      columns={context.columns}
+      highlighted={context.highlighted}
     />
   );
 }
-
-export const defaultRenderItem = (DataListItem, idx, rows) => (
-  <DataListItem key={idx} index={idx} row={rows[idx]} />
-);
 
 function DataListBody(
   {
@@ -45,43 +47,44 @@ function DataListBody(
   },
   ref,
 ) {
-  const rowContextValue = useMemo(
-    () => ({
-      rows,
-      columnClassNames,
-      columnStyles,
-      columns,
-      highlightedIndexes,
-    }),
-    [rows, columnClassNames, columnStyles, columns, highlightedIndexes],
-  );
-
   return (
-    <DataListRowContext.Provider value={rowContextValue}>
-      <div
-        ref={ref}
-        className={cn(
-          "datalist-body group/datalist-body",
-          "scrollbar-pretty",
-          "divide-y divide-neutral300 border-b border-neutral300",
-          contentClassName,
-        )}
-      >
-        {!tree && rows.map((_row, idx) => renderItem(DataListRow, idx, rows))}
-        {tree && (
-          <TreeDataListBody
-            rows={rows}
-            treeKey={treeKey}
-            treeData={treeData}
-            expandedRows={expandedRows}
-            toggleRowExpansion={toggleRowExpansion}
-            columnClassNames={columnClassNames}
-            columnStyles={columnStyles}
-            columns={columns}
-            highlightedIndexes={highlightedIndexes}
-          />
-        )}
-      </div>
-    </DataListRowContext.Provider>
+    <div
+      ref={ref}
+      className={cn(
+        "datalist-body group/datalist-body",
+        "scrollbar-pretty",
+        "divide-y divide-neutral300 border-b border-neutral300",
+        contentClassName,
+      )}
+    >
+      {!tree &&
+        rows.map((_row, idx) => (
+          <DataListRowContext.Provider
+            key={idx}
+            value={{
+              row: rows[idx],
+              highlighted: highlightedIndexes.includes(idx),
+              columnClassNames,
+              columnStyles,
+              columns,
+            }}
+          >
+            {renderItem(DataListRow, idx, rows)}
+          </DataListRowContext.Provider>
+        ))}
+      {tree && (
+        <TreeDataListBody
+          rows={rows}
+          treeKey={treeKey}
+          treeData={treeData}
+          expandedRows={expandedRows}
+          toggleRowExpansion={toggleRowExpansion}
+          columnClassNames={columnClassNames}
+          columnStyles={columnStyles}
+          columns={columns}
+          highlightedIndexes={highlightedIndexes}
+        />
+      )}
+    </div>
   );
 }

@@ -28,9 +28,13 @@ export function computeMintQuote({
   }
 
   const externalPlaces =
-    Number.isInteger(externalDecimals) && externalDecimals > 0 ? externalDecimals : 0;
+    Number.isInteger(externalDecimals) && externalDecimals > 0
+      ? externalDecimals
+      : 0;
   const internalPlaces =
-    Number.isInteger(internalDecimals) && internalDecimals > 0 ? internalDecimals : 0;
+    Number.isInteger(internalDecimals) && internalDecimals > 0
+      ? internalDecimals
+      : 0;
   const diff = internalPlaces - externalPlaces;
 
   const internalEquivalent =

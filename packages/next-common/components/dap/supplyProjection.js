@@ -78,7 +78,9 @@ function calcHistoricalIssuancePoints(timestamp, relayBlockNumber) {
     }
   }
 
-  return [...points, ...monthlyPoints].sort((a, b) => a.timestamp - b.timestamp);
+  return [...points, ...monthlyPoints].sort(
+    (a, b) => a.timestamp - b.timestamp,
+  );
 }
 
 // Estimate future dates with 6-second relay blocks, then accumulate issuance

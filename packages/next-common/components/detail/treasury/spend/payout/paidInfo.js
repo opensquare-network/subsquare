@@ -11,13 +11,20 @@ function BeneficiaryLink({ beneficiary }) {
   );
 }
 
-export default function PayHint() {
+export default function PayHint({ payout }) {
   const state = usePostState();
   const { extracted } = useOnchainData();
   const { address: beneficiaryAddress, chain: beneficiaryChain } =
     extracted?.beneficiary || {};
 
-  if (["Paid", "Processed"].includes(state)) {
+  // A `Paid` spend can still be on chain as `Attempted` or `Failed` (a failed
+  // payment may even be queued again), so only a spend that is settled or gone
+  // from storage is reported as paid.
+  const isPaid =
+    state === "Processed" ||
+    (state === "Paid" && !payout.spendLoading && !payout.spendExists);
+
+  if (isPaid) {
     if (!beneficiaryAddress) {
       return <ClaimInfoText>This spend has been paid.</ClaimInfoText>;
     } else {

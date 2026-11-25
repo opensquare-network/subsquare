@@ -4,12 +4,12 @@ import { useEstimateBlocksTime } from "next-common/utils/hooks";
 import { CountDownWrapper } from "next-common/components/detail/common/styled";
 import CountDown from "next-common/components/_CountDown";
 import React from "react";
-import useAhmLatestHeight from "next-common/hooks/ahm/useAhmLatestheight";
+import useSpendLatestHeight from "next-common/hooks/treasury/spend/useSpendLatestHeight";
 
 export default function TreasurySpendValidCountdown() {
   const { meta, indexer } = useOnchainData() || {};
   const { validFrom } = meta || {};
-  const latestHeight = useAhmLatestHeight();
+  const latestHeight = useSpendLatestHeight();
   const estimatedBlocksTime = useEstimateBlocksTime(validFrom - latestHeight);
 
   if (
