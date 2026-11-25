@@ -24,7 +24,9 @@ export function symbolOf(metadata) {
   }
 
   // Asset metadata stores the symbol as raw bytes.
-  return typeof symbol === "string" ? symbol : u8aToString(Uint8Array.from(symbol));
+  return typeof symbol === "string"
+    ? symbol
+    : u8aToString(Uint8Array.from(symbol));
 }
 
 // Permill is parts per million: 1_000_000 = 100%
@@ -136,6 +138,10 @@ export function utilizationPercent(debt, cap) {
 /**
  * Assembles the page data from the raw PSM storage entries. Kept pure (no api access) so
  * the assembly itself is covered by tests; the hook only performs the reads.
+ *
+ * `internalAssetIndex` selects the instance by its internal asset. A chain can hold several
+ * PSM instances, and the storage iteration order is not guaranteed to put dotUSD first, so
+ * callers that know which instance they show must pass it.
  */
 export function buildPsmData({
   psmEntries = [],
@@ -146,12 +152,24 @@ export function buildPsmData({
   redemptionEntries = [],
   adminEntries = [],
   assetMetadata = new Map(),
+  internalAssetIndex,
 } = {}) {
   if (!psmEntries.length) {
     return null;
   }
 
-  const [{ keyArgs, value: instance }] = psmEntries;
+  const psmEntry = isNil(internalAssetIndex)
+    ? psmEntries[0]
+    : psmEntries.find(
+        (entry) =>
+          assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
+      );
+
+  if (!psmEntry) {
+    return null;
+  }
+
+  const { keyArgs, value: instance } = psmEntry;
   // BigInt junction values would break the JSON serialisation in the location popup.
   const internalLocation = toJsonSafe(keyArgs?.[0] ?? null);
   const internalIndex = assetIndexFromLocation(internalLocation);
@@ -212,7 +230,9 @@ export function buildPsmData({
       // Kept raw alongside the display percent: psm.mint and psm.redeem take their max_fee as a
       // Permill and the chain compares it against these exact values, so neither may round-trip
       // through a float.
-      mintingFeePermill: isNil(pair.mintingFee) ? null : Number(pair.mintingFee),
+      mintingFeePermill: isNil(pair.mintingFee)
+        ? null
+        : Number(pair.mintingFee),
       redemptionFee: permillToPercent(pair.redemptionFee),
       redemptionFeePermill: isNil(pair.redemptionFee)
         ? null
@@ -449,7 +469,5 @@ export function pickDefaultExternal(externals = [], selectedIndex) {
     }
   }
 
-  return (
-    externals.find((item) => item.status === "AllEnabled") ?? externals[0]
-  );
+  return externals.find((item) => item.status === "AllEnabled") ?? externals[0];
 }

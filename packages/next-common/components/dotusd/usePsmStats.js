@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
+import { DOT_USD_ASSET_ID } from "./assetMetas";
 
 /**
- * The 24h flow of the dotUSD psm, served by the backend: what was minted, what was redeemed,
- * and the difference. The amounts are strings, as u128 does not fit a number.
+ * The 24h flow of one dotUSD PSM instance, served by the backend: what was minted, what was
+ * redeemed, and the difference. The amounts are strings, as u128 does not fit a number.
  */
-export default function usePsmStats() {
+export default function usePsmStats(internalAssetId = DOT_USD_ASSET_ID) {
   const [state, setState] = useState({ stats: null, isLoading: true });
 
   useEffect(() => {
     let isMounted = true;
 
     nextApi
-      .fetch("psm/stats")
+      .fetch("psm/stats", { internal_asset_id: internalAssetId })
       .then(({ result, error }) => {
         if (!isMounted) {
           return;
@@ -37,7 +38,7 @@ export default function usePsmStats() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [internalAssetId]);
 
   return state;
 }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isNil } from "lodash-es";
 import { getAssetHubPapi } from "next-common/utils/assetHub";
+import { DOT_USD_ASSET_ID } from "./assetMetas";
 import { assetIndexFromLocation, buildPsmData } from "./psmUtils";
 
 async function fetchAssetMetadata(api, index) {
@@ -15,7 +16,7 @@ async function fetchAssetMetadata(api, index) {
  * Reads the state of the dotUSD PSM instance from Asset Hub. The assembly itself lives in
  * buildPsmData, which is pure and covered by tests.
  */
-export async function fetchPsmData(api) {
+export async function fetchPsmData(api, internalAssetIndex = DOT_USD_ASSET_ID) {
   const [
     psmEntries,
     externalEntries,
@@ -34,17 +35,26 @@ export async function fetchPsmData(api) {
     api.query.Psm.PsmAdmin.getEntries(),
   ]);
 
-  if (!psmEntries.length) {
+  const instanceEntry = psmEntries.find(
+    (entry) =>
+      assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
+  );
+
+  if (!instanceEntry) {
     return null;
   }
 
-  // Metadata is needed for the internal asset and for every approved external one.
+  // Metadata is needed for the internal asset and for every external one approved on this
+  // instance.
   const indices = new Set(
     [
-      assetIndexFromLocation(psmEntries[0].keyArgs?.[0]),
-      ...externalEntries.map((entry) =>
-        assetIndexFromLocation(entry.keyArgs?.[1]),
-      ),
+      internalAssetIndex,
+      ...externalEntries
+        .filter(
+          (entry) =>
+            assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
+        )
+        .map((entry) => assetIndexFromLocation(entry.keyArgs?.[1])),
     ].filter((index) => !isNil(index)),
   );
   const assetMetadata = new Map(
@@ -65,6 +75,7 @@ export async function fetchPsmData(api) {
     redemptionEntries,
     adminEntries,
     assetMetadata,
+    internalAssetIndex,
   });
 }
 
