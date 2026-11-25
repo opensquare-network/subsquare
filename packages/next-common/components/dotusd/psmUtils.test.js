@@ -277,7 +277,7 @@ describe("buildPsmData", () => {
   };
 
   it("assembles the instance, its externals and the totals", () => {
-    const data = buildPsmData(entries);
+    const data = buildPsmData({ ...entries, internalAssetIndex: 7873 });
 
     expect(data.internalAsset).toMatchObject({ index: 7873, symbol: "dotUSD" });
     expect(data.maxDebt).toBe("10000000000000");
@@ -345,6 +345,10 @@ describe("buildPsmData", () => {
         internalAssetIndex: 7873,
       }),
     ).toBeNull();
+  });
+
+  it("returns null without an internal asset index", () => {
+    expect(buildPsmData(entries)).toBeNull();
   });
 
   it("returns null without a PSM instance", () => {

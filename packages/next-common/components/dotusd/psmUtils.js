@@ -139,9 +139,9 @@ export function utilizationPercent(debt, cap) {
  * Assembles the page data from the raw PSM storage entries. Kept pure (no api access) so
  * the assembly itself is covered by tests; the hook only performs the reads.
  *
- * `internalAssetIndex` selects the instance by its internal asset. A chain can hold several
- * PSM instances, and the storage iteration order is not guaranteed to put dotUSD first, so
- * callers that know which instance they show must pass it.
+ * `internalAssetIndex` is the internal asset of the instance to build and is required. A
+ * chain can hold several PSM instances, and the storage iteration order is not guaranteed to
+ * put dotUSD first.
  */
 export function buildPsmData({
   psmEntries = [],
@@ -154,16 +154,10 @@ export function buildPsmData({
   assetMetadata = new Map(),
   internalAssetIndex,
 } = {}) {
-  if (!psmEntries.length) {
-    return null;
-  }
-
-  const psmEntry = isNil(internalAssetIndex)
-    ? psmEntries[0]
-    : psmEntries.find(
-        (entry) =>
-          assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
-      );
+  const psmEntry = psmEntries.find(
+    (entry) =>
+      assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
+  );
 
   if (!psmEntry) {
     return null;

@@ -16,7 +16,7 @@ async function fetchAssetMetadata(api, index) {
  * Reads the state of the dotUSD PSM instance from Asset Hub. The assembly itself lives in
  * buildPsmData, which is pure and covered by tests.
  */
-export async function fetchPsmData(api, internalAssetIndex = DOT_USD_ASSET_ID) {
+export async function fetchPsmData(api, internalAssetIndex) {
   const [
     psmEntries,
     externalEntries,
@@ -35,12 +35,12 @@ export async function fetchPsmData(api, internalAssetIndex = DOT_USD_ASSET_ID) {
     api.query.Psm.PsmAdmin.getEntries(),
   ]);
 
-  const instanceEntry = psmEntries.find(
+  const hasInstance = psmEntries.some(
     (entry) =>
       assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
   );
 
-  if (!instanceEntry) {
+  if (!hasInstance) {
     return null;
   }
 
@@ -86,7 +86,7 @@ export default function usePsmData() {
   const load = useCallback(async () => {
     try {
       const api = await getAssetHubPapi();
-      const data = await fetchPsmData(api);
+      const data = await fetchPsmData(api, DOT_USD_ASSET_ID);
 
       if (isMountedRef.current) {
         setState({ data, isLoading: false });
