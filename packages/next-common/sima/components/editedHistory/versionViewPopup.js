@@ -3,11 +3,8 @@ import { diffWords } from "diff";
 import Popup from "next-common/components/popup/wrapper/Popup";
 import { noop } from "lodash-es";
 import dayjs from "dayjs";
-import {
-  HtmlPreviewer,
-  MarkdownPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";

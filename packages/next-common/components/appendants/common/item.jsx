@@ -1,9 +1,6 @@
 import Duration from "next-common/components/duration";
-import {
-  HtmlPreviewer,
-  MarkdownPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import Divider from "next-common/components/styled/layout/divider";

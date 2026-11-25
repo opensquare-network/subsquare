@@ -1,10 +1,7 @@
 import { useCallback, useState } from "react";
 import { useMountedState } from "react-use";
-import {
-  HtmlPreviewer,
-  MarkdownPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import nextApi from "next-common/services/nextApi";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import CommentItemTemplate from "next-common/components/comment/itemTemplate";

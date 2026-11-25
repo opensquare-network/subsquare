@@ -4,11 +4,8 @@ import Flex from "next-common/components/styled/flex";
 import Anchor from "next-common/components/styled/anchor";
 import { HoverSecondaryCard } from "./styled/containers/secondaryCard";
 import Divider from "./styled/layout/divider";
-import {
-  MarkdownPreviewer,
-  HtmlPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { MarkdownPreviewer, HtmlPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import { getMotionId } from "../utils/motion";
 import IdentityOrAddr from "./IdentityOrAddr";
 import { prettyHTML } from "../utils/viewfuncs";

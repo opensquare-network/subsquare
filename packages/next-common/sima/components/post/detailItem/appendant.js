@@ -1,11 +1,8 @@
 import { usePost } from "next-common/context/post";
 import Duration from "next-common/components/duration";
 import AppendantEditor from "./appendantEditor";
-import {
-  HtmlPreviewer,
-  MarkdownPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";

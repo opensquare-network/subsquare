@@ -1,7 +1,5 @@
-import {
-  MarkdownPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { MarkdownPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import PolkassemblyCommentActions from "../polkassembly/commentActions";
 import { useDetailType } from "next-common/context/page";

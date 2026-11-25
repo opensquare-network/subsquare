@@ -1,9 +1,9 @@
 import { noop } from "lodash-es";
 import { gov2State } from "next-common/utils/consts/state";
-import * as RadixSelect from "@radix-ui/react-select";
-import { useMemo } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useState } from "react";
 import { cn } from "next-common/utils";
-import { ArrowDown, ArrowUp } from "@osn/icons/subsquare";
+import { ArrowDown } from "@osn/icons/subsquare";
 
 const NONE = "none";
 const options = [
@@ -36,64 +36,68 @@ export default function ReferendaStatusSelectField({
   open,
   onOpenChange,
 }) {
-  const selectedLabel = useMemo(() => {
-    return options?.find((item) => item.value === (value || NONE))?.label;
-  }, [value]);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isOpen = open ?? internalOpen;
+  const selectedValue = value || NONE;
+  const selectedLabel = options.find(
+    (item) => item.value === selectedValue,
+  )?.label;
 
   return (
-    <RadixSelect.Root
-      open={open}
-      onOpenChange={onOpenChange}
-      value={value}
-      onValueChange={(status) => {
-        onChange(status === NONE ? "" : status);
+    <DropdownMenu.Root
+      modal={false}
+      open={isOpen}
+      onOpenChange={(nextOpen) => {
+        if (open === undefined) {
+          setInternalOpen(nextOpen);
+        }
+        onOpenChange?.(nextOpen);
       }}
     >
-      <RadixSelect.Trigger className=" flex justify-between items-center min-w-5 w-[160px] h-[28px] bg-neutral100 border border-neutral400 cursor-pointer text-textPrimary rounded-md py-1.5 px-1.5 pl-4">
+      <DropdownMenu.Trigger
+        aria-label="Referendum status"
+        className=" flex justify-between items-center min-w-5 w-[160px] h-[28px] bg-neutral100 border border-neutral400 cursor-pointer text-textPrimary rounded-md py-1.5 px-1.5 pl-4"
+      >
         {selectedLabel}
         <div>
           <ArrowDown
             className={cn(
-              open && "rotate-180",
+              isOpen && "rotate-180",
               "w-5 h-5",
               "[&_path]:stroke-textTertiary",
             )}
           />
         </div>
-      </RadixSelect.Trigger>
-      <RadixSelect.Portal>
-        <RadixSelect.Content
-          position="popper"
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
           align="center"
           className={cn(
-            "max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-x-hidden overflow-y-auto relative z-50",
+            "max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-x-hidden overflow-y-auto relative z-50",
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
             "bg-neutral100 shadow-200 rounded py-2 px-0 text-textPrimary dark:border dark:border-neutral300",
           )}
         >
-          <RadixSelect.ScrollUpButton className="absolute z-10 bg-neutral100 top-0  w-full h-4 flex items-center justify-center border-neutral400 border-b">
-            <ArrowUp className="w-5 h-5" />
-          </RadixSelect.ScrollUpButton>
-          <RadixSelect.Viewport>
+          <DropdownMenu.RadioGroup
+            value={selectedValue}
+            onValueChange={(status) => onChange(status === NONE ? "" : status)}
+          >
             {options.map((item) => (
-              <RadixSelect.Item
+              <DropdownMenu.RadioItem
                 className={cn(
-                  "px-6 py-2.5 hover:bg-neutral200 cursor-pointer w-[160px]",
-                  item.value === value && "bg-neutral200 ",
+                  "px-6 py-2.5 data-[highlighted]:bg-neutral200 outline-none cursor-pointer w-[160px]",
+                  item.value === selectedValue && "bg-neutral200",
                 )}
                 key={item.value}
                 value={item.value}
               >
                 {item.label}
-              </RadixSelect.Item>
+              </DropdownMenu.RadioItem>
             ))}
-          </RadixSelect.Viewport>
-          <RadixSelect.ScrollDownButton className="absolute z-10 bg-neutral100 bottom-0 w-full h-4 flex items-center justify-center border-neutral400 border-t">
-            <ArrowDown className="w-5 h-5" />
-          </RadixSelect.ScrollDownButton>
-        </RadixSelect.Content>
-      </RadixSelect.Portal>
-    </RadixSelect.Root>
+          </DropdownMenu.RadioGroup>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 }
 

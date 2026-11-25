@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import EditInput from "next-common/components/editInput";
 import { useMountedState } from "react-use";
-import {
-  HtmlPreviewer,
-  MarkdownPreviewer,
-  renderMentionIdentityUserPlugin,
-} from "@osn/previewer";
+import { HtmlPreviewer, MarkdownPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import IdentityOrAddr from "../IdentityOrAddr";
 import { prettyHTML } from "../../utils/viewfuncs";
 import CommentActions from "../actions/commentActions";

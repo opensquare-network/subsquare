@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
-import { HtmlPreviewer, renderMentionIdentityUserPlugin } from "@osn/previewer";
+import { HtmlPreviewer } from "@osn/previewer";
+import { renderMentionIdentityUserPlugin } from "next-common/utils/previewerPlugins/renderMentionIdentityUser";
 import IdentityOrAddr from "next-common/components/IdentityOrAddr";
 import { prettyHTML } from "next-common/utils/viewfuncs";
 import correctionIpfsEndpointPlugin from "next-common/utils/previewerPlugins/correctionIpfsEndpoint";
