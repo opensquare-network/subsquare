@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { isNil } from "lodash-es";
 import { getAssetHubPapi } from "next-common/utils/assetHub";
+import { DOT_USD_ASSET_ID } from "./assetMetas";
 import { assetIndexFromLocation, buildPsmData } from "./psmUtils";
 
 async function fetchAssetMetadata(api, index) {
@@ -15,7 +16,11 @@ async function fetchAssetMetadata(api, index) {
  * Reads the state of the dotUSD PSM instance from Asset Hub. The assembly itself lives in
  * buildPsmData, which is pure and covered by tests.
  */
-export async function fetchPsmData(api) {
+export async function fetchPsmData(api, internalAssetIndex) {
+  if (isNil(internalAssetIndex)) {
+    return null;
+  }
+
   const [
     psmEntries,
     externalEntries,
@@ -34,17 +39,23 @@ export async function fetchPsmData(api) {
     api.query.Psm.PsmAdmin.getEntries(),
   ]);
 
-  if (!psmEntries.length) {
+  const belongsToInstance = (location) =>
+    assetIndexFromLocation(location) === internalAssetIndex;
+  const hasInstance = psmEntries.some((entry) =>
+    belongsToInstance(entry.keyArgs?.[0]),
+  );
+
+  if (!hasInstance) {
     return null;
   }
 
-  // Metadata is needed for the internal asset and for every approved external one.
+  // Assets.Metadata only describes local assets, even when a foreign asset shares the index.
   const indices = new Set(
     [
-      assetIndexFromLocation(psmEntries[0].keyArgs?.[0]),
-      ...externalEntries.map((entry) =>
-        assetIndexFromLocation(entry.keyArgs?.[1]),
-      ),
+      internalAssetIndex,
+      ...externalEntries
+        .filter((entry) => belongsToInstance(entry.keyArgs?.[0]))
+        .map((entry) => assetIndexFromLocation(entry.keyArgs?.[1])),
     ].filter((index) => !isNil(index)),
   );
   const assetMetadata = new Map(
@@ -65,6 +76,7 @@ export async function fetchPsmData(api) {
     redemptionEntries,
     adminEntries,
     assetMetadata,
+    internalAssetIndex,
   });
 }
 
@@ -75,7 +87,7 @@ export default function usePsmData() {
   const load = useCallback(async () => {
     try {
       const api = await getAssetHubPapi();
-      const data = await fetchPsmData(api);
+      const data = await fetchPsmData(api, DOT_USD_ASSET_ID);
 
       if (isMountedRef.current) {
         setState({ data, isLoading: false });

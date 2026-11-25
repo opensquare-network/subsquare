@@ -76,7 +76,9 @@ function DebtUsageBar({ ratio, maxDebt }) {
 
 export default function DotUsdSummary() {
   const { data, isLoading } = useDotUsdContext();
-  const { stats, isLoading: isStatsLoading } = usePsmStats();
+  const { stats, isLoading: isStatsLoading } = usePsmStats(
+    data?.internalAsset?.index,
+  );
   const { symbol, decimals } = data?.internalAsset ?? {};
 
   let debtRatio = null;

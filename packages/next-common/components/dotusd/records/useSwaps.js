@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import nextApi from "next-common/services/nextApi";
 import { defaultPageSize } from "next-common/utils/constants";
+import { useDotUsdContext } from "../context";
+import { DOT_USD_ASSET_ID } from "../assetMetas";
 import { SWAP_METHOD } from "./swapRecords";
 
 // The two swap directions live in their own collections, so each of them is served by its own
@@ -17,6 +19,8 @@ const SWAP_ENDPOINTS = new Map([
  * page.
  */
 export default function useSwaps(method, page, pageSize = defaultPageSize) {
+  const { data } = useDotUsdContext();
+  const internalAssetId = data?.internalAsset?.index ?? DOT_USD_ASSET_ID;
   const [state, setState] = useState({
     swaps: [],
     total: 0,
@@ -37,7 +41,11 @@ export default function useSwaps(method, page, pageSize = defaultPageSize) {
     setState((previous) => ({ ...previous, isLoading: true }));
 
     nextApi
-      .fetch(endpoint, { page, pageSize })
+      .fetch(endpoint, {
+        page,
+        pageSize,
+        internal_asset_id: internalAssetId,
+      })
       .then(({ result, error }) => {
         if (!isMounted) {
           return;
@@ -67,7 +75,7 @@ export default function useSwaps(method, page, pageSize = defaultPageSize) {
     return () => {
       isMounted = false;
     };
-  }, [method, page, pageSize]);
+  }, [method, page, pageSize, internalAssetId]);
 
   return state;
 }

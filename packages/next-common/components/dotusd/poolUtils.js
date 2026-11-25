@@ -1,4 +1,5 @@
 import { isNil } from "lodash-es";
+import { DOT_USD_ASSET_ID } from "./assetMetas";
 import {
   buildBalanceQuery,
   decodeSymbol,
@@ -12,8 +13,7 @@ import {
 
 // dotUSD is a local Asset Hub asset. The swap tab addresses local assets by id, so its key is
 // the same string used by the pool rows there.
-const DOTUSD_ASSET_ID = 7873;
-const DOTUSD_KEY = `asset:${DOTUSD_ASSET_ID}`;
+const DOTUSD_KEY = `asset:${DOT_USD_ASSET_ID}`;
 
 function tokenOf(location) {
   const parsed = parseTokenLocation(location);

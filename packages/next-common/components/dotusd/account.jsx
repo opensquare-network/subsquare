@@ -20,6 +20,7 @@ import { useUser } from "next-common/context/user";
 import { useLoginPopup } from "next-common/hooks/useLoginPopup";
 import useRealAddress from "next-common/utils/hooks/useRealAddress";
 import { useDotUsdContext } from "./context";
+import { getLocalExternals } from "./psmUtils";
 import useDotUsdBalance from "./useDotUsdBalance";
 
 const TransferPopup = dynamicPopup(() => import("./transferPopup"));
@@ -292,7 +293,7 @@ export default function DotUsdAccount() {
       {address ? (
         <ConnectedAccount
           asset={data?.internalAsset}
-          externals={data?.externals}
+          externals={getLocalExternals(data?.externals)}
           isLoading={isLoading}
         />
       ) : (

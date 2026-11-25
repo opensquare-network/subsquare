@@ -4,6 +4,7 @@ import useDotUsdBalance from "./useDotUsdBalance";
 import { computeMintQuote, getMintDisabledReason } from "./mintUtils";
 import {
   buildLocalAssetLocation,
+  getLocalExternals,
   parseAssetAmount,
   pickDefaultExternal,
   resolveMaxFeePermill,
@@ -16,7 +17,7 @@ import {
  */
 export default function useMintForm({ address, apiReady }) {
   const { data, isLoading: dataLoading } = useDotUsdContext();
-  const externals = useMemo(() => data?.externals ?? [], [data]);
+  const externals = useMemo(() => getLocalExternals(data?.externals), [data]);
   const internal = data?.internalAsset ?? null;
 
   const [externalIndex, setExternalIndex] = useState(null);

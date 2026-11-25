@@ -5,6 +5,7 @@ import {
   buildPsmData,
   computeEffectiveCaps,
   formatPercent,
+  getLocalExternals,
   isLocalAssetLocation,
   isRoundedAmount,
   MIN_MAX_FEE_PERMILL,
@@ -45,6 +46,20 @@ const usdtLocation = {
   },
 };
 
+function siblingAssetLocation(index, parachain = 2000) {
+  return {
+    parents: 1,
+    interior: {
+      type: "X3",
+      value: [
+        { type: "Parachain", value: parachain },
+        { type: "PalletInstance", value: 50 },
+        { type: "GeneralIndex", value: index },
+      ],
+    },
+  };
+}
+
 describe("assetIndexFromLocation", () => {
   it("reads the asset index of an Asset Hub location", () => {
     expect(assetIndexFromLocation(dotUsdLocation)).toBe(7873);
@@ -53,6 +68,13 @@ describe("assetIndexFromLocation", () => {
   it("returns null when there is no general index", () => {
     expect(assetIndexFromLocation({ interior: { value: [] } })).toBeNull();
     expect(assetIndexFromLocation(null)).toBeNull();
+  });
+
+  it("does not treat a foreign asset with the same index as local", () => {
+    expect(assetIndexFromLocation(siblingAssetLocation(7873n))).toBeNull();
+    expect(
+      assetIndexFromLocation({ ...dotUsdLocation, parents: 1 }),
+    ).toBeNull();
   });
 });
 
@@ -133,7 +155,10 @@ describe("parsePalletsOrigin", () => {
       parsePalletsOrigin({ type: "system", value: { type: "Root" } }),
     ).toEqual({ type: "origin", label: "system · Root" });
     expect(
-      parsePalletsOrigin({ type: "Origins", value: { type: "ProsperityEmergency" } }),
+      parsePalletsOrigin({
+        type: "Origins",
+        value: { type: "ProsperityEmergency" },
+      }),
     ).toEqual({ type: "origin", label: "Origins · ProsperityEmergency" });
   });
 
@@ -141,7 +166,10 @@ describe("parsePalletsOrigin", () => {
     const account = "13UVJyLkBsKdkhA6hcHAA9jmz4hJe7iRJ6r9ZUwQheobW7cL";
 
     expect(
-      parsePalletsOrigin({ type: "system", value: { type: "Signed", value: account } }),
+      parsePalletsOrigin({
+        type: "system",
+        value: { type: "Signed", value: account },
+      }),
     ).toEqual({ type: "account", account });
     expect(
       parsePalletsOrigin({
@@ -219,6 +247,16 @@ describe("buildPsmData", () => {
       ],
     },
   };
+  const otherInternal = {
+    ...internal,
+    interior: {
+      ...internal.interior,
+      value: [
+        internal.interior.value[0],
+        { type: "GeneralIndex", value: 7874n },
+      ],
+    },
+  };
   const entries = {
     psmEntries: [
       {
@@ -233,7 +271,10 @@ describe("buildPsmData", () => {
       },
     ],
     externalEntries: [
-      { keyArgs: [internal, external], value: { status: { type: "AllEnabled" }, decimals: 6 } },
+      {
+        keyArgs: [internal, external],
+        value: { status: { type: "AllEnabled" }, decimals: 6 },
+      },
     ],
     weightEntries: [{ keyArgs: [internal, external], value: 1000000 }],
     debtEntries: [{ keyArgs: [internal, external], value: 2996624883933n }],
@@ -244,7 +285,10 @@ describe("buildPsmData", () => {
         keyArgs: [internal],
         value: {
           full_admin: { type: "system", value: { type: "Root" } },
-          emergency_admin: { type: "Origins", value: { type: "ProsperityEmergency" } },
+          emergency_admin: {
+            type: "Origins",
+            value: { type: "ProsperityEmergency" },
+          },
         },
       },
     ],
@@ -255,7 +299,7 @@ describe("buildPsmData", () => {
   };
 
   it("assembles the instance, its externals and the totals", () => {
-    const data = buildPsmData(entries);
+    const data = buildPsmData({ ...entries, internalAssetIndex: 7873 });
 
     expect(data.internalAsset).toMatchObject({ index: 7873, symbol: "dotUSD" });
     expect(data.maxDebt).toBe("10000000000000");
@@ -289,6 +333,154 @@ describe("buildPsmData", () => {
     expect(data.externals[0].redemptionFeePermill).toBe(100);
     // The location passed to the popup must stay JSON serialisable.
     expect(JSON.stringify(data.externals[0].location)).toContain("\"1984\"");
+  });
+
+  it("selects the instance by its internal asset", () => {
+    const other = {
+      keyArgs: [otherInternal],
+      value: {
+        ...entries.psmEntries[0].value,
+        max_debt: 20000000000000n,
+        external_count: 0,
+      },
+    };
+
+    const data = buildPsmData({
+      ...entries,
+      psmEntries: [other, ...entries.psmEntries],
+      internalAssetIndex: 7873,
+    });
+
+    expect(data.internalAsset.index).toBe(7873);
+    expect(data.maxDebt).toBe("10000000000000");
+    expect(data.externals).toHaveLength(1);
+    expect(data.externals[0].index).toBe(1984);
+  });
+
+  it("isolates the local instance from another location with the same index", () => {
+    const foreignInternal = siblingAssetLocation(7873n);
+    const keyArgs = [foreignInternal, external];
+    const foreignPsm = { keyArgs: [foreignInternal], value: { max_debt: 9n } };
+
+    const data = buildPsmData({
+      ...entries,
+      internalAssetIndex: 7873,
+      psmEntries: [foreignPsm, ...entries.psmEntries],
+      externalEntries: [...entries.externalEntries, { keyArgs, value: {} }],
+      debtEntries: [...entries.debtEntries, { keyArgs, value: 8n }],
+      feeEntries: [...entries.feeEntries, { keyArgs, value: 900 }],
+      adminEntries: [
+        {
+          keyArgs: [foreignInternal],
+          value: { full_admin: { type: "Origins", value: { type: "Other" } } },
+        },
+        ...entries.adminEntries,
+      ],
+    });
+
+    expect(data.maxDebt).toBe("10000000000000");
+    expect(data.totalDebt).toBe("2996624883933");
+    expect(data.fullAdmin.label).toBe("system · Root");
+    expect(data.externals).toHaveLength(1);
+    expect(data.externals[0].mintingFeePermill).toBe(0);
+    expect(data.mintingFee.max.toFixed()).toBe("0");
+
+    expect(
+      buildPsmData({
+        ...entries,
+        internalAssetIndex: 7873,
+        psmEntries: [foreignPsm],
+      }),
+    ).toBeNull();
+  });
+
+  it("keeps weights, debts and fees separate for externals with the same index", () => {
+    const foreign = siblingAssetLocation(1984n);
+    const otherForeign = siblingAssetLocation(1984n, 2001);
+    const pairEntry = (location, value) => ({
+      keyArgs: [internal, location],
+      value,
+    });
+    const data = buildPsmData({
+      ...entries,
+      internalAssetIndex: 7873,
+      externalEntries: [
+        ...entries.externalEntries,
+        pairEntry(foreign, { status: { type: "AllEnabled" }, decimals: 8 }),
+        pairEntry(otherForeign, {
+          status: { type: "AllEnabled" },
+          decimals: 12,
+        }),
+      ],
+      weightEntries: [
+        ...entries.weightEntries,
+        pairEntry(foreign, 500_000),
+        pairEntry(otherForeign, 250_000),
+      ],
+      debtEntries: [
+        ...entries.debtEntries,
+        pairEntry(foreign, 5n),
+        pairEntry(otherForeign, 6n),
+      ],
+      feeEntries: [
+        ...entries.feeEntries,
+        pairEntry(
+          { interior: foreign.interior, parents: foreign.parents },
+          900,
+        ),
+        pairEntry(otherForeign, 200),
+      ],
+      redemptionEntries: [
+        ...entries.redemptionEntries,
+        pairEntry(foreign, 1000),
+        pairEntry(otherForeign, 300),
+      ],
+    });
+
+    expect(data.externals).toMatchObject([
+      {
+        index: 1984,
+        symbol: "USDt",
+        weight: 1_000_000,
+        debt: "2996624883933",
+        mintingFeePermill: 0,
+        redemptionFeePermill: 100,
+      },
+      {
+        index: null,
+        symbol: "Foreign asset",
+        decimals: 8,
+        weight: 500_000,
+        debt: "5",
+        mintingFeePermill: 900,
+        redemptionFeePermill: 1000,
+      },
+      {
+        index: null,
+        decimals: 12,
+        weight: 250_000,
+        debt: "6",
+        mintingFeePermill: 200,
+        redemptionFeePermill: 300,
+      },
+    ]);
+    expect(getLocalExternals(data.externals)).toEqual([data.externals[0]]);
+  });
+
+  it("returns null when the requested instance is missing", () => {
+    expect(
+      buildPsmData({
+        ...entries,
+        psmEntries: [
+          { keyArgs: [otherInternal], value: entries.psmEntries[0].value },
+        ],
+        internalAssetIndex: 7873,
+      }),
+    ).toBeNull();
+  });
+
+  it("returns null without an internal asset index", () => {
+    expect(buildPsmData(entries)).toBeNull();
   });
 
   it("returns null without a PSM instance", () => {
@@ -352,7 +544,10 @@ describe("isLocalAssetLocation", () => {
       isLocalAssetLocation({ parents: 1, interior: usdtLocation.interior }),
     ).toBe(false);
     expect(
-      isLocalAssetLocation({ parents: 0, interior: { type: "Here", value: [] } }),
+      isLocalAssetLocation({
+        parents: 0,
+        interior: { type: "Here", value: [] },
+      }),
     ).toBe(false);
     expect(
       isLocalAssetLocation({
@@ -369,7 +564,10 @@ describe("isLocalAssetLocation", () => {
     expect(
       isLocalAssetLocation({
         parents: 0,
-        interior: { type: "X1", value: [{ type: "PalletInstance", value: 50 }] },
+        interior: {
+          type: "X1",
+          value: [{ type: "PalletInstance", value: 50 }],
+        },
       }),
     ).toBe(false);
   });
@@ -405,7 +603,9 @@ describe("parseAssetAmount", () => {
       error: "Invalid amount",
     });
     expect(parseAssetAmount("0", 6)).toMatchObject({ error: "Invalid amount" });
-    expect(parseAssetAmount("-1", 6)).toMatchObject({ error: "Invalid amount" });
+    expect(parseAssetAmount("-1", 6)).toMatchObject({
+      error: "Invalid amount",
+    });
   });
 
   it("scales to planck", () => {
