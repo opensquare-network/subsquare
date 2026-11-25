@@ -2,18 +2,29 @@ import BigNumber from "bignumber.js";
 import { u8aToString } from "@polkadot/util";
 import { isNil } from "lodash-es";
 
-// PSM storage keys are XCM locations. Asset Hub local assets are referenced as
-// `(PalletInstance 50, GeneralIndex <asset id>)`, we only need that index to read the
-// asset metadata and to display it.
+// A GeneralIndex only identifies an Asset Hub local asset at this exact location.
 export function assetIndexFromLocation(location) {
-  const junctions = location?.interior?.value ?? [];
-  const generalIndex = junctions.find((item) => item?.type === "GeneralIndex");
+  const { type, value: junctions } = location?.interior ?? {};
 
-  if (isNil(generalIndex?.value)) {
+  if (
+    location?.parents !== 0 ||
+    type !== "X2" ||
+    !Array.isArray(junctions) ||
+    junctions.length !== 2
+  ) {
     return null;
   }
 
-  return Number(generalIndex.value);
+  const [pallet, index] = junctions;
+  if (
+    pallet?.type !== "PalletInstance" ||
+    pallet.value !== ASSETS_PALLET_INSTANCE ||
+    index?.type !== "GeneralIndex"
+  ) {
+    return null;
+  }
+
+  return normalizeAssetId(index.value);
 }
 
 export function symbolOf(metadata) {
@@ -66,6 +77,20 @@ export function toJsonSafe(value) {
   }
 
   return value;
+}
+
+function psmLocationKey(location) {
+  return JSON.stringify(toJsonSafe(location), (_, value) => {
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      return Object.fromEntries(
+        Object.keys(value)
+          .sort()
+          .map((key) => [key, value[key]]),
+      );
+    }
+
+    return value;
+  });
 }
 
 export function sumValues(entries) {
@@ -139,9 +164,8 @@ export function utilizationPercent(debt, cap) {
  * Assembles the page data from the raw PSM storage entries. Kept pure (no api access) so
  * the assembly itself is covered by tests; the hook only performs the reads.
  *
- * `internalAssetIndex` is the internal asset of the instance to build and is required. A
- * chain can hold several PSM instances, and the storage iteration order is not guaranteed to
- * put dotUSD first.
+ * `internalAssetIndex` is the required ID of the local Asset Hub asset that identifies the
+ * instance. Foreign assets can have the same GeneralIndex without belonging to this instance.
  */
 export function buildPsmData({
   psmEntries = [],
@@ -154,33 +178,29 @@ export function buildPsmData({
   assetMetadata = new Map(),
   internalAssetIndex,
 } = {}) {
-  const psmEntry = psmEntries.find(
-    (entry) =>
-      assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
-  );
+  if (isNil(internalAssetIndex)) {
+    return null;
+  }
 
+  const belongsToInstance = (entry) =>
+    assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex;
+  const psmEntry = psmEntries.find(belongsToInstance);
   if (!psmEntry) {
     return null;
   }
 
   const { keyArgs, value: instance } = psmEntry;
   // BigInt junction values would break the JSON serialisation in the location popup.
-  const internalLocation = toJsonSafe(keyArgs?.[0] ?? null);
-  const internalIndex = assetIndexFromLocation(internalLocation);
+  const internalLocation = toJsonSafe(keyArgs[0]);
   const maxDebt = instance?.max_debt?.toString();
-  const internalMetadata = assetMetadata.get(internalIndex) ?? null;
+  const internalMetadata = assetMetadata.get(internalAssetIndex);
 
-  // The per-pair maps are keyed by (internal, external); keep this instance's entries only.
-  const belongsToInstance = (entry) =>
-    assetIndexFromLocation(entry.keyArgs?.[0]) === internalIndex;
+  // Approved externals can be foreign, so join the pair data by the full external location.
   const byExternalAsset = (entries) =>
     new Map(
       entries
         .filter(belongsToInstance)
-        .map((entry) => [
-          assetIndexFromLocation(entry.keyArgs?.[1]),
-          entry.value,
-        ]),
+        .map((entry) => [psmLocationKey(entry.keyArgs?.[1]), entry.value]),
     );
 
   const weights = byExternalAsset(weightEntries);
@@ -189,18 +209,19 @@ export function buildPsmData({
   const redemptionFees = byExternalAsset(redemptionEntries);
 
   const pairs = externalEntries.filter(belongsToInstance).map((entry) => {
-    const index = assetIndexFromLocation(entry.keyArgs?.[1]);
+    const location = entry.keyArgs?.[1] ?? null;
+    const locationKey = psmLocationKey(location);
 
     return {
-      index,
-      location: toJsonSafe(entry.keyArgs?.[1] ?? null),
+      index: assetIndexFromLocation(location),
+      location: toJsonSafe(location),
       status: entry.value?.status?.type ?? null,
       decimals: entry.value?.decimals ?? 0,
-      weight: weights.get(index) ?? null,
+      weight: weights.get(locationKey) ?? null,
       // The debt is minted in internal asset units, i.e. dotUSD.
-      debt: debts.get(index)?.toString() ?? "0",
-      mintingFee: mintingFees.get(index),
-      redemptionFee: redemptionFees.get(index),
+      debt: debts.get(locationKey)?.toString() ?? "0",
+      mintingFee: mintingFees.get(locationKey),
+      redemptionFee: redemptionFees.get(locationKey),
     };
   });
 
@@ -211,12 +232,14 @@ export function buildPsmData({
   const adminEntry = adminEntries.find(belongsToInstance);
 
   const externals = pairs.map((pair, index) => {
-    const metadata = assetMetadata.get(pair.index) ?? null;
+    const metadata = isNil(pair.index) ? null : assetMetadata.get(pair.index);
     const utilization = utilizationPercent(pair.debt, caps[index]);
 
     return {
       ...pair,
-      symbol: symbolOf(metadata) ?? `Asset ${pair.index}`,
+      symbol:
+        symbolOf(metadata) ??
+        (isNil(pair.index) ? "Foreign asset" : `Asset ${pair.index}`),
       decimals: metadata?.decimals ?? pair.decimals,
       cap: isNil(caps[index]) ? null : caps[index].toFixed(0),
       utilization: isNil(utilization) ? null : utilization.toFixed(2),
@@ -238,7 +261,7 @@ export function buildPsmData({
     fullAdmin: parsePalletsOrigin(adminEntry?.value?.full_admin),
     emergencyAdmin: parsePalletsOrigin(adminEntry?.value?.emergency_admin),
     internalAsset: {
-      index: internalIndex,
+      index: internalAssetIndex,
       location: internalLocation,
       symbol: symbolOf(internalMetadata) ?? "dotUSD",
       decimals: internalMetadata?.decimals ?? instance?.internal_decimals ?? 0,
@@ -254,6 +277,10 @@ export function buildPsmData({
     redemptionFee: permillRange(redemptionEntries.filter(belongsToInstance)),
     externals,
   };
+}
+
+export function getLocalExternals(externals = []) {
+  return externals.filter(({ index }) => !isNil(index));
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -275,7 +302,11 @@ export const MIN_MAX_FEE_PERMILL = 1_000;
 const U128_MAX = 2n ** 128n - 1n;
 
 export function normalizeAssetId(value) {
-  if (isNil(value) || value === "") {
+  if (
+    typeof value !== "number" &&
+    typeof value !== "bigint" &&
+    (typeof value !== "string" || !/^\d+$/.test(value))
+  ) {
     return null;
   }
 
@@ -283,7 +314,7 @@ export function normalizeAssetId(value) {
 
   // A fractional, negative or out-of-range id would encode to a location that points at a
   // different asset, so it is refused rather than rounded.
-  if (!Number.isSafeInteger(id) || id < 0) {
+  if (!Number.isSafeInteger(id) || id < 0 || id > 0xffff_ffff) {
     return null;
   }
 
@@ -322,28 +353,7 @@ export function buildLocalAssetLocation(assetId) {
  * through GlobalConsensus) is reported as unsupported instead of being approximated.
  */
 export function isLocalAssetLocation(location) {
-  if (isNil(location)) {
-    return false;
-  }
-
-  if (Number(location.parents ?? 0) !== 0) {
-    return false;
-  }
-
-  const interior = location.interior;
-
-  if (interior?.type !== "X2" || !Array.isArray(interior.value)) {
-    return false;
-  }
-
-  const [pallet, index] = interior.value;
-
-  return (
-    pallet?.type === "PalletInstance" &&
-    Number(pallet.value) === ASSETS_PALLET_INSTANCE &&
-    index?.type === "GeneralIndex" &&
-    !isNil(normalizeAssetId(index.value))
-  );
+  return !isNil(assetIndexFromLocation(location));
 }
 
 /**

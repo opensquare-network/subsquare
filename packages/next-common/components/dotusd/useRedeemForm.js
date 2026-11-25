@@ -4,6 +4,7 @@ import useDotUsdBalance from "./useDotUsdBalance";
 import { computeRedeemQuote, getRedeemDisabledReason } from "./redeemUtils";
 import {
   buildLocalAssetLocation,
+  getLocalExternals,
   parseAssetAmount,
   pickDefaultExternal,
   resolveMaxFeePermill,
@@ -15,7 +16,7 @@ import {
  */
 export default function useRedeemForm({ address, apiReady }) {
   const { data, isLoading: dataLoading } = useDotUsdContext();
-  const externals = useMemo(() => data?.externals ?? [], [data]);
+  const externals = useMemo(() => getLocalExternals(data?.externals), [data]);
   const internal = data?.internalAsset ?? null;
 
   const [externalIndex, setExternalIndex] = useState(null);

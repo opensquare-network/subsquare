@@ -17,6 +17,10 @@ async function fetchAssetMetadata(api, index) {
  * buildPsmData, which is pure and covered by tests.
  */
 export async function fetchPsmData(api, internalAssetIndex) {
+  if (isNil(internalAssetIndex)) {
+    return null;
+  }
+
   const [
     psmEntries,
     externalEntries,
@@ -35,25 +39,22 @@ export async function fetchPsmData(api, internalAssetIndex) {
     api.query.Psm.PsmAdmin.getEntries(),
   ]);
 
-  const hasInstance = psmEntries.some(
-    (entry) =>
-      assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
+  const belongsToInstance = (location) =>
+    assetIndexFromLocation(location) === internalAssetIndex;
+  const hasInstance = psmEntries.some((entry) =>
+    belongsToInstance(entry.keyArgs?.[0]),
   );
 
   if (!hasInstance) {
     return null;
   }
 
-  // Metadata is needed for the internal asset and for every external one approved on this
-  // instance.
+  // Assets.Metadata only describes local assets, even when a foreign asset shares the index.
   const indices = new Set(
     [
       internalAssetIndex,
       ...externalEntries
-        .filter(
-          (entry) =>
-            assetIndexFromLocation(entry.keyArgs?.[0]) === internalAssetIndex,
-        )
+        .filter((entry) => belongsToInstance(entry.keyArgs?.[0]))
         .map((entry) => assetIndexFromLocation(entry.keyArgs?.[1])),
     ].filter((index) => !isNil(index)),
   );
