@@ -1874,13 +1874,13 @@ __metadata:
   linkType: hard
 
 "@bramus/specificity@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "@bramus/specificity@npm:2.4.2"
+  version: 2.4.5
+  resolution: "@bramus/specificity@npm:2.4.5"
   dependencies:
-    css-tree: "npm:^3.0.0"
+    css-tree: "npm:^3.2.1"
   bin:
     specificity: bin/cli.js
-  checksum: 10c0/c5f4e04e0bca0d2202598207a5eb0733c8109d12a68a329caa26373bec598d99db5bb785b8865fefa00fc01b08c6068138807ceb11a948fe15e904ed6cf4ba72
+  checksum: 10c0/5c1444d51ff605f65a4a404f2cf8fc83cc9f15716834d63b1f6b67e2426095959ee6de137254e4212184c58433087134c84d339b27b42ed7e647f8b10376f2f2
   languageName: node
   linkType: hard
 
@@ -1949,61 +1949,61 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@csstools/color-helpers@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "@csstools/color-helpers@npm:6.0.2"
-  checksum: 10c0/4c66574563d7c960010c11e41c2673675baff07c427cca6e8dddffa5777de45770d13ff3efce1c0642798089ad55de52870d9d8141f78db3fa5bba012f2d3789
+"@csstools/color-helpers@npm:^6.1.3":
+  version: 6.1.3
+  resolution: "@csstools/color-helpers@npm:6.1.3"
+  checksum: 10c0/2647820062605d4bdede642f3ed74270b3d021f12f9501096c0fec0429c13ef1ea2faab216f488f1da1cdff411b0c4683b7bfa8697696aad33a6f7b147a52492
   languageName: node
   linkType: hard
 
-"@csstools/css-calc@npm:^3.2.0, @csstools/css-calc@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "@csstools/css-calc@npm:3.2.1"
+"@csstools/css-calc@npm:^3.2.0, @csstools/css-calc@npm:^3.4.4":
+  version: 3.4.4
+  resolution: "@csstools/css-calc@npm:3.4.4"
   peerDependencies:
-    "@csstools/css-parser-algorithms": ^4.0.0
-    "@csstools/css-tokenizer": ^4.0.0
-  checksum: 10c0/0191c8d1cd4dffa0d3b6bfd1e78a721934b1d7a6c972966e4fdaa72208c6789e8ff443ee81764a32f1e6107825695b5524ef2b4dc1681b5b29230f2a1277e5df
+    "@csstools/css-parser-algorithms": ^4.0.3
+    "@csstools/css-tokenizer": ^4.0.3
+  checksum: 10c0/395346e2b3d710de39effa2e3e5e42ef769272ae8bd26d1992c749e33d232274b36353f19c7abc5099f7f6a4e5be6675003d3ad18e8cc0598d6df3861bcb2a39
   languageName: node
   linkType: hard
 
 "@csstools/css-color-parser@npm:^4.1.0":
-  version: 4.1.8
-  resolution: "@csstools/css-color-parser@npm:4.1.8"
+  version: 4.2.8
+  resolution: "@csstools/css-color-parser@npm:4.2.8"
   dependencies:
-    "@csstools/color-helpers": "npm:^6.0.2"
-    "@csstools/css-calc": "npm:^3.2.1"
+    "@csstools/color-helpers": "npm:^6.1.3"
+    "@csstools/css-calc": "npm:^3.4.4"
   peerDependencies:
-    "@csstools/css-parser-algorithms": ^4.0.0
-    "@csstools/css-tokenizer": ^4.0.0
-  checksum: 10c0/7a5ed5cca6ee2d33e6f9710eb00616658efc09df5ed0cf1619f572986180e36c70728bde42a0cc29bd59c6dc4469c04edd4d7f3e52129c3ec9e56a56a85d2d85
+    "@csstools/css-parser-algorithms": ^4.0.3
+    "@csstools/css-tokenizer": ^4.0.3
+  checksum: 10c0/2bff9343c169bb86b00e0da2b679db7ef2b4b16a4f4cdd25b7ca23d2580f7e4a95bc25d5c00c294550271b979adc0b568a86f39ef25027537230d1ae265b8b80
   languageName: node
   linkType: hard
 
 "@csstools/css-parser-algorithms@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@csstools/css-parser-algorithms@npm:4.0.0"
+  version: 4.0.3
+  resolution: "@csstools/css-parser-algorithms@npm:4.0.3"
   peerDependencies:
-    "@csstools/css-tokenizer": ^4.0.0
-  checksum: 10c0/94558c2428d6ef0ddef542e86e0a8376aa1263a12a59770abb13ba50d7b83086822c75433f32aa2e7fef00555e1cc88292f9ca5bce79aed232bb3fed73b1528d
+    "@csstools/css-tokenizer": ^4.0.3
+  checksum: 10c0/c6039525b72de70698036f4adfc5778f766c021a4086165f950d4b43ac125cd881e114ae8e25baf1c6ded02fe170fb014ecdf2fd77d5985ee0deed5b8b1e2510
   languageName: node
   linkType: hard
 
 "@csstools/css-syntax-patches-for-csstree@npm:^1.1.3":
-  version: 1.1.5
-  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.1.5"
+  version: 1.1.17
+  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.1.17"
   peerDependencies:
     css-tree: ^3.2.1
   peerDependenciesMeta:
     css-tree:
       optional: true
-  checksum: 10c0/a31f0cfb74e2b5ce8a283c47969a202fc3b23c3ee05c6b6beab7f5c14d89c50b82533e446df74f7df0bf88bf23810ed59431353db26e00d5b013995c1ebf07a2
+  checksum: 10c0/c39db1f7cfc82348819a66a7f6e5cb568c5bdda7f0b4593b975f81963d32dedeb021befe55913b6c40bd00b646965d8eaef1cd99c5881f3fb27143f84867884a
   languageName: node
   linkType: hard
 
 "@csstools/css-tokenizer@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@csstools/css-tokenizer@npm:4.0.0"
-  checksum: 10c0/669cf3d0f9c8e1ffdf8c9955ad8beba0c8cfe03197fe29a4fcbd9ee6f7a18856cfa42c62670021a75183d9ab37f5d14a866e6a9df753a6c07f59e36797a9ea9f
+  version: 4.0.3
+  resolution: "@csstools/css-tokenizer@npm:4.0.3"
+  checksum: 10c0/c9c6522aac182a306caae7974c602d7158e21594adc8521f6684f688e15021ff63c586c84ca465b97584ca4c88167f13a0733305a32f6ed5399d2c2fba04e9fc
   languageName: node
   linkType: hard
 
@@ -2251,14 +2251,14 @@ __metadata:
   linkType: hard
 
 "@exodus/bytes@npm:^1.11.0, @exodus/bytes@npm:^1.15.0, @exodus/bytes@npm:^1.6.0":
-  version: 1.15.1
-  resolution: "@exodus/bytes@npm:1.15.1"
+  version: 1.16.0
+  resolution: "@exodus/bytes@npm:1.16.0"
   peerDependencies:
     "@noble/hashes": ^1.8.0 || ^2.0.0
   peerDependenciesMeta:
     "@noble/hashes":
       optional: true
-  checksum: 10c0/333056a6953bbf875d9f3b86c32314de29458d842e5f56f6ef8034b18c2d9660184550093d1bae5de0064043d5e23f54cc03148798d9d29cf5167ac03f2e9f8c
+  checksum: 10c0/cf0c2f790669cccf3a1fd6d9fb71defdf90d5ccabca6ea265829288291cad18f19fee115932e9a44e16bba94d1f093f92a1cdb197e88b60a5b7a2f6a923bf01d
   languageName: node
   linkType: hard
 
@@ -2701,7 +2701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@interlay/monetary-js@npm:0.5.4, @interlay/monetary-js@npm:^0.5.3":
+"@interlay/monetary-js@npm:0.5.4":
   version: 0.5.4
   resolution: "@interlay/monetary-js@npm:0.5.4"
   dependencies:
@@ -7378,33 +7378,18 @@ __metadata:
     "@osn/icons": "npm:^1.235.11"
     "@svgr/webpack": "npm:^7.0.0"
     "@types/lodash-es": "npm:^4.17.12"
-    bignumber.js: "npm:^9.0.2"
-    chart.js: "npm:^4.1.1"
-    chartjs-plugin-gradient: "npm:^0.6.1"
-    clsx: "npm:^1.2.1"
-    cookies: "npm:^0.8.0"
-    dayjs: "npm:^1.10.7"
     eslint: "npm:^10.15.0"
     eslint-config-next: "npm:^16.4.6"
     http-proxy: "npm:^1.18.1"
-    localforage: "npm:^1.10.0"
     lodash-es: "npm:^4.18.1"
     next: "npm:^16.4.6"
     next-common: "workspace:*"
     nprogress: "npm:^0.2.0"
-    pluralize: "npm:^8.0.0"
     raw-loader: "npm:^4.0.2"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-is: "npm:^18.3.1"
-    react-redux: "npm:^8.0.5"
     sass: "npm:^1.99.0"
-    sharp: "npm:^0.35.5"
-    sonner: "npm:^1.0.3"
-    styled-components: "npm:^5.3.9"
-    tailwind-merge: "npm:^1.14.0"
-    tailwind-styled-components: "npm:^2.2.0"
-    use-deep-compare-effect: "npm:^1.8.1"
     webpack: "npm:^5.91.0"
   languageName: unknown
   linkType: soft
@@ -7413,18 +7398,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@subsquare/kintsugi-next@workspace:packages/kintsugi-next"
   dependencies:
-    "@interlay/monetary-js": "npm:^0.5.3"
     "@next/env": "npm:16.4.2"
     "@osn/eslint-config": "npm:^1.0.2"
-    "@osn/icons": "npm:^1.235.11"
-    "@polkadot/util-crypto": "npm:^13.5.9"
     "@svgr/webpack": "npm:^7.0.0"
     "@types/lodash-es": "npm:^4.17.12"
     bignumber.js: "npm:^9.0.2"
-    chart.js: "npm:^4.1.1"
-    clsx: "npm:^1.2.1"
-    cookies: "npm:^0.8.0"
-    dayjs: "npm:^1.10.7"
     eslint: "npm:^10.15.0"
     eslint-config-next: "npm:^16.4.6"
     http-proxy: "npm:^1.18.1"
@@ -7438,12 +7416,8 @@ __metadata:
     react-is: "npm:^18.3.1"
     react-redux: "npm:^8.0.5"
     sass: "npm:^1.99.0"
-    sharp: "npm:^0.35.5"
-    sonner: "npm:^1.0.3"
     styled-components: "npm:^5.3.9"
-    tailwind-merge: "npm:^1.14.0"
     tailwind-styled-components: "npm:^2.2.0"
-    use-deep-compare-effect: "npm:^1.8.1"
     webpack: "npm:^5.91.0"
   languageName: unknown
   linkType: soft
@@ -7458,33 +7432,20 @@ __metadata:
     "@svgr/webpack": "npm:^7.0.0"
     "@types/lodash-es": "npm:^4.17.12"
     bignumber.js: "npm:^9.0.2"
-    chart.js: "npm:^4.1.1"
-    chartjs-plugin-gradient: "npm:^0.6.1"
-    clsx: "npm:^1.2.1"
-    cookies: "npm:^0.8.0"
-    dayjs: "npm:^1.10.7"
     eslint: "npm:^10.15.0"
     eslint-config-next: "npm:^16.4.6"
     http-proxy: "npm:^1.18.1"
-    localforage: "npm:^1.10.0"
     lodash-es: "npm:^4.18.1"
     next: "npm:^16.4.6"
     next-common: "workspace:*"
     nprogress: "npm:^0.2.0"
-    pluralize: "npm:^8.0.0"
-    posthog-js: "npm:^1.438.19"
     raw-loader: "npm:^4.0.2"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     react-is: "npm:^18.3.1"
     react-redux: "npm:^8.0.5"
     sass: "npm:^1.99.0"
-    sharp: "npm:^0.35.5"
-    sonner: "npm:^1.0.3"
     styled-components: "npm:^5.3.9"
-    tailwind-merge: "npm:^1.14.0"
-    tailwind-styled-components: "npm:^2.2.0"
-    use-deep-compare-effect: "npm:^1.8.1"
     webpack: "npm:^5.91.0"
   languageName: unknown
   linkType: soft
@@ -10044,11 +10005,11 @@ __metadata:
   linkType: hard
 
 "bidi-js@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "bidi-js@npm:1.0.3"
+  version: 1.1.0
+  resolution: "bidi-js@npm:1.1.0"
   dependencies:
     require-from-string: "npm:^2.0.2"
-  checksum: 10c0/fdddea4aa4120a34285486f2267526cd9298b6e8b773ad25e765d4f104b6d7437ab4ba542e6939e3ac834a7570bcf121ee2cf6d3ae7cd7082c4b5bedc8f271e1
+  checksum: 10c0/b608addec6bd6e5d1c0cc7b6116002d589c6e666966503aca2aa7b2f61717ecaaeb0ac1a16c1374d61ee757de4f2f24017312a70781f5c4b127ffab54a2f7187
   languageName: node
   linkType: hard
 
@@ -10762,7 +10723,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-tree@npm:^3.0.0, css-tree@npm:^3.2.1":
+"css-tree@npm:^3.2.1":
   version: 3.2.1
   resolution: "css-tree@npm:3.2.1"
   dependencies:
@@ -11667,6 +11628,13 @@ __metadata:
   version: 8.0.0
   resolution: "entities@npm:8.0.0"
   checksum: 10c0/938e631664c19451823344a351aeeafd74fae2d5fa51e4d5b6ff635afaefd4bacf0f609989888c04c42733f46ffdac15211608267ebb02488005891a4793e94d
+  languageName: node
+  linkType: hard
+
+"entities@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "entities@npm:9.0.0"
+  checksum: 10c0/ef713ce6256d2d878390376f0c42e6ccfeee9032c57c48bd224b9a48f8eb44d4403ad4321d1aeebe973fb08eac8ab324abeebc04a92748c0bac9261968e6d395
   languageName: node
   linkType: hard
 
@@ -14150,16 +14118,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isomorphic-dompurify@npm:^3.18.0":
-  version: 3.18.0
-  resolution: "isomorphic-dompurify@npm:3.18.0"
-  dependencies:
-    dompurify: "npm:^3.4.11"
-    jsdom: "npm:^29.1.1"
-  checksum: 10c0/7b66316fa37cf8c00ed49afb8ddfcab2efb21c34fe2eff67c15d1b64c8ef5574cda05ccecadaaf2596bc240cc49c86c4e1d089b9780099f333cfd14ade7b7d9b
-  languageName: node
-  linkType: hard
-
 "isows@npm:1.0.7":
   version: 1.0.7
   resolution: "isows@npm:1.0.7"
@@ -14923,14 +14881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^11.3.5":
-  version: 11.5.1
-  resolution: "lru-cache@npm:11.5.1"
-  checksum: 10c0/7b341cea79a8efe9c6a6f20c8757a77eca5b25d7ff983ccf4e11e547b81f6787824baa1c84705251dff84ab4ffac85717ac354b9d02e465f86a9f8b166409979
-  languageName: node
-  linkType: hard
-
-"lru-cache@npm:^11.5.3":
+"lru-cache@npm:^11.3.5, lru-cache@npm:^11.5.3":
   version: 11.5.3
   resolution: "lru-cache@npm:11.5.3"
   checksum: 10c0/2ad9bce6343a3544a1fd15364d8b35609aa52b2593d21fdc4877cabfe003b0f3deca4f9d6e9d13262f06e9e3d159de45c0a2f3edfc3adb46192333b5f146d8ed
@@ -15288,7 +15239,6 @@ __metadata:
     "@galacticcouncil/sdk": "npm:^10.8.0"
     "@interlay/monetary-js": "npm:0.5.4"
     "@mimirdev/apps-inject": "npm:^3.2.0"
-    "@mimirdev/apps-sdk": "npm:^3.1.0"
     "@osn/eslint-config": "npm:^1.0.2"
     "@osn/icons": "npm:^1.235.11"
     "@osn/polkadot-react-identicon": "npm:^1.0.10"
@@ -15321,7 +15271,9 @@ __metadata:
     chart.js: "npm:^4.1.1"
     chartjs-plugin-annotation: "npm:^2.1.0"
     chartjs-plugin-datalabels: "npm:^2.2.0"
+    chartjs-plugin-gradient: "npm:^0.6.1"
     clsx: "npm:^1.2.1"
+    cookies: "npm:^0.8.0"
     copy-to-clipboard: "npm:^3.3.2"
     d3: "npm:^7.8.5"
     d3-selection: "npm:^3.0.0"
@@ -15338,13 +15290,15 @@ __metadata:
     graphql: "npm:^16.8.1"
     graphql-request: "npm:^7.4.0"
     is-utf8: "npm:^0.2.1"
-    isomorphic-dompurify: "npm:^3.18.0"
+    localforage: "npm:^1.10.0"
     lodash-es: "npm:^4.18.1"
     marked: "npm:^11.1.1"
     md5: "npm:^2.3.0"
     multiformats: "npm:^13.4.2"
     next: "npm:^16.4.6"
+    pluralize: "npm:^8.0.0"
     polkadot-api: "npm:^2.1.1"
+    posthog-js: "npm:^1.438.19"
     qrcode: "npm:^1.5.4"
     query-string: "npm:^9.5.1"
     quick-lru: "npm:^7.0.0"
@@ -15366,7 +15320,9 @@ __metadata:
     styled-components: "npm:^5.3.9"
     tailwind-merge: "npm:^1.14.0"
     tailwind-styled-components: "npm:^2.2.0"
+    use-deep-compare-effect: "npm:^1.8.1"
     viem: "npm:^2.48.4"
+    vitest: "npm:^4.1.12"
     wagmi: "npm:^3.6.8"
   languageName: unknown
   linkType: soft
@@ -16058,11 +16014,11 @@ __metadata:
   linkType: hard
 
 "parse5@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "parse5@npm:8.0.1"
+  version: 8.1.1
+  resolution: "parse5@npm:8.1.1"
   dependencies:
-    entities: "npm:^8.0.0"
-  checksum: 10c0/c3c1c5aab55f6e4be5245599790e56e64be7764a4a0edd7f98db4fe3bb380f63add752fa047dff0496446c25f4104f0c7c1967723de640bde92306a7bb67ed2f
+    entities: "npm:^9.0.0"
+  checksum: 10c0/b0c248e09baf90ad137ccc3542ecb6d942b6b98e38cd693da20b392d6d440ac4475dbf97fa58eecd01bbaadba39b738d88c6dfce5d8ae2681ef561e0481e69a7
   languageName: node
   linkType: hard
 
@@ -18632,6 +18588,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.5"
     globals: "npm:^16.4.0"
     husky: "npm:^8.0.3"
+    jsdom: "npm:^29.1.1"
     lint-staged: "npm:^13.2.3"
     postcss: "npm:^8.5.18"
     postcss-import: "npm:^15.1.0"
@@ -18917,21 +18874,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tldts-core@npm:^7.4.4":
-  version: 7.4.4
-  resolution: "tldts-core@npm:7.4.4"
-  checksum: 10c0/0e7d44b503a573237d7683ccc4798105b8e455aa2e8fcf4bfde626ab9a55d85116604d9e3ac2341858fe342b100a4740ba109d54a0d3afe6cc69f301fe7dc960
+"tldts-core@npm:^7.6.1":
+  version: 7.6.1
+  resolution: "tldts-core@npm:7.6.1"
+  checksum: 10c0/ac4d5f30fa88b843994c36c430f58a685af1405fb040b78a4243f279345a1d2cfba07c0d41794e3170727d5f07d84fadb66c675bd8b3cdb6805b29f920b5ef5b
   languageName: node
   linkType: hard
 
 "tldts@npm:^7.0.5":
-  version: 7.4.4
-  resolution: "tldts@npm:7.4.4"
+  version: 7.6.1
+  resolution: "tldts@npm:7.6.1"
   dependencies:
-    tldts-core: "npm:^7.4.4"
+    tldts-core: "npm:^7.6.1"
   bin:
     tldts: bin/cli.js
-  checksum: 10c0/e0a85d7ec71af40b7d01d1e8bd054669d8a22a2950567ce81381c5b7d7232c80b55f018b5e9fdea81217071c4fdc0d881e26237bb9b37aa6a52993732d3f754f
+  checksum: 10c0/137c28f0665d94fd4697a5c6388f90485261a1e0dc64a75f31c921527544677a2919ddd9410479c177157919b1fb1b952f4cba962a25c9c6700ac304ff24a5f3
   languageName: node
   linkType: hard
 
@@ -18959,11 +18916,11 @@ __metadata:
   linkType: hard
 
 "tough-cookie@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "tough-cookie@npm:6.0.1"
+  version: 6.1.0
+  resolution: "tough-cookie@npm:6.1.0"
   dependencies:
     tldts: "npm:^7.0.5"
-  checksum: 10c0/ec70bd6b1215efe4ed31a158f0be3e4c9088fcbd8620edc23a5860d4f3d85c757b77e274baaa700f7b25e409f4181552ed189603c2b2e1a9f88104da3a61a37d
+  checksum: 10c0/704607363dcf905301048f3412afe17e05c5e8e1c377e6b22ebc96d3d5a7f1727992677ff1c05fa2d411d580ccf9ddbd2ed62c1cab44ef06fdd4026fedc8b896
   languageName: node
   linkType: hard
 
@@ -19347,9 +19304,9 @@ __metadata:
   linkType: hard
 
 "undici@npm:^7.25.0":
-  version: 7.30.1
-  resolution: "undici@npm:7.30.1"
-  checksum: 10c0/c838089b010e8e28a9a5358d4bf4621e0c8d7bb70058b23e819667349c4c0b6791a7c8bc9bbe94ff0923db132faae0d9d9592b9743eda4f2b49466fa57482213
+  version: 7.30.2
+  resolution: "undici@npm:7.30.2"
+  checksum: 10c0/806e17f14fb49d2b63be314cf2be68efbe105469118b366d19a3cb6fd6686089220c74c1e8e947e6b337a16ff434c10c3860f3e637db314381c4ce8c071c3daf
   languageName: node
   linkType: hard
 
